@@ -8,15 +8,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Lights out</p>
-    <h1>Carter Island prototype, coming soon</h1>
-    <p class="pitch">
-      Sneak out of your cell, steal the keycard from the Guard Office,
-      and be back in your bed before headcount.
-    </p>
-    <p id="status" class="status">Loading...</p>
-  </main>
+  <canvas id="stage"></canvas>
+  <div id="hide-prompt" class="tag" hidden></div>
+  <div id="guard-label" class="tag debug-only"></div>
+  <pre id="debug-panel" class="debug-only"></pre>
+  <p id="help">
+    A/D move &nbsp; Shift run &nbsp; S crouch &nbsp; W hide &nbsp; F1 or ` debug
+    <span>Controller: stick move, RT run, Down crouch, Up hide, R3 debug</span>
+  </p>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
