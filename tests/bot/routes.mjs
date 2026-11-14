@@ -59,6 +59,15 @@ export function goToBedAndSleep(world, log) {
   log.push({ room: `${world.room.name} (to bed)`, seconds: world.time - started });
 }
 
+export function pickUpItem(world, itemId, log) {
+  const started = world.time;
+  const item = world.room.items.find((entry) => entry.id === itemId);
+  mustPlan(world, { x: item.x, tolerance: 0.5 }, itemId);
+  holdUntil(world, { interact: true, crouch: true }, (w) => w.taken.has(itemId));
+  release(world);
+  log.push({ room: `${world.room.name} (${itemId})`, seconds: world.time - started });
+}
+
 // The front door route: out through the Mess Hall and Stairwell, and back the same way.
 export function frontDoorRun() {
   const world = createWorld();
@@ -70,6 +79,34 @@ export function frontDoorRun() {
   leaveByDoor(world, 'go-door', log);
   leaveByHall(world, 'sw-west', log);
   leaveByHall(world, 'mh-west', log);
+  goToBedAndSleep(world, log);
+  return { world, log, seconds: world.time };
+}
+
+// Front door in, then home by the one-way drop. No tools needed.
+export function frontDoorThenDropRun() {
+  const world = createWorld();
+  const log = [];
+  leaveByHall(world, 'cb-east', log);
+  leaveByHall(world, 'mh-east', log);
+  leaveByDoor(world, 'sw-door', log);
+  liftKeycard(world, log);
+  leaveByDoor(world, 'go-drop', log);
+  goToBedAndSleep(world, log);
+  return { world, log, seconds: world.time };
+}
+
+// The vent route: Laundry for the screwdriver, Maintenance, the duct, and the drop home.
+export function ventRun() {
+  const world = createWorld();
+  const log = [];
+  leaveByDoor(world, 'cb-stairs', log);
+  pickUpItem(world, 'screwdriver', log);
+  leaveByDoor(world, 'la-door', log);
+  leaveByDoor(world, 'ma-vent', log);
+  leaveByDoor(world, 'vd-east', log);
+  liftKeycard(world, log);
+  leaveByDoor(world, 'go-drop', log);
   goToBedAndSleep(world, log);
   return { world, log, seconds: world.time };
 }

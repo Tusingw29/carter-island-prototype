@@ -36,8 +36,18 @@ function linkSvg(link, rooms) {
     return `<line class="${style}" x1="${left.x + left.w}" y1="${left.cy}" x2="${right.x}" y2="${right.cy}"/>`;
   }
   const [upper, lower] = a.y < b.y ? [a, b] : [b, a];
-  const x = Math.max(upper.x, lower.x) + Math.min(upper.w, lower.w) / 2;
-  return `<line class="${style}" x1="${x}" y1="${upper.y + upper.h}" x2="${x}" y2="${lower.y}"/>`;
+  const overlap = Math.min(upper.x + upper.w, lower.x + lower.w) - Math.max(upper.x, lower.x);
+  if (overlap > 0) {
+    // One above the other: straight down. Vents are drawn a little to one side of stairs.
+    const x = Math.max(upper.x, lower.x) + overlap / 2 + (link.type === 'vent' ? overlap / 4 : 0);
+    return `<line class="${style}" x1="${x}" y1="${upper.y + upper.h}" x2="${x}" y2="${lower.y}"/>`;
+  }
+  // Not lined up: down from the upper room, across in the gap between floors, down into the lower one.
+  const fromX = upper.x + upper.w * 0.15;
+  const toX = lower.x + lower.w * 0.85;
+  const midY = upper.y + upper.h + GAP_Y / 2;
+  return `<polyline class="${style}" points="${fromX},${upper.y + upper.h} ${fromX},${midY} ${toX},${midY} `
+    + `${toX},${lower.y}"/><text class="note" x="${(fromX + toX) / 2}" y="${midY - 5}">one-way drop</text>`;
 }
 
 // A room you know is there (you have seen the way to it) but have not entered yet.
@@ -69,10 +79,14 @@ export function createMapScreen() {
       `<text class="floor" x="0" y="${(TOP_FLOOR - floor) * (CELL_H + GAP_Y) + CELL_H / 2 + 4}">${name}</text>`
     )).join('');
     svg.setAttribute('viewBox', `-6 -6 ${width + 12} ${height + 12}`);
+    // Vents are drawn last, over the rooms, because the duct climbs through the Mess Hall wall.
+    const vents = model.links.filter((link) => link.type === 'vent');
+    const others = model.links.filter((link) => link.type !== 'vent');
     svg.innerHTML = floors
-      + model.links.map((link) => linkSvg(link, rooms)).join('')
+      + others.map((link) => linkSvg(link, rooms)).join('')
       + model.rooms.map((room) => unknownSvg(room, model.links)).join('')
-      + model.rooms.map(roomSvg).join('');
+      + model.rooms.map(roomSvg).join('')
+      + vents.map((link) => linkSvg(link, rooms)).join('');
   }
   return { update };
 }

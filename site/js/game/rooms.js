@@ -9,6 +9,12 @@
 //   hall     an open archway at the left or right end of the room; walk into it
 //   stairs   on the back wall; press Up
 //   door     on the back wall; press Up. Creaky doors: tap = fast and loud, hold = slow and quiet
+//   vent     press Up. needs: 'screwdriver' means the cover is screwed shut until you have one.
+//            oneWay vents only go in the direction listed. exitOnly marks the far end of one:
+//            you can come out of it but never go in. drop means you fall and land with a thud.
+//            hidden keeps a vent off the map until you have walked up to it.
+// Props are things on the back wall that are not ways out, like the welded vent.
+// Grates (in the duct) let you look down into the room below.
 // Guards
 //   patrol [a, b] walks back and forth. patrol [a, a] stands at a.
 //   turnEvery makes a standing guard face the other way every so many seconds.
@@ -35,6 +41,9 @@ const cellBlock = {
   portals: [
     { id: 'cb-stairs', type: 'stairs', dir: 'down', x: 1.3, to: 'laundry', toPortal: 'la-stairs' },
     { id: 'cb-east', type: 'hall', side: 'right', to: 'mess-hall', toPortal: 'mh-west' },
+    // Where the one-way drop from the Guard Office comes out. It lands you in the dark archway.
+    { id: 'cb-drop', type: 'vent', exitOnly: true, high: true, hidden: true, x: 28.6, to: 'guard-office',
+      toPortal: 'go-drop' },
   ],
   guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1 }],
 };
@@ -48,12 +57,14 @@ const laundry = {
   wallColor: 0x45504a,
   hideSpots: [
     { id: 'la-cart-1', type: 'cart', x: 8 },
-    { id: 'la-cart-2', type: 'cart', x: 22 },
+    { id: 'la-cart-2', type: 'cart', x: 15 },
+    { id: 'la-cart-3', type: 'cart', x: 21.5 },
   ],
   portals: [
     { id: 'la-stairs', type: 'stairs', dir: 'up', x: 2, to: 'cell-block', toPortal: 'cb-stairs' },
     { id: 'la-door', type: 'door', creaky: true, x: 26.5, to: 'maintenance', toPortal: 'ma-door' },
   ],
+  items: [{ id: 'screwdriver', type: 'screwdriver', x: 23.8 }],
   guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1 }],
 };
 
@@ -70,7 +81,10 @@ const maintenance = {
   ],
   portals: [
     { id: 'ma-door', type: 'door', creaky: true, x: 1.5, to: 'laundry', toPortal: 'la-door' },
+    { id: 'ma-vent', type: 'vent', needs: 'screwdriver', hidden: true, x: 23, to: 'vent-duct', toPortal: 'vd-west' },
   ],
+  // A teaser for later: this one cannot be opened in the prototype.
+  props: [{ id: 'ma-welded', type: 'welded-vent', x: 19.5 }],
   guards: [],
   // No guards here, so this camera calls the Laundry guard to the connecting door.
   cameras: [{ id: 'ma-camera', min: 9.5, max: 16, halfWidth: 1.6, speed: 1.4, callsGuard: 'la-guard', callsTo: 26.5 }],
@@ -132,12 +146,43 @@ const guardOffice = {
   hideSpots: [{ id: 'go-desk', type: 'desk', x: 10.5, halfWidth: 1.3 }],
   portals: [
     { id: 'go-door', type: 'door', creaky: true, x: 1.5, to: 'stairwell', toPortal: 'sw-door' },
+    // Where the duct comes out, in the ceiling. Too high to climb back into.
+    { id: 'go-ceiling', type: 'vent', exitOnly: true, high: true, hidden: true, x: 17.5, to: 'vent-duct',
+      toPortal: 'vd-east' },
+    // The way home: latched on this side, so it opens without a tool, but only from in here.
+    { id: 'go-drop', type: 'vent', oneWay: true, drop: true, floor: true, hidden: true, x: 19.5, to: 'cell-block',
+      toPortal: 'cb-drop' },
   ],
   items: [{ id: 'keycard', type: 'keycard', x: 10.5 }],
   guards: [{ id: 'go-guard', patrol: [13.5, 13.5], facing: -1, sleeper: true }],
 };
 
+// The duct runs above the Cell Block and Mess Hall. No guards, no room to stand: you crawl.
+const ventDuct = {
+  id: 'vent-duct',
+  name: 'Vent Duct',
+  floor: 2,
+  col: 0,
+  span: 2,
+  width: 30,
+  wallColor: 0x4a5058,
+  crawl: true,
+  hideSpots: [],
+  portals: [
+    { id: 'vd-west', type: 'vent', hidden: true, x: 1.5, to: 'maintenance', toPortal: 'ma-vent' },
+    { id: 'vd-east', type: 'vent', oneWay: true, drop: true, floor: true, hidden: true, x: 28.5, to: 'guard-office',
+      toPortal: 'go-ceiling' },
+  ],
+  grates: [
+    { id: 'vd-grate-1', x: 9, looksInto: 'mess-hall' },
+    { id: 'vd-grate-2', x: 18, looksInto: 'mess-hall' },
+    { id: 'vd-grate-3', x: 25.5, looksInto: 'guard-office' },
+  ],
+  guards: [],
+};
+
 export const ROOMS = Object.freeze({
+  'vent-duct': ventDuct,
   'cell-block': cellBlock,
   laundry,
   maintenance,

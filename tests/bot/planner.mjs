@@ -120,7 +120,8 @@ function expand(node, frames, room, darkSpots) {
 
   const canWait = sliceSafe(frames, tick, room, node.x, node.x, MOVES[0], darkSpots, node.still);
   if (canWait) add(node.x, null, { crouch: true }, true);
-  for (const move of MOVES) {
+  // In the duct you can only crawl.
+  for (const move of room.crawl ? MOVES.slice(0, 1) : MOVES) {
     for (const dir of [-1, 1]) {
       const x = Math.max(min, Math.min(max, node.x + dir * move.speed * SLICE));
       if (x !== node.x && sliceSafe(frames, tick, room, node.x, x, move, darkSpots)) {

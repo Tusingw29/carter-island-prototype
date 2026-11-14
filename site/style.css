@@ -118,15 +118,99 @@ body {
   color: #ff4a3c;
 }
 
-#keycard {
-  display: inline-block;
-  margin-top: 4px;
+.badge {
+  display: block;
+  width: fit-content;
+  margin: 4px 0 0 auto;
   padding: 2px 8px;
   border-radius: 3px;
   background: #7fd0a0;
   color: #05070b;
   font-size: 12px;
   font-weight: 700;
+}
+
+.badge.tool {
+  background: #d9c23a;
+}
+
+#message {
+  position: fixed;
+  top: 22%;
+  left: 50%;
+  max-width: 90vw;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-left: 3px solid var(--beam);
+  background: rgba(5, 7, 11, 0.88);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+#peek {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  width: min(560px, 92vw);
+  transform: translateX(-50%);
+  padding: 8px 10px 10px;
+  border: 1px solid #2c3440;
+  border-radius: 6px;
+  background: rgba(5, 7, 11, 0.9);
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  pointer-events: none;
+}
+
+#peek-strip {
+  position: relative;
+  height: 26px;
+  margin-top: 6px;
+  border-bottom: 2px solid #56606e;
+}
+
+#peek-strip i,
+#peek-strip b {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+#peek-strip .spot {
+  height: 8px;
+  background: #3b4452;
+}
+
+#peek-strip .spot.dark {
+  height: 100%;
+  background: #000;
+}
+
+#peek-strip .cam {
+  height: 100%;
+  background: rgba(106, 176, 255, 0.3);
+}
+
+#peek-strip b {
+  bottom: 2px;
+  color: var(--beam);
+  font-size: 15px;
+}
+
+#peek-strip b.suspicious,
+#peek-strip b.searching {
+  color: #ffb03a;
+}
+
+#peek-strip b.alert {
+  color: #ff4a3c;
+}
+
+#peek-strip b.asleep,
+#peek-strip b.out {
+  color: var(--dim);
 }
 
 #room-name {
@@ -315,9 +399,15 @@ body {
 }
 
 #map-svg .link.vent {
+  fill: none;
   stroke: #6ab0ff;
   stroke-dasharray: 2 3;
   stroke-width: 4;
+}
+
+#map-svg text.note {
+  fill: #6ab0ff;
+  font-size: 9px;
 }
 
 button {

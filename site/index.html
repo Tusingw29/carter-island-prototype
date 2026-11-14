@@ -16,9 +16,15 @@
   </div>
   <div id="top-right">
     <div id="timer">9:00</div>
-    <div id="keycard" hidden>KEYCARD</div>
+    <div id="keycard" class="badge" hidden>KEYCARD</div>
+    <div id="screwdriver" class="badge tool" hidden>SCREWDRIVER</div>
   </div>
   <div id="room-name"></div>
+  <div id="message" hidden></div>
+  <div id="peek" hidden>
+    <span id="peek-title"></span>
+    <div id="peek-strip"></div>
+  </div>
 
   <div id="prompt" class="tag" hidden>
     <span id="prompt-text"></span>
@@ -35,7 +41,7 @@
     <h2>MAP</h2>
     <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
     <p class="legend">
-      Thick line: hallway &nbsp; Thin line: door (rust = creaky) &nbsp; Dashed: stairs &nbsp; M to close
+      Thick: hallway &nbsp; Thin: door (rust = creaky) &nbsp; Dashed: stairs &nbsp; Blue dots: vent &nbsp; M to close
     </p>
   </div>
 
