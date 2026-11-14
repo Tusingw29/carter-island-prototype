@@ -1,7 +1,9 @@
 // Simple beeps made with Web Audio. No sound files.
-// Each cue is a list of notes: [frequency in Hz, start in seconds, length in seconds, wave shape].
+// Each cue is a list of notes: [frequency in Hz, start in seconds, length in seconds, wave shape, loudness].
+// Loudness is optional: 1 is normal.
 const CUES = {
   suspicious: [[440, 0, 0.09, 'triangle'], [620, 0.1, 0.14, 'triangle']],
+  // The alert sting.
   alert: [[880, 0, 0.08, 'square'], [880, 0.11, 0.08, 'square'], [1100, 0.22, 0.22, 'square']],
   searching: [[330, 0, 0.12, 'triangle'], [300, 0.14, 0.2, 'triangle']],
   calm: [[520, 0, 0.1, 'sine'], [390, 0.12, 0.22, 'sine']],
@@ -25,13 +27,22 @@ const CUES = {
   hint: [[600, 0, 0.08, 'sine'], [760, 0.1, 0.16, 'sine']],
   dummy: [[200, 0, 0.1, 'sine']],
   cellOpen: [[260, 0, 0.06, 'square'], [200, 0.1, 0.2, 'sawtooth']],
+  // A quiet door: one soft click. A slammed creaky door: a groan and a bang.
   door: [[180, 0, 0.08, 'sine']],
-  doorLoud: [[90, 0, 0.25, 'sawtooth'], [140, 0.05, 0.3, 'square']],
+  doorLoud: [[620, 0, 0.18, 'sawtooth', 0.7], [90, 0.16, 0.25, 'sawtooth', 1.4], [140, 0.2, 0.3, 'square']],
+  // Played over and over while a creaky door is being eased open.
+  creak: [[410, 0, 0.09, 'sawtooth', 0.25], [370, 0.08, 0.12, 'sawtooth', 0.2]],
   camera: [[1300, 0, 0.06, 'square'], [1300, 0.12, 0.06, 'square']],
   keycard: [[660, 0, 0.08, 'triangle'], [990, 0.09, 0.2, 'triangle']],
   silentAlarm: [[220, 0, 0.5, 'sawtooth'], [208, 0.25, 0.6, 'sawtooth']],
   win: [[523, 0, 0.12, 'triangle'], [659, 0.13, 0.12, 'triangle'], [784, 0.26, 0.3, 'triangle']],
   lose: [[300, 0, 0.2, 'sawtooth'], [200, 0.2, 0.5, 'sawtooth']],
+  // Footsteps: walking is a soft tap, running a heavier thud. Crouching makes none.
+  step: [[95, 0, 0.05, 'sine', 0.5]],
+  stepRun: [[120, 0, 0.06, 'triangle', 1.2], [70, 0.02, 0.07, 'sine', 1]],
+  // One minute left, then the last ten seconds.
+  timerWarning: [[990, 0, 0.12, 'square'], [990, 0.25, 0.12, 'square'], [990, 0.5, 0.25, 'square']],
+  timerTick: [[1200, 0, 0.04, 'square', 0.6]],
 };
 const VOLUME = 0.12;
 
@@ -48,13 +59,13 @@ export function createSound() {
   window.addEventListener('pointerdown', unlock);
   window.addEventListener('gamepadconnected', unlock);
 
-  function note(frequency, start, length, shape) {
+  function note(frequency, start, length, shape, loudness = 1) {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     const begin = context.currentTime + start;
     oscillator.type = shape;
     oscillator.frequency.value = frequency;
-    gain.gain.setValueAtTime(VOLUME, begin);
+    gain.gain.setValueAtTime(VOLUME * loudness, begin);
     gain.gain.exponentialRampToValueAtTime(0.001, begin + length);
     oscillator.connect(gain).connect(context.destination);
     oscillator.start(begin);
@@ -63,12 +74,42 @@ export function createSound() {
 
   function play(name) {
     if (!context || context.state !== 'running' || !CUES[name]) return;
-    for (const [frequency, start, length, shape] of CUES[name]) note(frequency, start, length, shape);
+    for (const args of CUES[name]) note(...args);
   }
 
   // Plays one cue per kind of event, so two guards going Alert at once is one sting, not two.
   function playEvents(events) {
     for (const type of new Set(events.map((event) => event.type))) play(type);
   }
-  return { play, playEvents };
+  return { play, playEvents, unlock };
+}
+
+// Sounds that follow what the player is doing from moment to moment, not single events.
+export function createMovementSounds(sound) {
+  const STRIDE = { walk: 0.95, run: 1.5 };
+  const CREAK_EVERY = 0.4;
+  let walked = 0;
+  let creakIn = 0;
+
+  function update(world, dt) {
+    const { player } = world;
+    const stride = STRIDE[player.mode];
+    if (stride && !world.room.crawl) {
+      walked += player.speed * dt;
+      if (walked >= stride) {
+        walked = 0;
+        sound.play(player.mode === 'run' ? 'stepRun' : 'step');
+      }
+    } else {
+      walked = 0;
+    }
+    // A creaky door being opened slowly still makes a little noise for the player to hear.
+    const easing = world.holds.up && world.holds.up.time > 0.25;
+    creakIn = easing ? creakIn - dt : 0;
+    if (easing && creakIn <= 0) {
+      creakIn = CREAK_EVERY;
+      sound.play('creak');
+    }
+  }
+  return { update };
 }

@@ -13,25 +13,36 @@ This prototype exists to answer one question: **is the core loop fun?**
 
 **https://tusingw29.github.io/carter-island-prototype/**
 
-Right now this is a "coming soon" page. Gameplay arrives with Step 1 in
-[docs/TASKS.md](docs/TASKS.md).
+Runs in any current desktop browser. Keyboard or controller. No install.
 
 ## Controls
 
-Keyboard and controller both work.
-
 | Action | Keyboard | Controller |
 | --- | --- | --- |
-| Move | A / D | Left stick |
-| Enter locker, door, or vent; open door (tap fast, hold slow) | W | D-pad or stick Up |
-| Crouch | S | Down |
-| Run | Shift | Right Trigger |
-| Interact, pick up, grab keycard (tap fast, hold slow) | E | A (bottom face button) |
-| Knockout, drag body | Space | X (left face button) |
-| Break free (mash) | Space | X |
-| Map | M | Select / View |
+| Move | A / D | Left stick or D-pad |
+| Crouch (silent, slow) | S | Down |
+| Run (loud) | Shift | Right Trigger |
+| Hide, use doors, stairs, and vents | W | Up |
+| Creaky door: fast and loud / slow and quiet | tap W / hold W | tap Up / hold Up |
+| Interact, pick up, sleep in bed | E | A (bottom face button) |
+| Keycard: grab fast / lift quietly | tap E / hold E | tap A / hold A |
+| Knock out from behind, drag body | Space | X (left face button) |
+| Break free when grabbed | mash Space | mash X |
+| Map | M | View / Select |
 | Pause | Esc | Start |
-| Debug mode | F1 | |
+| Controls screen | C | Y (top face button) |
+| Debug mode | F1 or ` | Right stick click |
+
+## How to play
+
+- A guard's flashlight is what he can see. Stay out of it.
+- Walking is quiet, running is loud, crouching is silent.
+- Press Up at lockers, laundry carts, tables, and shelves to hide. Stand still in a
+  pitch-dark patch and nobody can see you.
+- Three ways to do it: the front door (Mess Hall, then the Stairwell), the vents (find
+  the screwdriver first), and a one-way drop that gets you home fast.
+- A guard checks your bed when the timer reads 5:00. Be in it, or leave a dummy.
+- The score screen gives you a rank: Ghost, Shadow, Inmate, or Caught.
 
 ## Run it locally
 
@@ -43,8 +54,22 @@ npm test       # run the tests
 npm run dev    # then open http://localhost:4173
 ```
 
+## Links for testing
+
+Add these to the end of the play link.
+
+| Link ending | What it does |
+| --- | --- |
+| `?debug` | Starts in debug mode: vision cones, noise ring, guard states, frame rate |
+| `?room=stairwell&px=2` | Starts in that room at that spot |
+| `?timer=30` | Starts with 30 seconds on the timer |
+| `?low` | Lowest picture quality, for very slow computers |
+
+Room names: `cell-block`, `laundry`, `maintenance`, `mess-hall`, `stairwell`,
+`guard-office`, `vent-duct`. In debug mode, `[` and `]` change the timer by 30 seconds.
+
 ## More
 
 - [docs/DESIGN.md](docs/DESIGN.md): the full design spec
-- [docs/TASKS.md](docs/TASKS.md): the task board
+- [docs/TASKS.md](docs/TASKS.md): the task board, with what to test for each step
 - [CONTRIBUTING.md](CONTRIBUTING.md): code style and how the repo works

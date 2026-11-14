@@ -4,13 +4,15 @@ import { alertSummary } from '../game/alert.js';
 import { formatClock } from '../game/clock.js';
 import { currentMessage } from '../game/messages.js';
 import { peek } from '../game/vents.js';
+import { setHidden, setText, setWidth } from './dom.js';
 
 const LABELS = { calm: 'CALM', suspicious: 'SUSPICIOUS', searching: 'SEARCHING', alert: 'ALERT' };
 
-function debugText(world, build) {
+function debugText(world, build, speed) {
   const { player } = world;
   const lines = [
     `DEBUG  build ${build}   [ and ] change the timer by 30 s`,
+    `speed    ${speed}`,
     `room     ${world.room.name}`,
     `player   ${player.mode}  ${player.speed.toFixed(1)} m/s  x ${player.x.toFixed(1)}`,
     `noise    ${world.noiseRadius.toFixed(1)} m`,
@@ -58,15 +60,16 @@ export function createHud(build) {
   const peekTitle = byId('peek-title');
   const peekStrip = byId('peek-strip');
   let shownRoom = null;
+  let lastPeek = '';
 
   // Looking down through a grate: a strip showing the room below, with its guards and cameras.
   function updatePeek(view) {
-    peekPanel.hidden = !view;
+    setHidden(peekPanel, !view);
     if (!view) return;
     const at = (x) => `${(x / view.width) * 100}%`;
     const wide = (halfWidth) => `${((halfWidth * 2) / view.width) * 100}%`;
-    peekTitle.textContent = `Looking down into the ${view.name}`;
-    peekStrip.innerHTML = [
+    setText(peekTitle, `Looking down into the ${view.name}`);
+    const html = [
       ...view.spots.map((s) => `<i class="spot ${s.type}" style="left:${at(s.x)};width:${wide(s.halfWidth)}"></i>`),
       ...view.cameras.map((c) => `<i class="cam" style="left:${at(c.x)};width:${wide(c.halfWidth)}"></i>`),
       ...view.guards.map((g) => {
@@ -74,19 +77,23 @@ export function createHud(build) {
         return `<b class="${g.state}" style="left:${at(g.x)}">${g.state === 'asleep' ? 'z' : arrow}</b>`;
       }),
     ].join('');
+    if (html !== lastPeek) {
+      lastPeek = html;
+      peekStrip.innerHTML = html;
+    }
   }
 
-  function update(world, debug) {
-    timer.textContent = formatClock(world.timeLeft);
+  function update(world, debug, speed) {
+    setText(timer, formatClock(world.timeLeft));
     timer.classList.toggle('low', world.timeLeft <= 60);
-    keycard.hidden = !world.player.hasKeycard;
-    keycard.textContent = world.silentAlarm ? 'KEYCARD  (silent alarm)' : 'KEYCARD';
-    for (const [flag, badge] of badges) badge.hidden = !world.player[flag];
-    bedCheck.textContent = bedCheckText(world);
+    setHidden(keycard, !world.player.hasKeycard);
+    setText(keycard, world.silentAlarm ? 'KEYCARD  (silent alarm)' : 'KEYCARD');
+    for (const [flag, badge] of badges) setHidden(badge, !world.player[flag]);
+    setText(bedCheck, bedCheckText(world));
 
     const text = currentMessage(world);
-    message.hidden = !text;
-    if (text) message.textContent = text;
+    setHidden(message, !text);
+    if (text) setText(message, text);
     updatePeek(peek(world));
 
     // The room name fades in each time you enter a room.
@@ -98,15 +105,15 @@ export function createHud(build) {
     }
 
     const summary = alertSummary(world);
-    meter.dataset.state = summary.level;
-    meterLabel.textContent = LABELS[summary.level];
-    meterFill.style.width = `${Math.round(summary.fill * 100)}%`;
+    if (meter.dataset.state !== summary.level) meter.dataset.state = summary.level;
+    setText(meterLabel, LABELS[summary.level]);
+    setWidth(meterFill, summary.fill * 100);
 
-    mash.hidden = !world.grab;
-    if (world.grab) mashFill.style.width = `${(world.grab.presses / CONFIG.grab.mashNeeded) * 100}%`;
+    setHidden(mash, !world.grab);
+    if (world.grab) setWidth(mashFill, (world.grab.presses / CONFIG.grab.mashNeeded) * 100);
 
     document.body.classList.toggle('debug', debug);
-    if (debug) panel.textContent = debugText(world, build);
+    if (debug) setText(panel, debugText(world, build, speed));
   }
   return { update };
 }

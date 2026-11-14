@@ -21,9 +21,10 @@ export function createEndScreen(onPlayAgain) {
   byId('play-again').addEventListener('click', onPlayAgain);
   let shown = null;
 
-  function update(world) {
+  // allowed is false while another screen, such as the playtest form, is open on top.
+  function update(world, allowed = true) {
     const { result } = world;
-    screen.hidden = !result;
+    screen.hidden = !result || !allowed;
     if (!result || shown === result) return;
     shown = result;
     screen.dataset.outcome = result.won ? 'win' : 'lose';
