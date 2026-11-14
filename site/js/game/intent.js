@@ -3,7 +3,7 @@
 import { CONFIG } from './config.js';
 
 export function emptyIntent() {
-  return { moveX: 0, up: false, crouch: false, run: false, debug: false };
+  return { moveX: 0, up: false, crouch: false, run: false, action: false, interact: false, debug: false };
 }
 
 // codes is a Set of KeyboardEvent.code values that are currently held down.
@@ -15,6 +15,9 @@ export function intentFromKeys(codes) {
     up: codes.has('KeyW') || codes.has('ArrowUp'),
     crouch: codes.has('KeyS') || codes.has('ArrowDown'),
     run: codes.has('ShiftLeft') || codes.has('ShiftRight'),
+    // Knockout, drag, and break free.
+    action: codes.has('Space'),
+    interact: codes.has('KeyE') || codes.has('Enter'),
     debug: codes.has('F1') || codes.has('Backquote'),
   };
 }
@@ -36,6 +39,8 @@ export function intentFromGamepad(pad, cfg = CONFIG.stick) {
     up: pressed(pad, 12) || stickY < -cfg.upDownThreshold,
     crouch: pressed(pad, 13) || stickY > cfg.upDownThreshold,
     run: (pad.buttons[7]?.value ?? 0) > cfg.triggerThreshold,
+    action: pressed(pad, 2),
+    interact: pressed(pad, 0),
     debug: pressed(pad, 11),
   };
 }
@@ -46,6 +51,8 @@ export function mergeIntents(a, b) {
     up: a.up || b.up,
     crouch: a.crouch || b.crouch,
     run: a.run || b.run,
+    action: a.action || b.action,
+    interact: a.interact || b.interact,
     debug: a.debug || b.debug,
   };
 }

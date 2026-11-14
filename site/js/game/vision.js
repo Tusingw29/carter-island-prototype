@@ -60,7 +60,7 @@ export function bodyPoints(x, height, count = 6) {
 }
 
 export function guardSeesPlayer(guard, player, guardCfg = CONFIG.guard, playerCfg = CONFIG.player) {
-  if (player.hiddenIn) return false;
+  if (player.hiddenIn || player.inDark) return false;
   const shape = coneShape(guard, guardCfg);
   return bodyPoints(player.x, playerHeight(player, playerCfg)).some((point) => pointInCone(shape, point));
 }

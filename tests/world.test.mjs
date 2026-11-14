@@ -2,18 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG } from '../site/js/game/config.js';
 import { emptyIntent, intentFromGamepad, intentFromKeys, mergeIntents } from '../site/js/game/intent.js';
-import { createGuard, updateGuard } from '../site/js/game/guard.js';
+import { createGuard, patrol } from '../site/js/game/guard.js';
 import { createPlayer } from '../site/js/game/player.js';
 import { nearestHideSpot, toggleHide } from '../site/js/game/hiding.js';
 import { createWorld, stepWorld } from '../site/js/game/world.js';
+import { STEP, intent, run, testWorld } from './helpers.mjs';
 
-const STEP = 1 / 120;
-const intent = (changes) => ({ ...emptyIntent(), ...changes });
 const lockers = [{ id: 'locker-1', type: 'locker', x: 11 }];
-
-function run(world, changes, seconds) {
-  for (let i = 0; i < Math.round(seconds / STEP); i += 1) stepWorld(world, intent(changes), STEP);
-}
 
 test('hiding: you can only get in a locker when you are next to it', () => {
   const far = createPlayer(5);
@@ -30,49 +25,29 @@ test('hiding: you can only get in a locker when you are next to it', () => {
 });
 
 test('world: Up hides once per press, and a hidden player cannot move', () => {
-  const world = createWorld();
-  world.player.x = world.room.hideSpots[0].x;
+  const world = testWorld({ playerX: 11, hideSpots: lockers });
   run(world, { up: true }, 0.5);
   assert.equal(world.player.hiddenIn, 'locker-1', 'holding Up does not toggle back out');
   run(world, { moveX: 1, run: true }, 0.5);
-  assert.equal(world.player.x, world.room.hideSpots[0].x);
+  assert.equal(world.player.x, 11);
   assert.equal(world.player.mode, 'hidden');
   assert.equal(world.noiseRadius, 0);
   run(world, { up: true }, 0.1);
   assert.equal(world.player.hiddenIn, null);
 });
 
-test('world: the guard sees a player in the open but not one in the locker', () => {
-  const world = createWorld();
-  const guard = world.guards[0];
-  const lockerX = world.room.hideSpots[0].x;
-  guard.x = lockerX - 4;
-  guard.facing = 1;
-  world.player.x = lockerX;
-
-  stepWorld(world, intent({}), STEP);
-  assert.equal(guard.seesPlayer, true);
-  assert.equal(world.stats.timesSpotted, 1);
-
-  stepWorld(world, intent({ up: true }), STEP);
-  assert.equal(guard.seesPlayer, false);
-
-  // The guard walks his whole beat past the locker and never notices.
-  run(world, {}, 30);
-  assert.equal(world.stats.timesSpotted, 1);
-});
-
-test('world: being seen for a long time counts as one spotting, not many', () => {
-  const world = createWorld();
-  world.guards[0].x = 10;
-  world.guards[0].facing = 1;
-  world.player.x = 13;
-  run(world, {}, 1);
-  assert.equal(world.stats.timesSpotted, 1);
+test('world: a guard sweeping his light across a locker never notices the player inside', () => {
+  const guards = [{ id: 'g', patrol: [4, 18], startX: 4, facing: 1 }];
+  const world = testWorld({ playerX: 11, guards, hideSpots: lockers });
+  run(world, { up: true }, 0.1);
+  run(world, {}, 40);
+  assert.equal(world.guards[0].state, 'calm');
+  assert.equal(world.guards[0].detection, 0);
+  assert.equal(world.stats.timesSpotted, 0);
 });
 
 test('world: noise ring follows what the player is doing', () => {
-  const world = createWorld();
+  const world = testWorld();
   run(world, { moveX: 1 }, 0.1);
   assert.equal(world.noiseRadius, CONFIG.noise.walkRadius);
   run(world, { moveX: 1, run: true }, 0.1);
@@ -84,12 +59,12 @@ test('world: noise ring follows what the player is doing', () => {
 test('guard: walks to the end of his patrol, pauses, turns, and walks back', () => {
   const guard = createGuard({ id: 'g', patrol: [5, 8], startX: 5, facing: 1 });
   const walkTime = 3 / CONFIG.guard.walkSpeed;
-  for (let t = 0; t < walkTime + 0.1; t += STEP) updateGuard(guard, STEP);
+  for (let t = 0; t < walkTime + 0.1; t += STEP) patrol(guard, STEP);
   assert.equal(guard.x, 8);
   assert.equal(guard.facing, 1, 'still looking ahead during the pause');
-  for (let t = 0; t < CONFIG.guard.turnPauseSeconds; t += STEP) updateGuard(guard, STEP);
+  for (let t = 0; t < CONFIG.guard.turnPauseSeconds; t += STEP) patrol(guard, STEP);
   assert.equal(guard.facing, -1);
-  for (let t = 0; t < walkTime + 0.1; t += STEP) updateGuard(guard, STEP);
+  for (let t = 0; t < walkTime + 0.1; t += STEP) patrol(guard, STEP);
   assert.equal(guard.x, 5);
 });
 
@@ -111,6 +86,8 @@ test('keyboard: the spec keys map to the right actions', () => {
   assert.deepEqual(intentFromKeys(new Set(['KeyA', 'KeyS'])), intent({ moveX: -1, crouch: true }));
   assert.deepEqual(intentFromKeys(new Set(['KeyW'])), intent({ up: true }));
   assert.deepEqual(intentFromKeys(new Set(['F1'])), intent({ debug: true }));
+  assert.deepEqual(intentFromKeys(new Set(['Space'])), intent({ action: true }));
+  assert.deepEqual(intentFromKeys(new Set(['KeyE'])), intent({ interact: true }));
   assert.equal(intentFromKeys(new Set(['KeyA', 'KeyD'])).moveX, 0);
 });
 
@@ -128,6 +105,8 @@ test('controller: standard mapping, with a deadzone on the stick', () => {
   assert.equal(intentFromGamepad(pad([0, 0.9])).crouch, true);
   assert.equal(intentFromGamepad(pad([0, 0], { 13: true })).crouch, true);
   assert.equal(intentFromGamepad(pad([0, 0], { 7: true })).run, true);
+  assert.equal(intentFromGamepad(pad([0, 0], { 2: true })).action, true);
+  assert.equal(intentFromGamepad(pad([0, 0], { 0: true })).interact, true);
   assert.deepEqual(intentFromGamepad(null), emptyIntent());
 });
 

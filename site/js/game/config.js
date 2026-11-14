@@ -17,6 +17,8 @@ export const CONFIG = Object.freeze({
     crouchHeight: 0.9,
     // Keeps the player this far from the room's end walls.
     wallMargin: 0.5,
+    // Speed while dragging a body. You cannot run or crouch while dragging.
+    dragSpeed: 1.8,
   }),
 
   // How far each kind of movement can be heard.
@@ -24,6 +26,7 @@ export const CONFIG = Object.freeze({
     walkRadius: 2.5,
     runRadius: 8,
     crouchRadius: 0,
+    dragRadius: 1.5,
   }),
 
   guard: Object.freeze({
@@ -34,6 +37,45 @@ export const CONFIG = Object.freeze({
     coneRange: 7,
     coneHalfAngleDeg: 17,
     coneTiltDownDeg: 12,
+
+    // Speeds for each alert level. Alert is faster than your walk but slower than your run.
+    suspiciousSpeed: 2.2,
+    alertSpeed: 5,
+    searchSpeed: 2.4,
+
+    // Sight fills a detection meter. Full meter = Alert. Close up it fills fast.
+    detectNearDistance: 2,
+    detectNearSeconds: 0.3,
+    detectFarSeconds: 1.3,
+    detectDrainPerSecond: 0.5,
+    // Meter level at which a calm guard gets Suspicious and comes to look.
+    glimpseThreshold: 0.3,
+    suspiciousDetectBoost: 1.5,
+    searchingDetectBoost: 3,
+
+    // How long a guard looks around at a spot before giving up.
+    lookAroundSeconds: 3,
+    // After losing sight, a chasing guard still knows where you are for this long.
+    trackSeconds: 1,
+    // Searching: checks hiding spots this close to where he lost you.
+    searchRadius: 7,
+    checkSpotSeconds: 1.5,
+    searchSeconds: 20,
+
+    grabReach: 0.8,
+    stunSeconds: 2.5,
+  }),
+
+  knockout: Object.freeze({
+    reach: 1.1,
+  }),
+
+  // Getting grabbed: mash to break free, once per run.
+  grab: Object.freeze({
+    mashNeeded: 8,
+    mashSeconds: 3,
+    shoveDistance: 2,
+    immunitySeconds: 1.5,
   }),
 
   hide: Object.freeze({

@@ -1,7 +1,7 @@
 // Browser side of input: listens to the keyboard, polls the controller, returns one intent.
 import { intentFromGamepad, intentFromKeys, mergeIntents } from './game/intent.js';
 
-const GAME_KEYS = /^(Key[WASD]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|F1|Backquote)$/;
+const GAME_KEYS = /^(Key[WASD]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|KeyE|Enter|F1|Backquote)$/;
 
 export function createInput() {
   const held = new Set();

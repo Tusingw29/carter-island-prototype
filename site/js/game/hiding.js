@@ -1,9 +1,19 @@
-// Getting into and out of hiding spots (lockers for now).
+// Hiding spots: lockers and laundry carts you climb into, and pitch-dark spots you stand still in.
 import { CONFIG } from './config.js';
 
-export function nearestHideSpot(player, spots, cfg = CONFIG.hide) {
+const CONTAINERS = ['locker', 'cart', 'table', 'desk', 'shelf'];
+
+export const isContainer = (spot) => CONTAINERS.includes(spot.type);
+
+export function spotById(spots, id) {
+  return spots.find((spot) => spot.id === id) ?? null;
+}
+
+// The closest container within reach. fullIds lists spots already holding a body.
+export function nearestHideSpot(player, spots, fullIds = [], cfg = CONFIG.hide) {
   let best = null;
   for (const spot of spots) {
+    if (!isContainer(spot) || fullIds.includes(spot.id)) continue;
     const distance = Math.abs(spot.x - player.x);
     if (distance <= cfg.reach && (!best || distance < Math.abs(best.x - player.x))) best = spot;
   }
@@ -11,14 +21,27 @@ export function nearestHideSpot(player, spots, cfg = CONFIG.hide) {
 }
 
 // Call once per Up press. Returns 'hid', 'left', or null if nothing happened.
-export function toggleHide(player, spots, cfg = CONFIG.hide) {
+export function toggleHide(player, spots, fullIds = [], cfg = CONFIG.hide) {
   if (player.hiddenIn) {
     player.hiddenIn = null;
     return 'left';
   }
-  const spot = nearestHideSpot(player, spots, cfg);
+  if (player.dragging) return null;
+  const spot = nearestHideSpot(player, spots, fullIds, cfg);
   if (!spot) return null;
   player.hiddenIn = spot.id;
   player.x = spot.x;
   return 'hid';
+}
+
+// The dark spot the player is standing still in, or null. Moving gives you away.
+export function darkSpotAt(player, spots) {
+  if (player.hiddenIn || player.dragging || player.mode !== 'idle') return null;
+  const spot = spots.find((s) => s.type === 'dark' && Math.abs(s.x - player.x) <= s.halfWidth);
+  return spot ? spot.id : null;
+}
+
+// The id of whatever is hiding the player right now, or null if they are in the open.
+export function concealedIn(player) {
+  return player.hiddenIn ?? player.inDark ?? null;
 }
