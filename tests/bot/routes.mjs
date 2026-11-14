@@ -27,6 +27,8 @@ export function leaveByHall(world, portalId, log) {
   const name = world.room.name;
   mustPlan(world, { x: portalX(world.room, portal), arrive: arrival(world, portal) }, portalId);
   holdUntil(world, { moveX: portal.side === 'left' ? -1 : 1, crouch: true }, (w) => w.room.id === portal.to);
+  // Stop dead in the dark archway on the far side, which is what hides you there.
+  release(world);
   log.push({ room: name, seconds: world.time - started });
 }
 

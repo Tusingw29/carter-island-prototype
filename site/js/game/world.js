@@ -61,7 +61,13 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     bedCheck: null,
     dummyInBed: false,
     seenByCamera: false,
+    // The room where a camera first saw the player, for explaining the silent alarm.
+    cameraSawIn: null,
     silentAlarm: false,
+    // Why it fired: 'camera', 'knockout', or both.
+    silentAlarmReasons: [],
+    // The PA announcement on screen right now ({ text, until }).
+    pa: null,
     keycardGrab: null,
     // Set while a guard is holding the player: { guardId, presses, timeLeft }.
     grab: null,

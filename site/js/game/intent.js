@@ -5,7 +5,7 @@ import { CONFIG } from './config.js';
 export function emptyIntent() {
   return {
     moveX: 0, up: false, crouch: false, run: false, action: false, interact: false,
-    map: false, pause: false, controls: false, debug: false, timerDown: false, timerUp: false,
+    map: false, pause: false, controls: false, zoom: false, debug: false, timerDown: false, timerUp: false,
   };
 }
 
@@ -24,6 +24,7 @@ export function intentFromKeys(codes) {
     map: codes.has('KeyM'),
     pause: codes.has('Escape'),
     controls: codes.has('KeyC'),
+    zoom: codes.has('KeyZ'),
     debug: codes.has('F1') || codes.has('Backquote'),
     timerDown: codes.has('BracketLeft'),
     timerUp: codes.has('BracketRight'),
@@ -52,6 +53,8 @@ export function intentFromGamepad(pad, cfg = CONFIG.stick) {
     map: pressed(pad, 8),
     pause: pressed(pad, 9),
     controls: pressed(pad, 3),
+    // Left bumper.
+    zoom: pressed(pad, 4),
     debug: pressed(pad, 11),
     timerDown: false,
     timerUp: false,
@@ -69,6 +72,7 @@ export function mergeIntents(a, b) {
     map: a.map || b.map,
     pause: a.pause || b.pause,
     controls: a.controls || b.controls,
+    zoom: a.zoom || b.zoom,
     debug: a.debug || b.debug,
     timerDown: a.timerDown || b.timerDown,
     timerUp: a.timerUp || b.timerUp,

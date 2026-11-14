@@ -1,6 +1,6 @@
 # Carter Island: task board
 
-One task per build step. The spec is in [DESIGN.md](DESIGN.md). The six steps are Adam's.
+One task per build step. The spec is in [DESIGN.md](DESIGN.md). The steps are Adam's.
 
 **Status values:** `todo` / `in progress` / `review, awaiting Adam's verdict` / `done`
 
@@ -22,6 +22,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 4 | Screwdriver and vents | review, awaiting Adam's verdict | `step-4-vents` |
 | 5 | Inmates, bed check, dummy, camera panel | review, awaiting Adam's verdict | `step-5-inmates` |
 | 6 | Polish, ready to share | review, awaiting Adam's verdict | `step-6-polish` |
+| 7 | Playtest 1: camera options, timer cues, silent alarm made clear | review, awaiting Adam's verdict | `step-7-playtest-1` |
 
 ---
 
@@ -330,6 +331,140 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
      it somewhere to check it reads well.
   8. Send the link to one friend and watch them play without helping.
   9. All four playtest questions. This is the "is the core loop fun?" verdict.
+
+---
+
+## Step 7: Playtest 1 (camera options, timer cues, silent alarm made clear)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-7-playtest-1`
+- **Playtest 1 results (Adam):** hiding while a guard walked by felt tense, and it is
+  "pretty hard in a good way": keep both. Found the screwdriver, used the vents (felt like a
+  reward), got the keycard. Caught on every route home (Caught, 6:17 left, spotted 2,
+  knockouts 3, bodies found 0). Did not notice the timer. Wants a wider camera.
+- **Not changed, on purpose:** guard detection, speeds, patrols, the 9:00 timer, and what
+  the silent alarm does to guards. Nothing in this step makes the game easier or harder.
+- **Done means:**
+  - Four camera modes behind `?cam=`, a zoom key, and the mode shown in the pause menu.
+  - PA announcements, wall clocks, and a last-minute tick, on by default, off with `?cues=off`.
+  - The silent alarm says that it fired and why, on screen, by sound, and on the score screen.
+  - The return-trip check below is reported.
+  - Tests for the camera bounds, the PA cue times, the silent alarm reason, and the new
+    score screen fields.
+
+### The four camera links
+
+| Link | Camera |
+| --- | --- |
+| https://tusingw29.github.io/carter-island-prototype/?cam=close | The camera from before. Still the default. |
+| https://tusingw29.github.io/carter-island-prototype/?cam=wide | Same follow camera, twice as far back, twice as much floor. |
+| https://tusingw29.github.io/carter-island-prototype/?cam=room | Whole room if it fits. If not, follows you and stops at the walls. |
+| https://tusingw29.github.io/carter-island-prototype/?cam=smart | Wide while moving. Closes in when you hide, are grabbed, or a guard is within 4.5 m. |
+
+- **Z** (or **Left Bumper**) switches between close and wide in any mode. In smart mode it
+  goes smart, held close, held wide, and back to smart. A note in the bottom left corner
+  says what it switched to, and the pause menu always shows the camera in use.
+- Room mode on a 16:9 screen: the Stairwell, Guard Office, Laundry, Maintenance Hall, Cell
+  Block, and Vent Duct are shown whole. Only the Mess Hall (38 m) scrolls. On entering a
+  room the camera starts a little closer and eases out.
+- Guard "?" and "!" icons and the action prompts are the same size on screen at every zoom,
+  so they are larger next to the guards when zoomed out. Flashlight and camera beams are
+  drawn 60% stronger when the camera is fully pulled back.
+- Choices I made: wide and smart show black above and below the room, because the rooms
+  are only 4.6 m tall. In smart mode, standing still in a dark patch does not close the
+  camera in (only lockers, carts, tables and so on do), because the dark archways are where
+  you stand to read a room and that is when you want the wide view.
+
+### Timer cues
+
+- PA announcements: a two-tone chime and a banner under the alert meter, for 5 seconds.
+  "Bed check" at 5:08 left, "Headcount in 5 minutes" at 5:00, "Headcount in 2 minutes" at
+  2:00, "Headcount in 1 minute" at 1:00. The on-screen timer glows while the PA is talking.
+- A clock showing the time left hangs on the back wall of every room, close enough together
+  that one is always on screen with the close camera. The Vent Duct has small ones.
+- Last minute: a tick every second from 1:00, twice a second from 0:30, four times a second
+  from 0:10. The on-screen timer pulses once a second and the wall clocks turn red and flash.
+- `?cues=off` removes all of it and gives back the Step 6 timer (three beeps at 1:00 and a
+  tick for each of the last ten seconds), so the two can be compared.
+
+### Silent alarm
+
+- When it fires: a long message, "SILENT ALARM: a camera saw you earlier in the Stairwell
+  Checkpoint. Every guard is on edge now." (or "the office guard was knocked out", or
+  both), and its own sound: three low pulses and a drone.
+- A red "SILENT ALARM" tag sits under the alert meter for the rest of the run.
+- Score screen, three new rows: Keycard (Taken slowly / Grabbed fast / Not taken), Silent
+  alarm (No, or Yes and why), and Caught in (the room). A headcount loss shows "Out of bed
+  in" instead. The same lines are in the text the playtest form copies.
+
+### "Why was the way home so hard?" (planning bot, no gameplay changed)
+
+The bot takes the keycard slowly, then goes home without ever being seen or heard. "Alarm
+on" means a camera saw it earlier, so the grab sets off the silent alarm. The alarm makes
+guards walk faster from the moment of the grab, so how their patrols line up afterwards
+depends on when you grab. Each cell is therefore a range over 35 different grab moments
+(18 for the vents rows), from keycard in hand to asleep in bed.
+
+| Way in | Way home | Alarm off | Alarm on |
+| --- | --- | --- | --- |
+| Front door | Front door | possible, 51 to 68 s (typical 59) | possible, 77 to 98 s (typical 90) |
+| Front door | One-way drop | possible, 21 to 59 s (typical 51) | possible, 31 to 54 s (typical 41) |
+| Vents | Front door | possible, 63 to 80 s (typical 72) | possible, 69 to 89 s (typical 78) |
+| Vents | One-way drop | possible, 22 to 34 s (typical 28) | possible, 26 to 81 s (typical 35) |
+| Any | Vents | not a way home | not a way home |
+
+- **Every way home is still possible with the silent alarm on.** No tuning change is needed
+  to make one possible, so none is suggested for that.
+- The vents are not a way home by design: the duct drops you into the office through the
+  ceiling and you cannot climb back up. Vent players go home by the drop or the front door.
+- The alarm costs 6 to 30 seconds on the front door (mostly waiting in the Mess Hall) and
+  very little on the drop, except at unlucky grab moments, when the Cell Block alone takes
+  over a minute of waiting.
+- What the bot shows about why it is hard, alarm or not:
+  1. Every way home ends with the same 24 m of the Cell Block, from the east end to your
+     bed: past snitch 2, the guard's whole patrol, and snitch 1. A player who went out by
+     the stairs next to the bed has never crossed it, and meets it for the first time with
+     the keycard in hand.
+  2. The drop lands you at 28.6 m, which is exactly the far edge of what snitch 2 can see
+     when he looks east. You are hidden there only while you stand still in the dark. Step
+     off while he is looking your way and he yells.
+  3. The Cell Block has almost no slack. The bot keeps 0.3 m clear of every beam. Ask it to
+     keep 0.7 m clear and it cannot get from the east end to the bed at all, with the alarm
+     on or off (5 grab moments tried). The likely cause is the snitch blind spot, which
+     is only 0.6 m wide.
+  4. With the alarm on, guards walk 2.2 m/s instead of 1.5 and fill their sight meter 1.5
+     times faster: full Alert at the far edge of a beam in 0.9 s instead of 1.3 s.
+- Adam's run very probably had the alarm on. The vent route crosses the Maintenance camera,
+  and a camera seeing you is one of the two triggers; the other is knocking out the office
+  guard, and the run had 3 knockouts. The new score screen rows will say for certain.
+- **Limits of this check:** the bot has perfect timing and knows every patrol in advance.
+  "Possible" means possible for it. It does not measure how hard a route is for a person.
+- **If Adam wants the way home less punishing (suggestions only, nothing applied):**
+  - Smallest: move the drop's landing spot (`cb-drop` x in `rooms.js`) from 28.6 to 29.2,
+    so you can take a step in the dark before snitch 2 can see you.
+  - Next: make the snitch blind spot a little wider (`snitch.blindSpot` 0.6 to 0.9).
+  - Or: have the silent alarm keep "notices sooner" but drop "walks faster" (patrol speed
+    when wary, in `guard.js`), which removes the long waits at unlucky grab moments.
+
+### How Adam tests it
+
+1. Open each of the four camera links and play the first two rooms with each. Press Z to
+   flip between close and wide. Tell me which one becomes the default.
+2. With `?cam=room`, walk from the Cell Block into the Mess Hall and on into the Stairwell.
+   Check you never see past a room's end walls, and that the ease-in on entering feels right.
+3. With `?cam=smart`, hide in a locker, then come out and walk. Let a guard walk up to you.
+4. Zoomed out, check you can still read the guards' beams, the "?" and "!", and the prompts.
+5. Press Esc and read the camera line in the pause menu.
+6. Timer: play normally and notice (or not) the wall clocks. To hear the PA without waiting,
+   use `?timer=312` (Bed check, then 5 minutes), `?timer=123`, and `?timer=63`. Stay with
+   the last one for the ticking, the pulse, and the red clocks. Then try `?cues=off`.
+7. Silent alarm: walk through the blue camera beam in the Stairwell, then take the keycard.
+   Or use `?alarm&room=guard-office&px=8`, which acts as if a camera already saw you. Check
+   the message, the sound, and the red tag. Then get caught and read the score screen.
+8. Do the same after knocking out the office guard (no camera) and check the reason changes.
+9. Try the way home again, by the drop and by the front door. After the drop, stand still
+   and watch snitch 2 (the purple stretch of floor) before you take a step.
+10. Playtest question 2 again: did the timer feel exciting, or just stressful?
 
 ---
 

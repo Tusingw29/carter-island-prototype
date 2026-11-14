@@ -14,6 +14,7 @@
     <div id="alert-meter" data-state="calm">
       <span id="alert-label">CALM</span>
       <div class="bar"><div id="alert-fill"></div></div>
+      <div id="silent-alarm" hidden>SILENT ALARM</div>
     </div>
     <div id="top-right">
       <div id="timer">9:00</div>
@@ -24,6 +25,8 @@
       <div id="bedsheets" class="badge tool" hidden>BEDSHEETS</div>
     </div>
     <div id="room-name"></div>
+    <div id="pa" hidden></div>
+    <div id="camera-note" hidden></div>
     <div id="message" hidden></div>
     <div id="tutorial" hidden></div>
     <div id="peek" hidden>
@@ -38,7 +41,7 @@
       <strong>GRABBED! Mash SPACE (or X) to break free</strong>
       <div class="bar"><div id="mash-fill"></div></div>
     </div>
-    <p id="help">Esc: pause and controls &nbsp; M: map</p>
+    <p id="help">Esc: pause and controls &nbsp; M: map &nbsp; Z: zoom</p>
   </div>
   <pre id="debug-panel" class="debug-only"></pre>
 
@@ -77,6 +80,7 @@
       <tr><td>Knock out from behind, drag body</td><td>Space</td><td>X (left button)</td></tr>
       <tr><td>Break free when grabbed</td><td>mash Space</td><td>mash X</td></tr>
       <tr><td>Map</td><td>M</td><td>View / Select</td></tr>
+      <tr><td>Zoom the camera in or out</td><td>Z</td><td>Left Bumper</td></tr>
       <tr><td>Pause</td><td>Esc</td><td>Start</td></tr>
       <tr><td>This screen</td><td>C</td><td>Y (top button)</td></tr>
     </table>
@@ -91,6 +95,7 @@
   <div id="pause-screen" class="panel small" hidden>
     <h2>PAUSED</h2>
     <p>The timer is stopped.</p>
+    <p id="camera-line"></p>
     <button id="resume" type="button" class="primary">Resume (Esc)</button>
     <button id="restart" type="button">Restart run</button>
     <button type="button" data-open="controls">Controls (C)</button>
@@ -105,6 +110,9 @@
       <tr><td>Times spotted</td><td id="score-spotted"></td></tr>
       <tr><td>Knockouts</td><td id="score-knockouts"></td></tr>
       <tr><td>Bodies found by guards</td><td id="score-bodies"></td></tr>
+      <tr><td>Keycard</td><td id="score-keycard"></td></tr>
+      <tr><td>Silent alarm</td><td id="score-alarm"></td></tr>
+      <tr id="score-where-row"><td id="score-where-label"></td><td id="score-where"></td></tr>
     </table>
     <p class="rank">Rank: <strong id="end-rank"></strong> <span id="end-rank-means"></span></p>
     <button id="play-again" type="button" class="primary">Play again (Enter)</button>

@@ -2,6 +2,7 @@
 import { CONFIG } from '../game/config.js';
 import { alertSummary } from '../game/alert.js';
 import { formatClock } from '../game/clock.js';
+import { currentAnnouncement } from '../game/cues.js';
 import { currentMessage } from '../game/messages.js';
 import { peek } from '../game/vents.js';
 import { setHidden, setText, setWidth } from './dom.js';
@@ -38,7 +39,8 @@ function bedCheckText(world) {
   return BED_CHECK_RESULTS[world.bedCheck.result];
 }
 
-export function createHud(build) {
+// cues: false hides the PA announcements and stops the timer pulsing.
+export function createHud(build, cues = true) {
   const byId = (id) => document.getElementById(id);
   const timer = byId('timer');
   const keycard = byId('keycard');
@@ -56,6 +58,8 @@ export function createHud(build) {
   ];
   const bedCheck = byId('bed-check');
   const message = byId('message');
+  const pa = byId('pa');
+  const silentAlarm = byId('silent-alarm');
   const peekPanel = byId('peek');
   const peekTitle = byId('peek-title');
   const peekStrip = byId('peek-strip');
@@ -85,9 +89,15 @@ export function createHud(build) {
 
   function update(world, debug, speed) {
     setText(timer, formatClock(world.timeLeft));
-    timer.classList.toggle('low', world.timeLeft <= 60);
+    timer.classList.toggle('low', world.timeLeft <= CONFIG.timerWarningSeconds);
+    // In the last minute the timer pulses, and it flashes while the PA is talking.
+    const announcement = cues ? currentAnnouncement(world) : null;
+    timer.classList.toggle('pulse', cues && world.timeLeft <= CONFIG.timerWarningSeconds && !world.over);
+    timer.classList.toggle('called', Boolean(announcement));
+    setHidden(pa, !announcement);
+    if (announcement) setText(pa, announcement);
     setHidden(keycard, !world.player.hasKeycard);
-    setText(keycard, world.silentAlarm ? 'KEYCARD  (silent alarm)' : 'KEYCARD');
+    setHidden(silentAlarm, !world.silentAlarm);
     for (const [flag, badge] of badges) setHidden(badge, !world.player[flag]);
     setText(bedCheck, bedCheckText(world));
 

@@ -9,6 +9,38 @@ export const CONFIG = Object.freeze({
   // A warning sounds when this much time is left.
   timerWarningSeconds: 60,
 
+  // PA announcements and wall clocks, which make the timer felt.
+  pa: Object.freeze({
+    headcountMinutes: Object.freeze([5, 2, 1]),
+    // "Bed check" is announced this long before the bed check starts.
+    bedCheckWarningSeconds: 8,
+    showSeconds: 5,
+    // Wall clocks are never further apart than this, so one is always on screen.
+    clockSpacing: 14,
+    clockClearance: 1.7,
+  }),
+
+  // The picture's camera. See framing.js for the modes.
+  view: Object.freeze({
+    fovDeg: 32,
+    closeDistance: 15,
+    // Twice as far back shows twice as much floor.
+    wideDistance: 30,
+    followSharpness: 10,
+    zoomSharpness: 3.5,
+    // Close, wide, and smart show this far past the room's ends. Room mode stops at the walls.
+    followPastWall: 1,
+    wallThickness: 0.5,
+    // Room mode pulls back up to this much further than wide if that gets the whole room in.
+    roomFitSlack: 1.15,
+    // Room mode starts this much closer in when you enter a room, then eases out.
+    roomEntryZoom: 0.75,
+    // Smart mode closes in when a guard is this near, and pulls back once he is this far.
+    guardNearMetres: 4.5,
+    guardFarMetres: 6.5,
+    tightHoldSeconds: 1.2,
+  }),
+
   // The single bed check happens when this much time is left.
   bedCheckAtSecondsRemaining: 5 * 60,
 
@@ -103,6 +135,7 @@ export const CONFIG = Object.freeze({
 
   // How long an on-screen message stays up. Hints from the trader stay longer.
   messageSeconds: 3.5,
+  alarmMessageSeconds: 8,
   hintSeconds: 10,
 
   // Snitch inmates watch a short stretch of floor on one side of their cell, then the other.

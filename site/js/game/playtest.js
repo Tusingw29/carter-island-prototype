@@ -9,11 +9,16 @@ export const QUESTIONS = Object.freeze([
   'Did you want to play again to do it faster or cleaner?',
 ]);
 
+const KEYCARD = { slow: 'taken slowly', fast: 'grabbed fast' };
+
 function runLine(result) {
   if (!result) return 'Run: not finished';
   return `Run: ${result.won ? 'made it back' : 'did not make it back'}, rank ${RANKS[result.rank].name}, `
     + `${formatClock(result.timeLeft)} left, spotted ${result.timesSpotted}, `
-    + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`;
+    + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`
+    + `\nKeycard: ${KEYCARD[result.keycardGrab] ?? 'not taken'}. `
+    + `Silent alarm: ${result.silentAlarm ? `yes, ${result.silentAlarmReason}` : 'no'}.`
+    + (result.caughtIn ? ` Caught in: ${result.caughtIn}.` : '');
 }
 
 // answers is a list of strings, one per question, in order. extra is anything else they want to say.

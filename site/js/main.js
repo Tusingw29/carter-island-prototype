@@ -1,5 +1,9 @@
 // Browser entry point: reads input, steps the game at a fixed rate, draws the result.
+import {
+  createFraming, farness, framingLabel, parseCameraMode, toggleZoom, updateFraming,
+} from './game/framing.js';
 import { enterRoom } from './game/portals.js';
+import { jumpTimer } from './game/run.js';
 import { createWorld, stepWorld } from './game/world.js';
 import { createInput } from './input.js';
 import { createMovementSounds, createSound } from './sound.js';
@@ -9,6 +13,7 @@ import { createHud } from './render/hud.js';
 import { createMapScreen } from './render/map-screen.js';
 import { createOverlay } from './render/overlay.js';
 import { createScreens } from './render/screens.js';
+import { setHidden, setText } from './render/dom.js';
 import { createStage } from './render/stage.js';
 import { createTutorialBox } from './render/tutorial-box.js';
 
@@ -18,13 +23,23 @@ const MAX_FRAME = 0.1;
 
 const build = document.querySelector('meta[name="build"]')?.content ?? 'dev';
 const params = new URLSearchParams(window.location.search);
+// ?cam=close, wide, room, or smart picks the camera. ?cues=off turns off the PA announcements,
+// wall clocks, and last-minute ticking, leaving only the plain timer.
+const framing = createFraming(parseCameraMode(params.get('cam')));
+const cues = params.get('cues') !== 'off';
+const QUIET_WITH_CUES = new Set(['timerWarning', 'timerTick']);
+const QUIET_WITHOUT_CUES = new Set(['pa', 'clockTick']);
+const cameraNote = document.getElementById('camera-note');
+const cameraLine = document.getElementById('camera-line');
+const NOTE_MS = 2500;
+let noteUntil = 0;
 const input = createInput();
 const sound = createSound();
 const movementSounds = createMovementSounds(sound);
 // ?low starts at the lowest picture quality, for very slow machines.
 const stage = createStage(document.getElementById('stage'), params.has('low'));
 const overlay = createOverlay();
-const hud = createHud(build);
+const hud = createHud(build, cues);
 const mapScreen = createMapScreen();
 const tutorial = createTutorialBox();
 const endScreen = createEndScreen(startRun);
@@ -50,7 +65,7 @@ function buildView() {
     stage.scene.remove(view.root);
     view.dispose();
   }
-  view = createGameView(world);
+  view = createGameView(world, { clock: cues });
   stage.scene.add(view.root);
 }
 
@@ -63,6 +78,8 @@ function newWorld() {
     enterRoom(world, params.get('room'), Number(params.get('px') ?? 1));
   }
   if (params.has('timer')) world.timeLeft = Number(params.get('timer'));
+  // ?alarm acts as if a camera saw you earlier, so the next keycard grab sets off the silent alarm.
+  if (params.has('alarm')) world.seenByCamera = true;
   mapOpen = params.has('map');
   buildView();
 }
@@ -86,10 +103,12 @@ const playing = () => screens.open === null && !world.over;
 
 function draw(dt) {
   // Each room is its own little scene. Entering a new room swaps it in.
-  const changedRoom = view.roomId !== world.room.id;
-  if (changedRoom) buildView();
-  view.update(debug);
-  stage.follow(world.player.x, world.room.width, changedRoom ? Infinity : dt);
+  if (view.roomId !== world.room.id) buildView();
+  updateFraming(framing, world, stage.aspect(), dt);
+  stage.frame(framing);
+  view.update(debug, farness(framing));
+  setText(cameraLine, `Camera: ${framingLabel(framing)}. Z or Left Bumper zooms in and out.`);
+  setHidden(cameraNote, performance.now() > noteUntil);
   overlay.update(world, stage.camera, debug);
   hud.update(world, debug, stage.speedReport());
   mapScreen.update(world, mapOpen && playing());
@@ -136,11 +155,16 @@ function frame(now) {
   const intent = input.read();
   if (pressed(intent, 'debug')) debug = !debug;
   if (pressed(intent, 'map')) mapOpen = !mapOpen;
+  if (pressed(intent, 'zoom')) {
+    toggleZoom(framing);
+    setText(cameraNote, `Camera: ${framingLabel(framing)}`);
+    noteUntil = now + NOTE_MS;
+  }
   const wasPlaying = playing();
   handleMenus(intent);
   // Debug timer controls.
   for (const [key, change] of [['timerDown', -30], ['timerUp', 30]]) {
-    if (pressed(intent, key) && debug) world.timeLeft = Math.max(1, world.timeLeft + change);
+    if (pressed(intent, key) && debug) jumpTimer(world, change);
   }
 
   // The timer only ever stops in a menu. A button that closed a menu does not also act in the game.
@@ -153,14 +177,18 @@ function frame(now) {
     movementSounds.update(world, dt);
     tutorial.update(world, dt);
   }
-  sound.playEvents(world.events.filter((event) => !event.roomId || event.roomId === world.room.id));
+  // With the cues on, the PA and the speeding tick replace the plain one-minute warning.
+  const quiet = cues ? QUIET_WITH_CUES : QUIET_WITHOUT_CUES;
+  sound.playEvents(world.events.filter((event) => (
+    !quiet.has(event.type) && (!event.roomId || event.roomId === world.room.id)
+  )));
   world.events.length = 0;
   draw(dt);
   requestAnimationFrame(frame);
 }
 
 // Debug links skip the title screen, as does ?play.
-if (params.has('play') || params.has('room') || params.has('timer')) startRun();
+if (['play', 'room', 'timer', 'alarm'].some((name) => params.has(name))) startRun();
 else showTitle();
 // ?show=controls (or pause, or playtest) opens that screen straight away, for checking layouts.
 if (params.has('show')) screens.openOver(params.get('show'));
