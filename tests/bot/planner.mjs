@@ -6,6 +6,7 @@
 // The plan is then played for real through stepWorld, so times it reports are true game times.
 import { CONFIG } from '../../site/js/game/config.js';
 import { isContainer } from '../../site/js/game/hiding.js';
+import { snitchWindow } from '../../site/js/game/snitch.js';
 import { guardSeesPlayer } from '../../site/js/game/vision.js';
 import { stepWorld } from '../../site/js/game/world.js';
 import { STEP, intent } from '../helpers.mjs';
@@ -25,6 +26,8 @@ export function forecast(world, seconds) {
     frames.push({
       guards: ghost.allGuards.map((g) => ({ x: g.x, facing: g.facing, state: g.state, roomId: g.roomId })),
       cameras: ghost.cameras.map((c) => ({ x: c.x, halfWidth: c.halfWidth, off: c.off, roomId: c.roomId })),
+      snitches: ghost.snitches.filter((s) => s.state === 'awake')
+        .map((s) => ({ roomId: s.roomId, window: snitchWindow(s) })),
     });
     stepWorld(ghost, intent(), STEP);
   }
@@ -54,6 +57,9 @@ function seenCells(frame, room, crouching) {
   for (const camera of frame.cameras) {
     if (camera.roomId !== room.id || camera.off) continue;
     mark(camera.x - camera.halfWidth, camera.x + camera.halfWidth, () => true);
+  }
+  for (const snitch of frame.snitches) {
+    if (snitch.roomId === room.id) mark(snitch.window[0], snitch.window[1], () => true);
   }
   frame.seenCells[key] = cells;
   return cells;
@@ -124,6 +130,8 @@ function expand(node, frames, room, darkSpots) {
   for (const move of room.crawl ? MOVES.slice(0, 1) : MOVES) {
     for (const dir of [-1, 1]) {
       const x = Math.max(min, Math.min(max, node.x + dir * move.speed * SLICE));
+      // Only creep up to the end walls: running into a hall carries the noise into the next room.
+      if (move.noise > 0 && (x === min || x === max)) continue;
       if (x !== node.x && sliceSafe(frames, tick, room, node.x, x, move, darkSpots)) {
         add(x, null, { moveX: dir, ...move.keys });
       }
@@ -163,7 +171,10 @@ export function plan(world, goal, maxSeconds = 150) {
     return true;
   };
 
-  let layer = [{ tick: 0, x: world.player.x, hidden: world.player.hiddenIn, keys: null, from: null }];
+  const start = { tick: 0, x: world.player.x, hidden: world.player.hiddenIn, keys: null, from: null };
+  // Already standing still in the dark counts as hidden from the first moment.
+  start.still = Boolean(world.player.inDark);
+  let layer = [start];
   for (let slice = 0; slice * SLICE <= maxSeconds; slice += 1) {
     const done = layer.find(reached);
     if (done) {

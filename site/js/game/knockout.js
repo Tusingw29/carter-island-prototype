@@ -2,6 +2,7 @@
 import { CONFIG } from './config.js';
 import { isConscious } from './guard.js';
 import { nearestHideSpot } from './hiding.js';
+import { knockOutSnitch } from './snitch.js';
 
 // Ids of hiding spots that already hold a body. A full spot cannot hide the player.
 export function fullSpotIds(world) {
@@ -56,6 +57,7 @@ export function pressAction(world) {
     knockOut(world, guard);
     return 'knockout';
   }
+  if (knockOutSnitch(world)) return 'knockout';
   const body = dragTarget(world);
   if (body) {
     player.dragging = body.id;

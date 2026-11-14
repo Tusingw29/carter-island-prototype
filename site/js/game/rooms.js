@@ -13,7 +13,9 @@
 //            oneWay vents only go in the direction listed. exitOnly marks the far end of one:
 //            you can come out of it but never go in. drop means you fall and land with a thud.
 //            hidden keeps a vent off the map until you have walked up to it.
-// Props are things on the back wall that are not ways out, like the welded vent.
+// Props are things on the back wall that are not ways out, like the welded vent and the camera panel.
+// Snitches are inmates who yell if they see you. firstLook is the side they watch first.
+// The trader swaps cigarettes for a hint.
 // Grates (in the duct) let you look down into the room below.
 // Guards
 //   patrol [a, b] walks back and forth. patrol [a, a] stands at a.
@@ -30,7 +32,12 @@ const cellBlock = {
   wallColor: 0x3b4452,
   playerStart: 4.5,
   startHiddenIn: 'bed',
-  cellXs: [15, 25],
+  cellXs: [8, 15, 26],
+  snitches: [
+    { id: 'snitch-1', x: 15, firstLook: 1 },
+    { id: 'snitch-2', x: 26, firstLook: -1, offset: 2 },
+  ],
+  trader: { id: 'trader', x: 8 },
   hideSpots: [
     { id: 'bed', type: 'bed', x: 4.5 },
     { id: 'cb-locker-1', type: 'locker', x: 11.5 },
@@ -45,7 +52,7 @@ const cellBlock = {
     { id: 'cb-drop', type: 'vent', exitOnly: true, high: true, hidden: true, x: 28.6, to: 'guard-office',
       toPortal: 'go-drop' },
   ],
-  guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1 }],
+  guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1, checksBed: true }],
 };
 
 const laundry = {
@@ -64,7 +71,10 @@ const laundry = {
     { id: 'la-stairs', type: 'stairs', dir: 'up', x: 2, to: 'cell-block', toPortal: 'cb-stairs' },
     { id: 'la-door', type: 'door', creaky: true, x: 26.5, to: 'maintenance', toPortal: 'ma-door' },
   ],
-  items: [{ id: 'screwdriver', type: 'screwdriver', x: 23.8 }],
+  items: [
+    { id: 'bedsheets', type: 'bedsheets', x: 5.2 },
+    { id: 'screwdriver', type: 'screwdriver', x: 23.8 },
+  ],
   guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1 }],
 };
 
@@ -84,7 +94,10 @@ const maintenance = {
     { id: 'ma-vent', type: 'vent', needs: 'screwdriver', hidden: true, x: 23, to: 'vent-duct', toPortal: 'vd-west' },
   ],
   // A teaser for later: this one cannot be opened in the prototype.
-  props: [{ id: 'ma-welded', type: 'welded-vent', x: 19.5 }],
+  props: [
+    { id: 'ma-welded', type: 'welded-vent', x: 19.2 },
+    { id: 'ma-panel', type: 'camera-panel', x: 21.1, controls: 'sw-camera' },
+  ],
   guards: [],
   // No guards here, so this camera calls the Laundry guard to the connecting door.
   cameras: [{ id: 'ma-camera', min: 9.5, max: 16, halfWidth: 1.6, speed: 1.4, callsGuard: 'la-guard', callsTo: 26.5 }],
@@ -112,6 +125,8 @@ const messHall = {
     { id: 'mh-guard-1', patrol: [7, 18], startX: 11, facing: 1 },
     { id: 'mh-guard-2', patrol: [20, 31], startX: 24, facing: -1 },
   ],
+  // Hidden in the kitchen corner.
+  items: [{ id: 'cigarettes', type: 'cigarettes', x: 34.6 }],
 };
 
 const stairwell = {

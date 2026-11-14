@@ -10,7 +10,8 @@ import { createRoomView } from './room-view.js';
 export function createGameView(world) {
   const root = new Group();
   const roomId = world.room.id;
-  const roomView = createRoomView(world.room, world.cameras.filter((camera) => camera.roomId === roomId));
+  const here = (thing) => thing.roomId === roomId;
+  const roomView = createRoomView(world.room, world.cameras.filter(here), world.snitches.filter(here));
   const playerView = createPlayerView();
   const guardViews = world.guards.map(() => createGuardView(root));
   const debugView = createDebugView(world);

@@ -1,7 +1,8 @@
 // A guard and how he walks. No randomness, so the patrol is the same every run.
 import { CONFIG } from './config.js';
 
-export function createGuard({ id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false }) {
+export function createGuard(def) {
+  const { id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false, checksBed = false } = def;
   const [from, to] = patrol;
   return {
     id,
@@ -10,6 +11,9 @@ export function createGuard({ id, patrol, startX, facing = 1, turnEvery = 0, sle
     // calm, suspicious, alert, searching, asleep, or out (knocked out).
     state: sleeper ? 'asleep' : 'calm',
     sleeper,
+    checksBed,
+    // A job that interrupts his patrol, such as the bed check: { type, x, wait }.
+    duty: null,
     // Counts down once a sleeper is disturbed. At zero he wakes up.
     stirTimer: 0,
     // After the silent alarm a guard stays on edge: he patrols faster and notices sooner.

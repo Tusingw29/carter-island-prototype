@@ -1,8 +1,9 @@
 // Works out the one hint to show over the world right now, such as "UP: hide".
-import { pickupInReach } from './items.js';
+import { interactTarget } from './interact.js';
 import { keycardInReach } from './keycard.js';
 import { dragTarget, knockoutTarget, stuffTarget } from './knockout.js';
 import { canSleep, inBed } from './run.js';
+import { snitchInReach } from './snitch.js';
 import { upTarget } from './targets.js';
 import { ventState } from './vents.js';
 
@@ -37,13 +38,25 @@ export function currentPrompt(world) {
   }
   const card = keycardInReach(world);
   if (card) return { text: 'E: tap = grab fast, hold = lift quietly', x: card.x, y: 1.9 };
-  const item = pickupInReach(world);
-  if (item) return { text: `E: take the ${item.type}`, x: item.x, y: 1.6 };
+  const action = interactTarget(world);
+  if (action?.kind === 'pickup') return { text: `E: take the ${action.item.type}`, x: action.item.x, y: 1.6 };
+  if (action?.kind === 'panel') return { text: 'E: camera control panel', x: action.panel.x, y: 2.4 };
+  if (action?.kind === 'dummy') return { text: 'E: make a dummy in your bed', x: player.x, y: 2.3 };
+  const snitch = snitchInReach(world);
+  if (snitch?.cellOpen) return { text: 'SPACE: knock out', x: snitch.x, y: 3 };
   const guard = knockoutTarget(world);
   if (guard) return { text: 'SPACE: knock out', x: guard.x, y: 2.75 };
   const body = dragTarget(world);
   if (body) return { text: 'SPACE: drag body', x: body.x, y: 1.2 };
   const target = upTarget(world);
+  if (target?.kind === 'cell') {
+    const text = player.hasKeycard ? 'UP: open his cell with the keycard' : 'Snitch. His cell is locked';
+    return { text, x: target.snitch.x, y: 3 };
+  }
+  if (!target && action?.kind === 'trader') {
+    const text = player.hasCigarettes ? 'E: trade the cigarettes' : 'E: talk to the trader';
+    return { text, x: action.trader.x, y: 3 };
+  }
   if (!target) return null;
   if (target.kind === 'portal') {
     const { portal } = target;

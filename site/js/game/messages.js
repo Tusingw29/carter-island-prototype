@@ -1,8 +1,8 @@
 // Short on-screen messages, like "Welded shut."
 import { CONFIG } from './config.js';
 
-export function say(world, text, cfg = CONFIG) {
-  world.message = { text, until: world.time + cfg.messageSeconds };
+export function say(world, text, seconds = CONFIG.messageSeconds) {
+  world.message = { text, until: world.time + seconds };
   world.events.push({ type: 'message', text });
 }
 

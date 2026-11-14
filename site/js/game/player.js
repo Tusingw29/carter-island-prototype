@@ -14,6 +14,8 @@ export function createPlayer(x) {
     dragging: null,
     hasKeycard: false,
     hasScrewdriver: false,
+    hasCigarettes: false,
+    hasBedsheets: false,
     mode: 'idle',
     speed: 0,
   };

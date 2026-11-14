@@ -4,6 +4,8 @@ import { say } from './messages.js';
 
 const PICKUPS = {
   screwdriver: { flag: 'hasScrewdriver', message: 'Screwdriver. Now those vent covers will open.' },
+  cigarettes: { flag: 'hasCigarettes', message: 'Cigarettes. Somebody in the Cell Block will want these.' },
+  bedsheets: { flag: 'hasBedsheets', message: 'Bedsheets. Stuff them in your bed to make a dummy.' },
 };
 
 export const isPickup = (item) => Boolean(PICKUPS[item.type]);

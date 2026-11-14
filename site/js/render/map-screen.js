@@ -62,15 +62,22 @@ function unknownSvg(room, links) {
 export function createMapScreen() {
   const screen = document.getElementById('map-screen');
   const svg = document.getElementById('map-svg');
+  const notes = document.getElementById('map-notes');
   let lastKey = '';
 
   function update(world, open) {
     screen.hidden = !open;
     if (!open) return;
     const model = mapModel(world);
-    const key = JSON.stringify(model);
+    const key = JSON.stringify([model, world.notes]);
     if (key === lastKey) return;
     lastKey = key;
+    // What the trader has told you.
+    notes.replaceChildren(...world.notes.map((text) => {
+      const item = document.createElement('li');
+      item.textContent = `Trader: ${text}`;
+      return item;
+    }));
     const rooms = new Map(model.rooms.map((room) => [room.id, room]));
     const cols = Math.max(...model.rooms.map((room) => room.col + room.span));
     const width = LABEL_W + cols * (CELL_W + GAP_X);

@@ -1,6 +1,7 @@
 // What a guard does at each alert level.
 import { CONFIG } from './config.js';
 import { beginSearch, calmDown, raiseAlarm } from './alert.js';
+import { doBedCheck } from './bedcheck.js';
 import { tryGrab } from './grab.js';
 import { disturb, lookAround, moveToward, patrol } from './guard.js';
 import { concealedIn, spotById } from './hiding.js';
@@ -80,7 +81,8 @@ function search(guard, world, dt, cfg) {
 
 // A guard in the same room as the player.
 export function updateGuardAI(guard, world, dt, cfg = CONFIG.guard) {
-  if (guard.state === 'calm') patrol(guard, dt, cfg);
+  if (guard.state === 'calm' && guard.duty) doBedCheck(guard, world, dt, cfg);
+  else if (guard.state === 'calm') patrol(guard, dt, cfg);
   else if (guard.state === 'suspicious') investigate(guard, world, dt, cfg);
   else if (guard.state === 'alert') chase(guard, world, dt, cfg);
   else if (guard.state === 'searching') search(guard, world, dt, cfg);

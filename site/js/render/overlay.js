@@ -16,6 +16,7 @@ function pin(element, camera, x, y) {
 
 function iconText(guard, debug) {
   if (guard.hiddenIn) return '';
+  if (guard.duty && guard.state === 'calm') return 'BED CHECK';
   if (guard.state === 'asleep' && guard.stirTimer > 0) return `Zz? ${Math.ceil(guard.stirTimer)}`;
   const state = shownState(guard);
   return ICONS[state] + (debug && LABELS[state] ? ` ${LABELS[state]}` : '');

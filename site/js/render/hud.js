@@ -26,6 +26,16 @@ function debugText(world, build) {
   return lines.join('\n');
 }
 
+const BED_CHECK_RESULTS = {
+  'in-bed': 'bed check passed', dummy: 'bed check passed (dummy)', empty: 'BED FOUND EMPTY', skipped: 'no bed check',
+};
+
+function bedCheckText(world) {
+  if (!world.bedCheck) return `bed check at ${formatClock(CONFIG.bedCheckAtSecondsRemaining)}`;
+  if (!world.bedCheck.result) return 'BED CHECK NOW';
+  return BED_CHECK_RESULTS[world.bedCheck.result];
+}
+
 export function createHud(build) {
   const byId = (id) => document.getElementById(id);
   const timer = byId('timer');
@@ -37,7 +47,12 @@ export function createHud(build) {
   const mash = byId('mash');
   const mashFill = byId('mash-fill');
   const panel = byId('debug-panel');
-  const screwdriver = byId('screwdriver');
+  const badges = [
+    ['hasScrewdriver', byId('screwdriver')],
+    ['hasCigarettes', byId('cigarettes')],
+    ['hasBedsheets', byId('bedsheets')],
+  ];
+  const bedCheck = byId('bed-check');
   const message = byId('message');
   const peekPanel = byId('peek');
   const peekTitle = byId('peek-title');
@@ -66,7 +81,8 @@ export function createHud(build) {
     timer.classList.toggle('low', world.timeLeft <= 60);
     keycard.hidden = !world.player.hasKeycard;
     keycard.textContent = world.silentAlarm ? 'KEYCARD  (silent alarm)' : 'KEYCARD';
-    screwdriver.hidden = !world.player.hasScrewdriver;
+    for (const [flag, badge] of badges) badge.hidden = !world.player[flag];
+    bedCheck.textContent = bedCheckText(world);
 
     const text = currentMessage(world);
     message.hidden = !text;

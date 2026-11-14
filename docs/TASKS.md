@@ -20,7 +20,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 2 | Full stealth system | review, awaiting Adam's verdict | `step-2-stealth` |
 | 3 | Full map, timer, keycard, win and lose | review, awaiting Adam's verdict | `step-3-map` |
 | 4 | Screwdriver and vents | review, awaiting Adam's verdict | `step-4-vents` |
-| 5 | Inmates, bed check, dummy, camera panel | todo | `step-5-inmates` |
+| 5 | Inmates, bed check, dummy, camera panel | review, awaiting Adam's verdict | `step-5-inmates` |
 | 6 | Polish, ready to share | todo | `step-6-polish` |
 
 ---
@@ -238,7 +238,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 
 ## Step 5: Inmates, bed check, dummy, camera panel
 
-- **Status:** todo
+- **Status:** review, awaiting Adam's verdict
 - **Branch:** `step-5-inmates`
 - **Scope:** Snitch inmates in the Cell Block with small vision cones; seen means they
   yell and the nearest guard goes Suspicious to that spot; with the keycard you can open
@@ -247,7 +247,44 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
   The bed check at 5:00 remaining. Bedsheets in the Laundry, the dummy, and placing it in
   your bed. The Maintenance camera panel that turns off the Stairwell camera.
 - **Done means:** each of those systems works as the spec says and has tests.
-- **How Adam tests it:** to be written when the task goes to review.
+- **Measured:** with snitches in the Cell Block the clean bot runs are: front door both
+  ways 2:14, front door plus drop 1:36, vent route 1:23. All three are still Ghost runs.
+- **How the new rules work:**
+  - Two snitches (purple caps) are in cells in the Cell Block. Each watches a short purple
+    stretch of floor on one side of his cell for 4 seconds, then the other side. Right at
+    his bars is a blind spot: stand there and wait for him to look the other way.
+  - If a snitch sees you he yells, and the nearest guard comes to that spot. It counts as
+    being spotted.
+  - With the keycard: stand at his bars, Up opens the cell (the lamp turns green), Space
+    knocks him out. It counts as a knockout.
+  - The trader (green cap) is in the cell next to your bed. E talks to him. The cigarettes
+    are on a crate at the far east end of the Mess Hall. He gives one hint per run, about
+    the first of these you have not found: the vents, the camera panel, the one-way drop.
+    The hint is kept on the map screen, and vents he mentions are added to the map.
+  - Under the timer it says "bed check at 5:00". At 5:00 left the Cell Block guard walks
+    to your bed and looks. You in bed, or the dummy in bed: he goes back to his patrol.
+    Empty: every guard in the prison goes Alert, hunts around where he stands, and stays
+    on edge ("?") for the rest of the run. You can still get home and win.
+  - Bedsheets are on a crate near the Laundry stairs. Stand by your bed and press E to
+    make the dummy. Getting into bed yourself still works with the dummy there.
+  - The camera panel is on the wall in Maintenance between the two vents. E switches the
+    Stairwell camera off (its light goes red), and E again switches it back on.
+- **How Adam tests it:**
+  1. Leave your bed and walk right. Let the first snitch see you. Watch the guard come.
+  2. Next run, sneak past both snitches using the blind spot at the bars.
+  3. Talk to the trader with nothing. Then fetch the cigarettes from the Mess Hall, come
+     back, and trade. Open the map and read the note. Do it again on a run where you have
+     already been to the Maintenance vent, and check the hint is a different one.
+  4. Be out of your cell at 5:00 with no dummy. (Debug mode, then [ takes 30 seconds off
+     the timer so you do not have to wait four minutes.)
+  5. Next run: get the bedsheets, make the dummy, leave, and be out at 5:00. Go back and
+     look at your bed during the check if you can do it unseen.
+  6. Stay in bed through the check on another run.
+  7. Use the panel in Maintenance, then walk through the Stairwell camera's stretch.
+  8. Get the keycard, come home by the drop, open a snitch's cell, and knock him out.
+  9. Playtest questions 2 and 4.
+- **Known limits, on purpose:** if the Cell Block guard is knocked out there is no bed
+  check. Knocked-out snitches are never found by guards.
 
 ## Step 6: Polish, ready to share
 
@@ -312,6 +349,14 @@ Each one lists the assumption the build uses until Adam says otherwise.
     the screwdriver. Say if the drop should need it.
 13. **Duct into the Guard Office.** Assumed one way: you drop out of the ceiling and
     cannot climb back up, so the only ways out of the office are the door and the drop.
-14. **The standing guard.** In a side view nobody can walk past a guard who never moves,
+14. **Passing a snitch.** As with the standing guard, nobody can walk past a watcher who
+    covers both sides of his cell. So each snitch looks one way at a time and has a blind
+    spot at his bars.
+15. **What "Alert" means for an empty bed.** Guards do not know where you are, so sending
+    them to chase you would be unfair. Assumed: every guard goes Alert where he stands,
+    searches nearby hiding spots, then stays Suspicious for the rest of the run.
+16. **Does the trader trade more than once?** Assumed: once per run, since there is one
+    pack of cigarettes.
+17. **The standing guard.** In a side view nobody can walk past a guard who never moves,
     so the Stairwell has a checkpoint counter to crawl behind. Say if you would rather he
     paced a short beat instead.
