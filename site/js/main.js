@@ -2,7 +2,9 @@
 import {
   createFraming, farness, framingLabel, parseCameraMode, toggleZoom, updateFraming,
 } from './game/framing.js';
+import { CONFIG } from './game/config.js';
 import { enterRoom } from './game/portals.js';
+import { GYM } from './game/rooms.js';
 import { jumpTimer } from './game/run.js';
 import { createWorld, stepWorld } from './game/world.js';
 import { createInput } from './input.js';
@@ -23,7 +25,8 @@ const MAX_FRAME = 0.1;
 
 const build = document.querySelector('meta[name="build"]')?.content ?? 'dev';
 const params = new URLSearchParams(window.location.search);
-// ?cam=close, wide, room, or smart picks the camera. ?cues=off turns off the PA announcements,
+// ?cam=close, wide, room, or smart picks the camera (smart if nothing is given).
+// ?cues=off turns off the PA announcements,
 // wall clocks, and last-minute ticking, leaving only the plain timer.
 const framing = createFraming(parseCameraMode(params.get('cam')));
 const cues = params.get('cues') !== 'off';
@@ -33,6 +36,13 @@ const cameraNote = document.getElementById('camera-note');
 const cameraLine = document.getElementById('camera-line');
 const NOTE_MS = 2500;
 let noteUntil = 0;
+// ?room=gym is the movement test room. It is not part of the prison.
+const inGym = params.get('room') === 'gym';
+const help = document.getElementById('help');
+const GYM_HELP = 'GYM  |  K: jump  |  L: dash (also in the air)  |  S + K while moving: slide';
+// A knockout landing: the game holds still for a moment and the picture shakes.
+let hitStopUntil = 0;
+let shakeUntil = 0;
 const input = createInput();
 const sound = createSound();
 const movementSounds = createMovementSounds(sound);
@@ -65,15 +75,17 @@ function buildView() {
     stage.scene.remove(view.root);
     view.dispose();
   }
-  view = createGameView(world, { clock: cues });
+  view = createGameView(world, { clock: cues && !inGym });
   stage.scene.add(view.root);
 }
 
 function newWorld() {
-  world = createWorld();
+  world = inGym ? createWorld(GYM) : createWorld();
   // Debug links: ?debug turns debug mode on. ?room=mess-hall&px=9 starts you in a room at a spot.
   // ?timer=30 starts with 30 seconds left.
-  if (params.has('room')) {
+  if (inGym) {
+    if (params.has('px')) world.player.x = Number(params.get('px'));
+  } else if (params.has('room')) {
     world.player.hiddenIn = null;
     enterRoom(world, params.get('room'), Number(params.get('px') ?? 1));
   }
@@ -103,9 +115,11 @@ const playing = () => screens.open === null && !world.over;
 
 function draw(dt) {
   // Each room is its own little scene. Entering a new room swaps it in.
-  if (view.roomId !== world.room.id) buildView();
+  const guardKey = world.guards.map((guard) => guard.id).join();
+  if (view.roomId !== world.room.id || view.guardKey !== guardKey) buildView();
   updateFraming(framing, world, stage.aspect(), dt);
-  stage.frame(framing);
+  stage.frame(framing, shakeNow());
+  if (inGym) setText(help, GYM_HELP);
   view.update(debug, farness(framing));
   setText(cameraLine, `Camera: ${framingLabel(framing)}. Z or Left Bumper zooms in and out.`);
   setHidden(cameraNote, performance.now() > noteUntil);
@@ -115,6 +129,22 @@ function draw(dt) {
   endScreen.update(world, screens.open === null);
   document.body.classList.toggle('in-menu', screens.open !== null);
   stage.render();
+}
+
+// How far the picture is knocked off centre right now. It dies away over the length of the shake.
+function shakeNow() {
+  const left = shakeUntil - performance.now();
+  if (left <= 0) return { x: 0, y: 0 };
+  const size = CONFIG.feel.shakeMetres * (left / (CONFIG.feel.shakeSeconds * 1000));
+  return { x: Math.sin(left * 0.09) * size, y: Math.cos(left * 0.13) * size * 0.6 };
+}
+
+// Hit-stop, shake, and controller rumble when a knockout lands.
+function feelHits(now) {
+  if (!world.events.some((event) => event.type === 'knockout')) return;
+  hitStopUntil = now + CONFIG.feel.hitStopSeconds * 1000;
+  shakeUntil = now + CONFIG.feel.shakeSeconds * 1000;
+  input.rumble(0.15, 0.9);
 }
 
 // True only on the frame a button goes down.
@@ -168,12 +198,15 @@ function frame(now) {
   }
 
   // The timer only ever stops in a menu. A button that closed a menu does not also act in the game.
-  if (wasPlaying && playing()) {
+  if (wasPlaying && playing() && now >= hitStopUntil) {
     owed += dt;
-    while (owed >= STEP) {
+    // Stop stepping the moment a knockout lands, so the freeze frame is the hit itself.
+    while (owed >= STEP && now >= hitStopUntil) {
       stepWorld(world, intent, STEP);
       owed -= STEP;
+      feelHits(now);
     }
+    if (now < hitStopUntil) owed = 0;
     movementSounds.update(world, dt);
     tutorial.update(world, dt);
   }

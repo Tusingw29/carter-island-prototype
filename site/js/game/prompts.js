@@ -27,6 +27,10 @@ function portalText(world, portal) {
 export function currentPrompt(world) {
   const { player } = world;
   if (world.grab || world.over) return null;
+  if (world.choke) {
+    const held = world.allGuards.find((guard) => guard.id === world.choke.guardId);
+    return { text: 'KEEP HOLDING', x: held.x, y: 2.75 };
+  }
   if (player.hiddenIn) {
     if (canSleep(world)) return { text: 'E: sleep (end the run)   UP: get up', x: player.x, y: 1.6 };
     return { text: inBed(world) ? 'UP: get up' : 'UP: come out', x: player.x, y: inBed(world) ? 1.6 : 2.75 };
@@ -45,7 +49,10 @@ export function currentPrompt(world) {
   const snitch = snitchInReach(world);
   if (snitch?.cellOpen) return { text: 'SPACE: knock out', x: snitch.x, y: 3 };
   const guard = knockoutTarget(world);
-  if (guard) return { text: 'SPACE: knock out', x: guard.x, y: 2.75 };
+  if (guard) {
+    const text = guard.state === 'asleep' ? 'SPACE: knock out' : 'HOLD SPACE: choke hold';
+    return { text, x: guard.x, y: 2.75 };
+  }
   const body = dragTarget(world);
   if (body) return { text: 'SPACE: drag body', x: body.x, y: 1.2 };
   const target = upTarget(world);

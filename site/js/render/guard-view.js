@@ -1,8 +1,9 @@
 // Draws a guard and his flashlight cone. The cone color shows his alert level.
 import {
-  BufferAttribute, BufferGeometry, DoubleSide, Group, Mesh, MeshBasicMaterial, SpotLight,
+  BoxGeometry, BufferAttribute, BufferGeometry, DoubleSide, Group, Mesh, MeshBasicMaterial, SpotLight,
 } from '../../vendor/three.module.js';
 import { shownState } from '../game/alert.js';
+import { CONFIG } from '../game/config.js';
 import { coneOutline, coneShape } from '../game/vision.js';
 import { block, placed } from './blocks.js';
 
@@ -30,21 +31,33 @@ export function createGuardView(parent) {
   const torch = placed(block(0.3, 0.1, 0.1, 0xeeeeee, 0xf2d98a), 0.4, 1.3, 0.3);
   body.add(torch);
 
+  // A white shell that shows for a moment when a knockout lands.
+  const flash = new Mesh(new BoxGeometry(0.8, 1.95, 0.65), new MeshBasicMaterial({ color: 0xffffff }));
+  flash.position.y = 0.95;
+  flash.visible = false;
+  body.add(flash);
+
   const cone = coneMesh();
   const light = new SpotLight(0xffe2a0, 60, 12, 0.36, 0.5, 1.2);
   parent.add(body, cone, light, light.target);
 
   // far is 0 with the camera close and 1 with it pulled right back.
-  function update(guard, far = 0) {
+  // now is the game clock, for the flash, the fall, and the struggle.
+  function update(guard, far = 0, now = 0) {
     const out = guard.state === 'out';
     const asleep = guard.state === 'asleep';
     body.visible = !guard.hiddenIn;
-    cone.visible = !out && !asleep;
+    cone.visible = !out && !asleep && !guard.held;
     light.visible = !out && !asleep;
     torch.visible = !out && !asleep;
-    // A knocked-out guard lies flat on the floor. A sleeping one slumps in his chair.
-    body.rotation.z = out ? Math.PI / 2 : 0;
-    body.position.set(guard.x + (out ? 0.9 : 0), out ? 0.3 : 0, out ? 0.5 : 0);
+    // A knocked-out guard flashes white as the hit lands, then topples over and lies flat.
+    const sinceHit = out && guard.outAt != null ? now - guard.outAt : Infinity;
+    flash.visible = sinceHit < CONFIG.feel.flashSeconds;
+    const fallen = out ? Math.min(1, sinceHit / CONFIG.feel.fallSeconds) ** 2 : 0;
+    body.rotation.z = (fallen * Math.PI) / 2;
+    body.position.set(guard.x + fallen * 0.9, fallen * 0.3, fallen * 0.5);
+    // In a choke hold he thrashes from side to side.
+    if (guard.held) body.rotation.z = Math.sin(now * 38) * 0.14;
     if (asleep) {
       body.rotation.z = guard.stirTimer > 0 ? -0.15 : -0.45;
       body.position.set(guard.x, -0.25, -0.6);

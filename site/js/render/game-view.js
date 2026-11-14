@@ -22,7 +22,7 @@ export function createGameView(world, options = {}) {
   function update(debug, far = 0) {
     roomView.update(world, far);
     playerView.update(world.player, spotById(world.room.hideSpots ?? [], world.player.hiddenIn));
-    world.guards.forEach((guard, i) => guardViews[i].update(guard, far));
+    world.guards.forEach((guard, i) => guardViews[i].update(guard, far, world.time));
     debugView.update(world, debug);
   }
 
@@ -34,5 +34,7 @@ export function createGameView(world, options = {}) {
       object.material?.dispose();
     });
   }
-  return { root, roomId, update, dispose };
+  // Which guards this view was built for. A guard on a radio check can walk in or out.
+  const guardKey = world.guards.map((guard) => guard.id).join();
+  return { root, roomId, guardKey, update, dispose };
 }

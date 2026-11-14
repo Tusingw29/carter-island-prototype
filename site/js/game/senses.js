@@ -1,6 +1,7 @@
 // What a guard notices each moment: the player in his flashlight, noises, and bodies.
 import { CONFIG } from './config.js';
 import { makeSuspicious, raiseAlarm } from './alert.js';
+import { say } from './messages.js';
 import { canHear } from './noise.js';
 import { coneShape, guardSeesPlayer, pointInCone } from './vision.js';
 
@@ -42,15 +43,19 @@ function senseNoise(guard, world, cfg) {
   }
 }
 
-function senseBodies(guard, world, cfg) {
+// A guard notices a body lying in the open in his own room, whether or not the player is there.
+export function senseBodies(guard, world, cfg = CONFIG.guard) {
   const shape = coneShape(guard, cfg);
-  for (const body of world.guards) {
-    if (body.state !== 'out' || body.hiddenIn || body.bodyFound) continue;
+  for (const body of world.allGuards) {
+    if (body.roomId !== guard.roomId || body.state !== 'out' || body.hiddenIn || body.bodyFound) continue;
     if (!pointInCone(shape, { x: body.x, y: 0.3 })) continue;
     body.bodyFound = true;
     world.stats.bodiesFound += 1;
-    world.events.push({ type: 'bodyFound', guardId: guard.id, bodyId: body.id });
-    raiseAlarm(world, body.x, 'body', cfg);
+    world.events.push({ type: 'bodyFound', guardId: guard.id, bodyId: body.id, roomId: guard.roomId });
+    if (guard.roomId !== world.room.id) {
+      say(world, `Radio: "Man down in the ${world.layout.rooms[guard.roomId].name}!"`);
+    }
+    raiseAlarm(world, body.x, 'body', cfg, guard.roomId);
   }
 }
 

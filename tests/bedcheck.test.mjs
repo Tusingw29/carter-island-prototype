@@ -1,4 +1,4 @@
-// The bed check at 5:00 remaining, and the dummy.
+// The bed check at 3:30 remaining, and the dummy.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG } from '../site/js/game/config.js';
@@ -18,8 +18,8 @@ function nearBedCheck(world) {
 }
 const finished = (world) => world.bedCheck?.result;
 
-test('the bed check starts when the timer hits 5:00 remaining, not before', () => {
-  assert.equal(CHECK_AT, 300);
+test('the bed check starts when the timer hits 3:30 remaining, not before', () => {
+  assert.equal(CHECK_AT, 210);
   const world = nearBedCheck(createWorld());
   run(world, {}, 0.3);
   assert.equal(world.bedCheck, null);

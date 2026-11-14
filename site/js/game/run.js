@@ -58,6 +58,8 @@ export function canSleep(world) {
 }
 
 export function updateTimer(world, dt, cfg = CONFIG) {
+  // The gym is for practice: no headcount.
+  if (world.layout.practice) return;
   const before = world.timeLeft;
   world.timeLeft = Math.max(0, world.timeLeft - dt);
   // A warning at one minute, then a tick for each of the last ten seconds.

@@ -11,10 +11,14 @@ import { updateHold } from './holds.js';
 import { updateBedCheck } from './bedcheck.js';
 import { noteFinds, pressInteract } from './interact.js';
 import { keycardInReach, takeKeycard } from './keycard.js';
-import { fullSpotIds, pressAction, stuffBody, updateDrag } from './knockout.js';
+import {
+  breakChoke, fullSpotIds, pressAction, stuffBody, updateChoke, updateDrag, updateKnockedOut,
+} from './knockout.js';
+import { updateMover } from './moves.js';
 import { noiseRadius } from './noise.js';
 import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
+import { setUpRadio, updateRadio } from './radio.js';
 import { updateTimer } from './run.js';
 import { createSnitch, openCell, updateSnitch } from './snitch.js';
 import { updateSenses } from './senses.js';
@@ -71,6 +75,8 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     keycardGrab: null,
     // Set while a guard is holding the player: { guardId, presses, timeLeft }.
     grab: null,
+    // Set while the player has a guard in a choke hold: { guardId, time }.
+    choke: null,
     grabImmunity: 0,
     breakFreeUsed: false,
     // null while playing. Otherwise 'win', 'caught', 'headcount', or 'empty-handed'.
@@ -79,8 +85,11 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     upWasHeld: false,
     actionWasHeld: false,
     interactWasHeld: false,
+    jumpWasHeld: false,
+    dashWasHeld: false,
     stats: { timesSpotted: 0, knockouts: 0, bodiesFound: 0 },
   };
+  setUpRadio(world, cfg.radio);
   enterRoom(world, start.id, start.playerStart);
   world.events.length = 0;
   if (start.startHiddenIn) world.player.hiddenIn = start.startHiddenIn;
@@ -154,15 +163,26 @@ function noteWatchedHiding(world, wasConcealed, cfg) {
 function updateEveryoneElse(world, dt, cfg) {
   for (const camera of world.cameras) updateCamera(camera, world, dt, cfg.camera);
   for (const snitch of world.snitches) updateSnitch(snitch, world, dt, cfg.snitch);
-  for (const guard of world.guards) {
-    if (isAwake(guard)) updateSenses(guard, world, dt, cfg.guard);
+  // A guard in a choke hold can do nothing but struggle.
+  const active = (guard) => isAwake(guard) && !guard.held;
+  // Copies, because a guard on a radio check can walk into or out of the room mid-step.
+  const here = [...world.guards];
+  const away = world.allGuards.filter((guard) => guard.roomId !== world.room.id);
+  for (const guard of here) {
+    if (active(guard)) updateSenses(guard, world, dt, cfg.guard);
     else if (guard.state === 'asleep') updateSleeper(guard, world, dt, cfg.guard);
   }
-  for (const guard of world.guards.filter(isAwake)) updateGuardAI(guard, world, dt, cfg.guard);
-  for (const guard of world.allGuards.filter((g) => g.roomId !== world.room.id)) {
+  for (const guard of here.filter(active)) updateGuardAI(guard, world, dt, cfg.guard);
+  for (const guard of away) {
     if (isAwake(guard)) updateGuardAway(guard, world, dt, cfg.guard);
     // A stirring sleeper settles again once you have left his room.
     else guard.stirTimer = 0;
+  }
+  updateKnockedOut(world, dt, cfg);
+  updateRadio(world, cfg.radio);
+  // Gym guards stay on their own stretch of floor, even when chasing.
+  for (const guard of world.allGuards) {
+    if (guard.bounds) guard.x = Math.max(guard.bounds[0], Math.min(guard.bounds[1], guard.x));
   }
 }
 
@@ -181,6 +201,7 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
 
   // While a guard holds the player, everything waits on the mashing. The timer does not.
   if (world.grab) {
+    if (world.choke) breakChoke(world, cfg);
     player.mode = 'grabbed';
     player.speed = 0;
     world.noiseRadius = 0;
@@ -190,19 +211,35 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
     return;
   }
 
-  const wasConcealed = concealedIn(player);
-  if (actionPressed) pressAction(world);
-  handleUp(world, intent, upPressed, dt);
-  handleInteract(world, intent, interactPressed, dt);
-  if (world.over) return;
+  const pressedMoves = { jump: intent.jump && !world.jumpWasHeld, dash: intent.dash && !world.dashWasHeld };
+  world.jumpWasHeld = intent.jump;
+  world.dashWasHeld = intent.dash;
 
-  const hall = hallBeingEntered(world, intent);
-  if (hall) travel(world, hall);
+  const wasConcealed = concealedIn(player);
+  // A choke hold takes both hands: no moving and no other buttons until it is over.
+  const choking = Boolean(world.choke);
+  if (choking) {
+    updateChoke(world, intent.action, dt, cfg);
+  } else {
+    if (actionPressed) pressAction(world);
+    handleUp(world, intent, upPressed, dt);
+    handleInteract(world, intent, interactPressed, dt);
+    if (world.over) return;
+    const hall = hallBeingEntered(world, intent);
+    if (hall) travel(world, hall);
+  }
   const spots = world.room.hideSpots ?? [];
   const hideSpot = player.hiddenIn ? spotById(spots, player.hiddenIn) : null;
+  let moving = intent;
   // In the duct there is no room to stand: you crawl, which is slow but silent.
-  const moving = world.room.crawl ? { ...intent, crouch: true, run: false } : intent;
-  updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
+  if (world.room.crawl) moving = { ...intent, crouch: true, run: false };
+  if (choking || world.choke) moving = { ...intent, moveX: 0, crouch: false, run: false, jump: false };
+  if (world.room.moves && !player.hiddenIn) {
+    updateMover(world, moving, world.choke ? { jump: false, dash: false } : pressedMoves, dt, cfg);
+  } else {
+    updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
+  }
+  if (world.choke) player.mode = 'choke';
   updateDrag(world);
   player.inDark = darkSpotAt(player, spots);
   noteWatchedHiding(world, wasConcealed, cfg.guard);

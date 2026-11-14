@@ -24,9 +24,12 @@ export function makeSuspicious(world, guard, x) {
 
 // The alarm: every conscious guard goes Alert and heads for x.
 // reason is 'sight' (the player was clearly seen) or 'body' (a body was found).
-export function raiseAlarm(world, x, reason, cfg = CONFIG.guard) {
-  const alreadyAlert = world.guards.some((guard) => guard.state === 'alert');
-  for (const guard of world.guards.filter(isConscious)) {
+// roomId is the room it happens in. Left out, it is the room the player is in.
+export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.room.id) {
+  const here = world.allGuards.filter((guard) => guard.roomId === roomId);
+  const alreadyAlert = here.some((guard) => guard.state === 'alert');
+  for (const guard of here.filter(isConscious)) {
+    guard.held = false;
     guard.lastKnownX = x;
     guard.detection = 1;
     guard.checkingSpotId = null;
@@ -45,7 +48,8 @@ export function alarmEverywhere(world) {
     guard.lastKnownX = guard.x;
     guard.detection = 1;
     guard.wary = true;
-    guard.duty = null;
+    // A guard who has walked next door on a radio check still has to walk home afterwards.
+    if (guard.duty?.type !== 'radio') guard.duty = null;
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();

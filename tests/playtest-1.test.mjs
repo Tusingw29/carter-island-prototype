@@ -30,11 +30,12 @@ function settle(framing, world, aspect, seconds = 4) {
 
 // ---------- Camera ----------
 
-test('camera: ?cam= accepts the four modes and anything else means close', () => {
+test('camera: ?cam= accepts the four modes and anything else means smart, the default', () => {
   assert.deepEqual([...CAMERA_MODES], ['close', 'wide', 'room', 'smart']);
   for (const mode of CAMERA_MODES) assert.equal(parseCameraMode(mode), mode);
-  assert.equal(parseCameraMode(null), 'close');
-  assert.equal(parseCameraMode('sideways'), 'close');
+  assert.equal(parseCameraMode(null), 'smart');
+  assert.equal(parseCameraMode('sideways'), 'smart');
+  assert.equal(createFraming().mode, 'smart');
 });
 
 test('camera: close is the camera from before, and wide shows twice as much floor', () => {
@@ -193,12 +194,13 @@ test('camera: Z and the left bumper are the zoom buttons, and the pause menu nam
 
 test('PA: the announcements and the time left when each one plays', () => {
   assert.deepEqual(announcements().map((entry) => [entry.at, entry.text]), [
-    [308, 'Bed check'],
     [300, 'Headcount in 5 minutes'],
+    [218, 'Bed check'],
     [120, 'Headcount in 2 minutes'],
     [60, 'Headcount in 1 minute'],
   ]);
-  assert.ok(announcements()[0].at > CONFIG.bedCheckAtSecondsRemaining, '"Bed check" comes before the bed check');
+  const bedCheck = announcements().find((entry) => entry.id === 'bed-check');
+  assert.equal(bedCheck.at, CONFIG.bedCheckAtSecondsRemaining + CONFIG.pa.bedCheckWarningSeconds);
 });
 
 test('PA: each announcement plays once, at its time, as text and as a sound event', () => {
@@ -217,10 +219,10 @@ test('PA: each announcement plays once, at its time, as text and as a sound even
   }
 });
 
-test('PA: a whole run plays all four, in order, and the run is still 9:00 long', () => {
-  assert.equal(CONFIG.headcountSeconds, 540);
+test('PA: a whole run plays all four, in order, and the run is 7:00 long', () => {
+  assert.equal(CONFIG.headcountSeconds, 420);
   const world = createWorld();
-  assert.equal(world.timeLeft, 540);
+  assert.equal(world.timeLeft, 420);
   const heard = [];
   // Stay in bed for the whole run. No keycard, so it ends at 0:00.
   while (!world.over) {
@@ -229,7 +231,7 @@ test('PA: a whole run plays all four, in order, and the run is still 9:00 long',
     world.events.length = 0;
   }
   assert.deepEqual(heard, announcements().map((entry) => entry.text));
-  assert.ok(Math.abs(world.time - 540) < 1.01);
+  assert.ok(Math.abs(world.time - 420) < 1.01);
 });
 
 test('last minute: the tick starts at 1:00 and speeds up twice', () => {

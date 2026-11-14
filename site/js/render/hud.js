@@ -88,7 +88,7 @@ export function createHud(build, cues = true) {
   }
 
   function update(world, debug, speed) {
-    setText(timer, formatClock(world.timeLeft));
+    setText(timer, world.layout.practice ? 'GYM' : formatClock(world.timeLeft));
     timer.classList.toggle('low', world.timeLeft <= CONFIG.timerWarningSeconds);
     // In the last minute the timer pulses, and it flashes while the PA is talking.
     const announcement = cues ? currentAnnouncement(world) : null;
@@ -99,7 +99,7 @@ export function createHud(build, cues = true) {
     setHidden(keycard, !world.player.hasKeycard);
     setHidden(silentAlarm, !world.silentAlarm);
     for (const [flag, badge] of badges) setHidden(badge, !world.player[flag]);
-    setText(bedCheck, bedCheckText(world));
+    setText(bedCheck, world.layout.practice ? 'no timer here' : bedCheckText(world));
 
     const text = currentMessage(world);
     setHidden(message, !text);

@@ -20,8 +20,9 @@ export function createPlayerView() {
     const crawling = hideSpot && SEE_THROUGH_SPOTS.includes(hideSpot.type);
     group.visible = !player.hiddenIn || crawling;
     const bodyHeight = (crawling ? 0.9 : playerHeight(player)) - HEAD;
-    const lean = player.mode === 'run' ? -0.12 * player.facing : 0;
-    group.position.set(player.x, 0, 0);
+    const LEANS = { run: -0.12, dash: -0.45, slide: 0.5 };
+    const lean = (LEANS[player.mode] ?? 0) * player.facing;
+    group.position.set(player.x, player.y ?? 0, 0);
     group.rotation.z = lean;
     body.scale.y = bodyHeight;
     body.position.y = bodyHeight / 2;

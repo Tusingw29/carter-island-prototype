@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG } from '../site/js/game/config.js';
 import { currentPrompt } from '../site/js/game/prompts.js';
-import { eventTypes, run, runUntil, tap, testWorld } from './helpers.mjs';
+import { choke, eventTypes, run, runUntil, tap, testWorld } from './helpers.mjs';
 
 const sentry = (id, x, facing = 1) => ({ id, patrol: [x, x], startX: x, facing });
 const locker = { id: 'locker', type: 'locker', x: 14 };
@@ -15,8 +15,8 @@ function behindGuard(extra = {}) {
 
 test('knockout from behind works', () => {
   const world = behindGuard();
-  assert.equal(currentPrompt(world).text, 'SPACE: knock out');
-  tap(world, 'action');
+  assert.equal(currentPrompt(world).text, 'HOLD SPACE: choke hold');
+  choke(world);
   assert.equal(world.guards[0].state, 'out');
   assert.equal(world.stats.knockouts, 1);
   assert.ok(eventTypes(world).includes('knockout'));
@@ -35,9 +35,9 @@ test('knockout needs you to be close', () => {
   assert.equal(world.guards[0].state, 'calm');
 });
 
-test('a knocked-out guard sees and hears nothing, and stays down', () => {
+test('a knocked-out guard sees and hears nothing while he is down', () => {
   const world = behindGuard();
-  tap(world, 'action');
+  choke(world);
   run(world, { moveX: 1, run: true }, 2);
   run(world, {}, 30);
   assert.equal(world.guards[0].state, 'out');
@@ -46,14 +46,14 @@ test('a knocked-out guard sees and hears nothing, and stays down', () => {
 
 test('holding the button knocks out once and does not also start dragging', () => {
   const world = behindGuard();
-  run(world, { action: true }, 1);
+  run(world, { action: true }, 3);
   assert.equal(world.guards[0].state, 'out');
   assert.equal(world.player.dragging, null);
 });
 
 test('drag: the body follows the player, slowly, and you cannot run or hide while dragging', () => {
   const world = behindGuard({ hideSpots: [locker] });
-  tap(world, 'action');
+  choke(world);
   tap(world, 'action');
   assert.equal(world.player.dragging, 'g');
   const start = world.player.x;
@@ -66,7 +66,7 @@ test('drag: the body follows the player, slowly, and you cannot run or hide whil
 
 test('drag: pressing the button again drops the body where you stand', () => {
   const world = behindGuard();
-  tap(world, 'action');
+  choke(world);
   tap(world, 'action');
   run(world, { moveX: -1 }, 2);
   tap(world, 'action');
@@ -78,7 +78,7 @@ test('drag: pressing the button again drops the body where you stand', () => {
 
 test('stuff the body in a locker: it is hidden and the locker is full', () => {
   const world = behindGuard({ hideSpots: [locker] });
-  tap(world, 'action');
+  choke(world);
   tap(world, 'action');
   runUntil(world, () => Math.abs(world.player.x - locker.x) < 0.3, { moveX: -1 }, 10);
   assert.equal(currentPrompt(world).text, 'UP: stuff body in');
@@ -93,7 +93,7 @@ test('stuff the body in a locker: it is hidden and the locker is full', () => {
 test('a guard who finds an unhidden body goes Alert', () => {
   const guards = [sentry('victim', 20), { id: 'finder', patrol: [26, 36], startX: 36, facing: -1 }];
   const world = testWorld({ playerX: 19.2, guards });
-  tap(world, 'action');
+  choke(world);
   world.player.x = 2;
   world.events.length = 0;
   runUntil(world, () => world.guards[1].state === 'alert', {}, 30);
@@ -107,15 +107,15 @@ test('a guard who finds an unhidden body goes Alert', () => {
   assert.equal(world.stats.bodiesFound, 1);
 });
 
-test('a body stuffed in a locker is never found', () => {
+test('a body stuffed in a locker is not found while he is out', () => {
   const guards = [sentry('victim', 20), { id: 'finder', patrol: [10, 36], startX: 36, facing: -1 }];
   const world = testWorld({ playerX: 19.2, guards, hideSpots: [locker] });
-  tap(world, 'action');
+  choke(world);
   tap(world, 'action');
   runUntil(world, () => Math.abs(world.player.x - locker.x) < 0.3, { moveX: -1 }, 10);
   tap(world, 'up');
   world.player.x = 1;
-  run(world, {}, 90);
+  run(world, {}, 60);
   assert.equal(world.stats.bodiesFound, 0);
   assert.equal(world.guards[1].state, 'calm');
 });

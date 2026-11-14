@@ -23,6 +23,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 5 | Inmates, bed check, dummy, camera panel | review, awaiting Adam's verdict | `step-5-inmates` |
 | 6 | Polish, ready to share | review, awaiting Adam's verdict | `step-6-polish` |
 | 7 | Playtest 1: camera options, timer cues, silent alarm made clear | review, awaiting Adam's verdict | `step-7-playtest-1` |
+| 8 | Playtest 2: smart camera, hit feedback, knockout rules, 7:00 timer, gym | review, awaiting Adam's verdict | `step-8-playtest-2` |
 
 ---
 
@@ -465,6 +466,118 @@ depends on when you grab. Each cell is therefore a range over 35 different grab 
 9. Try the way home again, by the drop and by the front door. After the drop, stand still
    and watch snitch 2 (the purple stretch of floor) before you take a step.
 10. Playtest question 2 again: did the timer feel exciting, or just stressful?
+
+---
+
+## Step 8: Playtest 2 (smart camera, hit feedback, knockout rules, 7:00 timer, gym)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-8-playtest-2`
+- **Playtest 2 results (Adam):** won. Inmate, 4:57 left, spotted 7, knockouts 8, bodies
+  found 0, keycard grabbed fast, silent alarm from knocking out the office guard. Dozens of
+  reruns to learn it, then "with ease". Hiding tension fell to "somewhat" because knocking
+  out every guard is the easiest way to win: they stay down and nobody misses them. Timer
+  only stressful when the alarm sounded. Vents a reward. Picked the smart camera. Wants hit
+  feedback, and Mega Man X movement over time.
+- **Not changed, on purpose:** guard vision, detection speed, patrols, chase speed, and the
+  main map. The new moves exist only in the gym.
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Gym: https://tusingw29.github.io/carter-island-prototype/?room=gym
+
+### What was built
+
+1. **Camera:** smart is the default. `?cam=close`, `?cam=wide`, and `?cam=room` still work.
+2. **Hit feedback:** when a knockout lands the game freezes for 80 ms, the guard flashes
+   white, the picture shakes for a quarter of a second, there is a thud, and the controller
+   rumbles if the browser supports it. The guard then topples over (0.28 s) and shows "Zz".
+3. **Knockout rules** (all numbers in `config.js`, under `knockout` and `radio`):
+   - **A. Guards wake up** after 75 seconds. A guard on the floor starts to stir 6 seconds
+     before ("Zz...?" and a message naming the room). A guard in a locker or cart bangs on
+     it for 4 seconds first ("BANG! BANG!", a message, and every guard within 10 m in that
+     room walks over), then climbs out. Either way he searches around where he woke up and
+     shows "?" for the rest of the run. In debug mode a knocked-out guard shows a wake-up
+     meter and the seconds left.
+   - **B. Radio check-ins.** The five patrolling guards call in once a minute, 8 seconds
+     apart, starting at 0:20 into the run: Cell Block, Laundry, Mess Hall 1, Mess Hall 2,
+     Stairwell. A guard checking in shows "((•)) check-in" and makes two blips. If a guard
+     is knocked out when his turn comes, the screen shows
+     `Radio: "No answer from the Laundry guard... Cell Block guard, go and check."` and the
+     nearest awake guard in his room walks to his post. **The cross-room version is in:**
+     if nobody else is in that room, the guard with the shortest walk from a room next
+     door comes through the hall, door, or stairs, looks around, and walks home. If he sees
+     the body on the floor he raises the alarm, even if you are not in the room
+     (`Radio: "Man down in the Laundry!"`). A missed check-in repeats every minute until
+     the guard wakes.
+   - **C. Choke hold.** Hold Space / X for 1.5 seconds behind an awake guard. He thrashes,
+     you cannot move, and it is heard 1.5 m away (walking is 2.5 m). Let go early and he
+     breaks free, turns round, and the alarm goes up. Sleeping guards and snitches in an
+     open cell still go down with a tap.
+4. **Timer:** 7:00. Bed check at 3:30. PA: "Headcount in 5 minutes" at 5:00, "Bed check" at
+   3:38, "Headcount in 2 minutes", "Headcount in 1 minute".
+5. **Gym** (`?room=gym`): one long room, no timer, not connected to the prison. From left to
+   right: two crates as steps up to a ledge that runs over the first guard's patrol; a wall
+   with a 0.75 m gap under it; a dark patch; a 6 m gap in the floor; the second guard; two
+   more crates. Fall in the gap and you are put back on the edge.
+   - **Jump** (K, controller B): 1.29 m high, about half a second in the air, falls faster
+     than it rises, and letting go early cuts it short. Landing is heard 1.5 m away.
+   - **Slide** (S + K while moving, controller Down + B): 3.15 m at 7 m/s, 0.6 m tall,
+     heard 1 m away. The low gap is too low to crouch under. A slide that would end under
+     it keeps going until there is room to get up.
+   - **Dash** (L, controller Right Bumper): 3.5 m in a quarter of a second, heard 11 m
+     away (running is 8 m). In the air it holds its height, once per jump.
+   - Jumping out of a ground dash keeps the dash speed for the whole jump, as in Mega Man X.
+   - The gap needs a dash: a running jump covers about 3.6 m. Jump then air dash clears it,
+     and so does a dash-jump.
+
+### Planning bot, 7:00 timer and new knockout rules
+
+| Route | Clean run still possible | Time | Rank |
+| --- | --- | --- | --- |
+| Front door in, front door back | yes | 2:14 | Ghost |
+| Front door in, one-way drop home | yes | 1:36 | Ghost |
+| Vent route: Laundry, Maintenance, duct, drop home | yes | 1:23 | Ghost |
+| Way home by the front door, silent alarm on | yes | 77 s from the keycard | |
+| Way home by the drop, silent alarm on | yes | 36 s from the keycard | |
+
+- The times are the same as before. A clean run knocks nobody out, so the new knockout
+  rules never come into it, and guard patrols were not touched. All three finish long
+  before the 3:30 bed check (which now falls at 3:30 into the run).
+- **Limit:** the bot only plans clean runs. It does not play the "knock everyone out"
+  style, so it cannot say how much harder that style is now. That is for Adam's hands.
+
+### Choices I made that Adam should check
+
+- The sleeping office guard is not on the radio, so knocking him out is never reported.
+  It still sets off the silent alarm when you take the keycard.
+- Hit-stop freezes the whole game, timer included, for 80 ms per knockout.
+- If the Cell Block guard is next door on a radio check at 3:30, the bed check waits until
+  he is home.
+- A guard on a radio check who gets into a chase in the other room stays there until he
+  has calmed down, then walks home. Guards still never follow you between rooms.
+- Knocked-out snitches do not wake up.
+- In the gym, guards stay on their own stretch of floor, even when chasing, so they never
+  walk through a crate or over the gap. A guard cannot grab you if your feet are more than
+  1.2 m above him.
+- **Not verified:** the sounds are unheard, rumble is untested on a real controller, and it
+  has not been run on the 2015 MacBook Air. Checked by tests and headless Chrome only.
+
+### How Adam tests it
+
+1. Main game. Get behind the Cell Block guard, hold Space until he drops. Watch the freeze,
+   flash, shake, and fall, and listen for the thud. Then do it again and let go early.
+2. Leave him on the floor and walk off. About 20 seconds into the run he misses his
+   check-in: read the radio line and watch who comes. Hide and see what he does at the body.
+3. Next run, stuff the body in the locker. The radio still sends someone, who finds
+   nothing. Wait for 75 seconds and listen for the banging.
+4. Turn on debug (F1) to see the wake-up meter over a knocked-out guard.
+5. Try the "knock everyone out" run again. Tell me if it is still the easiest way to win.
+6. Timer: does 7:00 feel different? Is the 3:30 bed check in a good place?
+7. Gym: jump onto the crates and the ledge, and walk over the guard's head. Slide under the
+   wall. Cross the gap two ways (jump then L in the air, or L then K on the ground).
+8. In the gym, dash near a guard and watch him react, then slide past the same guard.
+9. Tell me which numbers feel wrong: jump height, fall speed, dash length, slide length.
+10. All four playtest questions.
 
 ---
 

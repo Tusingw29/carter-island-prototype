@@ -7,7 +7,7 @@ import { endRun } from './run.js';
 function canGrab(guard, world, cfg) {
   const { player } = world;
   if (world.grab || world.over || world.grabImmunity > 0) return false;
-  if (Math.abs(player.x - guard.x) > cfg.grabReach) return false;
+  if (Math.abs(player.x - guard.x) > cfg.grabReach || (player.y ?? 0) > cfg.grabReachUp) return false;
   const hidingIn = concealedIn(player);
   // A hidden player can only be grabbed by a guard who knows which spot they are in.
   if (hidingIn) return guard.knownSpotId === hidingIn;

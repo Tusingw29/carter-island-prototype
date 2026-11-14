@@ -55,8 +55,8 @@ export function pointInCone(shape, point) {
 }
 
 // Points up the middle of a body, feet to head.
-export function bodyPoints(x, height, count = 6) {
-  return Array.from({ length: count }, (_, i) => ({ x, y: (height * (i + 0.5)) / count }));
+export function bodyPoints(x, height, count = 6, feetY = 0) {
+  return Array.from({ length: count }, (_, i) => ({ x, y: feetY + (height * (i + 0.5)) / count }));
 }
 
 export function guardSeesPlayer(guard, player, guardCfg = CONFIG.guard, playerCfg = CONFIG.player) {
@@ -65,5 +65,6 @@ export function guardSeesPlayer(guard, player, guardCfg = CONFIG.guard, playerCf
   const ahead = (player.x - guard.x) * guard.facing;
   if (ahead >= 0 && ahead <= guardCfg.closeSightDistance) return true;
   const shape = coneShape(guard, guardCfg);
-  return bodyPoints(player.x, playerHeight(player, playerCfg)).some((point) => pointInCone(shape, point));
+  const points = bodyPoints(player.x, playerHeight(player, playerCfg), 6, player.y ?? 0);
+  return points.some((point) => pointInCone(shape, point));
 }
