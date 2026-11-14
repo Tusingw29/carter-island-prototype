@@ -2,7 +2,7 @@
 import { CONFIG } from './config.js';
 import { beginSearch, calmDown, raiseAlarm } from './alert.js';
 import { doBedCheck } from './bedcheck.js';
-import { tryGrab } from './grab.js';
+import { canLunge, finishLunge, startLunge, tryPullOut } from './grab.js';
 import { disturb, lookAround, moveToward, patrol } from './guard.js';
 import { concealedIn, spotById } from './hiding.js';
 import { canHear } from './noise.js';
@@ -17,22 +17,44 @@ function investigate(guard, world, dt, cfg) {
   if (lookAround(guard, dt, cfg.lookAroundSeconds)) calmDown(world, guard);
 }
 
-// Alert: run at the player, or at the hiding spot he watched the player get into.
+// Alert: a moment of shock, then run at the player, or at the hiding spot he watched the
+// player get into. Close enough, he winds up a lunge. Lose sight for long enough and he searches.
 function chase(guard, world, dt, cfg) {
-  if (guard.stun > 0) {
-    guard.stun -= dt;
-    return;
-  }
+  // What he knows keeps ticking through the pause, a wind-up, and a stumble.
   const knownSpot = guard.knownSpotId && spotById(spotsFor(guard, world), guard.knownSpotId);
   if (guard.trackTimer > 0) {
     guard.trackTimer -= dt;
     if (!knownSpot) guard.lastKnownX = world.player.x;
   }
+  guard.lostFor = guard.seesPlayer ? 0 : guard.lostFor + dt;
+  if (guard.react > 0) {
+    guard.react -= dt;
+    guard.facing = Math.sign(guard.lastKnownX - guard.x) || guard.facing;
+    return;
+  }
+  if (guard.lunge > 0) {
+    guard.lunge -= dt;
+    if (guard.lunge <= 0) finishLunge(guard, world);
+    return;
+  }
+  if (guard.stun > 0) {
+    guard.stun -= dt;
+    return;
+  }
+  if (!knownSpot && guard.lostFor >= cfg.loseSightSeconds) {
+    // He has lost you. He searches around the last place he saw you.
+    beginSearch(world, guard, cfg);
+    return;
+  }
+  if (canLunge(guard, world, cfg)) {
+    startLunge(guard, world, cfg);
+    return;
+  }
   // If the player is still in the spot he saw them enter, he walks right up to them.
   const inKnownSpot = knownSpot && concealedIn(world.player) === knownSpot.id;
   const target = inKnownSpot ? world.player.x : (knownSpot?.x ?? guard.lastKnownX);
   const arrived = moveToward(guard, target, cfg.alertSpeed, dt);
-  if (tryGrab(guard, world)) return;
+  if (tryPullOut(guard, world)) return;
   if (!arrived) return;
   guard.knownSpotId = null;
   if (guard.trackTimer <= 0 && !guard.seesPlayer) beginSearch(world, guard, cfg);
@@ -73,7 +95,7 @@ function search(guard, world, dt, cfg) {
     guard.checkingSpotId = null;
     if (concealedIn(world.player) === spot.id) {
       // Found you. He knows exactly where you are, so the grab follows at once.
-      raiseAlarm(world, world.player.x, 'sight', cfg);
+      raiseAlarm(world, world.player.x, 'sight', cfg, guard.roomId, { kind: 'foundHiding', guard });
       guard.knownSpotId = spot.id;
     }
     return;
@@ -106,5 +128,6 @@ export function updateSleeper(guard, world, dt, cfg = CONFIG.guard) {
   if (world.noises.some((noise) => canHear(guard.x, noise))) disturb(guard, cfg);
   if (guard.stirTimer <= 0) return;
   guard.stirTimer -= dt;
-  if (guard.stirTimer <= 0) raiseAlarm(world, world.player.x, 'sight', cfg);
+  if (guard.stirTimer > 0) return;
+  raiseAlarm(world, world.player.x, 'sight', cfg, guard.roomId, { kind: 'wokeSleeper', guard });
 }

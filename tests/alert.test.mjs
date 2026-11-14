@@ -100,7 +100,7 @@ test('Alert: the guard chases faster than the player walks but slower than the p
   const world = testWorld({ width: 80, playerX: 22, guards: [sentry('g', 20)] });
   runUntil(world, () => state(world) === 'alert', {}, 2);
   const before = world.guards[0].x;
-  run(world, { moveX: 1, run: true }, 1);
+  run(world, { moveX: 1, run: true }, 2);
   assert.ok(world.guards[0].x > before + 3, 'he follows');
   assert.equal(world.grab, null, 'but cannot catch a running player');
 });

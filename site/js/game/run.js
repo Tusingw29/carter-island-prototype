@@ -1,6 +1,7 @@
 // How a run ends, and the score and rank shown afterwards.
 import { CONFIG } from './config.js';
 import { announce, announcementsBetween, tickBetween } from './cues.js';
+import { caughtHowText } from './caught.js';
 import { silentAlarmReason } from './keycard.js';
 
 export const RANKS = Object.freeze({
@@ -35,6 +36,8 @@ export function scoreRun(world) {
     keycardGrab: world.keycardGrab,
     endedIn: world.room.name,
     caughtIn: world.over === 'caught' ? world.room.name : null,
+    // Seconds from the "!" to the grab that ended the run, and what the "!" was for.
+    caughtHow: world.over === 'caught' ? caughtHowText(world) : null,
   };
 }
 

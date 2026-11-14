@@ -674,3 +674,64 @@ textarea {
 #camera-line {
   color: var(--ink);
 }
+
+/* Step 9: the chase, the "too risky" shake, and the gym tuning panel. */
+.guard-icon.shock {
+  font-size: 58px;
+  animation: shock 0.6s ease-out;
+}
+
+@keyframes shock {
+  0% { opacity: 0.4; font-size: 120px; }
+  35% { opacity: 1; font-size: 58px; }
+}
+
+#prompt.shake {
+  color: #ff4a3c;
+  font-weight: 700;
+  animation: too-risky 0.09s linear infinite;
+}
+
+@keyframes too-risky {
+  0%, 100% { margin-left: -4px; }
+  50% { margin-left: 4px; }
+}
+
+#gym-tuning {
+  position: fixed;
+  right: 12px;
+  bottom: 40px;
+  z-index: 3;
+  width: 300px;
+  padding: 10px 12px;
+  border: 1px solid #2a323d;
+  border-radius: 6px;
+  background: rgba(5, 7, 11, 0.92);
+  color: var(--ink);
+  font-size: 12px;
+}
+
+#gym-tuning label {
+  display: block;
+  margin-top: 8px;
+}
+
+#gym-tuning input {
+  display: block;
+  width: 100%;
+}
+
+#gym-tuning button {
+  margin: 10px 6px 6px 0;
+}
+
+#gym-tuning textarea {
+  width: 100%;
+  background: #0b1014;
+  color: var(--beam);
+  font: inherit;
+}
+
+body.in-menu #gym-tuning {
+  display: none;
+}

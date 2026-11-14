@@ -122,5 +122,6 @@ test('the score screen numbers: time left, times spotted, knockouts, bodies foun
   assert.deepEqual(scoreRun(world), {
     outcome: 'win', won: true, rank: 'inmate', timeLeft: 123.4, timesSpotted: 2, knockouts: 1, bodiesFound: 1,
     silentAlarm: false, silentAlarmReason: null, keycardGrab: null, endedIn: 'Cell Block', caughtIn: null,
+    caughtHow: null,
   });
 });

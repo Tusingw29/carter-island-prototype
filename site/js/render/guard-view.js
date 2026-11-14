@@ -47,7 +47,7 @@ export function createGuardView(parent) {
     const out = guard.state === 'out';
     const asleep = guard.state === 'asleep';
     body.visible = !guard.hiddenIn;
-    cone.visible = !out && !asleep && !guard.held;
+    cone.visible = !out && !asleep;
     light.visible = !out && !asleep;
     torch.visible = !out && !asleep;
     // A knocked-out guard flashes white as the hit lands, then topples over and lies flat.
@@ -56,8 +56,10 @@ export function createGuardView(parent) {
     const fallen = out ? Math.min(1, sinceHit / CONFIG.feel.fallSeconds) ** 2 : 0;
     body.rotation.z = (fallen * Math.PI) / 2;
     body.position.set(guard.x + fallen * 0.9, fallen * 0.3, fallen * 0.5);
-    // In a choke hold he thrashes from side to side.
-    if (guard.held) body.rotation.z = Math.sin(now * 38) * 0.14;
+    // The tell before a lunge: he drops into a crouch. After a miss he staggers.
+    const windingUp = guard.state === 'alert' && guard.lunge > 0;
+    body.scale.y = windingUp ? 0.72 : 1;
+    if (guard.state === 'alert' && guard.stun > 0) body.rotation.z = Math.sin(now * 14) * 0.22;
     if (asleep) {
       body.rotation.z = guard.stirTimer > 0 ? -0.15 : -0.45;
       body.position.set(guard.x, -0.25, -0.6);
@@ -72,6 +74,11 @@ export function createGuardView(parent) {
     cone.material.color.setHex(STATE_COLORS[state]);
     // From far back the beam is drawn stronger, so it still reads at half the size.
     cone.material.opacity = (state === 'calm' ? 0.16 : 0.26) * (1 + FAR_BOOST * far);
+    // His beam flashes white while he winds up.
+    if (windingUp && Math.floor(now * 20) % 2 === 0) {
+      cone.material.color.setHex(0xffffff);
+      cone.material.opacity = 0.5;
+    }
     light.color.setHex(guard.state === 'alert' ? 0xff9a8a : 0xffe2a0);
 
     // The real light points a little toward the back wall so the beam shows up on it.

@@ -1,8 +1,7 @@
 // Knocking guards out from behind, dragging the body, and stuffing it in a locker or cart.
-// An awake guard takes a choke hold: hold the button until he goes limp. Knocked-out guards
-// wake up again after a while.
+// Sneak up unseen and it is instant. Knocked-out guards wake up again after a while.
 import { CONFIG } from './config.js';
-import { beginSearch, makeSuspicious, raiseAlarm } from './alert.js';
+import { beginSearch, makeSuspicious } from './alert.js';
 import { isAwake, isConscious } from './guard.js';
 import { nearestHideSpot, spotById } from './hiding.js';
 import { say } from './messages.js';
@@ -13,15 +12,16 @@ export function fullSpotIds(world) {
   return world.allGuards.filter((guard) => guard.hiddenIn).map((guard) => guard.hiddenIn);
 }
 
-// A guard you could knock out right now: close, facing away, and not looking at you.
+// A guard you could knock out right now: close, facing away, not looking at you, and not Alert.
 // A sleeping guard can be knocked out from either side.
 export function knockoutTarget(world, cfg = CONFIG.knockout) {
   const { player } = world;
-  if (player.hiddenIn || player.dragging || world.choke || (player.y ?? 0) > cfg.reachUp) return null;
+  if (player.hiddenIn || player.dragging || (player.y ?? 0) > cfg.reachUp) return null;
   return world.guards.find((guard) => {
     const offset = player.x - guard.x;
     const behind = offset * guard.facing < 0 || guard.state === 'asleep';
-    return isConscious(guard) && behind && Math.abs(offset) <= cfg.reach && !guard.seesPlayer;
+    const unaware = !guard.seesPlayer && guard.state !== 'alert';
+    return isConscious(guard) && behind && unaware && Math.abs(offset) <= cfg.reach;
   }) ?? null;
 }
 
@@ -45,7 +45,6 @@ export function knockOut(world, guard) {
   guard.detection = 0;
   guard.seesPlayer = false;
   guard.stun = 0;
-  guard.held = false;
   // How long he has been out, and the moment it happened (for the hit flash and the fall).
   guard.outFor = 0;
   guard.outAt = world.time;
@@ -54,42 +53,18 @@ export function knockOut(world, guard) {
   world.events.push({ type: 'knockout', guardId: guard.id });
 }
 
-// ---------- The choke hold ----------
-
-function startChoke(world, guard) {
-  world.choke = { guardId: guard.id, time: 0 };
-  guard.held = true;
-  world.events.push({ type: 'chokeStart', guardId: guard.id });
+// A guard in reach who cannot be knocked out right now: he is facing you, can see you, or is
+// already Alert. Pressing the button on him does nothing but show "too risky".
+export function riskyTarget(world, cfg = CONFIG.knockout) {
+  const { player } = world;
+  if (player.hiddenIn || player.dragging || (player.y ?? 0) > cfg.reachUp) return null;
+  return world.guards.find((guard) => (
+    isAwake(guard) && Math.abs(player.x - guard.x) <= cfg.reach
+  )) ?? null;
 }
 
-// Lets go without finishing. The guard is free and knows exactly where you are.
-export function breakChoke(world, cfg = CONFIG) {
-  const guard = world.allGuards.find((entry) => entry.id === world.choke.guardId);
-  world.choke = null;
-  if (!guard || guard.state === 'out') return;
-  guard.held = false;
-  guard.facing = Math.sign(world.player.x - guard.x) || guard.facing;
-  world.events.push({ type: 'chokeBroken', guardId: guard.id });
-  raiseAlarm(world, world.player.x, 'sight', cfg.guard);
-}
-
-// Runs every step while a guard is held. held is true while the button is down.
-export function updateChoke(world, held, dt, cfg = CONFIG) {
-  if (!held) {
-    breakChoke(world, cfg);
-    return;
-  }
-  world.choke.time += dt;
-  if (world.choke.time < cfg.knockout.chokeSeconds) return;
-  const guard = world.allGuards.find((entry) => entry.id === world.choke.guardId);
-  world.choke = null;
-  knockOut(world, guard);
-}
-
-// 0 to 1 while a choke hold is going on. Otherwise null.
-export function chokeProgress(world, cfg = CONFIG.knockout) {
-  return world.choke ? Math.min(1, world.choke.time / cfg.chokeSeconds) : null;
-}
+// True while the "too risky" shake should show over a guard.
+export const tooRiskyNow = (world) => Boolean(world.risky) && world.time < world.risky.until;
 
 // The Knockout / Drag button. Returns what happened, or null.
 export function pressAction(world) {
@@ -100,19 +75,20 @@ export function pressAction(world) {
   }
   const guard = knockoutTarget(world);
   if (guard) {
-    // A sleeping guard goes down with a quick tap. An awake one has to be held.
-    if (guard.state === 'asleep') {
-      knockOut(world, guard);
-      return 'knockout';
-    }
-    startChoke(world, guard);
-    return 'choke';
+    knockOut(world, guard);
+    return 'knockout';
   }
   if (knockOutSnitch(world)) return 'knockout';
   const body = dragTarget(world);
   if (body) {
     player.dragging = body.id;
     return 'dragging';
+  }
+  const risky = riskyTarget(world);
+  if (risky) {
+    world.risky = { guardId: risky.id, until: world.time + CONFIG.knockout.riskySeconds };
+    world.events.push({ type: 'tooRisky', guardId: risky.id });
+    return 'tooRisky';
   }
   return null;
 }
@@ -165,7 +141,7 @@ function wake(world, guard, cfg) {
 function bang(world, guard, cfg) {
   world.events.push({ type: 'bang', guardId: guard.id, roomId: guard.roomId });
   for (const other of world.allGuards) {
-    if (other.roomId !== guard.roomId || !isAwake(other) || other.held) continue;
+    if (other.roomId !== guard.roomId || !isAwake(other)) continue;
     if (Math.abs(other.x - guard.x) <= cfg.knockout.bangRadius) makeSuspicious(world, other, guard.x);
   }
 }

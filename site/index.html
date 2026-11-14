@@ -44,6 +44,7 @@
     <p id="help">Esc: pause and controls &nbsp; M: map &nbsp; Z: zoom</p>
   </div>
   <pre id="debug-panel" class="debug-only"></pre>
+  <div id="gym-tuning" hidden></div>
 
   <div id="map-screen" class="panel" hidden>
     <h2>MAP</h2>
@@ -77,8 +78,7 @@
       <tr><td>Creaky door: fast and loud / slow and quiet</td><td>tap W / hold W</td><td>tap Up / hold Up</td></tr>
       <tr><td>Interact, pick up, sleep in bed</td><td>E</td><td>A (bottom button)</td></tr>
       <tr><td>Keycard: grab fast / lift quietly</td><td>tap E / hold E</td><td>tap A / hold A</td></tr>
-      <tr><td>Choke hold from behind (awake guard)</td><td>hold Space</td><td>hold X (left button)</td></tr>
-      <tr><td>Knock out a sleeping guard, drag a body</td><td>Space</td><td>X</td></tr>
+      <tr><td>Knock out from behind (unseen), drag body</td><td>Space</td><td>X (left button)</td></tr>
       <tr><td>Break free when grabbed</td><td>mash Space</td><td>mash X</td></tr>
       <tr><td>Map</td><td>M</td><td>View / Select</td></tr>
       <tr><td>Zoom the camera in or out</td><td>Z</td><td>Left Bumper</td></tr>
@@ -88,7 +88,10 @@
     </table>
     <p class="fine">
       Walking is quiet, running is loud, crouching is silent. A guard's flashlight is what he can see.
-      Stand still in a pitch-dark patch and nobody can see you. Knocked-out guards wake up after a
+      Stand still in a pitch-dark patch and nobody can see you. Seen is not caught: a guard who
+      spots you freezes for a moment, then chases, and he is slower than your run. He has to wind
+      up a lunge to grab you, so run when he crouches. Out of his sight for two seconds and he
+      loses you. Knocked-out guards wake up after a
       while, and every guard calls in on the radio once a minute: a missed call brings someone to look.
     </p>
     <button type="button" data-close>Back (Esc)</button>
@@ -116,6 +119,7 @@
       <tr><td>Keycard</td><td id="score-keycard"></td></tr>
       <tr><td>Silent alarm</td><td id="score-alarm"></td></tr>
       <tr id="score-where-row"><td id="score-where-label"></td><td id="score-where"></td></tr>
+      <tr id="score-how-row"><td>How you got caught</td><td id="score-how"></td></tr>
     </table>
     <p class="rank">Rank: <strong id="end-rank"></strong> <span id="end-rank-means"></span></p>
     <button id="play-again" type="button" class="primary">Play again (Enter)</button>

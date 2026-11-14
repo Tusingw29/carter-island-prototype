@@ -9,8 +9,14 @@ const CUES = {
   calm: [[520, 0, 0.1, 'sine'], [390, 0.12, 0.22, 'sine']],
   // A thud: a low note that drops fast, with a click on top so it lands.
   knockout: [[160, 0, 0.22, 'sine', 3, 45], [90, 0, 0.3, 'triangle', 2.2, 35], [420, 0, 0.03, 'square', 0.8]],
-  chokeStart: [[130, 0, 0.08, 'sawtooth', 0.6], [110, 0.1, 0.08, 'sawtooth', 0.6]],
-  chokeBroken: [[240, 0, 0.1, 'square'], [360, 0.08, 0.16, 'square']],
+  // The chase: a rising whine as a guard winds up a lunge, a scuff when he misses, and a dull
+  // double buzz when a knockout is refused.
+  lunge: [[220, 0, 0.3, 'sawtooth', 0.8, 660]],
+  lungeMiss: [[180, 0, 0.18, 'sawtooth', 0.7, 70]],
+  tooRisky: [[150, 0, 0.07, 'square', 0.8], [150, 0.1, 0.07, 'square', 0.8]],
+  finish: [
+    [523, 0, 0.1, 'triangle'], [659, 0.1, 0.1, 'triangle'], [784, 0.2, 0.1, 'triangle'], [1047, 0.3, 0.3, 'triangle'],
+  ],
   // Radio: two short blips of static-like tone. A missed check-in is the same, lower and longer.
   checkIn: [[1800, 0, 0.03, 'square', 0.35], [1350, 0.05, 0.05, 'square', 0.35]],
   missedCheckIn: [

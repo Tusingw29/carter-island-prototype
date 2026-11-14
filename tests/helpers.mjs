@@ -1,5 +1,4 @@
 // Shared helpers for tests that run the game world.
-import { CONFIG } from '../site/js/game/config.js';
 import { emptyIntent } from '../site/js/game/intent.js';
 import { enterRoom } from '../site/js/game/portals.js';
 import { createWorld, stepWorld } from '../site/js/game/world.js';
@@ -46,8 +45,7 @@ export function prisonWorld(roomId, x) {
 
 export const guardById = (world, id) => world.allGuards.find((guard) => guard.id === id);
 
-// A full choke hold on the guard the player is standing behind: hold the button, then let go.
-export function choke(world) {
-  run(world, { action: true }, CONFIG.knockout.chokeSeconds + 0.05);
-  stepWorld(world, intent(), STEP);
+// Knocks out the guard the player is standing behind: one press of the button.
+export function knock(world) {
+  tap(world, 'action');
 }

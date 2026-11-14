@@ -44,6 +44,8 @@ export function createEndScreen(onPlayAgain) {
     byId('score-where-row').hidden = !WHERE_LABELS[result.outcome];
     byId('score-where-label').textContent = WHERE_LABELS[result.outcome] ?? '';
     byId('score-where').textContent = result.endedIn;
+    byId('score-how-row').hidden = !result.caughtHow;
+    byId('score-how').textContent = result.caughtHow ?? '';
   }
   return { update };
 }

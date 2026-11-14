@@ -6,7 +6,6 @@ export function noiseRadius(mode, cfg = CONFIG.noise) {
   if (mode === 'run') return cfg.runRadius;
   if (mode === 'crouch') return cfg.crouchRadius;
   if (mode === 'drag') return cfg.dragRadius;
-  if (mode === 'choke') return cfg.chokeRadius;
   if (mode === 'slide') return cfg.slideRadius;
   if (mode === 'dash') return cfg.dashRadius;
   return 0;

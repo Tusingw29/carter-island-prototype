@@ -4,30 +4,74 @@ import { concealedIn } from './hiding.js';
 import { clampToRoom } from './player.js';
 import { endRun } from './run.js';
 
-function canGrab(guard, world, cfg) {
+// Close enough, low enough, and not just broken free.
+function inReach(guard, world, cfg) {
   const { player } = world;
   if (world.grab || world.over || world.grabImmunity > 0) return false;
-  if (Math.abs(player.x - guard.x) > cfg.grabReach || (player.y ?? 0) > cfg.grabReachUp) return false;
-  const hidingIn = concealedIn(player);
-  // A hidden player can only be grabbed by a guard who knows which spot they are in.
-  if (hidingIn) return guard.knownSpotId === hidingIn;
-  return guard.seesPlayer || guard.trackTimer > 0;
+  return Math.abs(player.x - guard.x) <= cfg.grabReach && (player.y ?? 0) <= cfg.grabReachUp;
 }
 
-// Called by an Alert guard every moment. Returns true if he grabbed the player.
-export function tryGrab(guard, world, cfg = CONFIG) {
-  if (!canGrab(guard, world, cfg.guard)) return false;
+function grab(guard, world, cfg) {
   const { player } = world;
   player.hiddenIn = null;
   player.inDark = null;
   player.dragging = null;
+  // For the score screen: how long after the "!" this grab came, and what the "!" was for.
+  const alarm = world.lastAlarm;
+  world.lastGrab = {
+    at: world.time, by: guard.label ?? null, sinceAlarm: alarm ? world.time - alarm.at : null,
+    alarmKind: alarm?.kind ?? null, alarmBy: alarm?.by ?? null,
+  };
   if (world.breakFreeUsed) {
     endRun(world, 'caught');
-    return true;
+    return;
   }
   world.grab = { guardId: guard.id, presses: 0, timeLeft: cfg.grab.mashSeconds };
   world.events.push({ type: 'grab', guardId: guard.id });
+}
+
+// Pulling the player out of a hiding spot the guard watched them get into. No lunge needed:
+// he walks up and reaches in. Returns true if he grabbed the player.
+export function tryPullOut(guard, world, cfg = CONFIG) {
+  const hidingIn = concealedIn(world.player);
+  if (!hidingIn || guard.knownSpotId !== hidingIn || !inReach(guard, world, cfg.guard)) return false;
+  grab(guard, world, cfg);
   return true;
+}
+
+// Should a chasing guard start winding up a lunge? Only at a player in the open that he can see.
+export function canLunge(guard, world, cfg = CONFIG.guard) {
+  const { player } = world;
+  if (world.grab || world.over || world.grabImmunity > 0 || concealedIn(player)) return false;
+  if ((player.y ?? 0) > cfg.grabReachUp) return false;
+  if (Math.abs(player.x - guard.x) > cfg.lungeTriggerRange) return false;
+  return guard.seesPlayer || guard.trackTimer > 0;
+}
+
+export function startLunge(guard, world, cfg = CONFIG.guard) {
+  guard.lunge = cfg.lungeWindupSeconds;
+  // He commits to the side you are on now. Get past him and he lunges at nothing.
+  guard.facing = Math.sign(world.player.x - guard.x) || guard.facing;
+  world.events.push({ type: 'lunge', guardId: guard.id, roomId: guard.roomId });
+}
+
+// The end of the wind-up: he throws himself forward. Returns true if he got the player.
+export function finishLunge(guard, world, cfg = CONFIG) {
+  const { player } = world;
+  const room = world.layout.rooms[guard.roomId];
+  const ahead = (player.x - guard.x) * guard.facing;
+  // He stops short of running through you, and goes the whole way if you are not there.
+  const travel = ahead >= 0 ? Math.min(cfg.guard.lungeDistance, Math.max(0, ahead - 0.3)) : cfg.guard.lungeDistance;
+  guard.x = Math.max(0.3, Math.min(room.width - 0.3, guard.x + guard.facing * travel));
+  const hidingIn = concealedIn(player);
+  const reachable = hidingIn ? guard.knownSpotId === hidingIn : true;
+  if (reachable && inReach(guard, world, cfg.guard)) {
+    grab(guard, world, cfg);
+    return true;
+  }
+  guard.stun = cfg.guard.lungeMissSeconds;
+  world.events.push({ type: 'lungeMiss', guardId: guard.id, roomId: guard.roomId });
+  return false;
 }
 
 function breakFree(world, cfg) {

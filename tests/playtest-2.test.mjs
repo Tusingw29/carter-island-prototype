@@ -1,15 +1,15 @@
-// Step 8 (playtest 2): guards wake up, radio check-ins, the choke hold, and the 7:00 timer.
+// Step 8 (playtest 2): guards wake up, radio check-ins, and the 7:00 timer.
+// The choke hold from this step was taken out again in Step 9.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { shownState } from '../site/js/game/alert.js';
 import { CONFIG } from '../site/js/game/config.js';
-import { chokeProgress, knockOut, wakeProgress } from '../site/js/game/knockout.js';
+import { knockOut, wakeProgress } from '../site/js/game/knockout.js';
 import { currentMessage } from '../site/js/game/messages.js';
-import { currentPrompt } from '../site/js/game/prompts.js';
 import { guardPost, onRadioNow } from '../site/js/game/radio.js';
 import { createWorld } from '../site/js/game/world.js';
 import {
-  choke, eventTypes, guardById, prisonWorld, run, runUntil, tap, testWorld,
+  eventTypes, guardById, knock, prisonWorld, run, runUntil, tap, testWorld,
 } from './helpers.mjs';
 
 const K = CONFIG.knockout;
@@ -17,84 +17,12 @@ const sentry = (id, x, facing = 1) => ({ id, patrol: [x, x], startX: x, facing }
 const locker = { id: 'locker', type: 'locker', x: 14 };
 const behindGuard = (extra = {}) => testWorld({ playerX: 19.2, guards: [sentry('g', 20)], ...extra });
 
-// ---------- The choke hold ----------
-
-test('choke hold: holding the button for the full time knocks the guard out', () => {
-  const world = behindGuard();
-  assert.equal(currentPrompt(world).text, 'HOLD SPACE: choke hold');
-  run(world, { action: true }, K.chokeSeconds - 0.2);
-  assert.equal(world.guards[0].state, 'calm', 'not yet');
-  assert.equal(world.guards[0].held, true);
-  assert.equal(currentPrompt(world).text, 'KEEP HOLDING');
-  assert.ok(chokeProgress(world) > 0.8 && chokeProgress(world) < 1);
-  run(world, { action: true }, 0.3);
-  assert.equal(world.guards[0].state, 'out');
-  assert.equal(world.choke, null);
-  assert.equal(world.stats.knockouts, 1);
-  assert.equal(world.stats.timesSpotted, 0);
-  assert.equal(K.chokeSeconds, 1.5);
-});
-
-test('choke hold: the player cannot move, the guard cannot act, and it makes a small noise', () => {
-  const world = testWorld({ playerX: 19.2, guards: [{ id: 'g', patrol: [20, 30], startX: 20, facing: 1 }] });
-  const startX = world.player.x;
-  run(world, { action: true, moveX: -1, run: true }, 1);
-  assert.equal(world.player.x, startX);
-  assert.equal(world.guards[0].x, 20, 'he does not walk off on his patrol');
-  assert.equal(world.player.mode, 'choke');
-  assert.equal(world.noiseRadius, CONFIG.noise.chokeRadius);
-  assert.ok(CONFIG.noise.chokeRadius > 0 && CONFIG.noise.chokeRadius < CONFIG.noise.walkRadius);
-});
-
-test('choke hold: a second guard close by hears the scuffle', () => {
-  const guards = [sentry('g', 20), sentry('near', 18, -1)];
-  const world = testWorld({ playerX: 19.2, guards });
-  run(world, { action: true }, 0.2);
-  assert.equal(world.guards[1].state, 'suspicious');
-});
-
-test('choke hold: let go early and the guard breaks free and goes Alert', () => {
-  const world = behindGuard();
-  run(world, { action: true }, K.chokeSeconds / 2);
-  run(world, {}, 0.05);
-  const guard = world.guards[0];
-  assert.equal(guard.state, 'alert');
-  assert.equal(guard.held, false);
-  assert.equal(guard.facing, -1, 'he turns to face you');
-  assert.equal(world.choke, null);
-  assert.equal(world.stats.knockouts, 0);
-  assert.equal(world.stats.timesSpotted, 1);
-  assert.ok(eventTypes(world).includes('chokeBroken'));
-});
-
-test('choke hold: a sleeping guard still goes down with a quick tap', () => {
-  const world = prisonWorld('guard-office', 13);
-  assert.equal(currentPrompt(world).text, 'SPACE: knock out');
-  tap(world, 'action');
-  assert.equal(guardById(world, 'go-guard').state, 'out');
-  assert.equal(world.choke, null);
-});
-
-test('choke hold: being grabbed by another guard ends it', () => {
-  const guards = [sentry('g', 20), sentry('other', 17, -1)];
-  const world = testWorld({ playerX: 19.2, guards });
-  run(world, { action: true }, 0.3);
-  world.guards[1].state = 'alert';
-  world.guards[1].lastKnownX = 19.2;
-  world.guards[1].trackTimer = 5;
-  runUntil(world, () => world.grab !== null, { action: true }, 5);
-  run(world, { action: true }, 0.05);
-  assert.equal(world.choke, null);
-  assert.equal(world.guards[0].held, false);
-  assert.notEqual(world.guards[0].state, 'out');
-});
-
 // ---------- Guards wake up ----------
 
 test('wake-up: a knocked-out guard is warned about, then wakes after 75 seconds and searches', () => {
   assert.equal(K.wakeSeconds, 75);
   const world = behindGuard();
-  choke(world);
+  knock(world);
   const guard = world.guards[0];
   world.player.x = 2;
   run(world, {}, K.wakeSeconds - K.wakeWarningSeconds - 1);
@@ -112,7 +40,7 @@ test('wake-up: a knocked-out guard is warned about, then wakes after 75 seconds 
 
 test('wake-up: he stays wary for the rest of the run', () => {
   const world = behindGuard();
-  choke(world);
+  knock(world);
   const guard = world.guards[0];
   world.player.x = 2;
   run(world, {}, K.wakeSeconds + CONFIG.guard.searchSeconds + 10);
@@ -125,7 +53,7 @@ test('wake-up: he stays wary for the rest of the run', () => {
 test('wake-up: a guard in a locker bangs on it, the noise brings another guard, then he climbs out', () => {
   const guards = [sentry('g', 20), sentry('other', 8, -1)];
   const world = behindGuard({ guards, hideSpots: [locker] });
-  choke(world);
+  knock(world);
   tap(world, 'action');
   runUntil(world, () => Math.abs(world.player.x - locker.x) < 0.3, { moveX: -1 }, 10);
   tap(world, 'up');
@@ -154,7 +82,7 @@ test('wake-up: a guard in a locker bangs on it, the noise brings another guard, 
 
 test('wake-up: a body you are dragging is dropped when he wakes', () => {
   const world = behindGuard();
-  choke(world);
+  knock(world);
   tap(world, 'action');
   assert.equal(world.player.dragging, 'g');
   run(world, {}, K.wakeSeconds + 0.5);
@@ -291,7 +219,7 @@ test('radio: a body left in the open is found by the guard who comes to look, ev
 
 test('radio: when nobody is free, the radio says so', () => {
   const world = behindGuard();
-  choke(world);
+  knock(world);
   world.player.x = 2;
   run(world, {}, CONFIG.radio.firstSeconds);
   assert.match(currentMessage(world), /No answer from the Test guard\.\.\. Nobody is free to check\./);
@@ -303,7 +231,7 @@ test('radio: an awake guard who is knocked out later stops answering, and answer
   run(world, {}, CONFIG.radio.firstSeconds + 1);
   assert.equal(eventTypes(world).filter((type) => type === 'checkIn').length, 1);
   world.player.x = 19.2;
-  choke(world);
+  knock(world);
   world.player.x = 2;
   run(world, {}, CONFIG.radio.intervalSeconds);
   assert.equal(eventTypes(world).filter((type) => type === 'missedCheckIn').length, 1);

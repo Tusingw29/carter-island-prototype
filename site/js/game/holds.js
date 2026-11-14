@@ -26,7 +26,6 @@ export function updateHold(world, slot, { key, pressed, held }, dt, cfg = CONFIG
 
 // 0 to 1 while something is being held, for the on-screen progress bar. Otherwise null.
 export function holdProgress(world, cfg = CONFIG.hold) {
-  if (world.choke) return Math.min(1, world.choke.time / CONFIG.knockout.chokeSeconds);
   const hold = world.holds.up ?? world.holds.interact;
   if (!hold || hold.time <= cfg.tapSeconds) return null;
   return Math.min(1, hold.time / cfg.slowSeconds);
