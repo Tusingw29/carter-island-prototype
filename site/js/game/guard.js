@@ -16,8 +16,11 @@ export function createGuard(def) {
     checksBed,
     // Gym only: the stretch of floor he never leaves, as [from, to].
     bounds,
-    // True while the player has him in a choke hold.
-    held: false,
+    // Alert: the pause before he gives chase, the wind-up of a lunge, and how long since he
+    // last saw the player.
+    react: 0,
+    lunge: 0,
+    lostFor: 0,
     // Knocked out: how long he has been down, and the moment it happened.
     outFor: 0,
     outAt: null,

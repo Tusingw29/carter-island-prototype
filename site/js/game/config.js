@@ -62,8 +62,6 @@ export const CONFIG = Object.freeze({
     runRadius: 8,
     crouchRadius: 0,
     dragRadius: 1.5,
-    // A choke hold is a scuffle: quieter than walking, but not silent.
-    chokeRadius: 1.5,
     // Gym moves. Landing is a small noise, a slide is quiet, a dash is the loudest thing you can do.
     landRadius: 1.5,
     slideRadius: 1,
@@ -79,10 +77,23 @@ export const CONFIG = Object.freeze({
     coneHalfAngleDeg: 17,
     coneTiltDownDeg: 12,
 
-    // Speeds for each alert level. Alert is faster than your walk but slower than your run.
+    // Speeds for each alert level. A chasing guard runs at 80% of your run speed: faster than
+    // your walk, but a running player always pulls away.
     suspiciousSpeed: 2.2,
-    alertSpeed: 5,
+    alertSpeed: 5.2,
     searchSpeed: 2.4,
+
+    // Seen is not caught. A guard who goes Alert freezes for this long first: your head start.
+    reactSeconds: 0.6,
+    // A grab is a lunge. It starts when you are this close, takes this long to wind up, then
+    // carries him this far forward. Run and you are gone before it lands. Walk and it gets you.
+    lungeTriggerRange: 1.2,
+    lungeWindupSeconds: 0.35,
+    lungeDistance: 1.8,
+    // A lunge that misses leaves him stumbling for this long.
+    lungeMissSeconds: 0.9,
+    // A chasing guard who has not seen you for this long gives up the chase and starts searching.
+    loseSightSeconds: 2,
 
     // Sight fills a detection meter. Full meter = Alert. Close up it fills fast.
     detectNearDistance: 2,
@@ -166,8 +177,8 @@ export const CONFIG = Object.freeze({
     reach: 1.1,
     // You cannot start a knockout from higher than this above the floor.
     reachUp: 0.3,
-    // An awake guard needs a choke hold: hold the button this long. Let go early and he is free.
-    chokeSeconds: 1.5,
+    // How long "TOO RISKY" shows when you try it on a guard who can see you.
+    riskySeconds: 0.6,
     // A knocked-out guard wakes up after this long.
     wakeSeconds: 75,
     // A guard lying in the open starts to stir this long before he wakes, and you are told.

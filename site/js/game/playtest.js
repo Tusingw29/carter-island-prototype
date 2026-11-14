@@ -18,7 +18,8 @@ function runLine(result) {
     + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`
     + `\nKeycard: ${KEYCARD[result.keycardGrab] ?? 'not taken'}. `
     + `Silent alarm: ${result.silentAlarm ? `yes, ${result.silentAlarmReason}` : 'no'}.`
-    + (result.caughtIn ? ` Caught in: ${result.caughtIn}.` : '');
+    + (result.caughtIn ? ` Caught in: ${result.caughtIn}.` : '')
+    + (result.caughtHow ? `\nHow: ${result.caughtHow}` : '');
 }
 
 // answers is a list of strings, one per question, in order. extra is anything else they want to say.

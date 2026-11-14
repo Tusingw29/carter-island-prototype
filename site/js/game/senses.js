@@ -30,7 +30,11 @@ function senseSight(guard, world, dt, cfg) {
   }
   const rate = detectionRate(guard, Math.abs(player.x - guard.x), cfg);
   guard.detection = Math.min(1, guard.detection + rate * dt);
-  if (guard.detection >= 1) raiseAlarm(world, player.x, 'sight', cfg);
+  if (guard.detection >= 1) {
+    const ahead = (player.x - guard.x) * guard.facing;
+    const kind = ahead >= 0 && ahead <= cfg.closeSightDistance ? 'closeSight' : 'beam';
+    raiseAlarm(world, player.x, 'sight', cfg, guard.roomId, { kind, guard });
+  }
   else if (guard.state === 'suspicious') guard.targetX = player.x;
   else if (guard.state === 'calm' && guard.detection >= cfg.glimpseThreshold) makeSuspicious(world, guard, player.x);
 }
@@ -55,7 +59,7 @@ export function senseBodies(guard, world, cfg = CONFIG.guard) {
     if (guard.roomId !== world.room.id) {
       say(world, `Radio: "Man down in the ${world.layout.rooms[guard.roomId].name}!"`);
     }
-    raiseAlarm(world, body.x, 'body', cfg, guard.roomId);
+    raiseAlarm(world, body.x, 'body', cfg, guard.roomId, { kind: 'body', guard });
   }
 }
 

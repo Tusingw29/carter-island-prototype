@@ -25,7 +25,7 @@ export const guardPost = (guard) => (guard.patrolMin + guard.patrolMax) / 2;
 
 // A guard who can be sent: awake, on the radio, at home, and not busy.
 function free(guard) {
-  return isAwake(guard) && !guard.sleeper && !guard.duty && !guard.held
+  return isAwake(guard) && !guard.sleeper && !guard.duty
     && guard.state !== 'alert' && guard.roomId === guard.homeRoomId;
 }
 

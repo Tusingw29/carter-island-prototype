@@ -25,20 +25,28 @@ export function makeSuspicious(world, guard, x) {
 // The alarm: every conscious guard goes Alert and heads for x.
 // reason is 'sight' (the player was clearly seen) or 'body' (a body was found).
 // roomId is the room it happens in. Left out, it is the room the player is in.
-export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.room.id) {
+// cause says what set it off, for the score screen: { kind, guard }.
+export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.room.id, cause = null) {
   const here = world.allGuards.filter((guard) => guard.roomId === roomId);
   const alreadyAlert = here.some((guard) => guard.state === 'alert');
   for (const guard of here.filter(isConscious)) {
-    guard.held = false;
+    // Seen is not caught: a guard who was not already chasing freezes for a moment first.
+    if (guard.state !== 'alert') guard.react = cfg.reactSeconds;
     guard.lastKnownX = x;
     guard.detection = 1;
     guard.checkingSpotId = null;
     guard.stirTimer = 0;
+    guard.lostFor = 0;
+    guard.lunge = 0;
     if (reason === 'sight') guard.trackTimer = cfg.trackSeconds;
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();
-  if (reason === 'sight' && !alreadyAlert) world.stats.timesSpotted += 1;
+  if (alreadyAlert) return;
+  if (reason === 'sight') world.stats.timesSpotted += 1;
+  world.lastAlarm = {
+    at: world.time, kind: cause?.kind ?? reason, by: cause?.guard?.label ?? null, roomId,
+  };
 }
 
 // The empty-bed alarm: every guard in the prison goes Alert. They do not know where you are,
@@ -48,12 +56,15 @@ export function alarmEverywhere(world) {
     guard.lastKnownX = guard.x;
     guard.detection = 1;
     guard.wary = true;
+    guard.react = CONFIG.guard.reactSeconds;
+    guard.lostFor = 0;
     // A guard who has walked next door on a radio check still has to walk home afterwards.
     if (guard.duty?.type !== 'radio') guard.duty = null;
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();
   world.stats.timesSpotted += 1;
+  world.lastAlarm = { at: world.time, kind: 'emptyBed', by: null, roomId: world.room.id };
   world.events.push({ type: 'lockdown' });
 }
 
