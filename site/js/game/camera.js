@@ -25,6 +25,7 @@ export function cameraSeesPlayer(camera, player) {
 function trigger(camera, world, cfg) {
   camera.cooldown = cfg.cooldownSeconds;
   world.seenByCamera = true;
+  world.cameraSawIn ??= world.room.name;
   world.stats.timesSpotted += 1;
   world.events.push({ type: 'camera', cameraId: camera.id });
   for (const guard of world.guards.filter(isAwake)) makeSuspicious(world, guard, world.player.x);

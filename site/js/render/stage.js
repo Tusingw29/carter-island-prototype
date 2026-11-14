@@ -2,11 +2,14 @@
 // Kept cheap on purpose so it runs on old laptops with built-in graphics: no shadows, no
 // post-processing, and the picture is drawn at a lower resolution if the frame rate drops.
 import { AmbientLight, Color, PerspectiveCamera, Scene, WebGLRenderer } from '../../vendor/three.module.js';
+import { CONFIG } from '../game/config.js';
+import { farness } from '../game/framing.js';
 
-const CAMERA_DISTANCE = 15;
-const CAMERA_HEIGHT = 2.8;
+// Camera height and where it looks, at the close distance. Both scale as it pulls back, so the
+// downward tilt stays the same and the room sits in the middle of the picture.
+const CAMERA_RISE = 1.1;
 const LOOK_HEIGHT = 1.7;
-const FOLLOW_SHARPNESS = 10;
+const LOOK_HEIGHT_FAR = 2.05;
 // Resolution steps, as a share of the screen's own pixels. Lower is faster and blurrier.
 const QUALITY_STEPS = [1, 0.75, 0.55];
 const SLOW_FRAME_MS = 24;
@@ -25,8 +28,7 @@ export function createStage(canvas, startLow = false) {
   scene.background = new Color(0x05070b);
   scene.add(new AmbientLight(0x8ea4d0, 1.7));
 
-  const camera = new PerspectiveCamera(32, 1, 0.1, 100);
-  camera.position.set(0, CAMERA_HEIGHT, CAMERA_DISTANCE);
+  const camera = new PerspectiveCamera(CONFIG.view.fovDeg, 1, 0.1, 200);
 
   function resize() {
     renderer.setPixelRatio(basePixelRatio * QUALITY_STEPS[quality]);
@@ -48,22 +50,20 @@ export function createStage(canvas, startLow = false) {
     resize();
   }
 
-  // Keeps the player on screen without showing past the room's end walls.
-  function follow(targetX, roomWidth, dt) {
-    const halfView = Math.tan((camera.fov * Math.PI) / 360) * CAMERA_DISTANCE * camera.aspect;
-    const min = halfView - 1;
-    const max = roomWidth - halfView + 1;
-    const goal = min > max ? roomWidth / 2 : Math.max(min, Math.min(max, targetX));
-    const blend = dt === Infinity ? 1 : 1 - Math.exp(-FOLLOW_SHARPNESS * dt);
-    camera.position.x += (goal - camera.position.x) * blend;
-    camera.lookAt(camera.position.x, LOOK_HEIGHT, 0);
+  // Puts the camera where the framing says: framing.x along the room, framing.distance back.
+  function frame(framing) {
+    const lookHeight = LOOK_HEIGHT + (LOOK_HEIGHT_FAR - LOOK_HEIGHT) * farness(framing);
+    const rise = (CAMERA_RISE * framing.distance) / CONFIG.view.closeDistance;
+    camera.position.set(framing.x, lookHeight + rise, framing.distance);
+    camera.lookAt(framing.x, lookHeight, 0);
   }
 
   return {
     renderer,
     scene,
     camera,
-    follow,
+    frame,
+    aspect: () => camera.aspect,
     watchSpeed,
     render: () => renderer.render(scene, camera),
     // For the debug panel.

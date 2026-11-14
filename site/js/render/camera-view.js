@@ -23,7 +23,7 @@ export function createCameraView(camera) {
   beam.frustumCulled = false;
   group.add(beam);
 
-  function update(state) {
+  function update(state, far = 0) {
     beam.visible = !state.off;
     lens.material.emissive.setHex(state.off ? 0x000000 : (state.sees ? SEEN : WATCHING));
     const positions = geometry.attributes.position;
@@ -32,7 +32,7 @@ export function createCameraView(camera) {
     positions.setXYZ(2, state.x + state.halfWidth, 0, 0.3);
     positions.needsUpdate = true;
     material.color.setHex(state.sees ? SEEN : WATCHING);
-    material.opacity = state.sees ? 0.3 : 0.14;
+    material.opacity = (state.sees ? 0.3 : 0.14) * (1 + 0.6 * far);
   }
   return { group, update };
 }

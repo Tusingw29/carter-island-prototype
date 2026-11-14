@@ -13,7 +13,18 @@ import { STEP, intent } from '../helpers.mjs';
 
 const SLICE_TICKS = 30;
 const SLICE = SLICE_TICKS * STEP;
-const SAFETY = 0.3;
+// How much room the bot leaves between itself and anything that could see or hear it, in metres.
+// withSafety runs a piece of planning with a bigger margin, to measure how much slack a route has.
+const DEFAULT_SAFETY = 0.3;
+let SAFETY = DEFAULT_SAFETY;
+export function withSafety(margin, action) {
+  SAFETY = margin;
+  try {
+    return action();
+  } finally {
+    SAFETY = DEFAULT_SAFETY;
+  }
+}
 const SAMPLE_EVERY = 6;
 
 // Records every guard and camera for the next `seconds`, one entry per game tick.

@@ -34,7 +34,15 @@ const CUES = {
   creak: [[410, 0, 0.09, 'sawtooth', 0.25], [370, 0.08, 0.12, 'sawtooth', 0.2]],
   camera: [[1300, 0, 0.06, 'square'], [1300, 0.12, 0.06, 'square']],
   keycard: [[660, 0, 0.08, 'triangle'], [990, 0.09, 0.2, 'triangle']],
-  silentAlarm: [[220, 0, 0.5, 'sawtooth'], [208, 0.25, 0.6, 'sawtooth']],
+  // Three low pulses and a long drone: unlike anything else, so you know something changed.
+  silentAlarm: [
+    [196, 0, 0.18, 'sawtooth', 1.3], [196, 0.26, 0.18, 'sawtooth', 1.3], [196, 0.52, 0.18, 'sawtooth', 1.3],
+    [147, 0.8, 1.1, 'sawtooth', 1.2], [139, 0.8, 1.1, 'sawtooth', 0.8],
+  ],
+  // The PA: a two-tone chime, like a public address system switching on.
+  pa: [[784, 0, 0.3, 'sine', 1.4], [587, 0.32, 0.6, 'sine', 1.4]],
+  // The clock in the last minute.
+  clockTick: [[1500, 0, 0.03, 'square', 0.5], [900, 0.03, 0.03, 'square', 0.3]],
   win: [[523, 0, 0.12, 'triangle'], [659, 0.13, 0.12, 'triangle'], [784, 0.26, 0.3, 'triangle']],
   lose: [[300, 0, 0.2, 'sawtooth'], [200, 0.2, 0.5, 'sawtooth']],
   // Footsteps: walking is a soft tap, running a heavier thud. Crouching makes none.

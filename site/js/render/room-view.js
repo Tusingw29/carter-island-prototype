@@ -6,6 +6,7 @@ import { createSnitchView, createTraderView } from './inmate-views.js';
 import { createPortalView } from './portal-views.js';
 import { createSpotView } from './spot-views.js';
 import { ductCeiling, grateView, weldedVentView } from './vent-views.js';
+import { createWallClock } from './wall-clock.js';
 
 const WALL_Z = -2;
 const WALL_HEIGHT = 4.6;
@@ -77,7 +78,8 @@ const ITEM_VIEWS = {
   bedsheets: (item) => crateView(item, 0xd8d8e0, 0.6),
 };
 
-export function createRoomView(room, cameras, snitches) {
+// options.clock: false leaves the wall clocks out.
+export function createRoomView(room, cameras, snitches, options = {}) {
   const group = new Group();
   group.add(shell(room));
   for (const x of room.cellXs ?? []) group.add(cellFront(x));
@@ -95,6 +97,8 @@ export function createRoomView(room, cameras, snitches) {
   if (room.trader) group.add(createTraderView(room.trader));
   for (const grate of room.grates ?? []) group.add(grateView(grate));
   if (room.crawl) group.add(ductCeiling(room));
+  const wallClock = options.clock === false ? null : createWallClock(room, cameras);
+  if (wallClock) group.add(wallClock.group);
 
   const spotViews = new Map();
   for (const spot of room.hideSpots ?? []) {
@@ -109,7 +113,9 @@ export function createRoomView(room, cameras, snitches) {
   const snitchViews = snitches.map((snitch) => ({ snitch, view: createSnitchView(snitch) }));
   for (const { view } of snitchViews) group.add(view.group);
 
-  function update(world) {
+  // far is 0 with the camera close and 1 with it pulled right back.
+  function update(world, far = 0) {
+    wallClock?.update(world);
     for (const [id, view] of spotViews) {
       const holdsBody = world.allGuards.some((guard) => guard.hiddenIn === id);
       let glow = holdsBody ? BODY_GLOW : 0;
@@ -122,8 +128,8 @@ export function createRoomView(room, cameras, snitches) {
       view.visible = !(world.taken.has(item.id) || (item.type === 'keycard' && world.player.hasKeycard));
     }
     for (const view of liveViews) view.userData.update(world);
-    for (const { camera, view } of cameraViews) view.update(camera);
+    for (const { camera, view } of cameraViews) view.update(camera, far);
     for (const { snitch, view } of snitchViews) view.update(snitch);
   }
-  return { group, update };
+  return { group, update, dispose: () => wallClock?.dispose() };
 }

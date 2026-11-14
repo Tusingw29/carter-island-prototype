@@ -1,5 +1,7 @@
 // How a run ends, and the score and rank shown afterwards.
 import { CONFIG } from './config.js';
+import { announce, announcementsBetween, tickBetween } from './cues.js';
+import { silentAlarmReason } from './keycard.js';
 
 export const RANKS = Object.freeze({
   ghost: { name: 'Ghost', means: 'never spotted, no knockouts' },
@@ -26,6 +28,13 @@ export function scoreRun(world) {
     timesSpotted,
     knockouts,
     bodiesFound,
+    // Why the trip home went the way it did.
+    silentAlarm: world.silentAlarm,
+    silentAlarmReason: silentAlarmReason(world),
+    // 'slow', 'fast', or null if the keycard was never taken.
+    keycardGrab: world.keycardGrab,
+    endedIn: world.room.name,
+    caughtIn: world.over === 'caught' ? world.room.name : null,
   };
 }
 
@@ -58,9 +67,21 @@ export function updateTimer(world, dt, cfg = CONFIG) {
   if (world.timeLeft > 0 && world.timeLeft <= 10 && Math.ceil(before) !== Math.ceil(world.timeLeft)) {
     world.events.push({ type: 'timerTick' });
   }
+  // The PA, and a tick through the last minute that speeds up.
+  for (const entry of announcementsBetween(before, world.timeLeft, cfg)) announce(world, entry, cfg);
+  if (tickBetween(before, world.timeLeft, cfg)) world.events.push({ type: 'clockTick' });
   if (world.timeLeft > 0) return;
   if (!inBed(world)) endRun(world, 'headcount');
   else endRun(world, world.player.hasKeycard ? 'win' : 'empty-handed');
+}
+
+// The debug keys: moves the timer by `change` seconds. Going down, the last PA announcement
+// that was skipped over still plays, so the cues can be checked without waiting.
+export function jumpTimer(world, change, cfg = CONFIG) {
+  const before = world.timeLeft;
+  world.timeLeft = Math.max(1, world.timeLeft + change);
+  const skipped = announcementsBetween(before, world.timeLeft, cfg);
+  if (skipped.length > 0) announce(world, skipped.at(-1), cfg);
 }
 
 export const startingSeconds = (cfg = CONFIG) => cfg.headcountSeconds;

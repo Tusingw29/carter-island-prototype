@@ -8,6 +8,9 @@ const HEADLINES = {
   headcount: 'HEADCOUNT',
   'empty-handed': 'HEADCOUNT',
 };
+const KEYCARD = { slow: 'Taken slowly (quiet)', fast: 'Grabbed fast' };
+// The room is shown when the run ended somewhere other than your bed.
+const WHERE_LABELS = { caught: 'Caught in', headcount: 'Out of bed in' };
 const DETAILS = {
   win: 'You have the keycard, and nobody knows.',
   caught: 'Grabbed a second time.',
@@ -36,6 +39,11 @@ export function createEndScreen(onPlayAgain) {
     byId('score-spotted').textContent = result.timesSpotted;
     byId('score-knockouts').textContent = result.knockouts;
     byId('score-bodies').textContent = result.bodiesFound;
+    byId('score-keycard').textContent = KEYCARD[result.keycardGrab] ?? 'Not taken';
+    byId('score-alarm').textContent = result.silentAlarm ? `Yes: ${result.silentAlarmReason}` : 'No';
+    byId('score-where-row').hidden = !WHERE_LABELS[result.outcome];
+    byId('score-where-label').textContent = WHERE_LABELS[result.outcome] ?? '';
+    byId('score-where').textContent = result.endedIn;
   }
   return { update };
 }

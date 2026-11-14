@@ -7,25 +7,28 @@ import { createPlayerView } from './player-view.js';
 import { createRoomView } from './room-view.js';
 
 // Draws the room the player is in. main.js builds a new one each time the player changes room.
-export function createGameView(world) {
+// options.clock: false leaves the wall clocks out.
+export function createGameView(world, options = {}) {
   const root = new Group();
   const roomId = world.room.id;
   const here = (thing) => thing.roomId === roomId;
-  const roomView = createRoomView(world.room, world.cameras.filter(here), world.snitches.filter(here));
+  const roomView = createRoomView(world.room, world.cameras.filter(here), world.snitches.filter(here), options);
   const playerView = createPlayerView();
   const guardViews = world.guards.map(() => createGuardView(root));
   const debugView = createDebugView(world);
   root.add(roomView.group, playerView.group, debugView.group);
 
-  function update(debug) {
-    roomView.update(world);
+  // far is 0 with the camera close and 1 with it pulled right back.
+  function update(debug, far = 0) {
+    roomView.update(world, far);
     playerView.update(world.player, spotById(world.room.hideSpots ?? [], world.player.hiddenIn));
-    world.guards.forEach((guard, i) => guardViews[i].update(guard));
+    world.guards.forEach((guard, i) => guardViews[i].update(guard, far));
     debugView.update(world, debug);
   }
 
   // Frees the GPU memory held by this run's blocks.
   function dispose() {
+    roomView.dispose();
     root.traverse((object) => {
       object.geometry?.dispose();
       object.material?.dispose();

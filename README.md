@@ -29,6 +29,7 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Knock out from behind, drag body | Space | X (left face button) |
 | Break free when grabbed | mash Space | mash X |
 | Map | M | View / Select |
+| Zoom the camera in or out | Z | Left Bumper |
 | Pause | Esc | Start |
 | Controls screen | C | Y (top face button) |
 | Debug mode | F1 or ` | Right stick click |
@@ -63,10 +64,17 @@ Add these to the end of the play link.
 | `?debug` | Starts in debug mode: vision cones, noise ring, guard states, frame rate |
 | `?room=stairwell&px=2` | Starts in that room at that spot |
 | `?timer=30` | Starts with 30 seconds on the timer |
+| `?cam=close` | The close follow camera. This is the default |
+| `?cam=wide` | The same camera pulled back, showing twice as much floor |
+| `?cam=room` | Shows the whole room if it fits; if not, follows you and stops at the walls |
+| `?cam=smart` | Wide while you move; closes in when you hide, are grabbed, or a guard is near |
+| `?cues=off` | Turns off the PA announcements, wall clocks, and last-minute ticking |
+| `?alarm` | Acts as if a camera saw you, so taking the keycard sets off the silent alarm |
 | `?low` | Lowest picture quality, for very slow computers |
 
 Room names: `cell-block`, `laundry`, `maintenance`, `mess-hall`, `stairwell`,
 `guard-office`, `vent-duct`. In debug mode, `[` and `]` change the timer by 30 seconds.
+Link endings combine with `&`, for example `?cam=room&debug`.
 
 ## More
 

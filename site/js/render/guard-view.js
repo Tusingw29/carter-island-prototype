@@ -7,6 +7,7 @@ import { coneOutline, coneShape } from '../game/vision.js';
 import { block, placed } from './blocks.js';
 
 const CONE_Z = 0.35;
+const FAR_BOOST = 0.6;
 export const STATE_COLORS = { calm: 0xf2d98a, suspicious: 0xffb03a, searching: 0xff8a3a, alert: 0xff4a3c };
 
 function coneMesh() {
@@ -33,7 +34,8 @@ export function createGuardView(parent) {
   const light = new SpotLight(0xffe2a0, 60, 12, 0.36, 0.5, 1.2);
   parent.add(body, cone, light, light.target);
 
-  function update(guard) {
+  // far is 0 with the camera close and 1 with it pulled right back.
+  function update(guard, far = 0) {
     const out = guard.state === 'out';
     const asleep = guard.state === 'asleep';
     body.visible = !guard.hiddenIn;
@@ -55,7 +57,8 @@ export function createGuardView(parent) {
     coneOutline(coneShape(guard)).forEach((corner, i) => positions.setXYZ(i, corner.x, corner.y, CONE_Z));
     positions.needsUpdate = true;
     cone.material.color.setHex(STATE_COLORS[state]);
-    cone.material.opacity = state === 'calm' ? 0.16 : 0.26;
+    // From far back the beam is drawn stronger, so it still reads at half the size.
+    cone.material.opacity = (state === 'calm' ? 0.16 : 0.26) * (1 + FAR_BOOST * far);
     light.color.setHex(guard.state === 'alert' ? 0xff9a8a : 0xffe2a0);
 
     // The real light points a little toward the back wall so the beam shows up on it.
