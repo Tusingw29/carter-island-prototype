@@ -1,31 +1,27 @@
 # Carter Island: task board
 
-One task per build step. The spec is in [DESIGN.md](DESIGN.md).
+One task per build step. The spec is in [DESIGN.md](DESIGN.md). The six steps are Adam's.
 
 **Status values:** `todo` / `in progress` / `review, awaiting Adam's verdict` / `done`
 
 **Rules for the board**
 
 - Only Adam moves a task from "review, awaiting Adam's verdict" to "done".
-- One step at a time. Do not start the next step until Adam has given a verdict on the last.
-- Every step ends with a playable build on the live link and the four playtest questions
-  at the bottom of this page.
-
-> **Needs Adam's confirmation:** the setup brief said "Steps 1 to 6 below", but no step list
-> came with it. The six steps here are a proposed split of the spec, ordered so the riskiest
-> question (is sneaking past a guard fun?) is answered first. Reorder or rewrite freely.
+- Each step is built on its own branch and merged to `main` when its tests pass, because
+  the live link only ever shows `main`.
+- "How Adam tests it" is filled in with exact steps when a task goes to review.
 
 Live link: https://tusingw29.github.io/carter-island-prototype/
 
 | Step | Task | Status | Branch |
 | --- | --- | --- | --- |
 | 0 | Repo, tests, deploy, docs | review, awaiting Adam's verdict | `main` |
-| 1 | One room: sneak, hide, one guard | todo | `step-1-sneak-and-hide` |
-| 2 | Full map, doors, timer, bed | todo | `step-2-map-and-timer` |
-| 3 | Screwdriver, vents, cameras, keycard | todo | `step-3-vents-and-keycard` |
-| 4 | Knockouts, bodies, getting grabbed | todo | `step-4-knockouts-and-grabs` |
-| 5 | Inmates, bed check, dummy | todo | `step-5-inmates-and-bed-check` |
-| 6 | Score screen, ranks, tuning pass | todo | `step-6-score-and-tuning` |
+| 1 | Core feel in one room | review, awaiting Adam's verdict | `step-1-core-feel` |
+| 2 | Full stealth system | todo | `step-2-stealth` |
+| 3 | Full map, timer, keycard, win and lose | todo | `step-3-map` |
+| 4 | Screwdriver and vents | todo | `step-4-vents` |
+| 5 | Inmates, bed check, dummy, camera panel | todo | `step-5-inmates` |
+| 6 | Polish, ready to share | todo | `step-6-polish` |
 
 ---
 
@@ -38,141 +34,118 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
   - Pushing to `main` runs the tests and deploys to GitHub Pages only if they pass.
   - JS and CSS URLs carry a build stamp so returning players never mix old and new code.
   - `CONTRIBUTING.md`, `docs/DESIGN.md`, `docs/TASKS.md`, and `README.md` are written.
-- **How Adam tests it:**
-  1. Open the live link. You should see "Carter Island prototype, coming soon".
-  2. Look at the small grey line under it. It should show a build id (12 letters and
-     numbers, not "dev"), "Three.js r180", and "headcount timer 9:00".
-  3. Read the six proposed steps below and say whether the split and order are right.
+- **How Adam tests it:** open the live link and check the game loads. Turn on debug mode
+  (F1) and check the first line shows a build id that is not "dev".
 
-## Step 1: One room: sneak, hide, one guard
+## Step 1: Core feel in one room
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-1-core-feel`
+- **Scope:** The Cell Block as a single test room. 2.5D side view, blocks and flat colors,
+  dim lights-out lighting. Player walk, run, and crouch on keyboard and controller, tight
+  like Mega Man X. One locker: Up to hide, Up again to come out; hidden means unseen. One
+  guard on a fixed patrol with a flashlight vision cone, and a "!" over him when the player
+  is in the cone and not hidden. No chase. Noise ring for walk, run, and crouch, in debug
+  mode only. Debug toggle showing vision cones, noise rings, and the guard's state.
+- **Done means:**
+  - Movement starts and stops instantly at the configured walk, run, and crouch speeds.
+  - Every control works on keyboard and on a standard-mapping controller.
+  - Standing in the cone shows "!"; being in the locker never does.
+  - The guard's patrol is identical every run.
+  - Movement speeds, the vision cone check, and hiding are tested in Node with no rendering.
+- **How Adam tests it:**
+  1. Open the live link. Walk with A/D, hold Shift to run, hold S to crouch-walk. Tap
+     left and right quickly. It should start and stop dead, with no slide.
+  2. Do the same on a controller: left stick or D-pad to move, Right Trigger to run,
+     Down to crouch.
+  3. Walk into the guard's flashlight. A red "!" appears over him and the beam turns red.
+     Step out and both go back to normal.
+  4. Stand at the locker (a "UP: hide" tag appears) and press W. Let the guard sweep his
+     light right across the locker. No "!". Press W again to come out.
+  5. Press F1 (or the ` key, top left of the keyboard, if F1 changes your screen
+     brightness). Check the green noise ring: small when walking, large when running, gone
+     when crouching or still. Check the guard label reads CALM or SEES PLAYER.
+  6. Sneak up behind the guard while crouched, then follow him.
+  7. Playtest question 1: did hiding while the guard walked by feel tense?
+- **Known limits, on purpose:** the guard does not react to noise or chase yet, and you
+  can walk straight through him. Both arrive in Step 2.
+
+## Step 2: Full stealth system
 
 - **Status:** todo
-- **Branch:** `step-1-sneak-and-hide`
-- **Scope:** The Cell Block only. Player movement (walk, run, crouch) on keyboard and
-  controller. One guard on a fixed patrol with a flashlight cone that is his vision.
-  Noise from walking, running, crouching. Hide spots: lockers and one pitch-dark spot.
-  Alert levels Calm, Suspicious, Alert, Searching, back to Calm. Debug mode on F1 (vision
-  cones, noise rings, guard state labels, patrol paths). No timer, items, or other rooms yet.
+- **Branch:** `step-2-stealth`
+- **Scope:** Still the Cell Block test room. Alert levels Calm, Suspicious, Alert,
+  Searching, back to Calm. Guards react to noise (go Suspicious and walk to the spot) and
+  to sight. Searching guards check nearby hiding spots. Knockout from behind, drag the
+  body, stuff it in a locker; a guard who finds an unhidden body goes Alert. Getting
+  grabbed during Alert, with one mash-to-break-free chance per run; the second grab shows
+  "Caught" and a restart button. Pitch-dark spots that hide you while you stand still. A
+  second guard and a laundry cart. Guard state icons ("?" and "!"), a simple alert meter,
+  and simple sound cues.
 - **Done means:**
-  - You can walk, run, and crouch, and the guard reacts differently to each noise level.
-  - Stepping into the flashlight cone gets you seen; a locker or standing still in the
-    dark spot hides you.
-  - The guard goes through all four alert levels and returns to the same patrol every time.
-  - Player, guard, alert, and noise logic have Node tests and run with no rendering.
-- **How Adam tests it:**
-  1. Hide in a locker and let the guard walk past. Then do the same in the dark spot.
-  2. Run behind the guard and watch him turn to check the noise. Crouch behind him and
-     confirm he does not.
-  3. Get seen on purpose, break line of sight, hide, and watch him search and calm down.
-  4. Press F1 and check the cone, noise ring, and state label match what you felt.
-  5. Answer playtest question 1. If hiding is not tense here, stop and retune before Step 2.
+  - Every alert state change in the spec happens and is covered by a test.
+  - Knockouts, body discovery, and break-free are covered by tests.
+  - The icons and the alert meter always match the guards' real state.
+- **How Adam tests it:** to be written when the task goes to review.
 
-## Step 2: Full map, doors, timer, bed
+## Step 3: Full map, timer, keycard, win and lose
 
 - **Status:** todo
-- **Branch:** `step-2-map-and-timer`
-- **Scope:** All six areas as block rooms with their guards on fixed patrols, connected by
-  doors, hallways, and stairs (vents come in Step 3). Back-wall interaction with Up/W.
-  Creaky doors: tap for fast and loud, hold for slow and quiet. More hide spots: laundry
-  carts, under tables, under the desk, tool shelves. The headcount timer (config value,
-  9:00). Your bed, with win and lose at 0:00 as a plain message. Map screen that fills in
-  as you enter rooms. Pause.
+- **Branch:** `step-3-map`
+- **Scope:** All 6 areas on 3 floors, connected by doors, hallways, and stairs. Vents stay
+  closed. Each area has its guards, cameras, and hiding spots from the spec, on fixed
+  patrols. Cameras sweep and send nearby guards to Suspicious. Creaky doors: tap Up is fast
+  and loud, hold Up is slow and quiet. The 9:00 headcount timer on screen, pausing only in
+  the pause menu. The keycard with all three grab outcomes. Win and lose conditions, the
+  score screen, and the four ranks. A map screen that fills in as you explore. Pacing
+  target of 30 to 60 seconds per room.
 - **Done means:**
-  - You can walk the front door route from your cell to the Guard Office and back.
-  - Each room takes roughly 30 to 60 seconds to sneak through.
-  - The timer counts down without stopping, and the run ends at 0:00 in or out of bed.
-  - The map shows visited rooms and doors, and toggles with M or Select.
-- **How Adam tests it:**
-  1. Walk the front door route to the Guard Office with a stopwatch feel for each room.
-  2. Tap a creaky door near a guard, then hold it open slowly near the same guard.
-  3. Open the map in a few rooms and check it matches where you have been.
-  4. Let the timer run out once in bed and once out of bed.
-  5. Answer playtest question 2.
+  - A full front-door run is playable from bed to keycard and back to bed.
+  - Room connections, the timer, keycard outcomes, win and lose, and score and rank math
+    are covered by tests.
+  - A clean front-door run time is measured and reported.
+- **How Adam tests it:** to be written when the task goes to review.
 
-## Step 3: Screwdriver, vents, cameras, keycard
+## Step 4: Screwdriver and vents
 
 - **Status:** todo
-- **Branch:** `step-3-vents-and-keycard`
-- **Scope:** Screwdriver pickup in the Laundry; vent covers need it. The vent route:
-  Maintenance vent, up the wall, along the duct above the Mess Hall with peek-down grates,
-  into the Guard Office. The one-way drop from the Guard Office to the Cell Block. The
-  welded vent teaser. Sweeping cameras, and the Maintenance panel that turns off the
-  Stairwell camera. The keycard with slow grab, fast grab, the stirring guard, and the
-  silent alarm. Vents shown on the map. Winning now needs the keycard, and Sleep in bed
-  ends the run early.
+- **Branch:** `step-4-vents`
+- **Scope:** Screwdriver pickup in the Laundry. Vent covers open only with it, and look
+  clearly locked before that. Crawl path: Maintenance vent, up the wall, along the duct
+  above the Mess Hall, into the Guard Office. Crawling is slow but quiet. Grates to peek
+  down through. The one-way vent in the Guard Office that drops into the Cell Block. The
+  welded vent in Maintenance with its "Welded shut" message. Vents and the drop appear on
+  the map once discovered.
 - **Done means:**
-  - The full loop is playable start to finish by both the front door and the vent route.
-  - Vents refuse to open without the screwdriver, and the drop only works from the office.
-  - Slow grab, fast grab, and silent alarm each produce the outcome in the spec.
-  - A camera seeing you sends nearby guards to Suspicious; the panel turns the camera off.
-- **How Adam tests it:**
-  1. Try a vent before getting the screwdriver, then after.
-  2. Do one full run by the vent route and one by the front door. Compare how they feel.
-  3. Take the keycard three ways: hold, tap, and tap while the camera watches.
-  4. Take the drop home and get into bed before 0:00.
-  5. Answer playtest question 3.
+  - Vent locks, crawl paths, and the one-way drop are covered by tests.
+  - A clean vent run time is measured and compared with the front-door run.
+- **How Adam tests it:** to be written when the task goes to review.
 
-## Step 4: Knockouts, bodies, getting grabbed
+## Step 5: Inmates, bed check, dummy, camera panel
 
 - **Status:** todo
-- **Branch:** `step-4-knockouts-and-grabs`
-- **Scope:** Knock out a guard from behind. Drag the body and stuff it in a locker or
-  cart. A guard who finds an unhidden body goes Alert. Searching guards check hide spots
-  near where they lost you. Getting grabbed during Alert, the one mash-to-break-free chance
-  per run, and the run ending on the second grab. Knocking out the office guard triggers
-  the silent alarm.
-- **Done means:**
-  - Knockouts only work from behind, and a hidden body is never found.
-  - A guard walking past an unhidden body goes Alert every time.
-  - The first grab can be escaped by mashing; the second ends the run.
-  - A searching guard sometimes opens the spot you are hiding in.
-- **How Adam tests it:**
-  1. Knock out the Cell Block guard, leave the body, and wait for another guard to find it.
-  2. Repeat, but hide the body in a locker.
-  3. Get caught on purpose, mash free, then get caught again.
-  4. Hide close to where a guard lost you and see whether he checks your spot.
-  5. Answer playtest question 1 again. Did knockouts make hiding less tense?
+- **Branch:** `step-5-inmates`
+- **Scope:** Snitch inmates in the Cell Block with small vision cones; seen means they
+  yell and the nearest guard goes Suspicious to that spot; with the keycard you can open
+  their cell and knock them out. The trader inmate, who swaps the Mess Hall cigarettes for
+  a hint about whichever of the vents, camera panel, or one-way drop you have not found.
+  The bed check at 5:00 remaining. Bedsheets in the Laundry, the dummy, and placing it in
+  your bed. The Maintenance camera panel that turns off the Stairwell camera.
+- **Done means:** each of those systems works as the spec says and has tests.
+- **How Adam tests it:** to be written when the task goes to review.
 
-## Step 5: Inmates, bed check, dummy
+## Step 6: Polish, ready to share
 
 - **Status:** todo
-- **Branch:** `step-5-inmates-and-bed-check`
-- **Scope:** Snitch inmates with small vision cones who yell and send the nearest guard to
-  your spot. Opening their cells with the keycard and knocking them out. The trader inmate,
-  the cigarettes in the Mess Hall kitchen corner, and his hint about whichever of the
-  vents, camera panel, or one-way drop you have not found yet. The bed check at 5:00
-  remaining. Bedsheets in the Laundry, building the dummy, and placing it in your bed.
-- **Done means:**
-  - A snitch who sees you brings the nearest guard to that spot.
-  - With the keycard, a snitch's cell opens and he can be knocked out.
-  - The trader gives a hint about something you have not found, and never repeats a known one.
-  - At 5:00 the guard checks your cell: empty bed is Alert, you or the dummy is safe.
-- **How Adam tests it:**
-  1. Walk in front of a snitch's cell and watch the guard come.
-  2. Be out of bed at 5:00 with no dummy. Then replay with the dummy placed.
-  3. Bring the cigarettes to the trader on a fresh run, and again after using the vents.
-  4. On the way home with the keycard, open a snitch's cell and knock him out.
-  5. Answer playtest questions 2 and 4.
-
-## Step 6: Score screen, ranks, tuning pass
-
-- **Status:** todo
-- **Branch:** `step-6-score-and-tuning`
-- **Scope:** Score screen with time left, times spotted, knockouts, and bodies found by
-  guards. Ranks: Ghost, Shadow, Inmate, Caught. "Play again" button. Debug timer controls.
-  A tuning pass on timer length (8 to 10 minutes), guard speeds, cone sizes, and noise
-  ranges using Adam's notes from Steps 1 to 5. Final check that every control in the spec
-  works on keyboard and controller.
-- **Done means:**
-  - Every run ends on the score screen with the right numbers and the right rank.
-  - "Play again" starts a clean run with identical guard patrols.
-  - A full run is possible on a controller alone.
-  - Tuning values agreed with Adam are in `config.js`.
-- **How Adam tests it:**
-  1. Play three runs aiming for Ghost, Shadow, and Caught, and check each rank is right.
-  2. Play one whole run using only a controller.
-  3. Use the debug timer controls to try 8:00 and 10:00.
-  4. Answer all four playtest questions. This is the "is the core loop fun?" verdict.
+- **Branch:** `step-6-polish`
+- **Scope:** Title screen with Start and Controls. Controls screen for keyboard and
+  controller. First-time tutorial hints (hide, crouch, knockout, vent). Sound effects:
+  footsteps, door creaks, alert sting, timer warning at 1:00. Pause menu with Restart and
+  Controls. Runs smoothly on a 2015 MacBook Air with Intel graphics. A playtest page or
+  text at the end asking the four playtest questions. README updated.
+- **Done means:** a friend can open the link, learn the game, finish a run, and send
+  feedback without help from Adam.
+- **How Adam tests it:** to be written when the task goes to review.
 
 ---
 
@@ -185,25 +158,24 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 
 ## Open questions about the spec
 
-Answers go here once Adam has decided, then into the matching step.
+Each one lists the assumption the build uses until Adam says otherwise.
 
-1. **Which six steps?** See the note at the top of this page.
-2. **"Getting spotted costs time."** Is that only the time you lose hiding and waiting, or
+1. **"Getting spotted costs time."** Is that only the time you lose hiding and waiting, or
    should being spotted also take seconds off the timer? Assumed: no direct penalty.
-3. **Map versus area notes.** The map draws a vent from the Mess Hall down to Maintenance
+2. **Map versus area notes.** The map draws a vent from the Mess Hall down to Maintenance
    and a vent from the Vent Duct down to the Cell Block. The route text says the vent runs
    from Maintenance up the wall to the duct above the Mess Hall, and the Cell Block's only
    vent is the exit of the one-way drop from the Guard Office. Assumed: the route text is
    right, and the duct has no opening into the Mess Hall or Cell Block other than grates
    you can peek through.
-4. **Stairs to the Guard Office.** The map shows stairs straight down from the Guard Office
+3. **Stairs to the Guard Office.** The map shows stairs straight down from the Guard Office
    next to the Stairwell. Assumed: those are the Stairwell Checkpoint's stairs, so the
    office has exactly two ways in (stairwell door, duct) and one extra way out (the drop).
-5. **Bed check versus the win.** If the bed check goes Alert because the bed was empty, is
+4. **Bed check versus the win.** If the bed check goes Alert because the bed was empty, is
    the run still winnable by getting back in bed? Assumed: yes, guards chase as in any Alert.
-6. **Sleep action and the dummy.** If the dummy is in the bed, do you have to remove it
+5. **Sleep action and the dummy.** If the dummy is in the bed, do you have to remove it
    before you can get in? Assumed: getting in bed swaps you for the dummy automatically.
-7. **Break free button.** Space / X is both knockout and break free. Assumed fine, since you
+6. **Break free button.** Space / X is both knockout and break free. Assumed fine, since you
    cannot do both at once.
-8. **Camera with no guards nearby.** Maintenance has a camera but no guards. Assumed: its
+7. **Camera with no guards nearby.** Maintenance has a camera but no guards. Assumed: its
    alert reaches the Laundry guard next door.
