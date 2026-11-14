@@ -1,6 +1,8 @@
-// Blocks for the ways out of a room: hall archways, stairs, and doors.
+// Blocks for the ways out of a room: hall archways, stairs, doors, and vents.
+// A view may have userData.update(world) if its look depends on the game state.
 import { Group } from '../../vendor/three.module.js';
 import { block, placed } from './blocks.js';
+import { ventView } from './vent-views.js';
 
 const WALL_Z = -2;
 const OPENING = 0x030406;
@@ -36,7 +38,7 @@ function door(room, portal) {
   return group;
 }
 
-const BUILDERS = { hall, stairs, door };
+const BUILDERS = { hall, stairs, door, vent: ventView };
 
 export function createPortalView(room, portal) {
   return BUILDERS[portal.type](room, portal);

@@ -164,6 +164,7 @@ test('the map fills in as you explore', () => {
 test('the map places rooms on three floors', () => {
   const model = mapModel(createWorld());
   assert.deepEqual([...new Set(model.rooms.map((room) => room.floor))].sort(), [0, 1, 2]);
-  assert.equal(model.links.length, 5);
+  assert.equal(model.links.filter((link) => link.type !== 'vent').length, 5);
+  assert.equal(model.links.filter((link) => link.type === 'vent').length, 3);
   assert.ok(CONFIG.headcountSeconds > 0);
 });

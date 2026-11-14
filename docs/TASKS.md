@@ -19,7 +19,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 1 | Core feel in one room | review, awaiting Adam's verdict | `step-1-core-feel` |
 | 2 | Full stealth system | review, awaiting Adam's verdict | `step-2-stealth` |
 | 3 | Full map, timer, keycard, win and lose | review, awaiting Adam's verdict | `step-3-map` |
-| 4 | Screwdriver and vents | todo | `step-4-vents` |
+| 4 | Screwdriver and vents | review, awaiting Adam's verdict | `step-4-vents` |
 | 5 | Inmates, bed check, dummy, camera panel | todo | `step-5-inmates` |
 | 6 | Polish, ready to share | todo | `step-6-polish` |
 
@@ -187,7 +187,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 
 ## Step 4: Screwdriver and vents
 
-- **Status:** todo
+- **Status:** review, awaiting Adam's verdict
 - **Branch:** `step-4-vents`
 - **Scope:** Screwdriver pickup in the Laundry. Vent covers open only with it, and look
   clearly locked before that. Crawl path: Maintenance vent, up the wall, along the duct
@@ -198,7 +198,43 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 - **Done means:**
   - Vent locks, crawl paths, and the one-way drop are covered by tests.
   - A clean vent run time is measured and compared with the front-door run.
-- **How Adam tests it:** to be written when the task goes to review.
+- **Measured (planning bot, perfect timing, Ghost rank, all three are tests):**
+
+  | Route | Clean run |
+  | --- | --- |
+  | Front door in, front door back | 2:14 |
+  | Front door in, one-way drop home | 1:36 |
+  | Vent route: Laundry, Maintenance, duct, drop home | 1:17 |
+
+  The vent route is 57 seconds faster than walking the front door both ways and 19 seconds
+  faster than front door plus the drop, even with the trip to fetch the screwdriver. It
+  also never enters the Mess Hall or Stairwell, so it passes 1 awake guard and 1 camera
+  instead of 4 awake guards and 1 camera. Expect people to be two to three times slower
+  than the bot on every route.
+- **How the new rules work:**
+  - Vent covers with amber screws are screwed shut. Walk up to one and it goes on your
+    map, even if you cannot open it yet. With the screwdriver the screws turn blue.
+  - In the duct you can only crawl (crouch speed), and it makes no noise.
+  - Standing on a grate shows a strip at the bottom of the screen: the room below, with
+    live guard positions and which way they face.
+  - The duct drops you into the Guard Office through the ceiling. You cannot climb back up.
+  - The floor vent in the Guard Office opens without a tool, from inside only, and drops
+    you into the dark archway at the east end of the Cell Block.
+  - The welded vent in Maintenance has an orange weld around it and never opens.
+- **How Adam tests it:**
+  1. Before getting the screwdriver, go down to the Laundry, through the creaky door to
+     Maintenance, and try both vents (the amber-screwed one and the welded one). Open the
+     map and check the vent has appeared.
+  2. Take the screwdriver in the Laundry (E, on the crate past the guard's patrol). Go
+     back and open the vent.
+  3. Crawl the duct. Stop on each grate and watch the guards below. Try to run (you cannot).
+  4. Drop into the Guard Office. Try to climb back up. Take the keycard.
+  5. Use the floor vent to drop home. In the Cell Block, try to open that vent from below.
+  6. Do one full vent run and one full front-door run and compare how they feel and how
+     long they take you.
+  7. Front-door players: check you can still use the drop home with no screwdriver.
+  8. Playtest question 3: did the vent shortcut feel like a reward?
+- **Known limits, on purpose:** the camera panel in Maintenance arrives in Step 5.
 
 ## Step 5: Inmates, bed check, dummy, camera panel
 
@@ -270,6 +306,12 @@ Each one lists the assumption the build uses until Adam says otherwise.
     finding nothing does not count, and neither does a body being found (that has its own
     score line).
 11. **Guards and doors.** Assumed for the prototype: guards never change rooms.
-12. **The standing guard.** In a side view nobody can walk past a guard who never moves,
+12. **The one-way drop and the screwdriver.** The map legend says vents need the
+    screwdriver, but the drop is also the way home for front-door players who have no
+    tools. Assumed: the Guard Office floor vent is latched on the inside and opens without
+    the screwdriver. Say if the drop should need it.
+13. **Duct into the Guard Office.** Assumed one way: you drop out of the ceiling and
+    cannot climb back up, so the only ways out of the office are the door and the drop.
+14. **The standing guard.** In a side view nobody can walk past a guard who never moves,
     so the Stairwell has a checkpoint counter to crawl behind. Say if you would rather he
     paced a short beat instead.

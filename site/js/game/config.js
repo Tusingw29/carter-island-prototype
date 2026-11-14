@@ -92,6 +92,15 @@ export const CONFIG = Object.freeze({
     reach: 1,
   }),
 
+  vent: Object.freeze({
+    // The thud when you drop out of a vent.
+    landRadius: 3,
+    grateReach: 0.9,
+  }),
+
+  // How long an on-screen message stays up.
+  messageSeconds: 3.5,
+
   knockout: Object.freeze({
     reach: 1.1,
   }),

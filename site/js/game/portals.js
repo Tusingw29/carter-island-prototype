@@ -84,6 +84,7 @@ export function travel(world, portal, loud = false, cfg = CONFIG) {
   world.knownPortals.add(there.portal.id);
   enterRoom(world, there.room.id, arriveX);
   world.events.push({ type: loud ? 'doorLoud' : portal.type });
+  if (portal.drop) world.pendingNoises.push({ x: arriveX, radius: cfg.vent.landRadius });
 
   // The noise of the door, and of a chase, carries into the room you arrive in.
   if (loud) world.pendingNoises.push({ x: arriveX, radius: cfg.door.slamRadius });

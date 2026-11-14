@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CONFIG } from '../site/js/game/config.js';
 import { formatClock } from '../site/js/game/clock.js';
-import { frontDoorRun } from './bot/routes.mjs';
+import { frontDoorRun, frontDoorThenDropRun, ventRun } from './bot/routes.mjs';
 
 function report(name, { log, seconds }) {
   const legs = log.map((leg) => `    ${leg.room.padEnd(34)} ${leg.seconds.toFixed(1).padStart(5)} s`).join('\n');
@@ -21,4 +21,29 @@ test('front door route: a Ghost run is possible, well inside the timer', () => {
   assert.equal(world.silentAlarm, false);
   assert.ok(world.allGuards.every((guard) => guard.state === 'calm' || guard.state === 'asleep'));
   assert.ok(result.seconds < CONFIG.headcountSeconds / 2, 'a perfect run leaves plenty of room for mistakes');
+});
+
+function assertGhost({ world }) {
+  assert.equal(world.over, 'win');
+  assert.equal(world.result.rank, 'ghost');
+  assert.equal(world.silentAlarm, false);
+  assert.ok(world.allGuards.every((guard) => guard.state === 'calm' || guard.state === 'asleep'));
+}
+
+test('front door in, one-way drop home: a Ghost run with no tools', () => {
+  const result = frontDoorThenDropRun();
+  report('Clean front door in, drop home (bot, perfect timing)', result);
+  assertGhost(result);
+  assert.equal(result.world.player.hasScrewdriver, false);
+  assert.ok(result.seconds < frontDoorRun().seconds, 'the drop is a faster way home than walking back');
+});
+
+test('vent route: a Ghost run through the Laundry, Maintenance, and the duct', () => {
+  const result = ventRun();
+  report('Clean vent run (bot, perfect timing)', result);
+  assertGhost(result);
+  assert.equal(result.world.player.hasScrewdriver, true);
+  const visited = [...result.world.visited];
+  assert.ok(!visited.includes('mess-hall') && !visited.includes('stairwell'), 'it skips the guarded rooms');
+  assert.ok(result.seconds < CONFIG.headcountSeconds / 2);
 });

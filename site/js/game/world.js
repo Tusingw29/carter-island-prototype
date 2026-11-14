@@ -8,6 +8,7 @@ import { createGuard, isAwake } from './guard.js';
 import { updateGuardAI, updateGuardAway, updateSleeper } from './guard-ai.js';
 import { concealedIn, darkSpotAt, spotById, toggleHide } from './hiding.js';
 import { updateHold } from './holds.js';
+import { pickUp, pickupInReach } from './items.js';
 import { keycardInReach, takeKeycard } from './keycard.js';
 import { fullSpotIds, pressAction, stuffBody, updateDrag } from './knockout.js';
 import { noiseRadius } from './noise.js';
@@ -16,6 +17,7 @@ import { enterRoom, hallBeingEntered, travel } from './portals.js';
 import { canSleep, endRun, updateTimer } from './run.js';
 import { updateSenses } from './senses.js';
 import { upTarget } from './targets.js';
+import { useProp, useVent } from './vents.js';
 
 // source is a whole layout ({ startRoom, rooms }) or a single room, which is handy in tests.
 export function createWorld(source = PRISON, cfg = CONFIG) {
@@ -45,6 +47,9 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     knownPortals: new Set(),
     // Tap-or-hold in progress for Up (creaky doors) and Interact (the keycard).
     holds: { up: null, interact: null },
+    // Ids of items picked up, and the message on screen right now ({ text, until }).
+    taken: new Set(),
+    message: null,
     seenByCamera: false,
     silentAlarm: false,
     keycardGrab: null,
@@ -84,9 +89,19 @@ function handleUp(world, intent, pressed, dt) {
     return;
   }
   updateHold(world, 'up', noTarget, dt);
+  // Walking up to a vent is enough to find it, so it goes on the map.
+  if (portal?.type === 'vent') world.knownPortals.add(portal.id);
   if (!pressed) return;
+  if (portal?.type === 'vent') {
+    useVent(world, portal);
+    return;
+  }
   if (portal) {
     travel(world, portal);
+    return;
+  }
+  if (target?.kind === 'prop') {
+    useProp(world, target.prop);
     return;
   }
   const result = toggleHide(player, room.hideSpots ?? [], fullSpotIds(world));
@@ -99,7 +114,10 @@ function handleInteract(world, intent, pressed, dt) {
   // The keycard: a tap grabs it fast, a full hold lifts it quietly.
   const result = updateHold(world, 'interact', { key, pressed, held: intent.interact }, dt);
   if (result) takeKeycard(world, result);
-  else if (pressed && !card && canSleep(world)) endRun(world, 'win');
+  if (!pressed || card) return;
+  const item = pickupInReach(world);
+  if (item) pickUp(world, item);
+  else if (canSleep(world)) endRun(world, 'win');
 }
 
 // Getting into a hiding spot while a guard is watching does not work: he knows where you are.
@@ -163,7 +181,9 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   if (hall) travel(world, hall);
   const spots = world.room.hideSpots ?? [];
   const hideSpot = player.hiddenIn ? spotById(spots, player.hiddenIn) : null;
-  updatePlayer(player, intent, dt, world.room.width, cfg.player, hideSpot);
+  // In the duct there is no room to stand: you crawl, which is slow but silent.
+  const moving = world.room.crawl ? { ...intent, crouch: true, run: false } : intent;
+  updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
   updateDrag(world);
   player.inDark = darkSpotAt(player, spots);
   noteWatchedHiding(world, wasConcealed, cfg.guard);

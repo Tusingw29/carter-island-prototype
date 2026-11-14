@@ -13,6 +13,7 @@ export function createPlayer(x) {
     // Id of the knocked-out guard being dragged, or null.
     dragging: null,
     hasKeycard: false,
+    hasScrewdriver: false,
     mode: 'idle',
     speed: 0,
   };

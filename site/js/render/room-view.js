@@ -4,6 +4,7 @@ import { block, placed } from './blocks.js';
 import { createCameraView } from './camera-view.js';
 import { createPortalView } from './portal-views.js';
 import { createSpotView } from './spot-views.js';
+import { ductCeiling, grateView, weldedVentView } from './vent-views.js';
 
 const WALL_Z = -2;
 const WALL_HEIGHT = 4.6;
@@ -37,11 +38,30 @@ function keycardView(item) {
   return placed(block(0.34, 0.04, 0.22, 0xe8f0ff, 0x7fd0a0), item.x, 1.11, 0.2);
 }
 
+// A tool lying on a crate against the back wall.
+function toolView(item) {
+  const group = new Group();
+  group.add(placed(block(0.9, 0.6, 0.7, 0x5a4a34), item.x, 0.3, WALL_Z + 0.5));
+  group.add(placed(block(0.2, 0.08, 0.08, 0xd9c23a, 0x6a5a10), item.x - 0.2, 0.65, WALL_Z + 0.6));
+  group.add(placed(block(0.4, 0.04, 0.04, 0xc8ccd4, 0x30343a), item.x + 0.1, 0.65, WALL_Z + 0.6));
+  return group;
+}
+
+const ITEM_VIEWS = { keycard: keycardView, screwdriver: toolView };
+
 export function createRoomView(room, cameras) {
   const group = new Group();
   group.add(shell(room));
   for (const x of room.cellXs ?? []) group.add(cellFront(x));
-  for (const portal of room.portals ?? []) group.add(createPortalView(room, portal));
+  const liveViews = [];
+  for (const portal of room.portals ?? []) {
+    const view = createPortalView(room, portal);
+    if (view.userData.update) liveViews.push(view);
+    group.add(view);
+  }
+  for (const prop of room.props ?? []) group.add(weldedVentView(prop));
+  for (const grate of room.grates ?? []) group.add(grateView(grate));
+  if (room.crawl) group.add(ductCeiling(room));
 
   const spotViews = new Map();
   for (const spot of room.hideSpots ?? []) {
@@ -49,7 +69,7 @@ export function createRoomView(room, cameras) {
     spotViews.set(spot.id, view);
     group.add(view);
   }
-  const itemViews = (room.items ?? []).map((item) => ({ item, view: keycardView(item) }));
+  const itemViews = (room.items ?? []).map((item) => ({ item, view: ITEM_VIEWS[item.type](item) }));
   for (const { view } of itemViews) group.add(view);
   const cameraViews = cameras.map((camera) => ({ camera, view: createCameraView(camera) }));
   for (const { view } of cameraViews) group.add(view.group);
@@ -60,7 +80,10 @@ export function createRoomView(room, cameras) {
       const glow = world.player.hiddenIn === id ? PLAYER_GLOW : 0;
       view.userData.setOccupied(holdsBody ? BODY_GLOW : glow);
     }
-    for (const { item, view } of itemViews) view.visible = !(item.type === 'keycard' && world.player.hasKeycard);
+    for (const { item, view } of itemViews) {
+      view.visible = !(world.taken.has(item.id) || (item.type === 'keycard' && world.player.hasKeycard));
+    }
+    for (const view of liveViews) view.userData.update(world);
     for (const { camera, view } of cameraViews) view.update(camera);
   }
   return { group, update };
