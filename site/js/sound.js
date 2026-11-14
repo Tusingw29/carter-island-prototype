@@ -9,10 +9,17 @@ const CUES = {
   bodyFound: [[700, 0, 0.3, 'sawtooth']],
   grab: [[150, 0, 0.3, 'sawtooth']],
   free: [[300, 0, 0.07, 'square'], [500, 0.08, 0.07, 'square'], [800, 0.16, 0.14, 'square']],
-  caught: [[400, 0, 0.2, 'sawtooth'], [300, 0.2, 0.2, 'sawtooth'], [180, 0.4, 0.5, 'sawtooth']],
   hide: [[240, 0, 0.05, 'sine']],
   unhide: [[300, 0, 0.05, 'sine']],
   stuff: [[160, 0, 0.1, 'sine']],
+  stairs: [[200, 0, 0.05, 'sine'], [170, 0.08, 0.05, 'sine']],
+  door: [[180, 0, 0.08, 'sine']],
+  doorLoud: [[90, 0, 0.25, 'sawtooth'], [140, 0.05, 0.3, 'square']],
+  camera: [[1300, 0, 0.06, 'square'], [1300, 0.12, 0.06, 'square']],
+  keycard: [[660, 0, 0.08, 'triangle'], [990, 0.09, 0.2, 'triangle']],
+  silentAlarm: [[220, 0, 0.5, 'sawtooth'], [208, 0.25, 0.6, 'sawtooth']],
+  win: [[523, 0, 0.12, 'triangle'], [659, 0.13, 0.12, 'triangle'], [784, 0.26, 0.3, 'triangle']],
+  lose: [[300, 0, 0.2, 'sawtooth'], [200, 0.2, 0.5, 'sawtooth']],
 };
 const VOLUME = 0.12;
 

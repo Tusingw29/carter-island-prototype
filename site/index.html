@@ -14,8 +14,16 @@
     <span id="alert-label">CALM</span>
     <div class="bar"><div id="alert-fill"></div></div>
   </div>
+  <div id="top-right">
+    <div id="timer">9:00</div>
+    <div id="keycard" hidden>KEYCARD</div>
+  </div>
+  <div id="room-name"></div>
 
-  <div id="prompt" class="tag" hidden></div>
+  <div id="prompt" class="tag" hidden>
+    <span id="prompt-text"></span>
+    <div class="bar" hidden><div id="hold-fill"></div></div>
+  </div>
   <pre id="debug-panel" class="debug-only"></pre>
 
   <div id="mash" class="banner" hidden>
@@ -23,14 +31,41 @@
     <div class="bar"><div id="mash-fill"></div></div>
   </div>
 
-  <div id="caught" class="banner" hidden>
-    <strong class="big">CAUGHT</strong>
-    <button id="restart" type="button">Restart (Enter)</button>
+  <div id="map-screen" class="panel" hidden>
+    <h2>MAP</h2>
+    <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <p class="legend">
+      Thick line: hallway &nbsp; Thin line: door (rust = creaky) &nbsp; Dashed: stairs &nbsp; M to close
+    </p>
+  </div>
+
+  <div id="pause-screen" class="panel small" hidden>
+    <h2>PAUSED</h2>
+    <p>The timer is stopped.</p>
+    <button id="resume" type="button">Resume (Esc)</button>
+    <button id="restart" type="button">Restart run</button>
+  </div>
+
+  <div id="end-screen" class="panel small" hidden>
+    <h2 id="end-headline"></h2>
+    <p id="end-detail"></p>
+    <table>
+      <tr><td>Time left</td><td id="score-time"></td></tr>
+      <tr><td>Times spotted</td><td id="score-spotted"></td></tr>
+      <tr><td>Knockouts</td><td id="score-knockouts"></td></tr>
+      <tr><td>Bodies found by guards</td><td id="score-bodies"></td></tr>
+    </table>
+    <p class="rank">Rank: <strong id="end-rank"></strong> <span id="end-rank-means"></span></p>
+    <button id="play-again" type="button">Play again (Enter)</button>
   </div>
 
   <p id="help">
-    A/D move &nbsp; Shift run &nbsp; S crouch &nbsp; W hide &nbsp; Space knock out / drag &nbsp; F1 or ` debug
-    <span>Controller: stick move, RT run, Down crouch, Up hide, X knock out / drag, R3 debug</span>
+    A/D move &nbsp; Shift run &nbsp; S crouch &nbsp; W hide / doors &nbsp; E interact &nbsp;
+    Space knock out / drag &nbsp; M map &nbsp; Esc pause &nbsp; F1 or ` debug
+    <span>
+      Controller: stick move, RT run, Down crouch, Up hide / doors, A interact, X knock out,
+      View map, Start pause
+    </span>
   </p>
   <script type="module" src="js/main.js"></script>
 </body>

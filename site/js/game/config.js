@@ -64,6 +64,32 @@ export const CONFIG = Object.freeze({
 
     grabReach: 0.8,
     stunSeconds: 2.5,
+    // A guard always notices someone this close in front of him, even below his beam.
+    closeSightDistance: 1.2,
+    // A sleeping guard who is disturbed wakes up this long after, if you are still in the room.
+    stirSeconds: 4,
+  }),
+
+  // Tap or hold, for creaky doors and the keycard.
+  hold: Object.freeze({
+    tapSeconds: 0.25,
+    slowSeconds: 2,
+  }),
+
+  door: Object.freeze({
+    reach: 0.9,
+    // How far a creaky door is heard when opened fast, on both sides of it.
+    slamRadius: 12.5,
+  }),
+
+  camera: Object.freeze({
+    // How long you can be in a camera's view before it registers you.
+    noticeSeconds: 0.35,
+    cooldownSeconds: 4,
+  }),
+
+  item: Object.freeze({
+    reach: 1,
   }),
 
   knockout: Object.freeze({

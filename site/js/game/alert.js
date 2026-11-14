@@ -1,7 +1,7 @@
 // Alert levels and the changes between them: Calm, Suspicious, Alert, Searching, back to Calm.
 // Every change goes through this file and adds an event, so sound and tests can follow along.
 import { CONFIG } from './config.js';
-import { isConscious } from './guard.js';
+import { isAwake, isConscious } from './guard.js';
 
 // Lowest to highest. The on-screen meter shows the highest level among all guards.
 export const LEVELS = ['calm', 'suspicious', 'searching', 'alert'];
@@ -9,12 +9,12 @@ export const LEVELS = ['calm', 'suspicious', 'searching', 'alert'];
 function setState(world, guard, state) {
   if (guard.state === state) return;
   guard.state = state;
-  world.events.push({ type: state, guardId: guard.id });
+  world.events.push({ type: state, guardId: guard.id, roomId: guard.roomId });
 }
 
 // A guard heard or glimpsed something at x and walks over to check.
 export function makeSuspicious(world, guard, x) {
-  if (!isConscious(guard) || guard.state === 'alert') return;
+  if (!isAwake(guard) || guard.state === 'alert') return;
   guard.targetX = x;
   guard.lookTimer = 0;
   guard.lookFlipped = false;
@@ -30,6 +30,7 @@ export function raiseAlarm(world, x, reason, cfg = CONFIG.guard) {
     guard.lastKnownX = x;
     guard.detection = 1;
     guard.checkingSpotId = null;
+    guard.stirTimer = 0;
     if (reason === 'sight') guard.trackTimer = cfg.trackSeconds;
     setState(world, guard, 'alert');
   }
@@ -57,12 +58,17 @@ export function calmDown(world, guard) {
   setState(world, guard, 'calm');
 }
 
+// The level to show for a guard. After the silent alarm, a calm guard shows as Suspicious.
+export function shownState(guard) {
+  return guard.state === 'calm' && guard.wary ? 'suspicious' : guard.state;
+}
+
 // What the alert meter shows: the highest level among the guards and how full the bar is.
 export function alertSummary(world, cfg = CONFIG.guard) {
-  const guards = world.guards.filter(isConscious);
+  const guards = world.guards.filter(isAwake);
   let level = 'calm';
   for (const guard of guards) {
-    if (LEVELS.indexOf(guard.state) > LEVELS.indexOf(level)) level = guard.state;
+    if (LEVELS.indexOf(shownState(guard)) > LEVELS.indexOf(level)) level = shownState(guard);
   }
   let fill = Math.max(0, ...guards.map((guard) => guard.detection));
   if (level === 'alert') fill = 1;

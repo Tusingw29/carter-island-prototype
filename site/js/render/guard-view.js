@@ -2,6 +2,7 @@
 import {
   BufferAttribute, BufferGeometry, DoubleSide, Group, Mesh, MeshBasicMaterial, SpotLight,
 } from '../../vendor/three.module.js';
+import { shownState } from '../game/alert.js';
 import { coneOutline, coneShape } from '../game/vision.js';
 import { block, placed } from './blocks.js';
 
@@ -34,21 +35,27 @@ export function createGuardView(parent) {
 
   function update(guard) {
     const out = guard.state === 'out';
+    const asleep = guard.state === 'asleep';
     body.visible = !guard.hiddenIn;
-    cone.visible = !out;
-    light.visible = !out;
-    torch.visible = !out;
-    // A knocked-out guard lies flat on the floor.
+    cone.visible = !out && !asleep;
+    light.visible = !out && !asleep;
+    torch.visible = !out && !asleep;
+    // A knocked-out guard lies flat on the floor. A sleeping one slumps in his chair.
     body.rotation.z = out ? Math.PI / 2 : 0;
     body.position.set(guard.x + (out ? 0.9 : 0), out ? 0.3 : 0, out ? 0.5 : 0);
-    if (out) return;
+    if (asleep) {
+      body.rotation.z = guard.stirTimer > 0 ? -0.15 : -0.45;
+      body.position.set(guard.x, -0.25, -0.6);
+    }
+    if (out || asleep) return;
+    const state = shownState(guard);
 
     torch.position.x = guard.facing * 0.4;
     const positions = cone.geometry.attributes.position;
     coneOutline(coneShape(guard)).forEach((corner, i) => positions.setXYZ(i, corner.x, corner.y, CONE_Z));
     positions.needsUpdate = true;
-    cone.material.color.setHex(STATE_COLORS[guard.state]);
-    cone.material.opacity = guard.state === 'calm' ? 0.16 : 0.26;
+    cone.material.color.setHex(STATE_COLORS[state]);
+    cone.material.opacity = state === 'calm' ? 0.16 : 0.26;
     light.color.setHex(guard.state === 'alert' ? 0xff9a8a : 0xffe2a0);
 
     // The real light points a little toward the back wall so the beam shows up on it.

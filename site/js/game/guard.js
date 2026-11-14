@@ -1,14 +1,21 @@
 // A guard and how he walks. No randomness, so the patrol is the same every run.
 import { CONFIG } from './config.js';
 
-export function createGuard({ id, patrol, startX, facing = 1 }) {
+export function createGuard({ id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false }) {
   const [from, to] = patrol;
   return {
     id,
     x: startX ?? from,
     facing,
-    // calm, suspicious, alert, searching, or out (knocked out).
-    state: 'calm',
+    // calm, suspicious, alert, searching, asleep, or out (knocked out).
+    state: sleeper ? 'asleep' : 'calm',
+    sleeper,
+    // Counts down once a sleeper is disturbed. At zero he wakes up.
+    stirTimer: 0,
+    // After the silent alarm a guard stays on edge: he patrols faster and notices sooner.
+    wary: false,
+    turnEvery,
+    turnTimer: 0,
     patrolMin: Math.min(from, to),
     patrolMax: Math.max(from, to),
     patrolDir: facing,
@@ -38,6 +45,12 @@ export function createGuard({ id, patrol, startX, facing = 1 }) {
 }
 
 export const isConscious = (guard) => guard.state !== 'out';
+export const isAwake = (guard) => guard.state !== 'out' && guard.state !== 'asleep';
+
+// A disturbed sleeper wakes up a few seconds later unless you have left the room.
+export function disturb(guard, cfg = CONFIG.guard) {
+  if (guard.state === 'asleep' && guard.stirTimer <= 0) guard.stirTimer = cfg.stirSeconds;
+}
 
 // Walks toward targetX. Returns true once he is standing on it.
 export function moveToward(guard, targetX, speed, dt) {
@@ -62,8 +75,18 @@ export function lookAround(guard, dt, seconds) {
 }
 
 export function patrol(guard, dt, cfg = CONFIG.guard) {
+  const speed = guard.wary ? cfg.suspiciousSpeed : cfg.walkSpeed;
   if (guard.patrolMin === guard.patrolMax) {
-    if (moveToward(guard, guard.patrolMin, cfg.walkSpeed, dt)) guard.facing = guard.postFacing;
+    if (!moveToward(guard, guard.patrolMin, speed, dt)) return;
+    // A standing guard with turnEvery looks one way, then the other, on a fixed beat.
+    if (guard.turnEvery > 0) {
+      guard.turnTimer += dt;
+      if (guard.turnTimer >= guard.turnEvery) {
+        guard.turnTimer -= guard.turnEvery;
+        guard.postFacing = -guard.postFacing;
+      }
+    }
+    guard.facing = guard.postFacing;
     return;
   }
   // At each end of the patrol the guard stops, looks ahead for a moment, then turns round.
@@ -77,7 +100,7 @@ export function patrol(guard, dt, cfg = CONFIG.guard) {
     return;
   }
   const end = guard.patrolDir > 0 ? guard.patrolMax : guard.patrolMin;
-  if (moveToward(guard, end, cfg.walkSpeed, dt)) {
+  if (moveToward(guard, end, speed, dt)) {
     guard.facing = guard.patrolDir;
     guard.pause = cfg.turnPauseSeconds;
   }

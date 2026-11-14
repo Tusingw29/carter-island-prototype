@@ -61,6 +61,9 @@ export function bodyPoints(x, height, count = 6) {
 
 export function guardSeesPlayer(guard, player, guardCfg = CONFIG.guard, playerCfg = CONFIG.player) {
   if (player.hiddenIn || player.inDark) return false;
+  // Right in front of him you are noticed even if you duck under the beam.
+  const ahead = (player.x - guard.x) * guard.facing;
+  if (ahead >= 0 && ahead <= guardCfg.closeSightDistance) return true;
   const shape = coneShape(guard, guardCfg);
   return bodyPoints(player.x, playerHeight(player, playerCfg)).some((point) => pointInCone(shape, point));
 }

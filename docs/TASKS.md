@@ -18,7 +18,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 0 | Repo, tests, deploy, docs | review, awaiting Adam's verdict | `main` |
 | 1 | Core feel in one room | review, awaiting Adam's verdict | `step-1-core-feel` |
 | 2 | Full stealth system | review, awaiting Adam's verdict | `step-2-stealth` |
-| 3 | Full map, timer, keycard, win and lose | todo | `step-3-map` |
+| 3 | Full map, timer, keycard, win and lose | review, awaiting Adam's verdict | `step-3-map` |
 | 4 | Screwdriver and vents | todo | `step-4-vents` |
 | 5 | Inmates, bed check, dummy, camera panel | todo | `step-5-inmates` |
 | 6 | Polish, ready to share | todo | `step-6-polish` |
@@ -123,7 +123,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 
 ## Step 3: Full map, timer, keycard, win and lose
 
-- **Status:** todo
+- **Status:** review, awaiting Adam's verdict
 - **Branch:** `step-3-map`
 - **Scope:** All 6 areas on 3 floors, connected by doors, hallways, and stairs. Vents stay
   closed. Each area has its guards, cameras, and hiding spots from the spec, on fixed
@@ -137,7 +137,53 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
   - Room connections, the timer, keycard outcomes, win and lose, and score and rank math
     are covered by tests.
   - A clean front-door run time is measured and reported.
-- **How Adam tests it:** to be written when the task goes to review.
+- **Measured:** a planning bot with perfect timing does a clean front-door round trip
+  (Ghost rank, slow keycard grab, nobody Suspicious at any point) in **2:14**. That run is
+  a test (`tests/clean-run.test.mjs`), so the level is proven beatable on every change.
+  Bot time per room: Cell Block 10 s, Mess Hall 22 s, Stairwell 30 s, Guard Office 9 s.
+  A person reading patrols for the first time will be two to three times slower, which
+  lands most rooms in the 30 to 60 second target. The Cell Block and Guard Office are quick.
+- **How the new rules work:**
+  - You start in bed. Up gets you out. The run ends at 0:00, or when you press E in bed
+    with the keycard.
+  - Hall archways at the ends of rooms are dark. You arrive unseen and can watch the room
+    before you move. Stand still and you stay hidden.
+  - Mess Hall tables, the office desk, and the Stairwell counter are wide hiding spots.
+    Once under or behind one you can crawl along it, silently, and come out the other end.
+    The counter is how you get past the standing guard, who turns every 5 seconds.
+  - Cameras show the stretch of floor they watch in blue. Stand still in the shadow under
+    the stairs to let the Stairwell camera pass over you.
+  - Guards do not follow you out of a room. They search near the way you left, and the
+    guards in the room you ran into come to look.
+  - Keycard: hold E for 2 seconds and nothing happens. Tap E and the guard stirs; be out
+    of the room within 4 seconds or he wakes up Alert. If a camera has seen you at any
+    point in the run, or the office guard is knocked out, taking the card sets off the
+    silent alarm: every guard shows "?" for the rest of the run, walks faster, and notices
+    you sooner.
+- **How Adam tests it:**
+  1. Front door run: bed, right through the Cell Block, Mess Hall, Stairwell, hold Up on
+     the rust-colored door, hold E on the keycard, and back the same way. Get in bed and
+     press E. Check the score screen and rank.
+  2. Time each room with the on-screen timer. Tell me which felt too short or too long.
+  3. Creaky door: at the office door, tap Up instead of holding. Watch the sleeping guard
+     stir (he shows a countdown). Try the Laundry door too, with the guard nearby.
+  4. Keycard outcomes: one run with hold E, one with tap E and running out, one with tap E
+     and staying, one after walking in front of the Stairwell camera first.
+  5. Camera: walk into the blue beam in the Stairwell and watch the guard come.
+  6. Map: press M in a few rooms. Rooms appear as you enter them, and rooms you have seen
+     a way into show as "?".
+  7. Pause: press Esc. The timer stops. It stops nowhere else.
+  8. Lose both ways: get grabbed twice, and stand out of bed at 0:00. To skip the wait,
+     turn on debug (F1) and press [ to take 30 seconds off the timer.
+  9. Ranks: Ghost (never spotted, no knockouts), Shadow (knock someone out, never spotted),
+     Inmate (get spotted, still make it back).
+  10. Playtest questions 2 and 4.
+- **Shortcuts for testing:** add `?room=stairwell&px=2` to the link to start in a room,
+  `?timer=30` to start with 30 seconds left, `?debug` to start in debug mode. Room ids:
+  `cell-block`, `laundry`, `maintenance`, `mess-hall`, `stairwell`, `guard-office`.
+- **Known limits, on purpose:** the Laundry and Maintenance Hall are open but there is
+  nothing to collect there yet. Vents, screwdriver, snitches, trader, bed check, and the
+  camera panel come in Steps 4 and 5. The way home is the way you came until Step 4.
 
 ## Step 4: Screwdriver and vents
 
@@ -212,3 +258,18 @@ Each one lists the assumption the build uses until Adam says otherwise.
    cannot do both at once.
 7. **Camera with no guards nearby.** Maintenance has a camera but no guards. Assumed: its
    alert reaches the Laundry guard next door.
+8. **"If a camera saw you take it."** The spec gives the Guard Office no camera, so no
+   camera can watch the grab itself. Assumed: if any camera has seen you at any point in
+   the run before you take the keycard, taking it sets off the silent alarm. This makes
+   avoiding cameras (and later the camera panel) matter.
+9. **In bed at 0:00 without the keycard.** The spec only covers out of bed (lose) and in
+   bed with the keycard (win). Assumed: a loss, shown as "You were in bed, but without the
+   keycard", rank Caught.
+10. **What counts as "spotted".** Assumed: a guard reaching Alert because he saw you, a
+    sleeping guard waking up, or a camera registering you. A guard going Suspicious and
+    finding nothing does not count, and neither does a body being found (that has its own
+    score line).
+11. **Guards and doors.** Assumed for the prototype: guards never change rooms.
+12. **The standing guard.** In a side view nobody can walk past a guard who never moves,
+    so the Stairwell has a checkpoint counter to crawl behind. Say if you would rather he
+    paced a short beat instead.
