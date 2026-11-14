@@ -8,13 +8,15 @@ import { createGuard, isAwake } from './guard.js';
 import { updateGuardAI, updateGuardAway, updateSleeper } from './guard-ai.js';
 import { concealedIn, darkSpotAt, spotById, toggleHide } from './hiding.js';
 import { updateHold } from './holds.js';
-import { pickUp, pickupInReach } from './items.js';
+import { updateBedCheck } from './bedcheck.js';
+import { noteFinds, pressInteract } from './interact.js';
 import { keycardInReach, takeKeycard } from './keycard.js';
 import { fullSpotIds, pressAction, stuffBody, updateDrag } from './knockout.js';
 import { noiseRadius } from './noise.js';
 import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
-import { canSleep, endRun, updateTimer } from './run.js';
+import { updateTimer } from './run.js';
+import { createSnitch, openCell, updateSnitch } from './snitch.js';
 import { updateSenses } from './senses.js';
 import { upTarget } from './targets.js';
 import { useProp, useVent } from './vents.js';
@@ -34,6 +36,7 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     allGuards: rooms.flatMap((room) => (room.guards ?? []).map((def) => ({ ...createGuard(def), roomId: room.id }))),
     guards: [],
     cameras: rooms.flatMap((room) => (room.cameras ?? []).map((def) => createCamera(def, room.id))),
+    snitches: rooms.flatMap((room) => (room.snitches ?? []).map((def) => createSnitch(def, room.id))),
     // Noises made this step, as { x, radius }. Guards in range hear them.
     noises: [],
     pendingNoises: [],
@@ -50,6 +53,13 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     // Ids of items picked up, and the message on screen right now ({ text, until }).
     taken: new Set(),
     message: null,
+    // Props the player has walked up to, hints the trader has given, and whether he has been paid.
+    found: new Set(),
+    notes: [],
+    traded: false,
+    // The bed check: null until it starts, then { result, guardId }.
+    bedCheck: null,
+    dummyInBed: false,
     seenByCamera: false,
     silentAlarm: false,
     keycardGrab: null,
@@ -104,6 +114,10 @@ function handleUp(world, intent, pressed, dt) {
     useProp(world, target.prop);
     return;
   }
+  if (target?.kind === 'cell') {
+    openCell(world, target.snitch);
+    return;
+  }
   const result = toggleHide(player, room.hideSpots ?? [], fullSpotIds(world));
   if (result) world.events.push({ type: result === 'hid' ? 'hide' : 'unhide' });
 }
@@ -114,10 +128,8 @@ function handleInteract(world, intent, pressed, dt) {
   // The keycard: a tap grabs it fast, a full hold lifts it quietly.
   const result = updateHold(world, 'interact', { key, pressed, held: intent.interact }, dt);
   if (result) takeKeycard(world, result);
-  if (!pressed || card) return;
-  const item = pickupInReach(world);
-  if (item) pickUp(world, item);
-  else if (canSleep(world)) endRun(world, 'win');
+  else if (pressed && !card) pressInteract(world);
+  noteFinds(world);
 }
 
 // Getting into a hiding spot while a guard is watching does not work: he knows where you are.
@@ -135,6 +147,7 @@ function noteWatchedHiding(world, wasConcealed, cfg) {
 
 function updateEveryoneElse(world, dt, cfg) {
   for (const camera of world.cameras) updateCamera(camera, world, dt, cfg.camera);
+  for (const snitch of world.snitches) updateSnitch(snitch, world, dt, cfg.snitch);
   for (const guard of world.guards) {
     if (isAwake(guard)) updateSenses(guard, world, dt, cfg.guard);
     else if (guard.state === 'asleep') updateSleeper(guard, world, dt, cfg.guard);
@@ -196,4 +209,5 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   updateEveryoneElse(world, dt, cfg);
   world.time += dt;
   updateTimer(world, dt);
+  if (!world.over) updateBedCheck(world, cfg);
 }

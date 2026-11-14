@@ -98,8 +98,25 @@ export const CONFIG = Object.freeze({
     grateReach: 0.9,
   }),
 
-  // How long an on-screen message stays up.
+  // How long an on-screen message stays up. Hints from the trader stay longer.
   messageSeconds: 3.5,
+  hintSeconds: 10,
+
+  // Snitch inmates watch a short stretch of floor on one side of their cell, then the other.
+  snitch: Object.freeze({
+    range: 2.6,
+    // Right at the bars they cannot see you. This is where you wait for them to look away.
+    blindSpot: 0.6,
+    lookSeconds: 4,
+    noticeSeconds: 0.3,
+    cooldownSeconds: 5,
+    reach: 0.9,
+  }),
+
+  bedCheck: Object.freeze({
+    // How long the guard looks at your bed before deciding.
+    lookSeconds: 1.5,
+  }),
 
   knockout: Object.freeze({
     reach: 1.1,

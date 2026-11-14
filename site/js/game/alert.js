@@ -38,6 +38,21 @@ export function raiseAlarm(world, x, reason, cfg = CONFIG.guard) {
   if (reason === 'sight' && !alreadyAlert) world.stats.timesSpotted += 1;
 }
 
+// The empty-bed alarm: every guard in the prison goes Alert. They do not know where you are,
+// so each one starts hunting from where he stands, and all of them stay on edge afterwards.
+export function alarmEverywhere(world) {
+  for (const guard of world.allGuards.filter(isAwake)) {
+    guard.lastKnownX = guard.x;
+    guard.detection = 1;
+    guard.wary = true;
+    guard.duty = null;
+    setState(world, guard, 'alert');
+  }
+  world.searchClaims = new Set();
+  world.stats.timesSpotted += 1;
+  world.events.push({ type: 'lockdown' });
+}
+
 // A chasing guard lost the player and starts hunting nearby hiding spots.
 export function beginSearch(world, guard, cfg = CONFIG.guard) {
   guard.searchOrigin = guard.lastKnownX ?? guard.x;

@@ -2,6 +2,7 @@
 import { Group } from '../../vendor/three.module.js';
 import { block, placed } from './blocks.js';
 import { createCameraView } from './camera-view.js';
+import { createSnitchView, createTraderView } from './inmate-views.js';
 import { createPortalView } from './portal-views.js';
 import { createSpotView } from './spot-views.js';
 import { ductCeiling, grateView, weldedVentView } from './vent-views.js';
@@ -10,6 +11,7 @@ const WALL_Z = -2;
 const WALL_HEIGHT = 4.6;
 const PLAYER_GLOW = 0xd98a3a;
 const BODY_GLOW = 0x3a5a9a;
+const DUMMY_GLOW = 0x8a8a7a;
 
 function cellFront(x) {
   const group = new Group();
@@ -47,9 +49,35 @@ function toolView(item) {
   return group;
 }
 
-const ITEM_VIEWS = { keycard: keycardView, screwdriver: toolView };
+// Something small on a crate: a pack of cigarettes or a pile of folded sheets.
+function crateView(item, color, size) {
+  const group = new Group();
+  group.add(placed(block(0.9, 0.6, 0.7, 0x5a4a34), item.x, 0.3, WALL_Z + 0.5));
+  group.add(placed(block(size, size * 0.6, size, color, 0x303030), item.x, 0.6 + size * 0.3, WALL_Z + 0.6));
+  return group;
+}
 
-export function createRoomView(room, cameras) {
+// The camera control panel: a box on the wall with a light that is green while the camera is on.
+function panelView(prop) {
+  const group = new Group();
+  const light = placed(block(0.16, 0.16, 0.06, 0x111111, 0x20aa40), prop.x, 1.75, WALL_Z + 0.16);
+  group.add(placed(block(0.9, 1.1, 0.14, 0x56606e), prop.x, 1.4, WALL_Z + 0.07), light);
+  group.add(placed(block(0.5, 0.3, 0.05, 0x10161b, 0x1a3a5a), prop.x, 1.25, WALL_Z + 0.16));
+  group.userData.update = (world) => {
+    const camera = world.cameras.find((entry) => entry.id === prop.controls);
+    light.material.emissive.setHex(camera.off ? 0xaa2020 : 0x20aa40);
+  };
+  return group;
+}
+
+const ITEM_VIEWS = {
+  keycard: keycardView,
+  screwdriver: toolView,
+  cigarettes: (item) => crateView(item, 0xe8e0d0, 0.22),
+  bedsheets: (item) => crateView(item, 0xd8d8e0, 0.6),
+};
+
+export function createRoomView(room, cameras, snitches) {
   const group = new Group();
   group.add(shell(room));
   for (const x of room.cellXs ?? []) group.add(cellFront(x));
@@ -59,7 +87,12 @@ export function createRoomView(room, cameras) {
     if (view.userData.update) liveViews.push(view);
     group.add(view);
   }
-  for (const prop of room.props ?? []) group.add(weldedVentView(prop));
+  for (const prop of room.props ?? []) {
+    const view = prop.type === 'camera-panel' ? panelView(prop) : weldedVentView(prop);
+    if (view.userData.update) liveViews.push(view);
+    group.add(view);
+  }
+  if (room.trader) group.add(createTraderView(room.trader));
   for (const grate of room.grates ?? []) group.add(grateView(grate));
   if (room.crawl) group.add(ductCeiling(room));
 
@@ -73,18 +106,24 @@ export function createRoomView(room, cameras) {
   for (const { view } of itemViews) group.add(view);
   const cameraViews = cameras.map((camera) => ({ camera, view: createCameraView(camera) }));
   for (const { view } of cameraViews) group.add(view.group);
+  const snitchViews = snitches.map((snitch) => ({ snitch, view: createSnitchView(snitch) }));
+  for (const { view } of snitchViews) group.add(view.group);
 
   function update(world) {
     for (const [id, view] of spotViews) {
       const holdsBody = world.allGuards.some((guard) => guard.hiddenIn === id);
-      const glow = world.player.hiddenIn === id ? PLAYER_GLOW : 0;
-      view.userData.setOccupied(holdsBody ? BODY_GLOW : glow);
+      let glow = holdsBody ? BODY_GLOW : 0;
+      // The dummy shows as a pale lump in the bed while you are out of it.
+      if (id === 'bed' && world.dummyInBed) glow = DUMMY_GLOW;
+      if (world.player.hiddenIn === id) glow = PLAYER_GLOW;
+      view.userData.setOccupied(glow);
     }
     for (const { item, view } of itemViews) {
       view.visible = !(world.taken.has(item.id) || (item.type === 'keycard' && world.player.hasKeycard));
     }
     for (const view of liveViews) view.userData.update(world);
     for (const { camera, view } of cameraViews) view.update(camera);
+    for (const { snitch, view } of snitchViews) view.update(snitch);
   }
   return { group, update };
 }
