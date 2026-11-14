@@ -3,6 +3,7 @@ import { Vector3 } from '../../vendor/three.module.js';
 import { shownState } from '../game/alert.js';
 import { holdProgress } from '../game/holds.js';
 import { currentPrompt } from '../game/prompts.js';
+import { moveTo, setHidden, setText, setWidth } from './dom.js';
 
 const ICONS = { calm: '', suspicious: '?', searching: '?', alert: '!', out: 'z', asleep: 'Zz' };
 const LABELS = { calm: 'CALM', suspicious: 'SUSPICIOUS', searching: 'SEARCHING', alert: 'ALERT', asleep: 'ASLEEP' };
@@ -10,8 +11,7 @@ const point = new Vector3();
 
 function pin(element, camera, x, y) {
   point.set(x, y, 0).project(camera);
-  element.style.left = `${(point.x * 0.5 + 0.5) * window.innerWidth}px`;
-  element.style.top = `${(-point.y * 0.5 + 0.5) * window.innerHeight}px`;
+  moveTo(element, (point.x * 0.5 + 0.5) * window.innerWidth, (-point.y * 0.5 + 0.5) * window.innerHeight);
 }
 
 function iconText(guard, debug) {
@@ -40,21 +40,21 @@ export function createOverlay() {
   function update(world, camera, debug) {
     const hint = currentPrompt(world);
     const progress = holdProgress(world);
-    prompt.hidden = !hint;
+    setHidden(prompt, !hint);
     if (hint) {
-      promptText.textContent = hint.text;
-      holdFill.parentElement.hidden = progress === null;
-      holdFill.style.width = `${(progress ?? 0) * 100}%`;
+      setText(promptText, hint.text);
+      setHidden(holdFill.parentElement, progress === null);
+      setWidth(holdFill, (progress ?? 0) * 100);
       pin(prompt, camera, hint.x, hint.y);
     }
 
     world.guards.forEach((guard, index) => {
       const icon = iconFor(index);
-      icon.textContent = iconText(guard, debug);
-      icon.dataset.state = shownState(guard);
+      setText(icon, iconText(guard, debug));
+      if (icon.dataset.state !== shownState(guard)) icon.dataset.state = shownState(guard);
       pin(icon, camera, guard.x, guard.state === 'out' ? 1.1 : 2.5);
     });
-    icons.slice(world.guards.length).forEach((icon) => { icon.textContent = ''; });
+    icons.slice(world.guards.length).forEach((icon) => setText(icon, ''));
   }
   return { update };
 }

@@ -6,6 +6,9 @@ export const CONFIG = Object.freeze({
   headcountMinSeconds: 8 * 60,
   headcountMaxSeconds: 10 * 60,
 
+  // A warning sounds when this much time is left.
+  timerWarningSeconds: 60,
+
   // The single bed check happens when this much time is left.
   bedCheckAtSecondsRemaining: 5 * 60,
 

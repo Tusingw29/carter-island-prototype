@@ -48,8 +48,16 @@ export function canSleep(world) {
   return inBed(world) && world.player.hasKeycard && !hunted;
 }
 
-export function updateTimer(world, dt) {
+export function updateTimer(world, dt, cfg = CONFIG) {
+  const before = world.timeLeft;
   world.timeLeft = Math.max(0, world.timeLeft - dt);
+  // A warning at one minute, then a tick for each of the last ten seconds.
+  if (before > cfg.timerWarningSeconds && world.timeLeft <= cfg.timerWarningSeconds) {
+    world.events.push({ type: 'timerWarning' });
+  }
+  if (world.timeLeft > 0 && world.timeLeft <= 10 && Math.ceil(before) !== Math.ceil(world.timeLeft)) {
+    world.events.push({ type: 'timerTick' });
+  }
   if (world.timeLeft > 0) return;
   if (!inBed(world)) endRun(world, 'headcount');
   else endRun(world, world.player.hasKeycard ? 'win' : 'empty-handed');

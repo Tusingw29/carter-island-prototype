@@ -2,14 +2,21 @@
 import { intentFromGamepad, intentFromKeys, mergeIntents } from './game/intent.js';
 
 const GAME_KEYS = new RegExp([
-  '^(Key[WASDEM]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|Enter|Escape',
+  '^(Key[WASDEMC]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|Enter|Escape',
   '|F1|Backquote|Bracket(Left|Right))$',
 ].join(''));
 
 export function createInput() {
   const held = new Set();
 
+  // Typing in the playtest form must not move the player or be swallowed by the game.
+  const typing = (event) => event.target instanceof HTMLElement && event.target.closest('textarea, input');
+
   window.addEventListener('keydown', (event) => {
+    if (typing(event)) {
+      held.clear();
+      return;
+    }
     if (!GAME_KEYS.test(event.code)) return;
     event.preventDefault();
     held.add(event.code);

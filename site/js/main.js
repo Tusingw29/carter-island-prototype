@@ -2,13 +2,15 @@
 import { enterRoom } from './game/portals.js';
 import { createWorld, stepWorld } from './game/world.js';
 import { createInput } from './input.js';
-import { createSound } from './sound.js';
+import { createMovementSounds, createSound } from './sound.js';
 import { createEndScreen } from './render/end-screen.js';
 import { createGameView } from './render/game-view.js';
 import { createHud } from './render/hud.js';
 import { createMapScreen } from './render/map-screen.js';
 import { createOverlay } from './render/overlay.js';
+import { createScreens } from './render/screens.js';
 import { createStage } from './render/stage.js';
+import { createTutorialBox } from './render/tutorial-box.js';
 
 // Game logic always advances in steps of this size, so it behaves the same on every machine.
 const STEP = 1 / 120;
@@ -18,19 +20,28 @@ const build = document.querySelector('meta[name="build"]')?.content ?? 'dev';
 const params = new URLSearchParams(window.location.search);
 const input = createInput();
 const sound = createSound();
-const stage = createStage(document.getElementById('stage'));
+const movementSounds = createMovementSounds(sound);
+// ?low starts at the lowest picture quality, for very slow machines.
+const stage = createStage(document.getElementById('stage'), params.has('low'));
 const overlay = createOverlay();
 const hud = createHud(build);
 const mapScreen = createMapScreen();
+const tutorial = createTutorialBox();
 const endScreen = createEndScreen(startRun);
-const pauseScreen = document.getElementById('pause-screen');
+const screens = createScreens({
+  onStart: startRun,
+  onResume: () => screens.show(null),
+  onRestart: startRun,
+  onQuit: showTitle,
+  onResetHints: () => tutorial.reset(),
+  getResult: () => world.result,
+});
 
 let world = null;
 let view = null;
 let debug = params.has('debug');
-let paused = false;
 let mapOpen = false;
-let was = {};
+const was = {};
 let last = performance.now();
 let owed = 0;
 
@@ -43,7 +54,7 @@ function buildView() {
   stage.scene.add(view.root);
 }
 
-function startRun() {
+function newWorld() {
   world = createWorld();
   // Debug links: ?debug turns debug mode on. ?room=mess-hall&px=9 starts you in a room at a spot.
   // ?timer=30 starts with 30 seconds left.
@@ -52,11 +63,26 @@ function startRun() {
     enterRoom(world, params.get('room'), Number(params.get('px') ?? 1));
   }
   if (params.has('timer')) world.timeLeft = Number(params.get('timer'));
-  paused = false;
   mapOpen = params.has('map');
   buildView();
+}
+
+function startRun() {
+  newWorld();
+  tutorial.hide();
+  screens.show(null);
+  sound.unlock();
   draw(Infinity);
 }
+
+// The title screen sits over a fresh, frozen world.
+function showTitle() {
+  newWorld();
+  screens.show('title');
+  draw(Infinity);
+}
+
+const playing = () => screens.open === null && !world.over;
 
 function draw(dt) {
   // Each room is its own little scene. Entering a new room swaps it in.
@@ -65,10 +91,10 @@ function draw(dt) {
   view.update(debug);
   stage.follow(world.player.x, world.room.width, changedRoom ? Infinity : dt);
   overlay.update(world, stage.camera, debug);
-  hud.update(world, debug);
-  mapScreen.update(world, mapOpen && !world.over);
-  endScreen.update(world);
-  pauseScreen.hidden = !paused || Boolean(world.over);
+  hud.update(world, debug, stage.speedReport());
+  mapScreen.update(world, mapOpen && playing());
+  endScreen.update(world, screens.open === null);
+  document.body.classList.toggle('in-menu', screens.open !== null);
   stage.render();
 }
 
@@ -79,27 +105,53 @@ function pressed(intent, name) {
   return fresh;
 }
 
+// Menus work from the keyboard and controller as well as the mouse.
+function handleMenus(intent) {
+  const confirm = pressed(intent, 'interact');
+  const cancel = pressed(intent, 'pause');
+  const controls = pressed(intent, 'controls');
+  if (screens.isOverlay) {
+    if (cancel || controls) screens.back();
+  } else if (screens.open === 'title') {
+    if (confirm) startRun();
+    else if (controls) screens.openOver('controls');
+  } else if (screens.open === 'pause') {
+    if (cancel || confirm) screens.show(null);
+    else if (controls) screens.openOver('controls');
+  } else if (world.over) {
+    if (confirm) startRun();
+  } else if (cancel) {
+    screens.show('pause');
+  } else if (controls) {
+    screens.show('pause');
+    screens.openOver('controls');
+  }
+}
+
 function frame(now) {
-  const dt = Math.min(MAX_FRAME, (now - last) / 1000);
+  const frameMs = now - last;
+  const dt = Math.min(MAX_FRAME, frameMs / 1000);
   last = now;
+  stage.watchSpeed(frameMs);
   const intent = input.read();
   if (pressed(intent, 'debug')) debug = !debug;
   if (pressed(intent, 'map')) mapOpen = !mapOpen;
-  if (pressed(intent, 'pause') && !world.over) paused = !paused;
-  const confirm = pressed(intent, 'interact');
-  if (world.over && confirm) startRun();
+  const wasPlaying = playing();
+  handleMenus(intent);
   // Debug timer controls.
   for (const [key, change] of [['timerDown', -30], ['timerUp', 30]]) {
     if (pressed(intent, key) && debug) world.timeLeft = Math.max(1, world.timeLeft + change);
   }
 
-  // The timer only ever stops in the pause menu.
-  if (!paused) {
+  // The timer only ever stops in a menu. A button that closed a menu does not also act in the game.
+  if (wasPlaying && playing()) {
     owed += dt;
     while (owed >= STEP) {
       stepWorld(world, intent, STEP);
       owed -= STEP;
     }
+    movementSounds.update(world, dt);
+    tutorial.update(world, dt);
   }
   sound.playEvents(world.events.filter((event) => !event.roomId || event.roomId === world.room.id));
   world.events.length = 0;
@@ -107,7 +159,9 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
-document.getElementById('resume').addEventListener('click', () => { paused = false; });
-document.getElementById('restart').addEventListener('click', startRun);
-startRun();
+// Debug links skip the title screen, as does ?play.
+if (params.has('play') || params.has('room') || params.has('timer')) startRun();
+else showTitle();
+// ?show=controls (or pause, or playtest) opens that screen straight away, for checking layouts.
+if (params.has('show')) screens.openOver(params.get('show'));
 requestAnimationFrame(frame);

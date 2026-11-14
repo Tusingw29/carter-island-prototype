@@ -4,41 +4,43 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="build" content="dev">
-  <title>Carter Island prototype</title>
+  <title>Carter Island (prototype)</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas id="stage"></canvas>
 
-  <div id="alert-meter" data-state="calm">
-    <span id="alert-label">CALM</span>
-    <div class="bar"><div id="alert-fill"></div></div>
-  </div>
-  <div id="top-right">
-    <div id="timer">9:00</div>
-    <div id="keycard" class="badge" hidden>KEYCARD</div>
-    <div id="bed-check"></div>
-    <div id="screwdriver" class="badge tool" hidden>SCREWDRIVER</div>
-    <div id="cigarettes" class="badge tool" hidden>CIGARETTES</div>
-    <div id="bedsheets" class="badge tool" hidden>BEDSHEETS</div>
-  </div>
-  <div id="room-name"></div>
-  <div id="message" hidden></div>
-  <div id="peek" hidden>
-    <span id="peek-title"></span>
-    <div id="peek-strip"></div>
-  </div>
-
-  <div id="prompt" class="tag" hidden>
-    <span id="prompt-text"></span>
-    <div class="bar" hidden><div id="hold-fill"></div></div>
+  <div id="hud">
+    <div id="alert-meter" data-state="calm">
+      <span id="alert-label">CALM</span>
+      <div class="bar"><div id="alert-fill"></div></div>
+    </div>
+    <div id="top-right">
+      <div id="timer">9:00</div>
+      <div id="bed-check"></div>
+      <div id="keycard" class="badge" hidden>KEYCARD</div>
+      <div id="screwdriver" class="badge tool" hidden>SCREWDRIVER</div>
+      <div id="cigarettes" class="badge tool" hidden>CIGARETTES</div>
+      <div id="bedsheets" class="badge tool" hidden>BEDSHEETS</div>
+    </div>
+    <div id="room-name"></div>
+    <div id="message" hidden></div>
+    <div id="tutorial" hidden></div>
+    <div id="peek" hidden>
+      <span id="peek-title"></span>
+      <div id="peek-strip"></div>
+    </div>
+    <div id="prompt" class="tag" hidden>
+      <span id="prompt-text"></span>
+      <div class="bar" hidden><div id="hold-fill"></div></div>
+    </div>
+    <div id="mash" class="banner" hidden>
+      <strong>GRABBED! Mash SPACE (or X) to break free</strong>
+      <div class="bar"><div id="mash-fill"></div></div>
+    </div>
+    <p id="help">Esc: pause and controls &nbsp; M: map</p>
   </div>
   <pre id="debug-panel" class="debug-only"></pre>
-
-  <div id="mash" class="banner" hidden>
-    <strong>GRABBED! Mash SPACE (or X) to break free</strong>
-    <div class="bar"><div id="mash-fill"></div></div>
-  </div>
 
   <div id="map-screen" class="panel" hidden>
     <h2>MAP</h2>
@@ -49,11 +51,50 @@
     </p>
   </div>
 
+  <div id="title-screen" class="panel small" hidden>
+    <p class="eyebrow">Lights out</p>
+    <h1>Carter Island <span>(prototype)</span></h1>
+    <p>
+      You have nine minutes until headcount. Sneak out of your cell, steal the keycard from the
+      Guard Office, and be back in your bed before they count.
+    </p>
+    <button id="start" type="button" class="primary">Start (Enter)</button>
+    <button type="button" data-open="controls">Controls (C)</button>
+    <p class="fine">Keyboard or controller. Sound on is better.</p>
+  </div>
+
+  <div id="controls-screen" class="panel" hidden>
+    <h2>CONTROLS</h2>
+    <table class="controls">
+      <tr><th>Action</th><th>Keyboard</th><th>Controller</th></tr>
+      <tr><td>Move</td><td>A / D</td><td>Left stick or D-pad</td></tr>
+      <tr><td>Crouch (silent, slow)</td><td>S</td><td>Down</td></tr>
+      <tr><td>Run (loud)</td><td>Shift</td><td>Right Trigger</td></tr>
+      <tr><td>Hide, use doors, stairs, and vents</td><td>W</td><td>Up</td></tr>
+      <tr><td>Creaky door: fast and loud / slow and quiet</td><td>tap W / hold W</td><td>tap Up / hold Up</td></tr>
+      <tr><td>Interact, pick up, sleep in bed</td><td>E</td><td>A (bottom button)</td></tr>
+      <tr><td>Keycard: grab fast / lift quietly</td><td>tap E / hold E</td><td>tap A / hold A</td></tr>
+      <tr><td>Knock out from behind, drag body</td><td>Space</td><td>X (left button)</td></tr>
+      <tr><td>Break free when grabbed</td><td>mash Space</td><td>mash X</td></tr>
+      <tr><td>Map</td><td>M</td><td>View / Select</td></tr>
+      <tr><td>Pause</td><td>Esc</td><td>Start</td></tr>
+      <tr><td>This screen</td><td>C</td><td>Y (top button)</td></tr>
+    </table>
+    <p class="fine">
+      Walking is quiet, running is loud, crouching is silent. A guard's flashlight is what he can see.
+      Stand still in a pitch-dark patch and nobody can see you.
+    </p>
+    <button type="button" data-close>Back (Esc)</button>
+    <button id="reset-hints" type="button">Show the tutorial hints again</button>
+  </div>
+
   <div id="pause-screen" class="panel small" hidden>
     <h2>PAUSED</h2>
     <p>The timer is stopped.</p>
-    <button id="resume" type="button">Resume (Esc)</button>
+    <button id="resume" type="button" class="primary">Resume (Esc)</button>
     <button id="restart" type="button">Restart run</button>
+    <button type="button" data-open="controls">Controls (C)</button>
+    <button id="quit" type="button">Quit to title</button>
   </div>
 
   <div id="end-screen" class="panel small" hidden>
@@ -66,17 +107,26 @@
       <tr><td>Bodies found by guards</td><td id="score-bodies"></td></tr>
     </table>
     <p class="rank">Rank: <strong id="end-rank"></strong> <span id="end-rank-means"></span></p>
-    <button id="play-again" type="button">Play again (Enter)</button>
+    <button id="play-again" type="button" class="primary">Play again (Enter)</button>
+    <button type="button" data-open="playtest">Tell Adam what you thought</button>
   </div>
 
-  <p id="help">
-    A/D move &nbsp; Shift run &nbsp; S crouch &nbsp; W hide / doors &nbsp; E interact &nbsp;
-    Space knock out / drag &nbsp; M map &nbsp; Esc pause &nbsp; F1 or ` debug
-    <span>
-      Controller: stick move, RT run, Down crouch, Up hide / doors, A interact, X knock out,
-      View map, Start pause
-    </span>
-  </p>
+  <div id="playtest-screen" class="panel" hidden>
+    <h2>PLAYTEST</h2>
+    <p>Four quick questions. Answer what you can, press Copy, and paste it into a message to Adam.</p>
+    <form id="playtest-form">
+      <label>1. Did hiding while a guard walked by feel tense?<textarea rows="2"></textarea></label>
+      <label>2. Did the timer feel exciting, or just stressful?<textarea rows="2"></textarea></label>
+      <label>3. Did the vent shortcut feel like a reward?<textarea rows="2"></textarea></label>
+      <label>4. Did you want to play again to do it faster or cleaner?<textarea rows="2"></textarea></label>
+      <label>Anything else?<textarea rows="2" data-extra></textarea></label>
+    </form>
+    <button id="copy-answers" type="button" class="primary">Copy my answers</button>
+    <button type="button" data-close>Back</button>
+    <p id="copy-status" class="fine"></p>
+    <textarea id="copy-fallback" rows="6" readonly hidden></textarea>
+  </div>
+
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

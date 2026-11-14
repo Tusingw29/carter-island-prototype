@@ -21,7 +21,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 3 | Full map, timer, keycard, win and lose | review, awaiting Adam's verdict | `step-3-map` |
 | 4 | Screwdriver and vents | review, awaiting Adam's verdict | `step-4-vents` |
 | 5 | Inmates, bed check, dummy, camera panel | review, awaiting Adam's verdict | `step-5-inmates` |
-| 6 | Polish, ready to share | todo | `step-6-polish` |
+| 6 | Polish, ready to share | review, awaiting Adam's verdict | `step-6-polish` |
 
 ---
 
@@ -288,7 +288,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 
 ## Step 6: Polish, ready to share
 
-- **Status:** todo
+- **Status:** review, awaiting Adam's verdict
 - **Branch:** `step-6-polish`
 - **Scope:** Title screen with Start and Controls. Controls screen for keyboard and
   controller. First-time tutorial hints (hide, crouch, knockout, vent). Sound effects:
@@ -297,7 +297,39 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
   text at the end asking the four playtest questions. README updated.
 - **Done means:** a friend can open the link, learn the game, finish a run, and send
   feedback without help from Adam.
-- **How Adam tests it:** to be written when the task goes to review.
+- **What was built:**
+  - Title screen: "Carter Island (prototype)", Start, Controls. Enter or A starts.
+  - Controls screen with keyboard and controller side by side. C or Y opens it any time.
+  - Hints, each shown once per browser: the goal (in bed at the start), crouch, hide,
+    dark patches, knockout, creaky doors, vents. "Show the tutorial hints again" is on the
+    Controls screen.
+  - Sounds: footsteps for walking and running (none when crouched), a creak while easing
+    a door open and a bang when you slam it, the alert sting, three beeps at 1:00, and a
+    tick for each of the last ten seconds. All made in code, no sound files.
+  - Pause menu: Resume, Restart run, Controls, Quit to title.
+  - "Tell Adam what you thought" on the score screen opens the four playtest questions.
+    "Copy my answers" puts the answers and the run's score on the clipboard to paste
+    into a message. There is no server, so nothing is sent anywhere by the game.
+  - Speed: no shadows or post-effects; edge smoothing off on high-density screens;
+    on-screen text only updates when it changes; and if frames stay slow for two seconds
+    the picture drops to 75%, then 55% resolution. Debug mode shows the frame rate.
+- **Not verified:** I could not run it on a 2015 MacBook Air. It was checked in headless
+  Chrome with software rendering only. Step 1 of the test list below is the real check.
+- **How Adam tests it:**
+  1. On the MacBook Air, open the link, press F1, and read the "speed" line while walking
+     through the Mess Hall (the busiest room). It should stay near 60 fps at 100%. If it
+     drops to 75% or 55%, tell me which room. `?low` on the link forces the lowest setting.
+  2. From the title screen, open Controls with C, go back, and start with Enter. Repeat
+     with a controller (Y, B or Start, A).
+  3. Play the first minute as if you had never seen it. Do the hints appear at the right
+     moments, and do they say enough?
+  4. Listen: walk, run, crouch. Hold Up on a rust-colored door, then tap one.
+  5. In debug mode press [ until the timer is just over 1:00 and listen for the warning.
+  6. Pause with Esc. Try Restart, Controls, and Quit to title.
+  7. Finish a run, press "Tell Adam what you thought", fill it in, press Copy, and paste
+     it somewhere to check it reads well.
+  8. Send the link to one friend and watch them play without helping.
+  9. All four playtest questions. This is the "is the core loop fun?" verdict.
 
 ---
 

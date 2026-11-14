@@ -22,6 +22,9 @@ These rules apply to everyone who touches the repo, people and coding agents ali
 - Three.js is vendored in `site/vendor/` (r180). Never load it, or anything else, from a CDN.
 - Tests use the Node built-in test runner. No dependencies to install.
 - Tunable numbers go in `site/js/game/config.js`, not scattered through the code.
+- Room layouts, guard patrols, and item positions are data in `site/js/game/rooms.js`.
+- If you change a room, run `npm test`: the bot replays every route and fails if a clean run
+  is no longer possible.
 - Guard patrols and anything else players are meant to learn must be the same every run.
   Do not use `Math.random()` in game logic.
 
@@ -33,7 +36,8 @@ These rules apply to everyone who touches the repo, people and coding agents ali
 | `site/js/game/` | Game logic. Runs in Node. No rendering. |
 | `site/js/render/` | Three.js drawing code. |
 | `site/vendor/` | Vendored Three.js. Do not edit. |
-| `tests/` | Node tests, one `*.test.mjs` file per module. |
+| `tests/` | Node tests, one `*.test.mjs` file per system. |
+| `tests/bot/` | A planning bot that plays clean runs, to prove the level can be beaten and to time routes. |
 | `scripts/` | Release tooling run by CI. |
 | `docs/` | `DESIGN.md` (the spec) and `TASKS.md` (the task board). |
 
