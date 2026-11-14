@@ -18,7 +18,10 @@ function bedSpot(world) {
 export function updateBedCheck(world, cfg = CONFIG) {
   if (world.bedCheck || world.timeLeft > cfg.bedCheckAtSecondsRemaining) return;
   const place = bedSpot(world);
-  const guard = place && world.allGuards.find((g) => g.checksBed && g.roomId === place.room.id);
+  const checker = place && world.allGuards.find((g) => g.checksBed);
+  // If he has walked next door on a radio check, the bed check waits until he is back.
+  if (checker && checker.state !== 'out' && (checker.roomId !== place.room.id || checker.duty)) return;
+  const guard = checker && checker.roomId === place.room.id ? checker : null;
   if (!guard || guard.state === 'out') {
     // Nobody is on their feet to do it.
     world.bedCheck = { result: 'skipped' };

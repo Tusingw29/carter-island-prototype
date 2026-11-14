@@ -28,7 +28,12 @@ function shell(room) {
   const centre = room.width / 2;
   const span = room.width + 2;
   const wall = room.wallColor ?? 0x3b4452;
-  group.add(placed(block(span, 0.5, 4.2, 0x2b313b), centre, -0.25, -0.2));
+  // The floor, in pieces if the room has gaps in it.
+  let from = -1;
+  for (const pit of [...(room.pits ?? []), { from: room.width + 1, to: room.width + 1 }]) {
+    group.add(placed(block(pit.from - from, 0.5, 4.2, 0x2b313b), (from + pit.from) / 2, -0.25, -0.2));
+    from = pit.to;
+  }
   group.add(placed(block(span, WALL_HEIGHT, 0.4, wall), centre, WALL_HEIGHT / 2, WALL_Z - 0.2));
   group.add(placed(block(0.5, WALL_HEIGHT, 4.2, 0x323a46), -0.25, WALL_HEIGHT / 2, -0.2));
   group.add(placed(block(0.5, WALL_HEIGHT, 4.2, 0x323a46), room.width + 0.25, WALL_HEIGHT / 2, -0.2));
@@ -71,6 +76,14 @@ function panelView(prop) {
   return group;
 }
 
+// Gym furniture: crates to climb, a ledge, and a wall with a low gap under it.
+const SOLID_COLORS = { crate: 0x6a5436, ledge: 0x56606e, wall: 0x39424e };
+function solidView(solid) {
+  const height = solid.top - solid.bottom;
+  const view = block(solid.halfWidth * 2, height, 1.7, SOLID_COLORS[solid.kind] ?? 0x56606e, 0x0c0e12);
+  return placed(view, solid.x, solid.bottom + height / 2, -0.15);
+}
+
 const ITEM_VIEWS = {
   keycard: keycardView,
   screwdriver: toolView,
@@ -94,6 +107,7 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     if (view.userData.update) liveViews.push(view);
     group.add(view);
   }
+  for (const solid of room.solids ?? []) group.add(solidView(solid));
   if (room.trader) group.add(createTraderView(room.trader));
   for (const grate of room.grates ?? []) group.add(grateView(grate));
   if (room.crawl) group.add(ductCeiling(room));

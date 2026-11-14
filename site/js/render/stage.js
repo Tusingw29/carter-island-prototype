@@ -51,11 +51,12 @@ export function createStage(canvas, startLow = false) {
   }
 
   // Puts the camera where the framing says: framing.x along the room, framing.distance back.
-  function frame(framing) {
-    const lookHeight = LOOK_HEIGHT + (LOOK_HEIGHT_FAR - LOOK_HEIGHT) * farness(framing);
+  // shake moves the whole picture by { x, y } metres, for a hit landing.
+  function frame(framing, shake = { x: 0, y: 0 }) {
+    const lookHeight = LOOK_HEIGHT + (LOOK_HEIGHT_FAR - LOOK_HEIGHT) * farness(framing) + shake.y;
     const rise = (CAMERA_RISE * framing.distance) / CONFIG.view.closeDistance;
-    camera.position.set(framing.x, lookHeight + rise, framing.distance);
-    camera.lookAt(framing.x, lookHeight, 0);
+    camera.position.set(framing.x + shake.x, lookHeight + rise, framing.distance);
+    camera.lookAt(framing.x + shake.x, lookHeight, 0);
   }
 
   return {

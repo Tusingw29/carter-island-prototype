@@ -207,3 +207,40 @@ export const ROOMS = Object.freeze({
 });
 
 export const PRISON = Object.freeze({ startRoom: 'cell-block', rooms: ROOMS });
+
+// The gym: a practice room for jump, slide, and dash. It is not part of the prison and has no
+// timer. Reached with ?room=gym.
+//   solids are boxes to stand on or slide under: { x, halfWidth, bottom, top }.
+//   pits are stretches with no floor: { from, to }.
+//   bounds keep a guard on his own stretch of floor, so he never walks through a crate.
+const gym = {
+  id: 'gym',
+  name: 'Gym (movement test)',
+  floor: 0,
+  col: 0,
+  width: 62,
+  wallColor: 0x3f4a44,
+  playerStart: 3,
+  moves: true,
+  solids: [
+    // Two crates as steps up to a ledge that runs over the first guard's head.
+    { id: 'crate-1', kind: 'crate', x: 8, halfWidth: 0.8, bottom: 0, top: 1 },
+    { id: 'crate-2', kind: 'crate', x: 9.9, halfWidth: 1.1, bottom: 0, top: 2 },
+    { id: 'ledge', kind: 'ledge', x: 15, halfWidth: 3, bottom: 2.7, top: 3 },
+    // A low gap: too low to crouch under, so it needs a slide.
+    { id: 'low-gap', kind: 'wall', x: 27, halfWidth: 1.2, bottom: 0.75, top: 4.4 },
+    // More crates at the far end.
+    { id: 'crate-3', kind: 'crate', x: 57, halfWidth: 0.8, bottom: 0, top: 1 },
+    { id: 'crate-4', kind: 'crate', x: 59.2, halfWidth: 1.2, bottom: 0, top: 2 },
+  ],
+  // Too wide to jump, even at a run. It needs a dash.
+  pits: [{ from: 34, to: 40 }],
+  hideSpots: [{ id: 'gym-dark', type: 'dark', x: 31.5, halfWidth: 1.2 }],
+  portals: [],
+  guards: [
+    { id: 'gym-guard-1', patrol: [13, 23], startX: 18, facing: 1, bounds: [11.6, 25.2] },
+    { id: 'gym-guard-2', patrol: [42.5, 53], startX: 46, facing: 1, bounds: [40.8, 55.6] },
+  ],
+};
+
+export const GYM = Object.freeze({ startRoom: 'gym', practice: true, rooms: { gym } });

@@ -1,13 +1,31 @@
 // Simple beeps made with Web Audio. No sound files.
-// Each cue is a list of notes: [frequency in Hz, start in seconds, length in seconds, wave shape, loudness].
-// Loudness is optional: 1 is normal.
+// Each cue is a list of notes: [frequency in Hz, start in seconds, length in seconds, wave shape, loudness,
+// end frequency]. Loudness is optional: 1 is normal. With an end frequency the note slides to it.
 const CUES = {
   suspicious: [[440, 0, 0.09, 'triangle'], [620, 0.1, 0.14, 'triangle']],
   // The alert sting.
   alert: [[880, 0, 0.08, 'square'], [880, 0.11, 0.08, 'square'], [1100, 0.22, 0.22, 'square']],
   searching: [[330, 0, 0.12, 'triangle'], [300, 0.14, 0.2, 'triangle']],
   calm: [[520, 0, 0.1, 'sine'], [390, 0.12, 0.22, 'sine']],
-  knockout: [[110, 0, 0.16, 'sine'], [70, 0.05, 0.2, 'sine']],
+  // A thud: a low note that drops fast, with a click on top so it lands.
+  knockout: [[160, 0, 0.22, 'sine', 3, 45], [90, 0, 0.3, 'triangle', 2.2, 35], [420, 0, 0.03, 'square', 0.8]],
+  chokeStart: [[130, 0, 0.08, 'sawtooth', 0.6], [110, 0.1, 0.08, 'sawtooth', 0.6]],
+  chokeBroken: [[240, 0, 0.1, 'square'], [360, 0.08, 0.16, 'square']],
+  // Radio: two short blips of static-like tone. A missed check-in is the same, lower and longer.
+  checkIn: [[1800, 0, 0.03, 'square', 0.35], [1350, 0.05, 0.05, 'square', 0.35]],
+  missedCheckIn: [
+    [1800, 0, 0.03, 'square', 0.5], [600, 0.08, 0.3, 'sawtooth', 0.6], [500, 0.42, 0.4, 'sawtooth', 0.6],
+  ],
+  // A guard waking up: banging on a locker door, a groan as he stirs, and getting to his feet.
+  bang: [[85, 0, 0.12, 'square', 2.4, 50], [300, 0, 0.03, 'square', 0.8]],
+  stir: [[150, 0, 0.35, 'sawtooth', 0.5, 110]],
+  wake: [[200, 0, 0.12, 'sawtooth', 0.8], [300, 0.12, 0.2, 'sawtooth', 0.8]],
+  // Gym moves.
+  jump: [[300, 0, 0.09, 'square', 0.4, 520]],
+  land: [[110, 0, 0.07, 'sine', 1.2, 60]],
+  dash: [[700, 0, 0.16, 'sawtooth', 0.9, 180], [90, 0, 0.12, 'square', 1.2]],
+  slide: [[220, 0, 0.3, 'sawtooth', 0.25, 120]],
+  fell: [[400, 0, 0.4, 'sine', 0.8, 80]],
   bodyFound: [[700, 0, 0.3, 'sawtooth']],
   grab: [[150, 0, 0.3, 'sawtooth']],
   free: [[300, 0, 0.07, 'square'], [500, 0.08, 0.07, 'square'], [800, 0.16, 0.14, 'square']],
@@ -67,12 +85,13 @@ export function createSound() {
   window.addEventListener('pointerdown', unlock);
   window.addEventListener('gamepadconnected', unlock);
 
-  function note(frequency, start, length, shape, loudness = 1) {
+  function note(frequency, start, length, shape, loudness = 1, endFrequency = null) {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     const begin = context.currentTime + start;
     oscillator.type = shape;
-    oscillator.frequency.value = frequency;
+    oscillator.frequency.setValueAtTime(frequency, begin);
+    if (endFrequency) oscillator.frequency.exponentialRampToValueAtTime(endFrequency, begin + length);
     gain.gain.setValueAtTime(VOLUME * loudness, begin);
     gain.gain.exponentialRampToValueAtTime(0.001, begin + length);
     oscillator.connect(gain).connect(context.destination);

@@ -3,7 +3,7 @@
 A 2.5D stealth prison-escape metroidvania for the browser: Metal Gear style sneaking plus
 metroidvania backtracking. "Carter Island" is a placeholder name.
 
-Lights out. You have 9 minutes on the headcount timer. Sneak out of your cell, steal the
+Lights out. You have 7 minutes on the headcount timer. Sneak out of your cell, steal the
 keycard from the Guard Office, and be back in your bed before headcount. The timer never
 stops, and getting spotted costs time.
 
@@ -26,7 +26,8 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Creaky door: fast and loud / slow and quiet | tap W / hold W | tap Up / hold Up |
 | Interact, pick up, sleep in bed | E | A (bottom face button) |
 | Keycard: grab fast / lift quietly | tap E / hold E | tap A / hold A |
-| Knock out from behind, drag body | Space | X (left face button) |
+| Choke hold from behind (awake guard) | hold Space | hold X (left face button) |
+| Knock out a sleeping guard, drag a body | Space | X |
 | Break free when grabbed | mash Space | mash X |
 | Map | M | View / Select |
 | Zoom the camera in or out | Z | Left Bumper |
@@ -42,7 +43,9 @@ Runs in any current desktop browser. Keyboard or controller. No install.
   pitch-dark patch and nobody can see you.
 - Three ways to do it: the front door (Mess Hall, then the Stairwell), the vents (find
   the screwdriver first), and a one-way drop that gets you home fast.
-- A guard checks your bed when the timer reads 5:00. Be in it, or leave a dummy.
+- A guard checks your bed when the timer reads 3:30. Be in it, or leave a dummy.
+- Knocked-out guards wake up after 75 seconds. Every guard calls in on the radio once a
+  minute, and a missed call brings another guard to look.
 - The score screen gives you a rank: Ghost, Shadow, Inmate, or Caught.
 
 ## Run it locally
@@ -64,10 +67,11 @@ Add these to the end of the play link.
 | `?debug` | Starts in debug mode: vision cones, noise ring, guard states, frame rate |
 | `?room=stairwell&px=2` | Starts in that room at that spot |
 | `?timer=30` | Starts with 30 seconds on the timer |
-| `?cam=close` | The close follow camera. This is the default |
+| `?room=gym` | The movement test room: jump (K), dash (L), slide (S + K while moving) |
+| `?cam=close` | The close follow camera |
 | `?cam=wide` | The same camera pulled back, showing twice as much floor |
 | `?cam=room` | Shows the whole room if it fits; if not, follows you and stops at the walls |
-| `?cam=smart` | Wide while you move; closes in when you hide, are grabbed, or a guard is near |
+| `?cam=smart` | Wide while you move; closes in when you hide, are grabbed, or a guard is near. The default |
 | `?cues=off` | Turns off the PA announcements, wall clocks, and last-minute ticking |
 | `?alarm` | Acts as if a camera saw you, so taking the keycard sets off the silent alarm |
 | `?low` | Lowest picture quality, for very slow computers |

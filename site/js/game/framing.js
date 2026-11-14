@@ -2,19 +2,21 @@
 // Numbers only, no drawing, so rules such as "room mode never shows past the walls" can be tested.
 //
 // Modes (picked with ?cam= on the link):
-//   close  follows the player from close up. The default.
+//   close  follows the player from close up.
 //   wide   the same, from twice as far back.
 //   room   shows the whole room if it fits. If not, follows the player and stops at the walls.
 //   smart  wide while you move; closes in when you hide, are grabbed, or a guard is near.
+//          The default: Adam picked it in playtest 2.
 import { CONFIG } from './config.js';
 
 export const CAMERA_MODES = Object.freeze(['close', 'wide', 'room', 'smart']);
-export const parseCameraMode = (value) => (CAMERA_MODES.includes(value) ? value : 'close');
+export const DEFAULT_CAMERA = 'smart';
+export const parseCameraMode = (value) => (CAMERA_MODES.includes(value) ? value : DEFAULT_CAMERA);
 
 const START_ZOOM = { close: 'close', wide: 'wide', room: 'wide', smart: 'auto' };
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-export function createFraming(mode = 'close', cfg = CONFIG.view) {
+export function createFraming(mode = DEFAULT_CAMERA, cfg = CONFIG.view) {
   return {
     mode,
     // 'close' or 'wide'. Smart mode also has 'auto', where the game picks.

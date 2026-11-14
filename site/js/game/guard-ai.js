@@ -6,6 +6,8 @@ import { tryGrab } from './grab.js';
 import { disturb, lookAround, moveToward, patrol } from './guard.js';
 import { concealedIn, spotById } from './hiding.js';
 import { canHear } from './noise.js';
+import { doRadioVisit } from './radio.js';
+import { senseBodies } from './senses.js';
 
 const spotsFor = (guard, world) => world.layout.rooms[guard.roomId].hideSpots ?? [];
 
@@ -81,7 +83,8 @@ function search(guard, world, dt, cfg) {
 
 // A guard in the same room as the player.
 export function updateGuardAI(guard, world, dt, cfg = CONFIG.guard) {
-  if (guard.state === 'calm' && guard.duty) doBedCheck(guard, world, dt, cfg);
+  if (guard.state === 'calm' && guard.duty?.type === 'radio') doRadioVisit(guard, world, dt, cfg);
+  else if (guard.state === 'calm' && guard.duty) doBedCheck(guard, world, dt, cfg);
   else if (guard.state === 'calm') patrol(guard, dt, cfg);
   else if (guard.state === 'suspicious') investigate(guard, world, dt, cfg);
   else if (guard.state === 'alert') chase(guard, world, dt, cfg);
@@ -95,6 +98,7 @@ export function updateGuardAway(guard, world, dt, cfg = CONFIG.guard) {
   guard.stirTimer = 0;
   if (guard.state === 'alert') beginSearch(world, guard, cfg);
   else updateGuardAI(guard, world, dt, cfg);
+  if (guard.stun <= 0) senseBodies(guard, world, cfg);
 }
 
 // A sleeping guard in the player's room. Noise disturbs him, and then the clock is running.

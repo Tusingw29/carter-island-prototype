@@ -2,7 +2,7 @@
 import { intentFromGamepad, intentFromKeys, mergeIntents } from './game/intent.js';
 
 const GAME_KEYS = new RegExp([
-  '^(Key[WASDEMCZ]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|Enter|Escape',
+  '^(Key[WASDEMCZKL]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|Enter|Escape',
   '|F1|Backquote|Bracket(Left|Right))$',
 ].join(''));
 
@@ -31,7 +31,19 @@ export function createInput() {
     return null;
   }
 
+  // A short buzz on the controller, where the browser and the controller support it.
+  function rumble(seconds, strength) {
+    try {
+      firstGamepad()?.vibrationActuator?.playEffect?.('dual-rumble', {
+        duration: seconds * 1000, strongMagnitude: strength, weakMagnitude: strength * 0.6,
+      })?.catch?.(() => {});
+    } catch {
+      // No rumble on this controller. Nothing to do.
+    }
+  }
+
   return {
+    rumble,
     read: () => mergeIntents(intentFromKeys(held), intentFromGamepad(firstGamepad())),
   };
 }

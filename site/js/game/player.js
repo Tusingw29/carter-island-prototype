@@ -18,6 +18,20 @@ export function createPlayer(x) {
     hasBedsheets: false,
     mode: 'idle',
     speed: 0,
+    // Height of the feet above the floor, and the rest of what jump, slide, and dash need.
+    // Only rooms with moves (the gym) ever change these.
+    y: 0,
+    vy: 0,
+    onGround: true,
+    sliding: false,
+    slideTime: 0,
+    slideDir: 0,
+    dashTime: 0,
+    dashDir: 0,
+    dashCooldown: 0,
+    airDash: false,
+    airDashUsed: false,
+    boosted: false,
   };
 }
 
@@ -39,6 +53,7 @@ export function speedForMode(mode, cfg = CONFIG.player) {
 }
 
 export function playerHeight(player, cfg = CONFIG.player) {
+  if (player.sliding) return CONFIG.moves.slideHeight;
   return player.crouching ? cfg.crouchHeight : cfg.standHeight;
 }
 

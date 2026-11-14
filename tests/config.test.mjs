@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import { CONFIG } from '../site/js/game/config.js';
 import { formatClock } from '../site/js/game/clock.js';
 
-test('headcount timer stays inside the 8 to 10 minute tuning range', () => {
+test('headcount timer is 7:00, inside its tuning range', () => {
+  assert.equal(CONFIG.headcountSeconds, 420);
   assert.ok(CONFIG.headcountSeconds >= CONFIG.headcountMinSeconds);
   assert.ok(CONFIG.headcountSeconds <= CONFIG.headcountMaxSeconds);
-  assert.equal(CONFIG.headcountMinSeconds, 480);
+  assert.equal(CONFIG.headcountMinSeconds, 420);
   assert.equal(CONFIG.headcountMaxSeconds, 600);
 });
 

@@ -1,9 +1,9 @@
 // Tunable numbers for the whole game live here, so playtest tuning is one-file work.
 // Distances are in metres, speeds in metres per second, times in seconds.
 export const CONFIG = Object.freeze({
-  // Length of a run. The spec says tune this between 8 and 10 minutes.
-  headcountSeconds: 9 * 60,
-  headcountMinSeconds: 8 * 60,
+  // Length of a run. The spec started at 9:00. Playtest 2 brought it down to 7:00.
+  headcountSeconds: 7 * 60,
+  headcountMinSeconds: 7 * 60,
   headcountMaxSeconds: 10 * 60,
 
   // A warning sounds when this much time is left.
@@ -42,7 +42,7 @@ export const CONFIG = Object.freeze({
   }),
 
   // The single bed check happens when this much time is left.
-  bedCheckAtSecondsRemaining: 5 * 60,
+  bedCheckAtSecondsRemaining: 3.5 * 60,
 
   player: Object.freeze({
     walkSpeed: 3.2,
@@ -62,6 +62,12 @@ export const CONFIG = Object.freeze({
     runRadius: 8,
     crouchRadius: 0,
     dragRadius: 1.5,
+    // A choke hold is a scuffle: quieter than walking, but not silent.
+    chokeRadius: 1.5,
+    // Gym moves. Landing is a small noise, a slide is quiet, a dash is the loudest thing you can do.
+    landRadius: 1.5,
+    slideRadius: 1,
+    dashRadius: 11,
   }),
 
   guard: Object.freeze({
@@ -101,6 +107,8 @@ export const CONFIG = Object.freeze({
     stunSeconds: 2.5,
     // A guard always notices someone this close in front of him, even below his beam.
     closeSightDistance: 1.2,
+    // A guard cannot grab someone whose feet are higher than this above him.
+    grabReachUp: 1.2,
     // A sleeping guard who is disturbed wakes up this long after, if you are still in the room.
     stirSeconds: 4,
   }),
@@ -156,6 +164,58 @@ export const CONFIG = Object.freeze({
 
   knockout: Object.freeze({
     reach: 1.1,
+    // You cannot start a knockout from higher than this above the floor.
+    reachUp: 0.3,
+    // An awake guard needs a choke hold: hold the button this long. Let go early and he is free.
+    chokeSeconds: 1.5,
+    // A knocked-out guard wakes up after this long.
+    wakeSeconds: 75,
+    // A guard lying in the open starts to stir this long before he wakes, and you are told.
+    wakeWarningSeconds: 6,
+    // A guard stuffed in a locker or cart bangs on it for this long before he climbs out.
+    bangSeconds: 4,
+    bangEverySeconds: 0.8,
+    bangRadius: 10,
+  }),
+
+  // Radio check-ins. The first guard calls in at firstSeconds, the next staggerSeconds later,
+  // and so on. Each guard then calls in again every intervalSeconds.
+  radio: Object.freeze({
+    firstSeconds: 20,
+    staggerSeconds: 8,
+    intervalSeconds: 60,
+    showSeconds: 2,
+  }),
+
+  // How a knockout feels. All of it is drawing and sound: none of it changes the rules.
+  feel: Object.freeze({
+    hitStopSeconds: 0.08,
+    flashSeconds: 0.12,
+    fallSeconds: 0.28,
+    shakeSeconds: 0.25,
+    shakeMetres: 0.14,
+  }),
+
+  // Jump, slide, and dash. Only in the gym (?room=gym) for now.
+  moves: Object.freeze({
+    // A fast rise and a faster fall. Peak height is jumpSpeed squared over twice gravity: 1.29 m.
+    jumpSpeed: 8.5,
+    gravity: 28,
+    fallGravity: 40,
+    maxFallSpeed: 20,
+    // Letting go of jump early drops the upward speed to this.
+    jumpCutSpeed: 3,
+    // A dash is a fixed burst: dashSpeed for dashSeconds, 3.5 m. In the air it holds its height.
+    dashSpeed: 14,
+    dashSeconds: 0.25,
+    dashCooldownSeconds: 0.2,
+    // A slide is slideSpeed for slideSeconds, 3.15 m, with the body only slideHeight tall.
+    slideSpeed: 7,
+    slideSeconds: 0.45,
+    slideHeight: 0.6,
+    bodyHalfWidth: 0.3,
+    // Fall this far down a gap and you are put back on the edge.
+    pitDepth: 3,
   }),
 
   // Getting grabbed: mash to break free, once per run.

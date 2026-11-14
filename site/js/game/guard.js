@@ -2,7 +2,9 @@
 import { CONFIG } from './config.js';
 
 export function createGuard(def) {
-  const { id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false, checksBed = false } = def;
+  const {
+    id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false, checksBed = false, bounds = null,
+  } = def;
   const [from, to] = patrol;
   return {
     id,
@@ -12,6 +14,14 @@ export function createGuard(def) {
     state: sleeper ? 'asleep' : 'calm',
     sleeper,
     checksBed,
+    // Gym only: the stretch of floor he never leaves, as [from, to].
+    bounds,
+    // True while the player has him in a choke hold.
+    held: false,
+    // Knocked out: how long he has been down, and the moment it happened.
+    outFor: 0,
+    outAt: null,
+    wakeWarned: false,
     // A job that interrupts his patrol, such as the bed check: { type, x, wait }.
     duty: null,
     // Counts down once a sleeper is disturbed. At zero he wakes up.

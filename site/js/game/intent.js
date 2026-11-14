@@ -4,7 +4,7 @@ import { CONFIG } from './config.js';
 
 export function emptyIntent() {
   return {
-    moveX: 0, up: false, crouch: false, run: false, action: false, interact: false,
+    moveX: 0, up: false, crouch: false, run: false, action: false, interact: false, jump: false, dash: false,
     map: false, pause: false, controls: false, zoom: false, debug: false, timerDown: false, timerUp: false,
   };
 }
@@ -21,6 +21,9 @@ export function intentFromKeys(codes) {
     // Knockout, drag, and break free.
     action: codes.has('Space'),
     interact: codes.has('KeyE') || codes.has('Enter'),
+    // Gym moves.
+    jump: codes.has('KeyK'),
+    dash: codes.has('KeyL'),
     map: codes.has('KeyM'),
     pause: codes.has('Escape'),
     controls: codes.has('KeyC'),
@@ -50,6 +53,9 @@ export function intentFromGamepad(pad, cfg = CONFIG.stick) {
     run: (pad.buttons[7]?.value ?? 0) > cfg.triggerThreshold,
     action: pressed(pad, 2),
     interact: pressed(pad, 0),
+    // B (right face button) and the right bumper.
+    jump: pressed(pad, 1),
+    dash: pressed(pad, 5),
     map: pressed(pad, 8),
     pause: pressed(pad, 9),
     controls: pressed(pad, 3),
@@ -69,6 +75,8 @@ export function mergeIntents(a, b) {
     run: a.run || b.run,
     action: a.action || b.action,
     interact: a.interact || b.interact,
+    jump: a.jump || b.jump,
+    dash: a.dash || b.dash,
     map: a.map || b.map,
     pause: a.pause || b.pause,
     controls: a.controls || b.controls,
