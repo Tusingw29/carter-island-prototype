@@ -1,0 +1,36 @@
+# Dependencies. No trailing slash, so a node_modules symlink is ignored too.
+node_modules
+
+# Python and OS clutter
+__pycache__
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Release output, built by CI from site/ (see scripts/prepare-release.mjs)
+_site
+
+# Local scratch and test output
+artifacts
+tmp
+*.log
+
+# Big art exports and source files. Keep these out of git; the game uses blocks and flat colors.
+art-exports
+exports
+*.blend
+*.blend1
+*.psd
+*.kra
+*.xcf
+*.fbx
+*.glb
+*.gltf
+*.obj
+*.bvh
+*.mp4
+*.mov
+*.webm
+*.wav
+*.zip
+*.7z
