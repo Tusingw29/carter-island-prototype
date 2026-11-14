@@ -3,7 +3,10 @@
 import { CONFIG } from './config.js';
 
 export function emptyIntent() {
-  return { moveX: 0, up: false, crouch: false, run: false, action: false, interact: false, debug: false };
+  return {
+    moveX: 0, up: false, crouch: false, run: false, action: false, interact: false,
+    map: false, pause: false, debug: false, timerDown: false, timerUp: false,
+  };
 }
 
 // codes is a Set of KeyboardEvent.code values that are currently held down.
@@ -18,7 +21,11 @@ export function intentFromKeys(codes) {
     // Knockout, drag, and break free.
     action: codes.has('Space'),
     interact: codes.has('KeyE') || codes.has('Enter'),
+    map: codes.has('KeyM'),
+    pause: codes.has('Escape'),
     debug: codes.has('F1') || codes.has('Backquote'),
+    timerDown: codes.has('BracketLeft'),
+    timerUp: codes.has('BracketRight'),
   };
 }
 
@@ -41,7 +48,11 @@ export function intentFromGamepad(pad, cfg = CONFIG.stick) {
     run: (pad.buttons[7]?.value ?? 0) > cfg.triggerThreshold,
     action: pressed(pad, 2),
     interact: pressed(pad, 0),
+    map: pressed(pad, 8),
+    pause: pressed(pad, 9),
     debug: pressed(pad, 11),
+    timerDown: false,
+    timerUp: false,
   };
 }
 
@@ -53,6 +64,10 @@ export function mergeIntents(a, b) {
     run: a.run || b.run,
     action: a.action || b.action,
     interact: a.interact || b.interact,
+    map: a.map || b.map,
+    pause: a.pause || b.pause,
     debug: a.debug || b.debug,
+    timerDown: a.timerDown || b.timerDown,
+    timerUp: a.timerUp || b.timerUp,
   };
 }

@@ -10,7 +10,7 @@ export function detectionRate(guard, distance, cfg = CONFIG.guard) {
   const far = Math.max(0, Math.min(1, (distance - cfg.detectNearDistance) / span));
   const seconds = cfg.detectNearSeconds + (cfg.detectFarSeconds - cfg.detectNearSeconds) * far;
   let boost = 1;
-  if (guard.state === 'suspicious') boost = cfg.suspiciousDetectBoost;
+  if (guard.state === 'suspicious' || guard.wary) boost = cfg.suspiciousDetectBoost;
   if (guard.state === 'searching') boost = cfg.searchingDetectBoost;
   return boost / seconds;
 }

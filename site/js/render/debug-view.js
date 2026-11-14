@@ -49,7 +49,7 @@ export function createDebugView(world) {
     ring.position.set(currentWorld.player.x, 0.2, Z);
     ring.scale.setScalar(radius || 1);
     currentWorld.guards.forEach((guard, i) => {
-      cones[i].visible = guard.state !== 'out';
+      cones[i].visible = guard.state !== 'out' && guard.state !== 'asleep';
       const positions = cones[i].geometry.attributes.position;
       coneOutline(coneShape(guard)).forEach((corner, n) => positions.setXYZ(n, corner.x, corner.y, Z));
       positions.needsUpdate = true;

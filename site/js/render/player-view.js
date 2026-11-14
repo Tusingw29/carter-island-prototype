@@ -2,6 +2,7 @@
 import { Group } from '../../vendor/three.module.js';
 import { playerHeight } from '../game/player.js';
 import { block } from './blocks.js';
+import { SEE_THROUGH_SPOTS } from './spot-views.js';
 
 const HEAD = 0.36;
 
@@ -13,9 +14,12 @@ export function createPlayerView() {
   const nose = block(0.12, 0.1, 0.2, 0x2a1c10);
   group.add(body, head, nose);
 
-  function update(player) {
-    group.visible = !player.hiddenIn;
-    const bodyHeight = playerHeight(player) - HEAD;
+  // hideSpot is the spot the player is inside, if any.
+  function update(player, hideSpot) {
+    // Under a table or behind the counter you stay on screen, crouched, so you can see where you are.
+    const crawling = hideSpot && SEE_THROUGH_SPOTS.includes(hideSpot.type);
+    group.visible = !player.hiddenIn || crawling;
+    const bodyHeight = (crawling ? 0.9 : playerHeight(player)) - HEAD;
     const lean = player.mode === 'run' ? -0.12 * player.facing : 0;
     group.position.set(player.x, 0, 0);
     group.rotation.z = lean;

@@ -2,6 +2,7 @@
 import { CONFIG } from './config.js';
 import { concealedIn } from './hiding.js';
 import { clampToRoom } from './player.js';
+import { endRun } from './run.js';
 
 function canGrab(guard, world, cfg) {
   const { player } = world;
@@ -21,8 +22,7 @@ export function tryGrab(guard, world, cfg = CONFIG) {
   player.inDark = null;
   player.dragging = null;
   if (world.breakFreeUsed) {
-    world.over = 'caught';
-    world.events.push({ type: 'caught' });
+    endRun(world, 'caught');
     return true;
   }
   world.grab = { guardId: guard.id, presses: 0, timeLeft: cfg.grab.mashSeconds };
@@ -50,8 +50,6 @@ export function updateGrab(world, mashed, dt, cfg = CONFIG) {
   if (grab.presses >= cfg.grab.mashNeeded) {
     breakFree(world, cfg);
   } else if (grab.timeLeft <= 0) {
-    world.grab = null;
-    world.over = 'caught';
-    world.events.push({ type: 'caught' });
+    endRun(world, 'caught');
   }
 }

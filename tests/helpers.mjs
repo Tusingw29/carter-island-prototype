@@ -1,5 +1,6 @@
 // Shared helpers for tests that run the game world.
 import { emptyIntent } from '../site/js/game/intent.js';
+import { enterRoom } from '../site/js/game/portals.js';
 import { createWorld, stepWorld } from '../site/js/game/world.js';
 
 export const STEP = 1 / 120;
@@ -26,9 +27,20 @@ export function tap(world, button) {
 }
 
 // A plain room with whatever guards and hiding spots a test needs.
-export function testWorld({ width = 40, playerX = 20, guards = [], hideSpots = [] } = {}) {
-  const room = { id: 'test', name: 'Test', width, playerStart: playerX, bedX: 1, cellXs: [], hideSpots, guards };
+export function testWorld({ width = 40, playerX = 20, guards = [], hideSpots = [], ...extra } = {}) {
+  const room = { id: 'test', name: 'Test', width, playerStart: playerX, hideSpots, guards, ...extra };
   return createWorld(room);
 }
 
 export const eventTypes = (world) => world.events.map((event) => event.type);
+
+// The full prison, with the player dropped into a room at x, out of bed.
+export function prisonWorld(roomId, x) {
+  const world = createWorld();
+  world.player.hiddenIn = null;
+  enterRoom(world, roomId, x);
+  world.events.length = 0;
+  return world;
+}
+
+export const guardById = (world, id) => world.allGuards.find((guard) => guard.id === id);

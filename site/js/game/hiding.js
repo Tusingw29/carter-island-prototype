@@ -1,7 +1,7 @@
 // Hiding spots: lockers and laundry carts you climb into, and pitch-dark spots you stand still in.
 import { CONFIG } from './config.js';
 
-const CONTAINERS = ['locker', 'cart', 'table', 'desk', 'shelf'];
+const CONTAINERS = ['locker', 'cart', 'bed', 'table', 'counter', 'desk', 'shelf'];
 
 export const isContainer = (spot) => CONTAINERS.includes(spot.type);
 
@@ -9,13 +9,18 @@ export function spotById(spots, id) {
   return spots.find((spot) => spot.id === id) ?? null;
 }
 
+// How far x is from the nearest part of a spot. Wide spots (tables, counters) count from their ends.
+export function distanceToSpot(spot, x) {
+  return Math.max(0, Math.abs(spot.x - x) - (spot.halfWidth ?? 0));
+}
+
 // The closest container within reach. fullIds lists spots already holding a body.
 export function nearestHideSpot(player, spots, fullIds = [], cfg = CONFIG.hide) {
   let best = null;
   for (const spot of spots) {
     if (!isContainer(spot) || fullIds.includes(spot.id)) continue;
-    const distance = Math.abs(spot.x - player.x);
-    if (distance <= cfg.reach && (!best || distance < Math.abs(best.x - player.x))) best = spot;
+    const distance = distanceToSpot(spot, player.x);
+    if (distance <= cfg.reach && (!best || distance < distanceToSpot(best, player.x))) best = spot;
   }
   return best;
 }
@@ -29,8 +34,9 @@ export function toggleHide(player, spots, fullIds = [], cfg = CONFIG.hide) {
   if (player.dragging) return null;
   const spot = nearestHideSpot(player, spots, fullIds, cfg);
   if (!spot) return null;
+  const halfWidth = spot.halfWidth ?? 0;
   player.hiddenIn = spot.id;
-  player.x = spot.x;
+  player.x = Math.max(spot.x - halfWidth, Math.min(spot.x + halfWidth, player.x));
   return 'hid';
 }
 

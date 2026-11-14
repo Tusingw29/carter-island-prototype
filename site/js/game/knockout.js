@@ -5,16 +5,17 @@ import { nearestHideSpot } from './hiding.js';
 
 // Ids of hiding spots that already hold a body. A full spot cannot hide the player.
 export function fullSpotIds(world) {
-  return world.guards.filter((guard) => guard.hiddenIn).map((guard) => guard.hiddenIn);
+  return world.allGuards.filter((guard) => guard.hiddenIn).map((guard) => guard.hiddenIn);
 }
 
 // A guard you could knock out right now: close, facing away, and not looking at you.
+// A sleeping guard can be knocked out from either side.
 export function knockoutTarget(world, cfg = CONFIG.knockout) {
   const { player } = world;
   if (player.hiddenIn || player.dragging) return null;
   return world.guards.find((guard) => {
     const offset = player.x - guard.x;
-    const behind = offset * guard.facing < 0;
+    const behind = offset * guard.facing < 0 || guard.state === 'asleep';
     return isConscious(guard) && behind && Math.abs(offset) <= cfg.reach && !guard.seesPlayer;
   }) ?? null;
 }
@@ -79,6 +80,6 @@ export function stuffBody(world) {
 export function updateDrag(world) {
   const { player } = world;
   if (!player.dragging) return;
-  const body = world.guards.find((guard) => guard.id === player.dragging);
+  const body = world.allGuards.find((guard) => guard.id === player.dragging);
   body.x = player.x - player.facing * 0.7;
 }
