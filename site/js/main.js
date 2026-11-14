@@ -17,6 +17,7 @@ import { createOverlay } from './render/overlay.js';
 import { createScreens } from './render/screens.js';
 import { setHidden, setText } from './render/dom.js';
 import { createStage } from './render/stage.js';
+import { createTuningPanel } from './render/tuning-panel.js';
 import { createTutorialBox } from './render/tutorial-box.js';
 
 // Game logic always advances in steps of this size, so it behaves the same on every machine.
@@ -39,7 +40,13 @@ let noteUntil = 0;
 // ?room=gym is the movement test room. It is not part of the prison.
 const inGym = params.get('room') === 'gym';
 const help = document.getElementById('help');
-const GYM_HELP = 'GYM  |  K: jump  |  L: dash (also in the air)  |  S + K while moving: slide';
+const GYM_HELP = 'GYM  |  K: jump  |  L: dash  |  S + K while moving: slide  |  F1: tuning sliders';
+// In the gym the movement numbers can be changed live with sliders, so the game is given its
+// own copy of the settings. Everywhere else it uses config.js as written.
+let liveConfig = CONFIG;
+const tuning = inGym ? createTuningPanel(CONFIG.moves, (moves) => { liveConfig = { ...CONFIG, moves }; }) : null;
+// The fastest run of the gym course since the page was opened.
+let bestCourse = null;
 // A knockout landing: the game holds still for a moment and the picture shakes.
 let hitStopUntil = 0;
 let shakeUntil = 0;
@@ -124,7 +131,8 @@ function draw(dt) {
   setText(cameraLine, `Camera: ${framingLabel(framing)}. Z or Left Bumper zooms in and out.`);
   setHidden(cameraNote, performance.now() > noteUntil);
   overlay.update(world, stage.camera, debug);
-  hud.update(world, debug, stage.speedReport());
+  hud.update(world, debug, stage.speedReport(), bestCourse);
+  tuning?.setVisible(debug);
   mapScreen.update(world, mapOpen && playing());
   endScreen.update(world, screens.open === null);
   document.body.classList.toggle('in-menu', screens.open !== null);
@@ -169,6 +177,9 @@ function handleMenus(intent) {
     else if (controls) screens.openOver('controls');
   } else if (world.over) {
     if (confirm) startRun();
+  } else if (confirm && world.course?.finishedAt != null) {
+    // Past the gym's finish line: run the course again.
+    startRun();
   } else if (cancel) {
     screens.show('pause');
   } else if (controls) {
@@ -202,9 +213,11 @@ function frame(now) {
     owed += dt;
     // Stop stepping the moment a knockout lands, so the freeze frame is the hit itself.
     while (owed >= STEP && now >= hitStopUntil) {
-      stepWorld(world, intent, STEP);
+      stepWorld(world, intent, STEP, liveConfig);
       owed -= STEP;
       feelHits(now);
+      const finished = world.events.find((event) => event.type === 'finish');
+      if (finished) bestCourse = Math.min(bestCourse ?? Infinity, finished.seconds);
     }
     if (now < hitStopUntil) owed = 0;
     movementSounds.update(world, dt);

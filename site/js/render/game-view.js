@@ -21,7 +21,7 @@ export function createGameView(world, options = {}) {
   // far is 0 with the camera close and 1 with it pulled right back.
   function update(debug, far = 0) {
     roomView.update(world, far);
-    playerView.update(world.player, spotById(world.room.hideSpots ?? [], world.player.hiddenIn));
+    playerView.update(world.player, spotById(world.room.hideSpots ?? [], world.player.hiddenIn), world.time);
     world.guards.forEach((guard, i) => guardViews[i].update(guard, far, world.time));
     debugView.update(world, debug);
   }

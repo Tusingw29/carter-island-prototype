@@ -32,6 +32,14 @@ export function createPlayer(x) {
     airDash: false,
     airDashUsed: false,
     boosted: false,
+    // Coyote time and jump buffering, and when things last happened (for the drawing).
+    jumping: false,
+    sinceGround: 0,
+    jumpBuffer: 0,
+    jumpedAt: null,
+    landedAt: null,
+    dashedAt: null,
+    dashFromX: 0,
   };
 }
 

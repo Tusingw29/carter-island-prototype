@@ -26,8 +26,7 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Creaky door: fast and loud / slow and quiet | tap W / hold W | tap Up / hold Up |
 | Interact, pick up, sleep in bed | E | A (bottom face button) |
 | Keycard: grab fast / lift quietly | tap E / hold E | tap A / hold A |
-| Choke hold from behind (awake guard) | hold Space | hold X (left face button) |
-| Knock out a sleeping guard, drag a body | Space | X |
+| Knock out from behind (unseen), drag body | Space | X (left face button) |
 | Break free when grabbed | mash Space | mash X |
 | Map | M | View / Select |
 | Zoom the camera in or out | Z | Left Bumper |
@@ -44,6 +43,9 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 - Three ways to do it: the front door (Mess Hall, then the Stairwell), the vents (find
   the screwdriver first), and a one-way drop that gets you home fast.
 - A guard checks your bed when the timer reads 3:30. Be in it, or leave a dummy.
+- Seen is not caught. A guard who spots you freezes for a moment, then chases, slower than
+  your run. He has to wind up a lunge to grab you: run when he crouches. Stay out of his
+  sight for two seconds and he loses you.
 - Knocked-out guards wake up after 75 seconds. Every guard calls in on the radio once a
   minute, and a missed call brings another guard to look.
 - The score screen gives you a rank: Ghost, Shadow, Inmate, or Caught.
@@ -67,7 +69,7 @@ Add these to the end of the play link.
 | `?debug` | Starts in debug mode: vision cones, noise ring, guard states, frame rate |
 | `?room=stairwell&px=2` | Starts in that room at that spot |
 | `?timer=30` | Starts with 30 seconds on the timer |
-| `?room=gym` | The movement test room: jump (K), dash (L), slide (S + K while moving) |
+| `?room=gym` | The obstacle course: jump (K), dash (L), slide (S + K while moving). F1 shows tuning sliders |
 | `?cam=close` | The close follow camera |
 | `?cam=wide` | The same camera pulled back, showing twice as much floor |
 | `?cam=room` | Shows the whole room if it fits; if not, follows you and stops at the walls |

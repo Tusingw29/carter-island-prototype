@@ -40,6 +40,17 @@ function bedCheckText(world) {
 }
 
 // cues: false hides the PA announcements and stops the timer pulsing.
+// The gym course clock, in seconds and tenths.
+function courseClock(world) {
+  const seconds = world.course?.seconds;
+  return seconds == null ? '0.0 s' : `${seconds.toFixed(1)} s`;
+}
+
+function courseNote(world, best) {
+  const done = world.course?.finishedAt != null;
+  return `${done ? 'FINISHED' : 'course time'}${best == null ? '' : `   best ${best.toFixed(2)} s`}`;
+}
+
 export function createHud(build, cues = true) {
   const byId = (id) => document.getElementById(id);
   const timer = byId('timer');
@@ -87,8 +98,9 @@ export function createHud(build, cues = true) {
     }
   }
 
-  function update(world, debug, speed) {
-    setText(timer, world.layout.practice ? 'GYM' : formatClock(world.timeLeft));
+  // best is the fastest gym course time this session, or null.
+  function update(world, debug, speed, best = null) {
+    setText(timer, world.layout.practice ? courseClock(world) : formatClock(world.timeLeft));
     timer.classList.toggle('low', world.timeLeft <= CONFIG.timerWarningSeconds);
     // In the last minute the timer pulses, and it flashes while the PA is talking.
     const announcement = cues ? currentAnnouncement(world) : null;
@@ -99,7 +111,7 @@ export function createHud(build, cues = true) {
     setHidden(keycard, !world.player.hasKeycard);
     setHidden(silentAlarm, !world.silentAlarm);
     for (const [flag, badge] of badges) setHidden(badge, !world.player[flag]);
-    setText(bedCheck, world.layout.practice ? 'no timer here' : bedCheckText(world));
+    setText(bedCheck, world.layout.practice ? courseNote(world, best) : bedCheckText(world));
 
     const text = currentMessage(world);
     setHidden(message, !text);

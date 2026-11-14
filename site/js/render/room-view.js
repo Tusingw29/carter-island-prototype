@@ -4,6 +4,7 @@ import { block, placed } from './blocks.js';
 import { createCameraView } from './camera-view.js';
 import { createSnitchView, createTraderView } from './inmate-views.js';
 import { createPortalView } from './portal-views.js';
+import { createSignViews } from './sign-view.js';
 import { createSpotView } from './spot-views.js';
 import { ductCeiling, grateView, weldedVentView } from './vent-views.js';
 import { createWallClock } from './wall-clock.js';
@@ -108,6 +109,8 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     group.add(view);
   }
   for (const solid of room.solids ?? []) group.add(solidView(solid));
+  const signs = createSignViews(room);
+  group.add(signs.group);
   if (room.trader) group.add(createTraderView(room.trader));
   for (const grate of room.grates ?? []) group.add(grateView(grate));
   if (room.crawl) group.add(ductCeiling(room));
@@ -145,5 +148,9 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     for (const { camera, view } of cameraViews) view.update(camera, far);
     for (const { snitch, view } of snitchViews) view.update(snitch);
   }
-  return { group, update, dispose: () => wallClock?.dispose() };
+  const dispose = () => {
+    wallClock?.dispose();
+    signs.dispose();
+  };
+  return { group, update, dispose };
 }

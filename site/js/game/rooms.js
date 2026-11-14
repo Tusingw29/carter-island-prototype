@@ -208,39 +208,52 @@ export const ROOMS = Object.freeze({
 
 export const PRISON = Object.freeze({ startRoom: 'cell-block', rooms: ROOMS });
 
-// The gym: a practice room for jump, slide, and dash. It is not part of the prison and has no
-// timer. Reached with ?room=gym.
+// The gym: an obstacle course for jump, slide, and dash, left to right, with a sign over each
+// part and a finish line. It is not part of the prison and has no headcount. Reached with ?room=gym.
 //   solids are boxes to stand on or slide under: { x, halfWidth, bottom, top }.
 //   pits are stretches with no floor: { from, to }.
+//   signs hang on the back wall: { x, text, hint }.
 //   bounds keep a guard on his own stretch of floor, so he never walks through a crate.
 const gym = {
   id: 'gym',
-  name: 'Gym (movement test)',
+  name: 'Gym (obstacle course)',
   floor: 0,
   col: 0,
-  width: 62,
+  width: 84,
   wallColor: 0x3f4a44,
   playerStart: 3,
   moves: true,
+  signs: [
+    { x: 8, text: '1. JUMP (K / B)', hint: 'tap for a short hop' },
+    { x: 17, text: '2. HOLD JUMP TO GO HIGHER', hint: 'let go early to cut it short' },
+    { x: 27, text: '3. SLIDE (crouch + jump)', hint: 'S + K while moving' },
+    { x: 37.5, text: '4. DASH (L / RB)', hint: 'hold dash and jump: a dash jump' },
+    { x: 51, text: '5. AIR DASH', hint: 'jump, then dash in the air' },
+    { x: 66, text: '6. SNEAK PAST THE GUARD', hint: 'over the ledge, or the dark patch' },
+    { x: 80, text: 'FINISH', hint: 'E to run it again' },
+  ],
   solids: [
-    // Two crates as steps up to a ledge that runs over the first guard's head.
-    { id: 'crate-1', kind: 'crate', x: 8, halfWidth: 0.8, bottom: 0, top: 1 },
-    { id: 'crate-2', kind: 'crate', x: 9.9, halfWidth: 1.1, bottom: 0, top: 2 },
-    { id: 'ledge', kind: 'ledge', x: 15, halfWidth: 3, bottom: 2.7, top: 3 },
-    // A low gap: too low to crouch under, so it needs a slide.
-    { id: 'low-gap', kind: 'wall', x: 27, halfWidth: 1.2, bottom: 0.75, top: 4.4 },
-    // More crates at the far end.
-    { id: 'crate-3', kind: 'crate', x: 57, halfWidth: 0.8, bottom: 0, top: 1 },
-    { id: 'crate-4', kind: 'crate', x: 59.2, halfWidth: 1.2, bottom: 0, top: 2 },
+    // 1. A low crate: a tap of jump clears it.
+    { id: 'hop', kind: 'crate', x: 9, halfWidth: 0.6, bottom: 0, top: 0.45 },
+    // 2. A tall crate: needs the full jump.
+    { id: 'high', kind: 'crate', x: 18.5, halfWidth: 1, bottom: 0, top: 1.15 },
+    // 3. A low gap: too low to crouch under, so it needs a slide.
+    { id: 'low-gap', kind: 'wall', x: 28, halfWidth: 1.2, bottom: 0.75, top: 4.4 },
+    // 6. Two crates as steps up to a ledge that runs over the guard's head.
+    { id: 'step-1', kind: 'crate', x: 60.5, halfWidth: 0.7, bottom: 0, top: 1 },
+    { id: 'step-2', kind: 'crate', x: 62.3, halfWidth: 1, bottom: 0, top: 2 },
+    { id: 'ledge', kind: 'ledge', x: 68.5, halfWidth: 4, bottom: 2.7, top: 3 },
   ],
-  // Too wide to jump, even at a run. It needs a dash.
-  pits: [{ from: 34, to: 40 }],
-  hideSpots: [{ id: 'gym-dark', type: 'dark', x: 31.5, halfWidth: 1.2 }],
+  pits: [
+    // 4. Too wide for a running jump. A dash jump clears it.
+    { id: 'dash-gap', from: 39, to: 43.5 },
+    // 5. Wider still. Jump, then dash in the air.
+    { id: 'air-gap', from: 52, to: 58.5 },
+  ],
+  hideSpots: [{ id: 'gym-dark', type: 'dark', x: 70, halfWidth: 1.1 }],
   portals: [],
-  guards: [
-    { id: 'gym-guard-1', patrol: [13, 23], startX: 18, facing: 1, bounds: [11.6, 25.2] },
-    { id: 'gym-guard-2', patrol: [42.5, 53], startX: 46, facing: 1, bounds: [40.8, 55.6] },
-  ],
+  guards: [{ id: 'gym-guard', patrol: [64.5, 76], startX: 68, facing: 1, bounds: [63.7, 78.5] }],
+  finish: { x: 80 },
 };
 
 export const GYM = Object.freeze({ startRoom: 'gym', practice: true, rooms: { gym } });

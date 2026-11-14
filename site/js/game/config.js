@@ -216,6 +216,13 @@ export const CONFIG = Object.freeze({
     maxFallSpeed: 20,
     // Letting go of jump early drops the upward speed to this.
     jumpCutSpeed: 3,
+    // Holding down in the air drops faster still.
+    fastDropGravity: 70,
+    fastDropMaxSpeed: 28,
+    // For this long after walking off an edge you can still jump (coyote time).
+    coyoteSeconds: 0.1,
+    // A jump pressed this long before landing still happens on landing (jump buffering).
+    jumpBufferSeconds: 0.1,
     // A dash is a fixed burst: dashSpeed for dashSeconds, 3.5 m. In the air it holds its height.
     dashSpeed: 14,
     dashSeconds: 0.25,

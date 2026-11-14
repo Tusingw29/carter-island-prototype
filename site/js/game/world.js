@@ -14,7 +14,7 @@ import { keycardInReach, takeKeycard } from './keycard.js';
 import {
   fullSpotIds, pressAction, stuffBody, updateDrag, updateKnockedOut,
 } from './knockout.js';
-import { updateMover } from './moves.js';
+import { updateCourse, updateMover } from './moves.js';
 import { noiseRadius } from './noise.js';
 import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
@@ -231,6 +231,7 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   if (world.room.crawl) moving = { ...intent, crouch: true, run: false };
   if (world.room.moves && !player.hiddenIn) {
     updateMover(world, moving, pressedMoves, dt, cfg);
+    updateCourse(world);
   } else {
     updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
   }

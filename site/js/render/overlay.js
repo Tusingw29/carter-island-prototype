@@ -33,7 +33,8 @@ function iconText(guard, debug, world) {
     const base = guard.hiddenIn ? (banging ? 'BANG! BANG!' : '') : (guard.wakeWarned ? 'Zz...?' : 'Zz');
     return base + (debug ? wakeMeter(guard) : '');
   }
-  if (guard.held) return '!?';
+  if (guard.state === 'alert' && guard.lunge > 0) return '!!';
+  if (guard.state === 'alert' && guard.stun > 0) return '~';
   if (onRadioNow(guard, world)) return `${RADIO} check-in`;
   if (guard.duty && guard.state === 'calm') return DUTIES[guard.duty.type] ?? '';
   if (guard.state === 'asleep' && guard.stirTimer > 0) return `Zz? ${Math.ceil(guard.stirTimer)}`;
@@ -65,12 +66,15 @@ export function createOverlay() {
       setHidden(holdFill.parentElement, progress === null);
       setWidth(holdFill, (progress ?? 0) * 100);
       pin(prompt, camera, hint.x, hint.y);
+      prompt.classList.toggle('shake', Boolean(hint.shake));
     }
 
     world.guards.forEach((guard, index) => {
       const icon = iconFor(index);
       setText(icon, iconText(guard, debug, world));
       if (icon.dataset.state !== shownState(guard)) icon.dataset.state = shownState(guard);
+      // The moment of shock when he first goes Alert: a big "!".
+      icon.classList.toggle('shock', guard.state === 'alert' && guard.react > 0);
       pin(icon, camera, guard.x, guard.state === 'out' && !guard.hiddenIn ? 1.1 : 2.5);
     });
     icons.slice(world.guards.length).forEach((icon) => setText(icon, ''));

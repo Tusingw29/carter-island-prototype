@@ -24,6 +24,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 6 | Polish, ready to share | review, awaiting Adam's verdict | `step-6-polish` |
 | 7 | Playtest 1: camera options, timer cues, silent alarm made clear | review, awaiting Adam's verdict | `step-7-playtest-1` |
 | 8 | Playtest 2: smart camera, hit feedback, knockout rules, 7:00 timer, gym | review, awaiting Adam's verdict | `step-8-playtest-2` |
+| 9 | Playtest 3: chase instead of instant capture, instant knockouts, gym feel | review, awaiting Adam's verdict | `step-9-playtest-3` |
 
 ---
 
@@ -577,6 +578,132 @@ depends on when you grab. Each cell is therefore a range over 35 different grab 
    wall. Cross the gap two ways (jump then L in the air, or L then K on the ground).
 8. In the gym, dash near a guard and watch him react, then slide past the same guard.
 9. Tell me which numbers feel wrong: jump height, fall speed, dash length, slide length.
+10. All four playtest questions.
+
+---
+
+## Step 9: Playtest 3 (chase instead of instant capture, instant knockouts, gym feel)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-9-playtest-3`
+- **Playtest 3 results (Adam):** caught in the Mess Hall with 6:13 left, about 47 seconds
+  in. Spotted 5, knockouts 1, no keycard. "The guard on the main version now is like
+  instantly caught." Wants a chase: "They can see me, but they've got to catch me." Wants
+  the instant knockout from behind back. Likes the run speed. The gym was confusing and
+  the movement still a little stiff.
+- **Not changed:** vision cone sizes, patrols, the player's speeds, the wake-up timer, the
+  radio check-ins, the one break-free chance, and the main map.
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Gym: https://tusingw29.github.io/carter-island-prototype/?room=gym
+
+### Why it felt instant (measured on the Step 8 rules, before anything was changed)
+
+Scripted runs in the Mess Hall with both guards. Times are seconds after the guard first
+saw the player. This is not a replay of Adam's actual run, which was not recorded.
+
+| What the player did | "?" | "!" | Grab | "!" to grab |
+| --- | --- | --- | --- | --- |
+| Stepped in front of a guard, 1 m away | 0.08 | 0.22 | 0.22 | 0.0 s |
+| Let go of a choke hold early | | 0.00 | 0.00 | 0.0 s |
+| Was seen up close and ran from him, toward the other guard | 0.00 | 0.20 | 2.18 | 2.0 s |
+| Stood at the far edge of a beam, 6.5 m away | 0.36 | 0.87 | 1.77 | 0.9 s |
+| Was seen far off and ran, toward the other guard | 0.00 | 2.39 | 2.54 | 0.15 s |
+| Broke free of the first grab and ran into the Cell Block | | | caught about 2 s after breaking free | |
+
+Which rule caused each step:
+
+1. **Close-up sight.** Within 1.2 m in front of a guard you are seen even below his beam,
+   and within 2 m the meter fills in 0.3 s. So "!" came 0.2 s after stepping in front.
+2. **Grab on contact.** A grab needed no wind-up, only being within 0.8 m of an Alert guard.
+   At 1 m he was already there, so the "!" and the grab were the same instant. This is the
+   main cause of "seen is the same as caught".
+3. **The choke hold.** Letting go early made him Alert at arm's length: Alert and grabbed
+   in the same instant. With one knockout in the run, a failed hold is a likely part of it.
+4. **The alarm reaches the whole room.** Both Mess Hall guards went Alert together, one on
+   each side. Running from one meant running at the other, who grabbed 0.15 s after "!".
+5. **The radio check-in.** With the Cell Block guard knocked out, his missed check-in 20
+   seconds into the run sends Mess Hall guard 1 walking toward the Cell Block, which puts a
+   Suspicious guard in the doorway about when Adam got there. Likely, not certain.
+6. **The second grab ends the run.** After breaking free, the next room's guards are told
+   where you came in, and the next contact was the end, with no mash.
+
+Chase speed was not the cause: it was already 77% of the run speed.
+
+### What was built
+
+1. **Seen is not caught.**
+   - **Reaction:** a guard who goes Alert freezes for 0.6 s with a big "!" and the sting.
+   - **Chase speed:** 5.2 m/s, 80% of your run (6.5) and faster than your walk (3.2).
+   - **Lunge:** a grab is now a lunge. It starts when he is within 1.2 m, takes 0.35 s to
+     wind up (he crouches, his beam flashes white, "!!" over his head), then carries him up
+     to 1.8 m forward. Run during the wind-up and he misses. Run past him and he lunges at
+     nothing. Walking is not fast enough. A miss leaves him stumbling for 0.9 s.
+   - **Losing him:** out of his sight for 2 seconds and he goes to Searching around the
+     last place he knew you were. A hiding spot he did not see you get into still works.
+     One he watched you get into does not: he walks up and pulls you out, with no lunge.
+   - The same scripted tests now: stepping in front of a guard at 1 m gives "!" at 0.22 s
+     and the grab at 1.17 s if you stand still, and no grab in that room if you run.
+2. **Knockouts are instant again** from behind when he has not seen you, with the Step 8
+   hit feedback. The choke hold is gone. On a guard who is facing you, can see you, or is
+   already Alert, Space does nothing but show a red shaking "TOO RISKY" for 0.6 s.
+3. **"How you got caught"** on the score screen and in the playtest text, for example:
+   `Grabbed 1.0 s after the "!". The Mess Hall guard 1 saw you up close.` The causes it can
+   name: seen up close, seen in a flashlight, watched getting into a hiding spot, found in
+   a hiding spot during a search, a body found, the sleeping guard waking, the empty bed.
+4. **Gym as an obstacle course** with a sign over each part: 1. JUMP, 2. HOLD JUMP TO GO
+   HIGHER, 3. SLIDE, 4. DASH, 5. AIR DASH, 6. SNEAK PAST THE GUARD, FINISH. The clock at the
+   top right starts when you first move and stops at the finish line, with your best time
+   under it. E (or A) past the line runs it again.
+5. **Gym movement feel:** instant start and stop; tap for a hop, hold for the full jump;
+   falling faster than rising, and faster again while holding down; instant turns in the
+   air; coyote time 0.1 s; jump buffering 0.1 s; dash at one speed for one distance with a
+   dead stop; a dash jump by jumping out of a dash or by holding dash while you jump; one
+   air dash per jump, dead level; stretch on take-off, squash on landing, a dust puff
+   where a dash starts.
+6. **Tuning sliders** in the gym with F1: jump height, gravity, fall speed, dash speed,
+   dash distance. They change the game at once. "Copy values" gives text to paste into
+   the `moves` section of `config.js`. Nothing is saved: a reload goes back to config.js.
+
+### Planning bot, new chase rules
+
+| Route | Clean run | Time |
+| --- | --- | --- |
+| Front door in, front door back | yes, Ghost | 2:14 |
+| Front door in, one-way drop home | yes, Ghost | 1:36 |
+| Vent route | yes, Ghost | 1:23 |
+
+Unchanged, because a clean run is never seen, so no chase ever starts. The bot cannot
+judge how the chase feels. That is the point of this playtest.
+
+### Choices I made that Adam should check
+
+- A walking player is still caught by a lunge. Only running (or getting past him) dodges it.
+- Every guard the alarm reaches gets the 0.6 s pause, not only the one who saw you.
+- The 2-second rule is per guard. A guard who never saw you runs to where you were
+  reported for 2 seconds, then searches.
+- A guard still knows where you are for 1 second after losing sight (as before), so a
+  hiding spot only works if you were out of his sight for more than a second first.
+- In the gym you still walk by default and hold Shift to run, as in the main game, so the
+  sneaking part works the same way. If the stiffness is the walk speed, say so.
+- The gym now has one guard (the sneak section), not two.
+- **Not verified:** not played by a person, sounds unheard, rumble and the 2015 MacBook
+  Air untested. Checked by tests, scripted runs, and headless Chrome.
+
+### How Adam tests it
+
+1. Main game. Walk into a guard's flashlight. Watch for the big "!" and the freeze, then
+   run. He should follow and fall behind.
+2. Let him get close and watch for the crouch and the white flash. Run the moment you see
+   it. Then try running straight past him instead.
+3. Get chased, run until you are out of his beam, and keep out of it for two seconds.
+4. Get chased and hide where he can see you. Then get chased, lose him first, and hide.
+5. Sneak up behind a guard and press Space once. Then press Space in front of one.
+6. Get caught on purpose and read "How you got caught" on the score screen.
+7. Gym: run the course left to right. Then run it again for a better time.
+8. Gym: press F1, move the sliders, and try the jumps and the gaps again. If you find
+   numbers you like, press "Copy values" and send them to me.
+9. Is it a chase now? Is the head start too long, too short, or about right?
 10. All four playtest questions.
 
 ---
