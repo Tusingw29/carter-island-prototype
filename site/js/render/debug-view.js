@@ -22,8 +22,8 @@ function outline(color, count) {
   return line;
 }
 
-function patrolPath(guard) {
-  const y = 0.05;
+function patrolPath(guard, index) {
+  const y = 0.05 + index * 0.06;
   const points = [
     new Vector3(guard.patrolMin, 0.4, Z), new Vector3(guard.patrolMin, y, Z),
     new Vector3(guard.patrolMax, y, Z), new Vector3(guard.patrolMax, 0.4, Z),
@@ -35,9 +35,9 @@ export function createDebugView(world) {
   const group = new Group();
   const ring = circle(0x7dff9a);
   group.add(ring);
-  const cones = world.guards.map((guard) => {
+  const cones = world.guards.map((guard, index) => {
     const cone = outline(0xffffff, 4);
-    group.add(cone, patrolPath(guard));
+    group.add(cone, patrolPath(guard, index));
     return cone;
   });
 
@@ -49,6 +49,7 @@ export function createDebugView(world) {
     ring.position.set(currentWorld.player.x, 0.2, Z);
     ring.scale.setScalar(radius || 1);
     currentWorld.guards.forEach((guard, i) => {
+      cones[i].visible = guard.state !== 'out';
       const positions = cones[i].geometry.attributes.position;
       coneOutline(coneShape(guard)).forEach((corner, n) => positions.setXYZ(n, corner.x, corner.y, Z));
       positions.needsUpdate = true;

@@ -17,7 +17,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | --- | --- | --- | --- |
 | 0 | Repo, tests, deploy, docs | review, awaiting Adam's verdict | `main` |
 | 1 | Core feel in one room | review, awaiting Adam's verdict | `step-1-core-feel` |
-| 2 | Full stealth system | todo | `step-2-stealth` |
+| 2 | Full stealth system | review, awaiting Adam's verdict | `step-2-stealth` |
 | 3 | Full map, timer, keycard, win and lose | todo | `step-3-map` |
 | 4 | Screwdriver and vents | todo | `step-4-vents` |
 | 5 | Inmates, bed check, dummy, camera panel | todo | `step-5-inmates` |
@@ -72,7 +72,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 
 ## Step 2: Full stealth system
 
-- **Status:** todo
+- **Status:** review, awaiting Adam's verdict
 - **Branch:** `step-2-stealth`
 - **Scope:** Still the Cell Block test room. Alert levels Calm, Suspicious, Alert,
   Searching, back to Calm. Guards react to noise (go Suspicious and walk to the spot) and
@@ -86,7 +86,40 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
   - Every alert state change in the spec happens and is covered by a test.
   - Knockouts, body discovery, and break-free are covered by tests.
   - The icons and the alert meter always match the guards' real state.
-- **How Adam tests it:** to be written when the task goes to review.
+- **How the rules work (so you know what you are testing):**
+  - Sight fills a meter instead of being instant. At the far edge of the beam it takes over
+    a second; right in front of the guard it takes a third of a second. About a third full,
+    he goes Suspicious ("?") and walks over. Full, he goes Alert ("!") and so does everyone.
+  - Running is heard 8 m away, walking 2.5 m, crouching never.
+  - Alert guards are faster than your walk and slower than your run.
+  - Getting into a locker, cart, or dark spot while a guard is watching does not work. He
+    walks over and pulls you out.
+  - Searching guards check every hiding spot within 7 m of where they lost you. Spots
+    further away are safe. This is fixed, not random, so you can learn it.
+  - A body stuffed in a locker or cart is never found. That spot is then full.
+- **How Adam tests it:**
+  1. Noise: run behind the left guard. He shows "?" and walks to where he heard you.
+     Crouch away and watch him look around, give up, and go back to his patrol.
+  2. Sight: stand at the far edge of a flashlight and watch the meter at the top fill.
+     Step out before it is full and it drains. Stay in and you get "!" and the alarm sting.
+  3. Chase: once Alert, run. Both guards come. Get well away, crouch, and climb into the
+     laundry cart or stand still in the dark patch in the middle of the room. Watch them
+     go to Searching, then Calm.
+  4. Search: get chased again, but this time hide in a spot close to where they lost you.
+     A guard should come and check it, and pull you out.
+  5. Dark spot: stand still in the dark patch while a calm guard sweeps his light over
+     you. Nothing. Then take one step while his light is on you.
+  6. Knockout: crouch-walk up behind a guard until "SPACE: knock out" appears, and press
+     Space. Press Space again on the body to drag it, walk it to the locker or cart, and
+     press W to stuff it in. Try to hide in that same spot afterwards (you cannot).
+  7. Body found: knock out a guard and leave him on the floor in the other guard's path.
+  8. Grab: let an Alert guard reach you. Mash Space to break free, then run. Let them
+     catch you a second time: "CAUGHT" and a Restart button (Enter or A also restarts).
+  9. All of the above with a controller: X is knock out, drag, and break free.
+  10. Playtest question 1 again, now that guards react.
+- **Known limits, on purpose:** two guards in the Cell Block is for testing groups; the
+  spec's Cell Block has one, and Step 3 goes back to that. Knocked-out guards stay down
+  for the whole run. The run cannot be won yet.
 
 ## Step 3: Full map, timer, keycard, win and lose
 

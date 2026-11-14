@@ -1,9 +1,11 @@
 // Builds the blocks for a room: floor, back wall, cells, bed, and hiding spots.
-import { Group } from '../../vendor/three.module.js';
+import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from '../../vendor/three.module.js';
 import { block, placed } from './blocks.js';
 
 const WALL_Z = -2;
 const WALL_HEIGHT = 4.6;
+const PLAYER_GLOW = 0xd98a3a;
+const BODY_GLOW = 0x3a5a9a;
 
 function cellFront(x) {
   const group = new Group();
@@ -14,15 +16,39 @@ function cellFront(x) {
   return group;
 }
 
+// Each spot view has setOccupied(glowColor or 0): a small light shows who is inside.
 function lockerView(spot) {
   const group = new Group();
-  const body = placed(block(1, 2.2, 0.7, 0x45616f), spot.x, 1.1, WALL_Z + 0.4);
   const slit = placed(block(0.5, 0.08, 0.05, 0x10161b), spot.x, 1.75, WALL_Z + 0.77);
-  group.add(body, slit);
-  // The slit lights up while you are inside, so you can tell where you are.
-  group.userData.setOccupied = (occupied) => slit.material.emissive.setHex(occupied ? 0xd98a3a : 0x000000);
+  group.add(placed(block(1, 2.2, 0.7, 0x45616f), spot.x, 1.1, WALL_Z + 0.4), slit);
+  group.userData.setOccupied = (glow) => slit.material.emissive.setHex(glow);
   return group;
 }
+
+function cartView(spot) {
+  const group = new Group();
+  const z = WALL_Z + 1.1;
+  const rim = placed(block(1.7, 0.08, 0.95, 0xb9b4a4), spot.x, 1.04, z);
+  group.add(placed(block(1.6, 0.8, 0.9, 0x8a8f6a), spot.x, 0.6, z), rim);
+  group.add(placed(block(0.15, 0.2, 0.15, 0x22262c), spot.x - 0.6, 0.1, z));
+  group.add(placed(block(0.15, 0.2, 0.15, 0x22262c), spot.x + 0.6, 0.1, z));
+  group.userData.setOccupied = (glow) => rim.material.emissive.setHex(glow);
+  return group;
+}
+
+// A pitch-dark patch: a see-through black sheet in front of that stretch of the room.
+function darkView(spot) {
+  const group = new Group();
+  const material = new MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.72, depthWrite: false });
+  const sheet = new Mesh(new PlaneGeometry(spot.halfWidth * 2, 3.7), material);
+  sheet.renderOrder = 5;
+  group.add(placed(sheet, spot.x, 1.85, 0.9));
+  group.add(placed(block(spot.halfWidth * 2, 0.04, 3.6, 0x05070b), spot.x, 0.02, -0.1));
+  group.userData.setOccupied = () => {};
+  return group;
+}
+
+const SPOT_VIEWS = { locker: lockerView, cart: cartView, dark: darkView };
 
 export function createRoomView(room) {
   const group = new Group();
@@ -42,13 +68,17 @@ export function createRoomView(room) {
 
   const spotViews = new Map();
   for (const spot of room.hideSpots) {
-    const view = lockerView(spot);
+    const view = SPOT_VIEWS[spot.type](spot);
     spotViews.set(spot.id, view);
     group.add(view);
   }
 
   function update(world) {
-    for (const [id, view] of spotViews) view.userData.setOccupied(world.player.hiddenIn === id);
+    for (const [id, view] of spotViews) {
+      const holdsBody = world.guards.some((guard) => guard.hiddenIn === id);
+      const glow = world.player.hiddenIn === id ? PLAYER_GLOW : 0;
+      view.userData.setOccupied(holdsBody ? BODY_GLOW : glow);
+    }
   }
   return { group, update };
 }
