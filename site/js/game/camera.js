@@ -8,7 +8,7 @@ import { say } from './messages.js';
 import { stanceFactor } from './stance.js';
 import { playerHeight } from './player.js';
 import { bodyPoints } from './vision.js';
-import { fanPools, inFan, litFan, sightBlocked, sightBlockers } from './sight.js';
+import { fanPools, inFan, litFan, sightBlockers } from './sight.js';
 
 export function createCamera(def, roomId) {
   // awareness is its meter, 0 to 1. armed means its next call-in counts as a new spotting:
@@ -66,25 +66,26 @@ export function searchlightShape(light, blockers = []) {
   return { fan, pools: fanPools(fan, blockers) };
 }
 
-// Is this body in the light? Any point up it, feet to head, inside the drawn shape.
-function inSearchlight(light, player, blockers) {
-  const shape = searchlightShape(light, blockers);
+// A security camera's shape, the same idea: the beam from the camera down to the stretch it
+// is watching, stopped by the floor and by cover. Drawn, and used to decide whether it sees you.
+export function cameraShape(camera, blockers = []) {
+  if (camera.off || camera.away) return null;
+  return { fan: cameraLit(camera, blockers) };
+}
+
+// Is this body in the beam? Any point up it, feet to head, inside the drawn shape.
+function inBeam(camera, player, blockers) {
+  const shape = cameraShape(camera, blockers);
   if (!shape) return false;
   return bodyPoints(player.x, playerHeight(player), 6, player.y ?? 0).some((point) => inFan(shape.fan, point));
 }
 
-// A security camera sees you if you are on the watched stretch of floor and it has a clear
-// line to your head or your chest. A searchlight catches you where its light actually falls:
-// on the ground, on a crate, or half way up a ladder, and nowhere else.
+// Cameras and searchlights both catch you where their drawn beam actually falls on you: on the
+// ground, on a crate, or half way up a ladder, and nowhere else. One shape for the picture
+// and for the rule.
 export function cameraSeesPlayer(camera, player, blockers = []) {
   if (camera.off || camera.away || concealedIn(player)) return false;
-  if (camera.kind === 'searchlight') return inSearchlight(camera, player, blockers);
-  if (Math.abs(player.x - camera.x) > camera.halfWidth) return false;
-  if (blockers.length === 0) return true;
-  const mount = cameraMount(camera);
-  const height = playerHeight(player);
-  const feetY = player.y ?? 0;
-  return [0.9, 0.55].some((share) => !sightBlocked(mount, { x: player.x, y: feetY + height * share }, blockers));
+  return inBeam(camera, player, blockers);
 }
 
 // Stepping into a searchlight: the tower guard calls it in, and every guard in the yard goes

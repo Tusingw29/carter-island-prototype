@@ -234,8 +234,9 @@ const guardOffice = {
   items: [{ id: 'keycard', type: 'keycard', x: 10.5 }],
   guards: [{ id: 'go-guard', patrol: [13.5, 13.5], facing: -1, sleeper: true,
     talk: {
-      type: 'secret', reveals: ['mh-yard', 'yd-hatch'],
-      text: 'Work boots? Equipment shed, out in the Yard. Door is latched. The only way in is the roof hatch.',
+      // He is off the radio, so he has no code to give. He gives two secrets instead.
+      type: 'secret', reveals: ['mh-yard', 'yd-hatch', 'go-window', 'yd-window'],
+      text: 'Work boots? Shed in the Yard, in by the roof hatch. And that window there opens onto the roof.',
     } }],
 };
 

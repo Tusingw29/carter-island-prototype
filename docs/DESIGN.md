@@ -373,6 +373,54 @@ do not punish failure so hard that players replay long stretches.
 - Brighter outline, a small label "last seen" the first few times, and a one-time
   tutorial hint explaining it.
 
+## Heat and the review fixes (added in Step 15)
+
+From the outside review in [reviews/codex-review-1.md](reviews/codex-review-1.md).
+
+### Door escalation: the heat ladder
+
+Running through doors used to erase the danger. Each new door escape during a hunt raises
+the "heat" one level for the rest of the run:
+
+- Heat 1, PURSUIT: the chasing guard follows you through ONE door or hall into the next
+  room (show "He's following you!" and a door-bang sound before he comes through). After
+  that one room he stops at the next exit and searches, as now. Arrive with a safe moment:
+  he comes through about 1 s after you, never on top of you.
+- Heat 2, LOCKDOWN: when an Alert starts, the doors and halls of that room lock for about
+  6 s (config value), with a clear lock icon and sound on each door. Vents and the
+  one-way drop still work, so they stay the strong escape reward.
+- Heat 3, RADIO AHEAD: on top of the above, the guards in the room you flee into are
+  warned by radio and go straight to Alert, facing the door you come through.
+- Show the current heat level on the HUD (small, near the alert meter) with a short
+  message when it rises. Heat never goes down during a run.
+
+### Drawings must match checks
+
+- Guard close-range awareness is drawn clearly: the beam plus the close-awareness box is
+  everything a guard can see.
+- Cameras use one shared shape for drawing and checking, like the searchlights.
+
+### Watched hiding
+
+- Keep the rule that a guard who saw you hide can pull you out. But add a 0.35 s reach-in
+  tell (he reaches toward the spot, clear animation) and the message "He saw you hide" at
+  the spot. The player can jump out and run during the tell.
+- The meter keeps filling normally instead of jumping straight to full.
+
+### Smaller rules
+
+- Slides: keep slide speed 7. slideRecoverySeconds: 0.35 between slides.
+- Keep a red edge arrow on screen while an off-screen guard is in the reaction pause or
+  chasing.
+- Draw a faint full-radius ring IMMEDIATELY at the real noise origin, with the expanding
+  pulse inside it. Dim a stunned guard's flashlight cone so it does not look like he can see.
+- "How you got caught" uses the grabbing guard's own latest Alert (time, cause, room),
+  tracked separately from the spotted count. Victory text matches the rank: Ghost, Shadow,
+  and Inmate each get their own line.
+- Beside the grab choices, show when that guard's next radio check-in is due and what a
+  missed call brings. The office sleeper is not on the radio: he gives a different reward
+  when interrogated, and that is said clearly.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

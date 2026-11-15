@@ -4,6 +4,7 @@ import {
 } from '../../vendor/three.module.js';
 import { spotById } from '../game/hiding.js';
 import { lastSeenMarkers } from '../game/lastseen.js';
+import { pingRings as pingView } from '../game/noise.js';
 import { playerLook } from '../game/visibility.js';
 import { sightBlockers } from '../game/sight.js';
 import { throwArc } from '../game/throwing.js';
@@ -36,24 +37,31 @@ export function createGameView(world, options = {}) {
     return new LineLoop(new BufferGeometry().setFromPoints(points), material);
   };
   const noiseRing = circle();
-  const pingRings = Array.from({ length: 4 }, circle);
-  root.add(noiseRing, ...pingRings);
+  // Each one-off noise gets two rings: its full reach, there from the first instant, and a
+  // pulse growing inside it.
+  const pingRings = Array.from({ length: 4 }, () => ({ boundary: circle(), pulse: circle() }));
+  root.add(noiseRing, ...pingRings.flatMap((rings) => [rings.boundary, rings.pulse]));
 
   function updateNoise(debug) {
     const radius = world.noiseRadius;
     noiseRing.visible = radius > 0;
-    noiseRing.position.set(world.player.x, (world.player.y ?? 0) + 0.2, 0.6);
+    // Centred on the player's feet: the same point the hearing check measures from.
+    noiseRing.position.set(world.player.x, world.player.y ?? 0, 0.6);
     noiseRing.scale.setScalar(radius || 1);
     noiseRing.material.opacity = debug ? 0.9 : 0.35;
     const recent = world.pings.slice(-pingRings.length);
-    pingRings.forEach((ring, i) => {
+    pingRings.forEach((rings, i) => {
       const ping = recent[i];
-      ring.visible = Boolean(ping);
+      rings.boundary.visible = Boolean(ping);
+      rings.pulse.visible = Boolean(ping);
       if (!ping) return;
-      const age = (world.time - ping.at) / 0.5;
-      ring.position.set(ping.x, ping.y + 0.2, 0.6);
-      ring.scale.setScalar(ping.radius * (0.6 + 0.4 * age));
-      ring.material.opacity = 0.5 * (1 - age);
+      const view = pingView(ping, world.time);
+      rings.boundary.position.set(view.x, view.y, 0.6);
+      rings.boundary.scale.setScalar(view.boundary);
+      rings.boundary.material.opacity = 0.3 * view.fade;
+      rings.pulse.position.set(view.x, view.y, 0.6);
+      rings.pulse.scale.setScalar(Math.max(0.01, view.pulse));
+      rings.pulse.material.opacity = 0.55 * view.fade;
     });
   }
 

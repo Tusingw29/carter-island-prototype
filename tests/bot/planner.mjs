@@ -73,7 +73,9 @@ function seenCells(frame, room, crouching) {
   for (const camera of frame.cameras) {
     if (camera.roomId !== room.id || camera.off || camera.away) continue;
     const sees = (x) => cameraSeesPlayer(camera, standIn(x), blockers);
-    mark(camera.x - camera.halfWidth, camera.x + camera.halfWidth, sees);
+    // The beam leans from the camera to the floor, so it can catch a head a little outside
+    // the stretch of floor it is aimed at.
+    mark(camera.x - camera.halfWidth - 3, camera.x + camera.halfWidth + 3, sees);
   }
   for (const snitch of frame.snitches) {
     if (snitch.roomId === room.id) mark(snitch.window[0], snitch.window[1], () => true);

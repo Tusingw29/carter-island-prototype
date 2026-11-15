@@ -11,6 +11,13 @@ export function noiseRadius(mode, cfg = CONFIG.noise) {
   return 0;
 }
 
+// How to draw a one-off noise at a given moment: a boundary at its full hearing radius, there
+// from the first instant, and a pulse that grows inside it. fade goes from 1 to 0 as it dies away.
+export function pingRings(ping, time, lifeSeconds = 0.5) {
+  const age = Math.max(0, Math.min(1, (time - ping.at) / lifeSeconds));
+  return { x: ping.x, y: ping.y ?? 0, boundary: ping.radius, pulse: ping.radius * age, fade: 1 - age };
+}
+
 // True if someone standing at listenerX can hear the noise. Height counts too: a noise on the
 // ground is further from a guard up a tower than its distance along the floor says.
 export function canHear(listenerX, noise, listenerY = 0) {

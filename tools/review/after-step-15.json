@@ -1,0 +1,105 @@
+{
+  "note": "The scripts in this folder, rerun on Step 15. The other JSON files here are the reviewer's, from before.",
+  "reactiveAndFixedTape": {
+    "Ghost": {
+      "runs": 30,
+      "wins": 1,
+      "meanTimeLeft": 315.7,
+      "solitary": 29,
+      "captures": {
+        "mess-hall": 7,
+        "cell-block": 51
+      }
+    },
+    "Knockout-heavy": {
+      "runs": 30,
+      "wins": 23,
+      "meanTimeLeft": 366.8,
+      "solitary": 9,
+      "captures": {
+        "stairwell": 10,
+        "cell-block": 3,
+        "mess-hall": 3
+      }
+    },
+    "Rusher": {
+      "runs": 30,
+      "wins": 27,
+      "meanTimeLeft": 383.2,
+      "solitary": 3,
+      "captures": {
+        "stairwell": 6
+      }
+    },
+    "Careless": {
+      "runs": 30,
+      "wins": 0,
+      "meanTimeLeft": 328,
+      "solitary": 30,
+      "captures": {
+        "mess-hall": 60
+      }
+    },
+    "Vent-first": {
+      "runs": 30,
+      "wins": 2,
+      "meanTimeLeft": 292.1,
+      "solitary": 28,
+      "captures": {
+        "laundry": 24,
+        "cell-block": 29
+      }
+    },
+    "Yard roof route": {
+      "runs": 30,
+      "wins": 2,
+      "meanTimeLeft": 314.8,
+      "solitary": 28,
+      "captures": {
+        "mess-hall": 5,
+        "cell-block": 51
+      }
+    }
+  },
+  "adaptive": {
+    "Ghost": {
+      "runs": 10,
+      "wins": 10,
+      "meanTimeLeft": 316.4
+    },
+    "Vent-first": {
+      "runs": 10,
+      "wins": 10,
+      "meanTimeLeft": 335.2
+    },
+    "Yard roof route": {
+      "runs": 10,
+      "wins": 10,
+      "meanTimeLeft": 280.7
+    }
+  },
+  "pullRoute": {
+    "runs": 10,
+    "wins": 10
+  },
+  "probes": {
+    "cameraDisagreements": 0,
+    "slideChainSpeed": 4.97,
+    "watchedHideGrabbedAt": 2.2,
+    "watchedHideStateOneStepLater": "suspicious"
+  },
+  "recovery": [
+    {
+      "outcome": "win",
+      "timeLeft": 73.1
+    },
+    {
+      "outcome": "headcount",
+      "timeLeft": 0
+    },
+    {
+      "outcome": "headcount",
+      "timeLeft": 0
+    }
+  ]
+}

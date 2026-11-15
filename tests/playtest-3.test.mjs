@@ -251,9 +251,9 @@ test('score: "how you got caught" gives the seconds from the "!" to the grab and
   assert.ok(Math.abs(seconds - (world.lastGrab.at - alertAt)) < 0.02);
   assert.ok(seconds >= G.reactSeconds + G.lungeWindupSeconds - 0.02, 'never less than the pause plus the wind-up');
   assert.equal(world.lastGrab.alarmKind, 'closeSight');
-  const expected = `Grabbed ${seconds.toFixed(1)} s after the "!". The Test guard saw you up close.`;
+  const expected = `Grabbed by the Test guard ${seconds.toFixed(1)} s after his "!". The Test guard saw you up close.`;
   assert.equal(world.result.caughtHow, expected);
-  assert.match(playtestText(world.result, []), /How: Grabbed \d\.\d s after the "!"/);
+  assert.match(playtestText(world.result, []), /How: Grabbed by the Test guard \d\.\d s after his "!"/);
 });
 
 test('score: the cause is told apart: flashlight, hiding spot, body, sleeping guard, empty bed', () => {

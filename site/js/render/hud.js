@@ -3,6 +3,7 @@ import { CONFIG } from '../game/config.js';
 import { alertSummary } from '../game/alert.js';
 import { formatClock } from '../game/clock.js';
 import { currentAnnouncement } from '../game/cues.js';
+import { heatLabel } from '../game/heat.js';
 import { currentMessage } from '../game/messages.js';
 import { shoveCharge } from '../game/shove.js';
 import { solitaryFade } from '../game/solitary.js';
@@ -75,6 +76,7 @@ export function createHud(build, cues = true) {
   const message = byId('message');
   const pa = byId('pa');
   const silentAlarm = byId('silent-alarm');
+  const heat = byId('heat');
   const carrying = byId('carrying');
   const shoveMeter = byId('shove');
   const shoveFill = byId('shove-fill');
@@ -136,6 +138,10 @@ export function createHud(build, cues = true) {
     if (announcement) setText(pa, announcement);
     setHidden(keycard, !world.player.hasKeycard);
     setHidden(silentAlarm, !world.silentAlarm);
+    // Heat: how far running through doors has escalated things. It never goes down.
+    setHidden(heat, world.heat === 0);
+    setText(heat, heatLabel(world));
+    if (heat.dataset.level !== String(world.heat)) heat.dataset.level = String(world.heat);
     for (const [flag, badge] of badges) setHidden(badge, !world.player[flag]);
     const held = world.player.carrying;
     setHidden(carrying, !held);

@@ -72,14 +72,17 @@ test('stairs and plain doors open on a single press, silently', () => {
   assert.ok(!eventTypes(world).includes('doorLoud'));
 });
 
-test('guards do not follow you out of a room, but the alarm makes the next room suspicious', () => {
+test('the first escape through a doorway: one guard follows, and the next room goes suspicious', () => {
+  // Step 15 (heat 1). Before, no guard ever followed you out of a room.
   const world = prisonWorld('mess-hall', 34.5);
   const chaser = guardById(world, 'mh-guard-2');
+  const other = guardById(world, 'mh-guard-1');
   Object.assign(chaser, { x: 31, facing: 1, patrolDir: 1 });
-  runUntil(world, () => chaser.state === 'alert', {}, 2);
+  runUntil(world, () => chaser.state === 'alert', {}, 4);
   runUntil(world, () => world.room.id === 'stairwell', { moveX: 1, run: true }, 3);
-  assert.equal(chaser.state, 'searching', 'he lost you at the archway');
-  assert.equal(chaser.roomId, 'mess-hall');
+  assert.equal(world.heat, 1);
+  assert.equal(chaser.state, 'alert', 'the nearest chaser is coming after you');
+  assert.equal(other.state, 'searching', 'the other lost you at the archway, as before');
+  assert.equal(other.roomId, 'mess-hall');
   assert.equal(guardById(world, 'sw-guard').state, 'suspicious');
-  runUntil(world, () => chaser.state === 'calm', {}, 40);
 });

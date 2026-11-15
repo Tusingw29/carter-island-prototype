@@ -1,6 +1,8 @@
 // Ways between rooms: halls, stairs, and doors. Vents arrive in a later step.
 import { CONFIG } from './config.js';
-import { beginSearch, makeSuspicious } from './alert.js';
+import { beginSearch, makeSuspicious, raiseAlarm } from './alert.js';
+import { isDoorway, lockLeft, pickPursuer, raiseHeat, startPursuit } from './heat.js';
+import { say } from './messages.js';
 import { isAwake } from './guard.js';
 import { canHear } from './noise.js';
 
@@ -65,19 +67,37 @@ export function enterRoom(world, roomId, x, y = 0) {
 // Goes through a portal. loud is true for a creaky door opened fast.
 export function travel(world, portal, loud = false, cfg = CONFIG) {
   const from = world.room;
+  // Lockdown: the doors and halls of a room where an Alert has just started do not open.
+  if (isDoorway(portal) && lockLeft(world, from.id) > 0) {
+    if (world.time >= (world.lockSaidAt ?? -1) + 1) {
+      say(world, `Locked down! ${Math.ceil(lockLeft(world, from.id))} s. Vents still open.`, 1.5);
+      world.events.push({ type: 'locked' });
+      world.lockSaidAt = world.time;
+    }
+    return false;
+  }
   const there = findPortal(world.layout, portal.toPortal);
   const fromX = portalX(from, portal);
   let arriveX = portalX(there.room, there.portal);
+  const doorX = arriveX;
   // Step just inside a hall so you do not walk straight back out.
   if (there.portal.type === 'hall') arriveX += there.portal.side === 'left' ? 0.4 : -0.4;
 
-  let fleeing = false;
+  const awake = roomGuards(world, from.id).filter(isAwake);
+  const chasers = awake.filter((guard) => guard.state === 'alert');
+  const fleeing = chasers.length > 0;
+  // Getting away from a hunt through a doorway raises the heat. From heat 1 on, one of the
+  // guards chasing you follows you through. Vents and the drop do neither.
+  const escalates = fleeing && isDoorway(portal) && !portal.locked;
+  if (escalates) raiseHeat(world, cfg.heat);
+  const pursuer = escalates ? pickPursuer(world, chasers, fromX) : null;
   const slam = { x: fromX, radius: cfg.door.slamRadius };
-  for (const guard of roomGuards(world, from.id).filter(isAwake)) {
+  for (const guard of awake) {
     guard.seesPlayer = false;
-    if (guard.state === 'alert') {
-      // Guards do not follow you out of the room. They search near the way you left.
-      fleeing = true;
+    if (guard === pursuer) {
+      startPursuit(world, guard, there.room.id, doorX, fromX, cfg.heat);
+    } else if (guard.state === 'alert') {
+      // The rest do not follow you out of the room. They search near the way you left.
       guard.lastKnownX = fromX;
       beginSearch(world, guard, cfg.guard);
     } else if (loud && canHear(guard.x, slam)) {
@@ -95,9 +115,24 @@ export function travel(world, portal, loud = false, cfg = CONFIG) {
   enterRoom(world, there.room.id, arriveX, there.portal.y ?? 0);
   world.events.push({ type: loud ? 'doorLoud' : portal.type });
   if (portal.drop) world.pendingNoises.push({ x: arriveX, radius: cfg.vent.landRadius });
-  // The far side of a hidden way (a vent, the office window) is on the map once you have used it.
 
   // The noise of the door, and of a chase, carries into the room you arrive in.
   if (loud) world.pendingNoises.push({ x: arriveX, radius: cfg.door.slamRadius });
-  if (fleeing) for (const guard of world.guards.filter(isAwake)) makeSuspicious(world, guard, arriveX);
+  if (!fleeing) return true;
+  if (escalates && world.heat >= 3) {
+    // Radio ahead: the guards here were warned. They are Alert and facing the way you came in,
+    // with the usual moment of shock before they move.
+    const warned = world.guards.filter((guard) => isAwake(guard) && !guard.sleeper);
+    if (warned.length > 0) {
+      raiseAlarm(world, arriveX, 'radio', cfg.guard, there.room.id, { kind: 'radioAhead', guard: null });
+      for (const guard of warned) {
+        guard.facing = Math.sign(arriveX - guard.x) || guard.facing;
+        guard.trackTimer = cfg.guard.trackSeconds;
+      }
+      world.events.push({ type: 'radioAhead', roomId: there.room.id });
+    }
+    return true;
+  }
+  for (const guard of world.guards.filter(isAwake)) makeSuspicious(world, guard, arriveX);
+  return true;
 }

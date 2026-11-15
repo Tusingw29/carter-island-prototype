@@ -80,6 +80,7 @@ Add these to the end of the play link.
 | `?room=gym` | The obstacle course: jump (K), dash (L), slide (S + K while moving). F1 shows tuning sliders |
 | `?room=yard` | Starts at the Yard door. Add `&px=37&py=5.8` to start on Tower 1 behind its guard, or `&px=20&py=5.4` on the roof ledge |
 | `?boots` | Starts with the work boots on, so the dash works from the start |
+| `?heat=2` | Starts with the heat already at that level (1 pursuit, 2 lockdown, 3 radio ahead) |
 | `?cam=close` | The close follow camera |
 | `?cam=wide` | The same camera pulled back, showing twice as much floor |
 | `?cam=room` | Shows the whole room if it fits; if not, follows you and stops at the walls |

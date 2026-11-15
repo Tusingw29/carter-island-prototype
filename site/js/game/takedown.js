@@ -8,6 +8,7 @@ import { reachable } from './guard.js';
 import { isContainer, spotById } from './hiding.js';
 import { knockOut, knockoutTarget } from './knockout.js';
 import { say, sayAfter } from './messages.js';
+import { pickResponder } from './radio.js';
 
 export const heldGuard = (world) => (
   world.hold ? world.allGuards.find((guard) => guard.id === world.hold.guardId) : null
@@ -72,7 +73,9 @@ function talk(world, guard, cfg) {
   hold.asking = 0;
   hold.time = 0;
   guard.interrogated = true;
-  guard.codeKnown = true;
+  // A guard who is not on the radio (the office sleeper) has no code to give.
+  const onRadio = guard.radioAt != null;
+  guard.codeKnown = onRadio;
   world.stats.interrogations += 1;
   const line = extra.text ?? 'Same beat every night. Look, I will mark it for you.';
   let payoff = `He said: "${line}"`;
@@ -89,7 +92,9 @@ function talk(world, guard, cfg) {
   // His words go up in a speech bubble over him. What you gained is spelled out in two
   // messages, one after the other.
   world.speech = { guardId: guard.id, text: line, until: world.time + cfg.takedown.speechSeconds };
-  say(world, 'Radio code learned: his check-ins will be faked.', 4.5);
+  const first = onRadio ? 'Radio code learned: his check-ins will be faked.'
+    : 'He is not on the radio, so there is no code to learn. He gives up something else instead.';
+  say(world, first, 4.5);
   sayAfter(world, payoff, cfg.hintSeconds);
   world.events.push({ type: 'talk', guardId: guard.id, talk: extra.type });
 }
@@ -111,6 +116,25 @@ export function holdOptions(world, cfg = CONFIG.takedown) {
   options.push({ id: 'slam', keys: 'F', pad: 'LB', label: 'throw (loud)' });
   options.push({ id: 'drag', keys: 'A / D', pad: 'stick', label: 'drag: just move' });
   return options;
+}
+
+// What is at stake, shown beside the choices: when his next radio check-in is due and who
+// comes if he misses it, or that his code is already yours. Lines of plain text.
+export function holdInfo(world) {
+  const guard = heldGuard(world);
+  if (!guard) return [];
+  if (guard.radioAt == null) {
+    return ['Not on the radio: nobody expects to hear from him.', 'Interrogate him for what he knows instead.'];
+  }
+  const due = Math.max(0, Math.ceil(guard.radioAt - world.time));
+  const lines = [`His next radio check-in is due in ${due} s.`];
+  if (guard.codeKnown) lines.push('You have his code: knocked out, his check-ins are faked.');
+  else {
+    const pick = pickResponder(world, guard);
+    const who = pick ? `the ${pick.guard.label} comes to look` : 'nobody is free to come';
+    lines.push(`Knocked out, he misses it and ${who}.`, 'Interrogate first and his code stops that.');
+  }
+  return lines;
 }
 
 // 1 just after the grab (or after he talks), 0 when he is about to break free.

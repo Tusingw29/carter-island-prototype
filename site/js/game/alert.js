@@ -46,7 +46,11 @@ export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.
   // A guard the player is holding stays held, whatever the others do.
   for (const guard of here.filter((entry) => isConscious(entry) && entry.state !== 'held')) {
     // Seen is not caught: a guard who was not already chasing freezes for a moment first.
-    if (guard.state !== 'alert') guard.react = cfg.reactSeconds;
+    if (guard.state !== 'alert') {
+      guard.react = cfg.reactSeconds;
+      // His own record of this Alert, for "how you got caught". Kept apart from the spotted count.
+      guard.alertRecord = { at: world.time, kind: cause?.kind ?? reason, by: cause?.guard?.label ?? null, roomId };
+    }
     guard.lastKnownX = x;
     guard.detection = 1;
     guard.checkingSpotId = null;
@@ -60,6 +64,11 @@ export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.
   }
   world.searchClaims = new Set();
   if (alreadyAlert) return;
+  // Heat 2 and up: a new Alert locks the doors and halls of the room for a few seconds.
+  if (world.heat >= 2 && roomId === world.room.id && reason !== 'body') {
+    world.lock = { roomId, until: world.time + CONFIG.heat.lockSeconds };
+    world.events.push({ type: 'doorsLock', roomId });
+  }
   if (reason === 'sight' && !alreadyHunting) countSpotted(world, SPOTTED_BY[cause?.kind ?? 'sight'] ?? 'other');
   world.lastAlarm = {
     at: world.time, kind: cause?.kind ?? reason, by: cause?.guard?.label ?? null, roomId,
@@ -77,6 +86,9 @@ export function alarmEverywhere(world) {
     guard.lostFor = 0;
     // A guard who has walked next door on a radio check still has to walk home afterwards.
     if (guard.duty?.type !== 'radio') guard.duty = null;
+    if (guard.state !== 'alert') {
+      guard.alertRecord = { at: world.time, kind: 'emptyBed', by: null, roomId: guard.roomId };
+    }
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();
@@ -103,6 +115,8 @@ export function calmDown(world, guard) {
   guard.knownSpotId = null;
   guard.pause = 0;
   guard.hunting = false;
+  // He may follow you through a door again in the next hunt.
+  guard.pursued = false;
   setState(world, guard, 'calm');
 }
 

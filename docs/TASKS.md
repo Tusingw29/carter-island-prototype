@@ -30,6 +30,18 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 12 | Playtest 5: searchlight and crate bugs, quieter sneaking, takedown system | review, awaiting Adam's verdict | `step-12-takedowns` |
 | 13 | Readable stealth: lit or hidden look, last-seen markers, solitary | review, awaiting Adam's verdict | `step-13-readable-stealth` |
 | 14 | Heat-up detection, spotted counts, clearer takedown menu, places to drop from | review, awaiting Adam's verdict | `step-14-heat-up` |
+| 15 | Review fixes: door escalation (heat), drawings match checks, hiding tell, slides, and more | review, awaiting Adam's verdict | `step-15-review-fixes` |
+
+**Later** (cards from [the outside review](reviews/codex-review-1.md) that Adam saved for later):
+
+| Review card | Task | Status |
+| --- | --- | --- |
+| 7 | Apply height-aware interaction reach to the keycard, panel, cells, and pickups (review R10) | later |
+| 11 | Profile the target MacBook Air and share light-shape work between detection and drawing (review R13) | later |
+| 12 | Define a save schema and vertical navigation contracts before adding saving or a grapple (review R12) | later |
+
+Review card 9 (verify recovery with an earned keycard) was neither approved nor saved for
+later in Prompt 15. It is not on the board.
 
 ---
 
@@ -1397,6 +1409,143 @@ and the pipes are not in any guard's way.
 8. Finish a run and read "Spotted by".
 9. Is being spotted fair now? Is the tell early enough to act on?
 10. All four playtest questions.
+
+---
+
+## Step 15: Review fixes (heat ladder, drawings match checks, hiding tell, slides, and more)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-15-review-fixes` (built on Step 14)
+- **Source:** the outside review by Codex, [reviews/codex-review-1.md](reviews/codex-review-1.md).
+  Adam approved cards 1, 2, 3, 4, 5, 6, 8, and 10. Cards 7, 11, and 12 are on the board as
+  "later".
+- **About PR #15:** it was still open, not merged, when this step started. This branch
+  includes its commit, so the review and `tools/review/` reach `main` with Step 15.
+- **Kept, as told:** run speed 6.5, chase speed 5.2, the 0.6 s reaction pause, the 0.35 s
+  lunge tell, the 7:00 timer, pull-ins, pipes as safe perches, the smart camera, the lit or
+  hidden look, and the searchlight shapes.
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Stairwell at heat 2 (walk right to be seen and watch the doors lock):
+    https://tusingw29.github.io/carter-island-prototype/?room=stairwell&px=5&heat=2
+  - Mess Hall at heat 0 (get chased and run out of the east hall):
+    https://tusingw29.github.io/carter-island-prototype/?room=mess-hall&px=24
+
+### Before and after
+
+The review's own scripts in `tools/review/`, rerun on this build, and the planning bot.
+The reviewer's result files are left as they were. The rerun is summed up in
+`tools/review/after-step-15.json`.
+
+| Check | Before | After |
+| --- | --- | --- |
+| Rusher, 30 departures: wins | 30 of 30 | 27 of 30 |
+| Rusher: mean time left | 393 s | 383 s |
+| Rusher: grabbed at least once | 0 of 30 | 27 of 30 |
+| Rusher: sent to solitary, then caught for good | 0 | 3 (all in the Stairwell) |
+| Rusher with grabs and shoves (the review's second reactive bot): wins | 30 of 30 | 23 of 30 |
+| Careless walker: wins | 0 of 30 | 0 of 30 |
+| Planned Ghost route, 10 departures | 10 of 10, 318.9 s left | 10 of 10, 316.4 s left |
+| Planned vent route, 10 departures | 10 of 10, 335.2 s left | 10 of 10, 335.2 s left |
+| Planned Yard roof route, 10 departures | 10 of 10, 280.7 s left | 10 of 10, 280.7 s left |
+| Pull-in route, 10 departures | 10 of 10, 5 knockouts | 10 of 10, 5 knockouts |
+| Fixed-tape replays (Ghost / vent / roof): wins of 30 | 1 / 2 / 2 | 1 / 2 / 2 |
+| Camera drawing against check, 100 positions: disagreements | 13 | 0 |
+| Crouched at 10.1 beside a guard at 10: seen, and inside a drawn shape | seen, not drawn | seen, drawn |
+| Chained slides: average speed | 6.91 m/s | 4.97 m/s |
+| Hide at one-third awareness: meter one step later | 1.00, Alert | 0.34, Suspicious |
+| The same case: time from the start to the grab | 1.18 s | 2.20 s |
+| Pipes in an alarm, 90 s each: seen or grabbed | never | never |
+| Recovery after solitary with 240 / 150 / 100 s left | win / out of time / out of time | the same |
+| Clean runs (bot): front door, drop, vents | 2:14, 1:36, 1:23 | 2:14, 1:36, 1:23 |
+| Clean runs (bot): boots, hoop roof, tower roof | 1:08, 2:14, 2:14 | 1:08, 2:14, 2:14 |
+
+- **The rusher still wins 27 of 30.** What changed is how: every one of those wins was
+  caught hold of at the locked Stairwell door and had to spend its one break-free there.
+  Before, it was never touched. The three losses were grabbed twice in the Stairwell.
+- **Why it still gets through:** the bot mashes free in about a tenth of a second, the
+  guard is then dazed for 2.5 s, and that covers what is left of a 6 second lockdown. After
+  the Stairwell it takes the card and the drop, which the ladder leaves alone on purpose.
+- **One number decides it.** I tried the lockdown at 9 seconds without changing
+  `config.js`: the rusher won 4 of 30. At 6 it wins 27. This is a suggestion, not applied:
+  6 is the value you asked for.
+- **The review's close-guard probe still prints "drawn: false"** because it only looks at
+  the beam. The close-awareness box is now drawn as well, and the new test checks both.
+- **The planned Ghost route** lost 2.5 s on average at some departures. The Stairwell camera
+  now catches what its drawn beam covers, so the bot waits a little longer there.
+
+### What was built
+
+1. **Heat ladder** (review R1). Getting away from a hunt through a door, hall, or stairs
+   raises the heat by one, to a most of 3. It never goes down. It shows under the alert
+   meter ("HEAT 2: LOCKDOWN") with a message each time it rises.
+   - **Heat 1, pursuit:** the chasing guard nearest the door follows you through it,
+     1 second after you, with "He's following you!" and two bangs. He arrives with the
+     usual 0.6 s pause. He follows through one door per hunt. Afterwards he walks home.
+   - **Heat 2, lockdown:** when an Alert starts in the room you are in, its doors, halls,
+     and stairs lock for 6 seconds. Each shows a red "LOCKED 4" tag counting down.
+   - **Heat 3, radio ahead:** the guards in the room you flee into are Alert as you arrive,
+     facing your door, with the usual pause. The office sleeper is not on the radio.
+   - **Never part of it:** vents, the one-way drop, the office window, and the shed hatch.
+2. **Drawings match checks** (R5).
+   - **Guards:** the close-awareness zone is now a drawn box, 1.2 m long and 2 m high, in
+     front of every guard, in the same color as his beam. The check is "any body point in
+     the beam or in the box, with a clear line".
+   - **Cameras:** the check is now the drawn beam, exactly as for searchlights.
+3. **Watched hiding** (R6). A guard who sees you get into a hiding spot remembers it, and
+   "HE SAW YOU HIDE. UP: get out" shows at the spot at once. His meter keeps filling at its
+   usual rate. When he reaches you he leans in for 0.35 s ("HE IS REACHING IN!") before he
+   has you. Get out during that and he grabs an empty locker and loses 0.45 s.
+4. **Slide recovery** (R2): 0.35 s between slides. One slide is unchanged.
+5. **Off-screen Alert arrow** (R7): a guard at full awareness who is off screen keeps a
+   red arrow at the edge. On screen, only his "!" shows.
+6. **Noise rings and stunned beams** (R8): a one-off noise draws its full reach at once,
+   with the pulse growing inside. Rings are centred on the real origin. A dazed guard's
+   beam and his close box are drawn grey and faint.
+7. **How you got caught** (R11): each guard keeps his own latest Alert. The score line now
+   reads `Grabbed by the Stairwell Checkpoint guard 1.0 s after his "!". ...`. Win lines:
+   Ghost "nobody knows", Shadow "nobody saw you, but the guards you put down will remember
+   it", Inmate "they know somebody was out tonight".
+8. **Interrogation payoff** (R3): the pop-up now ends with the stakes, for example "His next
+   radio check-in is due in 14 s. Knocked out, he misses it and the Mess Hall guard 2 comes
+   to look. Interrogate first and his code stops that." For the office sleeper it says he
+   is not on the radio. He gives no code. He gives two secrets: the boots, and the window.
+
+### Choices I made that Adam should check
+
+- **A guard bursting in after you counts as an Alert starting** in that room. So at heat 2
+  and up, the room you fled into locks when your pursuer arrives.
+- **The escape that raises the heat already gets the new level.** Your first door escape is
+  followed. Your third arrives in a warned room.
+- **Radio ahead does not count as a new spotting.** It is the same hunt.
+- **Lockdown is tied to the room you are in.** A body found in another room locks nothing.
+- **A stunned guard does not follow.** Neither does a tower guard or the sleeper.
+- **Cameras now catch your head a little outside the floor patch** on the side the camera
+  hangs, because that is where the drawn beam is. It moved the planned Ghost route by 2.5 s.
+- **The close-awareness box replaces "within 1.5 m of his height".** It is 2 m high from
+  his feet, so someone on a ledge above him is not in it and someone jumping past is.
+- **Review card 9 is not on the board**, as noted under the table at the top.
+- **Not verified:** not played by a person. I do not know if the ladder feels fair or if
+  three levels are readable in the heat of a chase. Sounds unheard, a controller and the
+  2015 MacBook Air untested. Checked by 459 tests, the review's five scripts, the bots, and
+  headless Chrome.
+
+### How Adam tests it
+
+1. Mess Hall link. Get chased and run out of the east hall. Read the message, listen for
+   the bangs, and watch him come through a second later.
+2. Keep running through the next door. Watch the heat go to 2.
+3. Stairwell link. Walk into the guard's view and try both exits while the tags count down.
+   Then try it with a vent or the office drop in reach.
+4. Run a whole front-door rush. Where does it stop you? Is that the right place?
+5. Stand right in front of a guard, crouched. You should be inside the drawn box.
+6. Let a guard see you get into a locker. Read the prompt, wait for him, and get out when
+   he leans in.
+7. Chain slides down a long room.
+8. Throw a cup: the ring should show its full reach at once.
+9. Grab a guard and read the bottom lines of the pop-up. Then grab the office sleeper.
+10. Win as Shadow and as Inmate and read the line under the headline.
+11. All four playtest questions.
 
 ---
 

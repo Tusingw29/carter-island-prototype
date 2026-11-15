@@ -43,37 +43,40 @@ function wayBetween(layout, fromId, toId) {
   return { exitX: portalX(from, portal), entryX: portalX(there.room, there.portal) };
 }
 
-// Who goes to look for a guard who did not answer. Returns the guard sent, or null.
-export function sendResponder(world, missing) {
+// Who would go to look for a guard who did not answer, and how: { guard, route } (route is
+// null for a guard already in the same room), or null if nobody is free. Changes nothing.
+export function pickResponder(world, missing) {
   const postX = guardPost(missing);
   const candidates = world.allGuards.filter((guard) => guard !== missing && free(guard));
   const nearest = (list, cost) => (
     list.reduce((best, guard) => (!best || cost(guard) < cost(best) ? guard : best), null)
   );
-
   // First choice: the nearest guard in the same room.
   // Tower guards stay on their towers, so a guard on the ground goes if there is one.
   const inRoom = candidates.filter((guard) => guard.roomId === missing.homeRoomId);
   const onGround = inRoom.filter((guard) => (guard.y ?? 0) === 0);
   const sameRoom = onGround.length > 0 ? onGround : inRoom;
-  if (sameRoom.length > 0) {
-    const guard = nearest(sameRoom, (entry) => Math.abs(entry.x - postX));
-    makeSuspicious(world, guard, postX);
-    return guard;
-  }
+  if (sameRoom.length > 0) return { guard: nearest(sameRoom, (entry) => Math.abs(entry.x - postX)), route: null };
   // Otherwise the guard with the shortest walk from a room next door. This is the one time a
   // guard leaves his own room.
   const routes = new Map();
   for (const guard of candidates) {
-    const way = wayBetween(world.layout, guard.roomId, missing.homeRoomId);
+    const way = (guard.y ?? 0) === 0 ? wayBetween(world.layout, guard.roomId, missing.homeRoomId) : null;
     if (way) routes.set(guard, way);
   }
-  for (const guard of [...routes.keys()]) if ((guard.y ?? 0) !== 0) routes.delete(guard);
   const walk = (guard) => Math.abs(guard.x - routes.get(guard).exitX) + Math.abs(routes.get(guard).entryX - postX);
   const guard = nearest([...routes.keys()], walk);
-  if (!guard) return null;
-  guard.duty = { type: 'radio', stage: 'out', ...routes.get(guard), toRoom: missing.homeRoomId, postX };
-  return guard;
+  return guard ? { guard, route: routes.get(guard) } : null;
+}
+
+// Sends that guard. Returns him, or null.
+export function sendResponder(world, missing) {
+  const pick = pickResponder(world, missing);
+  if (!pick) return null;
+  const postX = guardPost(missing);
+  if (pick.route) pick.guard.duty = { type: 'radio', stage: 'out', ...pick.route, toRoom: missing.homeRoomId, postX };
+  else makeSuspicious(world, pick.guard, postX);
+  return pick.guard;
 }
 
 function missedCheckIn(world, guard) {
@@ -108,7 +111,7 @@ export function updateRadio(world, cfg = CONFIG.radio) {
 // True while the little radio icon should show over a guard.
 export const onRadioNow = (guard, world) => world.time < (guard.radioUntil ?? 0);
 
-function moveToRoom(world, guard, roomId, x) {
+export function moveToRoom(world, guard, roomId, x) {
   guard.roomId = roomId;
   guard.x = x;
   // His bounds belong to his own room.

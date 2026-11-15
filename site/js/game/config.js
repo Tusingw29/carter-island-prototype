@@ -140,12 +140,14 @@ export const CONFIG = Object.freeze({
     stunSeconds: 2.5,
     // A guard always notices someone this close in front of him, even below his beam.
     closeSightDistance: 1.2,
-    // ...but only if your feet are within this much of his, up or down.
-    closeSightUp: 1.5,
+    // That close-awareness zone is drawn: it reaches this high above his feet.
+    closeSightHeight: 2,
     // Solid things in his way. Cover up to this high he vaults, which takes this long. Anything
     // taller stops him.
     vaultMaxHeight: 1.4,
     vaultSeconds: 0.8,
+    // Pulling you out of a hiding spot he watched you get into: he reaches in for this long first.
+    reachInSeconds: 0.35,
     // A guard cannot grab someone whose feet are higher than this above him.
     grabReachUp: 1.2,
     // A sleeping guard who is disturbed wakes up this long after, if you are still in the room.
@@ -258,6 +260,15 @@ export const CONFIG = Object.freeze({
     reach: 1,
   }),
 
+  // Heat: what escaping a hunt through doors costs (see heat.js).
+  heat: Object.freeze({
+    maxLevel: 3,
+    // Pursuit: how long after you the following guard comes through the door.
+    followSeconds: 1,
+    // Lockdown: how long a room's doors and halls stay locked after an Alert starts there.
+    lockSeconds: 6,
+  }),
+
   // Heat-up detection: how the player's movement slows every awareness meter, and how fast
   // camera, searchlight, and snitch meters drain once you are out of view.
   awareness: Object.freeze({
@@ -352,6 +363,9 @@ export const CONFIG = Object.freeze({
     slideSpeed: 7,
     slideSeconds: 0.45,
     slideHeight: 0.6,
+    // After a slide ends, the next one has to wait this long. A run of slides is then slower
+    // than running, as it should be for something so quiet.
+    slideRecoverySeconds: 0.35,
     bodyHalfWidth: 0.3,
     // Ladders are quick. A chain-link fence is slow, and you are in plain view the whole way up.
     ladderClimbSpeed: 2.4,
