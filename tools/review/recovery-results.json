@@ -1,0 +1,190 @@
+[
+  {
+    "remainingAtCapture": 240,
+    "error": null,
+    "outcome": "win",
+    "won": true,
+    "rank": "inmate",
+    "solitary": true,
+    "solitaryPenalty": 60,
+    "timeLeft": 73.09166666683397,
+    "timesSpotted": 1,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 1
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666659694
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 21.266666666647325
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999977035
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.516666666657102
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666655738
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.5249999999958845
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.2666666666636957
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 52.00833333328603
+      }
+    ]
+  },
+  {
+    "remainingAtCapture": 150,
+    "error": null,
+    "outcome": "headcount",
+    "won": false,
+    "rank": "caught",
+    "solitary": true,
+    "solitaryPenalty": 60,
+    "timeLeft": 0,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666659694
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 12.26666666665551
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999977035
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 13.016666666654828
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666655738
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.5249999999958845
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.2666666666636957
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 41.60833333329549
+      }
+    ]
+  },
+  {
+    "remainingAtCapture": 100,
+    "error": "holding {\"up\":true,\"crouch\":true} never worked",
+    "outcome": "headcount",
+    "won": false,
+    "rank": "caught",
+    "solitary": true,
+    "solitaryPenalty": 60,
+    "timeLeft": 0,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": null,
+    "endedIn": "Vent Duct",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666659694
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 16.0166666666521
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999977035
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 15.016666666653009
+      }
+    ]
+  }
+]
