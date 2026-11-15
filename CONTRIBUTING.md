@@ -3,6 +3,8 @@
 These rules apply to everyone who touches the repo, people and coding agents alike.
 `tests/repo-rules.test.mjs` checks the ones a machine can check.
 
+Read docs/VISION.md for where the game is going. Every feature should serve at least one pillar.
+
 ## Code style
 
 1. **Keep lines under 120 characters.** No giant one-line files. Vendored libraries in

@@ -9,6 +9,8 @@ stops, and getting spotted costs time.
 
 This prototype exists to answer one question: **is the core loop fun?**
 
+Read docs/VISION.md for where the game is going. Every feature should serve at least one pillar.
+
 ## Play
 
 **https://tusingw29.github.io/carter-island-prototype/**
