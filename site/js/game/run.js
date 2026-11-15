@@ -12,6 +12,20 @@ export const RANKS = Object.freeze({
 });
 
 // A run with a trip to solitary can still be won, but only as Inmate.
+// The line under the headline on the score screen. A win reads differently for each rank: only
+// a Ghost got away with nobody knowing.
+const WIN_TEXT = {
+  ghost: 'You have the keycard, and nobody knows.',
+  shadow: 'You have the keycard. Nobody saw you, but the guards you put down will remember it.',
+  inmate: 'You have the keycard, but they know somebody was out tonight.',
+};
+const LOSE_TEXT = {
+  caught: 'Grabbed a second time.',
+  headcount: 'Your bed was empty when they counted.',
+  'empty-handed': 'You were in bed, but without the keycard.',
+};
+export const outcomeText = (outcome, rank) => (outcome === 'win' ? WIN_TEXT[rank] : LOSE_TEXT[outcome]);
+
 export function rankFor({ won, timesSpotted, knockouts, solitary = false }) {
   if (!won) return 'caught';
   if (solitary) return 'inmate';

@@ -2,7 +2,7 @@
 import { CONFIG } from './config.js';
 import { beginSearch, calmDown, raiseAlarm } from './alert.js';
 import { doBedCheck } from './bedcheck.js';
-import { canLunge, finishLunge, startLunge, tryPullOut } from './grab.js';
+import { canLunge, finishLunge, finishReach, startLunge, tryPullOut } from './grab.js';
 import { disturb, lookAround, moveToward, patrol, updateVault } from './guard.js';
 import { concealedIn, spotById } from './hiding.js';
 import { canHear } from './noise.js';
@@ -37,6 +37,12 @@ function chase(guard, world, dt, cfg) {
   if (guard.lunge > 0) {
     guard.lunge -= dt;
     if (guard.lunge <= 0) finishLunge(guard, world);
+    return;
+  }
+  if (guard.reach > 0) {
+    // Reaching into a hiding spot: the tell before he pulls you out.
+    guard.reach -= dt;
+    if (guard.reach <= 0) finishReach(guard, world);
     return;
   }
   if (guard.stun > 0) {
@@ -138,6 +144,8 @@ export function updateGuardAI(guard, world, dt, cfg = CONFIG.guard) {
 // A guard in some other room. He cannot see or hear the player, so he winds down and patrols.
 export function updateGuardAway(guard, world, dt, cfg = CONFIG.guard) {
   guard.seesPlayer = false;
+  // On his way through the door after the player (see heat.js): he arrives in a moment.
+  if (guard.following) return;
   guard.detection = guard.state === 'alert' ? guard.detection : 0;
   guard.stirTimer = 0;
   if (guard.state === 'alert') beginSearch(world, guard, cfg);

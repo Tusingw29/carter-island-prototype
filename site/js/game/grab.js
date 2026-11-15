@@ -25,10 +25,13 @@ function grab(guard, world, cfg) {
   // Whoever you were holding is loose.
   dropHeldGuard(world, cfg);
   // For the score screen: how long after the "!" this grab came, and what the "!" was for.
-  const alarm = world.lastAlarm;
+  // His own latest Alert, not the last alarm anywhere: the two differ after a chase from
+  // another room, or when he was alerted again inside a hunt.
+  const alarm = guard.alertRecord ?? world.lastAlarm;
   world.lastGrab = {
     at: world.time, by: guard.label ?? null, sinceAlarm: alarm ? world.time - alarm.at : null,
-    alarmKind: alarm?.kind ?? null, alarmBy: alarm?.by ?? null,
+    alarmKind: alarm?.kind ?? null, alarmBy: alarm?.by ?? null, alarmRoomId: alarm?.roomId ?? null,
+    roomId: guard.roomId,
   };
   if (world.breakFreeUsed) {
     // Grabbed a second time. The first capture of a run means solitary, not the end.
@@ -44,8 +47,27 @@ function grab(guard, world, cfg) {
 export function tryPullOut(guard, world, cfg = CONFIG) {
   const hidingIn = concealedIn(world.player);
   if (!hidingIn || guard.knownSpotId !== hidingIn || !inReach(guard, world, cfg.guard)) return false;
-  grab(guard, world, cfg);
+  // He does not have you yet. He reaches in first, which is your moment to get out and run.
+  guard.reach = cfg.guard.reachInSeconds;
+  guard.reachSpotId = hidingIn;
+  guard.facing = Math.sign(world.player.x - guard.x) || guard.facing;
+  world.events.push({ type: 'reachIn', guardId: guard.id, roomId: guard.roomId, spotId: hidingIn });
   return true;
+}
+
+// The end of the reach: if you are still in there, he has you. Returns true if he grabbed you.
+export function finishReach(guard, world, cfg = CONFIG) {
+  const stillIn = concealedIn(world.player) === guard.reachSpotId;
+  guard.reachSpotId = null;
+  if (stillIn && inReach(guard, world, cfg.guard)) {
+    grab(guard, world, cfg);
+    return true;
+  }
+  // An empty locker. He loses a moment.
+  guard.knownSpotId = null;
+  guard.stun = cfg.guard.lungeMissSeconds / 2;
+  world.events.push({ type: 'reachMiss', guardId: guard.id, roomId: guard.roomId });
+  return false;
 }
 
 // Should a chasing guard start winding up a lunge? Only at a player in the open that he can see.

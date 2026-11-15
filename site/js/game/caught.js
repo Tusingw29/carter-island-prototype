@@ -8,6 +8,7 @@ const CAUSES = {
   slam: (by) => `you threw ${by} to the floor`,
   letGo: (by) => `you let ${by} go`,
   brokeFree: (by) => `${by} broke free of your hold`,
+  radioAhead: () => 'the guards were warned by radio that you were coming',
   shove: (by) => `you shoved ${by}`,
   body: (by) => `${by} found a knocked-out guard`,
   emptyBed: () => 'your bed was found empty at the bed check',
@@ -26,5 +27,6 @@ export function caughtHowText(world) {
   const grab = world.lastGrab;
   if (!grab) return null;
   if (grab.sinceAlarm === null) return 'Grabbed.';
-  return `Grabbed ${grab.sinceAlarm.toFixed(1)} s after the "!". ${alarmCauseText(grab.alarmKind, grab.alarmBy)}.`;
+  return `Grabbed by the ${grab.by ?? 'guard'} ${grab.sinceAlarm.toFixed(1)} s after his "!". `
+    + `${alarmCauseText(grab.alarmKind, grab.alarmBy)}.`;
 }

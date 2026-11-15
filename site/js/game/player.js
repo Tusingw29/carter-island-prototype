@@ -31,6 +31,7 @@ export function createPlayer(x) {
     sliding: false,
     slideTime: 0,
     slideDir: 0,
+    slideRecover: 0,
     dashTime: 0,
     dashDir: 0,
     dashCooldown: 0,

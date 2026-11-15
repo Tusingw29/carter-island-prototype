@@ -202,7 +202,8 @@ function startMoves(world, intent, pressed, dt, cfg) {
   if (player.jumpBuffer <= 0) return;
   if (player.onGround && intent.crouch && intent.moveX !== 0) {
     // Crouch plus jump while moving is a slide.
-    if (player.sliding || player.dashTime > 0) return;
+    // A slide needs a moment to recover before the next one.
+    if (player.sliding || player.dashTime > 0 || player.slideRecover > 0) return;
     player.sliding = true;
     player.slideTime = m.slideSeconds;
     player.slideDir = intent.moveX;
@@ -302,6 +303,7 @@ export function updateMover(world, intent, pressed, dt, cfg = CONFIG, mayClimb =
   const { player, room } = world;
   const m = cfg.moves;
   player.dashCooldown = Math.max(0, player.dashCooldown - dt);
+  player.slideRecover = Math.max(0, (player.slideRecover ?? 0) - dt);
   const handsFree = !player.dragging && !player.holding;
   if (!player.climbing && mayClimb && handsFree && !player.sliding && player.dashTime <= 0) {
     // Up at a ladder or against a fence starts a climb. Down at the top of one climbs down.
@@ -328,7 +330,10 @@ export function updateMover(world, intent, pressed, dt, cfg = CONFIG, mayClimb =
     player.slideTime -= dt;
     // A slide that ends under something low keeps going until there is room to get up.
     const roomToRise = fits(room, player.x, player.y, cfg.player.crouchHeight, m.bodyHalfWidth);
-    if (!player.onGround || (player.slideTime <= 0 && roomToRise)) player.sliding = false;
+    if (!player.onGround || (player.slideTime <= 0 && roomToRise)) {
+      player.sliding = false;
+      player.slideRecover = m.slideRecoverySeconds;
+    }
   }
   const lowCeiling = !fits(room, player.x, player.y, cfg.player.standHeight, m.bodyHalfWidth);
   player.crouching = !player.sliding && player.onGround && !player.dragging && (intent.crouch || lowCeiling);

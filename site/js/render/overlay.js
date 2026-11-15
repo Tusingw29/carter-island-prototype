@@ -3,9 +3,12 @@ import { Vector3 } from '../../vendor/three.module.js';
 import { shownState } from '../game/alert.js';
 import { CONFIG } from '../game/config.js';
 import { awarenessMeters } from '../game/awareness.js';
+import { edgePlacement, meterMarker } from '../game/edge.js';
+import { isDoorway, lockLeft } from '../game/heat.js';
+import { portalX } from '../game/portals.js';
 import { holdProgress } from '../game/holds.js';
 import { lastSeenMarkers } from '../game/lastseen.js';
-import { dropTarget, heldGuard, holdLeft, holdOptions } from '../game/takedown.js';
+import { dropTarget, heldGuard, holdInfo, holdLeft, holdOptions } from '../game/takedown.js';
 import { wakeProgress } from '../game/knockout.js';
 import { onRadioNow } from '../game/radio.js';
 import { currentPrompt } from '../game/prompts.js';
@@ -75,7 +78,6 @@ export function createOverlay() {
 
   // ---------- Awareness meters ----------
   const eyes = new Map();
-  const EDGE = 26;
   const ARROWS = { left: '\u25C0', right: '\u25B6', up: '\u25B2', down: '\u25BC' };
 
   function eyeFor(id) {
@@ -94,32 +96,23 @@ export function createOverlay() {
     const meters = awarenessMeters(world);
     for (const meter of meters) {
       const eye = eyeFor(meter.id);
-      // A guard whose meter is full already has his big "!" over him.
-      if (meter.kind === 'guard' && meter.full) {
-        setHidden(eye, true);
-        continue;
-      }
       point.set(meter.x, meter.y, 0).project(camera);
       const x = (point.x * 0.5 + 0.5) * window.innerWidth;
       const y = (-point.y * 0.5 + 0.5) * window.innerHeight;
-      let edge = '';
-      if (x < EDGE) edge = 'left';
-      else if (x > window.innerWidth - EDGE) edge = 'right';
-      else if (y < EDGE) edge = 'up';
-      else if (y > window.innerHeight - EDGE) edge = 'down';
-      const left = Math.max(EDGE, Math.min(window.innerWidth - EDGE, x));
-      const top = Math.max(EDGE + 14, Math.min(window.innerHeight - EDGE, y));
-      moveTo(eye, left, top);
-      setText(eye, edge ? ARROWS[edge] : (meter.full ? '!' : ''));
+      const placement = edgePlacement(x, y, window.innerWidth, window.innerHeight);
+      // On screen, a guard whose meter is full already has his big "!" over him: no second
+      // icon. Off screen he keeps a red arrow at the edge for as long as he is hunting you.
+      const marker = meterMarker(meter, placement);
+      setHidden(eye, marker.hidden);
+      if (marker.hidden) continue;
+      moveTo(eye, placement.left, Math.max(placement.top, 40));
+      setText(eye, marker.arrow ? ARROWS[marker.arrow] : (meter.full ? '!' : ''));
       const fill = Math.round(meter.fill * 24) / 24;
       if (eye.dataset.fill !== String(fill)) {
         eye.dataset.fill = String(fill);
         eye.style.setProperty('--fill', fill);
       }
-      // Filling: bright and pulsing. Draining: half faded. Full: red.
-      const state = meter.full ? 'full' : (meter.seeing ? 'filling' : 'draining');
-      if (eye.dataset.state !== state) eye.dataset.state = state;
-      setHidden(eye, false);
+      if (eye.dataset.state !== marker.state) eye.dataset.state = marker.state;
     }
     for (const [id, eye] of eyes) if (!meters.some((meter) => meter.id === id)) setHidden(eye, true);
   }
@@ -144,7 +137,8 @@ export function createOverlay() {
       const bar = option.progress == null ? ''
         : `<span class="bar"><span style="width:${Math.round(option.progress * 100)}%"></span></span>`;
       return `<li><b>${option.keys}</b><i>${option.pad}</i><span>${option.label}</span>${bar}</li>`;
-    }).join('');
+      // What is at stake: his next radio check-in and who comes if he misses it.
+    }).join('') + holdInfo(world).map((line) => `<li class="info">${line}</li>`).join('');
     if (html !== shownOptions) {
       shownOptions = html;
       takedownList.innerHTML = html;
@@ -186,8 +180,28 @@ export function createOverlay() {
     ghostLabels.slice(labelled.length).forEach((label) => setHidden(label, true));
   }
 
+  // Lockdown: a tag on every door and hall of the room, counting down.
+  const lockTags = [];
+  function updateLocks(world, camera) {
+    const left = lockLeft(world);
+    const doors = left > 0 ? (world.room.portals ?? []).filter(isDoorway) : [];
+    doors.forEach((portal, i) => {
+      if (!lockTags[i]) {
+        lockTags[i] = document.createElement('div');
+        lockTags[i].className = 'lock-tag';
+        document.body.append(lockTags[i]);
+      }
+      setHidden(lockTags[i], false);
+      setText(lockTags[i], `LOCKED ${Math.ceil(left)}`);
+      const x = Math.max(1, Math.min(world.room.width - 1, portalX(world.room, portal)));
+      pin(lockTags[i], camera, x, (portal.y ?? 0) + 2.2);
+    });
+    lockTags.slice(doors.length).forEach((tag) => setHidden(tag, true));
+  }
+
   function update(world, camera, debug) {
     updateEyes(world, camera);
+    updateLocks(world, camera);
     updateTakedown(world, camera);
     updateSpeech(world, camera);
     updateMarkers(world, camera);

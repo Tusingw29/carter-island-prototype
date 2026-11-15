@@ -1,6 +1,7 @@
 // What a guard notices each moment: the player in his flashlight, noises, and bodies.
 import { CONFIG } from './config.js';
 import { makeSuspicious, raiseAlarm } from './alert.js';
+import { concealedIn } from './hiding.js';
 import { litAreaAt } from './lights.js';
 import { say } from './messages.js';
 import { canHear } from './noise.js';
@@ -29,6 +30,19 @@ export function guardCanSee(guard, world, cfg = CONFIG.guard) {
 function senseSight(guard, world, dt, cfg) {
   const { player } = world;
   guard.seesPlayer = guardCanSee(guard, world, cfg);
+  // He watched you get into a hiding spot and you are still in it: he cannot see you, but he
+  // knows where you are. His meter keeps filling at the usual rate until he is sure.
+  const watchedIn = !guard.seesPlayer && guard.stun <= 0 && guard.state !== 'alert'
+    && guard.knownSpotId && concealedIn(player) === guard.knownSpotId;
+  if (watchedIn) {
+    const rate = detectionRate(guard, Math.abs(player.x - guard.x), cfg) * stanceFactor(player);
+    guard.detection = Math.min(1, guard.detection + rate * dt);
+    if (guard.state === 'suspicious') guard.targetX = player.x;
+    if (guard.detection >= 1) {
+      raiseAlarm(world, player.x, 'sight', cfg, guard.roomId, { kind: 'watchedHiding', guard });
+    }
+    return;
+  }
   if (!guard.seesPlayer) {
     if (guard.state !== 'alert') guard.detection = Math.max(0, guard.detection - cfg.detectDrainPerSecond * dt);
     return;

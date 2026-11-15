@@ -41,6 +41,14 @@ export function createGuard(def) {
     // last saw the player.
     react: 0,
     lunge: 0,
+    // Reaching into a hiding spot he saw you get into: counts down, then he pulls you out.
+    reach: 0,
+    reachSpotId: null,
+    // His own latest Alert: { at, kind, by, roomId }. For "how you got caught".
+    alertRecord: null,
+    // Following the player through a door (heat.js), and whether he has done so this hunt.
+    following: null,
+    pursued: false,
     lostFor: 0,
     // Knocked out: how long he has been down, and the moment it happened.
     outFor: 0,

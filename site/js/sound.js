@@ -46,6 +46,15 @@ const CUES = {
   checkInFaked: [
     [1800, 0, 0.03, 'square', 0.35], [1350, 0.05, 0.05, 'square', 0.35], [1800, 0.14, 0.05, 'square', 0.3],
   ],
+  // Heat: the level going up, a guard coming through the door after you, him arriving, and
+  // the doors locking. And a guard reaching into your hiding spot.
+  heatUp: [[220, 0, 0.12, 'sawtooth', 1], [277, 0.13, 0.12, 'sawtooth', 1], [330, 0.26, 0.3, 'sawtooth', 1.1]],
+  doorBang: [[80, 0, 0.14, 'square', 2.4, 45], [80, 0.22, 0.14, 'square', 2.4, 45]],
+  pursuerArrives: [[70, 0, 0.3, 'square', 2.8, 35], [500, 0, 0.05, 'square', 0.8]],
+  doorsLock: [[900, 0, 0.04, 'square', 0.9], [140, 0.05, 0.22, 'square', 1.6, 90]],
+  radioAhead: [[1800, 0, 0.03, 'square', 0.5], [1350, 0.05, 0.05, 'square', 0.5], [880, 0.14, 0.2, 'square', 0.8]],
+  reachIn: [[260, 0, 0.3, 'sawtooth', 0.9, 620]],
+  sawHide: [[620, 0, 0.08, 'triangle', 0.8], [440, 0.1, 0.16, 'triangle', 0.8]],
   // About to be spotted: a note that climbs each time the fullest meter passes another fifth.
   heat1: [[330, 0, 0.09, 'triangle', 0.5]],
   heat2: [[415, 0, 0.09, 'triangle', 0.6]],

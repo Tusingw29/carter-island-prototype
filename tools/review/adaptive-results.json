@@ -1,0 +1,2372 @@
+[
+  {
+    "type": "Ghost",
+    "delay": 0,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 14.758333333333136
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 17.52499999999901
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 29.52499999999832
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000001526
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 25.758333333353832
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 0,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666666664
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 10.766666666666653
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 15.2666666666658
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665987
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 33.00833333334692
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 0,
+    "seconds": 133.54166666670955,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.4583333334548,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 14.758333333333136
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 17.52499999999901
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 16.049999999999088,
+        "waited": 9.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333334417,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 12.150000000009669,
+        "waited": 5
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 26.508333333344964
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 2,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 28.75833333333223
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 2,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666666642
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 8.766666666666659
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 15.2666666666658
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665987
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 33.00833333334692
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 2,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 28.75833333333223
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 4,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 26.75833333333224
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 4,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666667048
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 20.516666666665845
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.766666666666058
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.758333333347444
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 4,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 26.75833333333224
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 6,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 24.75833333333214
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 6,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666667048
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 18.516666666665746
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.766666666666058
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.758333333347444
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 6,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 24.75833333333214
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 8,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 22.75833333333204
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 8,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666666231
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 16.516666666665728
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.766666666666058
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.758333333347444
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 8,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 22.75833333333204
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 10,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 20.758333333332153
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 10,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666666231
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 14.516666666665843
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.766666666666058
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.758333333347444
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 10,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 20.758333333332153
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 12,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 18.758333333332267
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 12,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 3.7666666666664526
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 9.516666666666127
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.766666666666058
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.758333333347444
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 12,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 18.758333333332267
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 14,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 16.75833333333238
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 14,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 1.7666666666665662
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 9.516666666666127
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 10.766666666666058
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.524999999999743
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.266666666666481
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.758333333347444
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 14,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 16.75833333333238
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 16,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 14.758333333332496
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 20.02500000000338
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 18.258333333347863
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 16,
+    "seconds": 95.39166666668865,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6083333334201,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 1.0166666666666107
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 22.01666666666542
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 6.2666666666663104
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.525000000000048
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.2666666666692663
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 27.758333333355424
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 16,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 14.758333333332496
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 18.52499999999895
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.5416666666664653,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666666359,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 12.133333333338072,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.558333333340144,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333346133,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333362845,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666670301,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.750000000006963,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 8.166666666673166,
+        "waited": 0
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333336006,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.5250000000028052
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666694653
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 17.50833333333763
+      }
+    ]
+  },
+  {
+    "type": "Ghost",
+    "delay": 18,
+    "seconds": 152.60833333335887,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 267.39166666680546,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 52.7583333333361
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 29.775000000023695
+      },
+      {
+        "room": "Stairwell Checkpoint",
+        "seconds": 21.27500000001693
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.275000000003402
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666667226
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 23.008333333312407
+      }
+    ]
+  },
+  {
+    "type": "Vent-first",
+    "delay": 18,
+    "seconds": 95.39166666668865,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6083333334201,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 0.7666666666666231
+      },
+      {
+        "room": "Laundry (screwdriver)",
+        "seconds": 20.266666666665518
+      },
+      {
+        "room": "Laundry",
+        "seconds": 2.5249999999998565
+      },
+      {
+        "room": "Maintenance Hall",
+        "seconds": 6.2666666666663104
+      },
+      {
+        "room": "Vent Duct",
+        "seconds": 12.016666666665984
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 4.525000000000048
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.2666666666692663
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 27.758333333355424
+      }
+    ]
+  },
+  {
+    "type": "Yard roof route",
+    "delay": 18,
+    "seconds": 190.71666666665755,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 229.2833333335068,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "log": [
+      {
+        "room": "Cell Block",
+        "seconds": 52.7583333333361
+      },
+      {
+        "room": "Mess Hall",
+        "seconds": 29.775000000023695
+      },
+      {
+        "room": "Yard: door to the bench",
+        "seconds": 3.541666666669485,
+        "waited": 0
+      },
+      {
+        "room": "Yard: across the court",
+        "seconds": 5.416666666670977,
+        "waited": 0
+      },
+      {
+        "room": "Yard: behind the guard, onto the ladder",
+        "seconds": 13.216666666677185,
+        "waited": 6.5
+      },
+      {
+        "room": "Yard: bleachers, fence top, crates, shed roof",
+        "seconds": 8.55833333333456,
+        "waited": 1
+      },
+      {
+        "room": "Yard: work boots, out by the shed door",
+        "seconds": 1.6083333333318706,
+        "waited": 0
+      },
+      {
+        "room": "Yard: back over the crates and fence",
+        "seconds": 3.7083333333299606,
+        "waited": 0
+      },
+      {
+        "room": "Yard: down the bleachers, onto the ladder",
+        "seconds": 4.566666666662513,
+        "waited": 0
+      },
+      {
+        "room": "Yard: past the guard to the table",
+        "seconds": 8.749999999992042,
+        "waited": 4.5
+      },
+      {
+        "room": "Yard: hoop climb to the roof",
+        "seconds": 13.658333333320911,
+        "waited": 5.5
+      },
+      {
+        "room": "Yard: roof ledge, dash, window",
+        "seconds": 3.358333333330279,
+        "waited": 0
+      },
+      {
+        "room": "Guard Office (keycard)",
+        "seconds": 3.524999999996794
+      },
+      {
+        "room": "Guard Office",
+        "seconds": 3.5166666666634683
+      },
+      {
+        "room": "Cell Block (to bed)",
+        "seconds": 16.75833333331809
+      }
+    ]
+  }
+]

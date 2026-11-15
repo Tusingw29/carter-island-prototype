@@ -67,20 +67,34 @@ export function coneLit(shape, blockers = [], floorY = 0) {
     blockers, floorY);
 }
 
+// The close-awareness zone: a box right in front of a guard, from his feet to just over his
+// head. In it you are noticed even if you duck under his beam. It is drawn (guard-view.js), so
+// together with the beam it is everything he can see: { x0, x1, y0, y1 }.
+export function closeZone(guard, cfg = CONFIG.guard) {
+  const feetY = guard.y ?? 0;
+  const far = guard.x + guard.facing * cfg.closeSightDistance;
+  return { x0: Math.min(guard.x, far), x1: Math.max(guard.x, far), y0: feetY, y1: feetY + cfg.closeSightHeight };
+}
+
+const inZone = (zone, point) => (
+  point.x >= zone.x0 && point.x <= zone.x1 && point.y >= zone.y0 && point.y <= zone.y1
+);
+
 // blockers are the boxes that block sight in the guard's room (see sight.js). He sees you if any
-// point up your body, feet to head, is in his beam with nothing solid in the way. So low cover
-// only hides you if you crouch behind it, and tall cover hides you standing.
+// point up your body, feet to head, is in his beam or in his close-awareness zone, with nothing
+// solid in the way. Both shapes are drawn, so what you see is what he sees. Low cover only
+// hides you if you crouch behind it, and tall cover hides you standing.
 export function guardSeesPlayer(
   guard, player, guardCfg = CONFIG.guard, playerCfg = CONFIG.player, blockers = [],
 ) {
   if (player.hiddenIn || player.inDark || player.escorted) return false;
   const shape = coneShape(guard, guardCfg);
-  const feetY = player.y ?? 0;
-  const points = bodyPoints(player.x, playerHeight(player, playerCfg), 6, feetY);
-  const clear = (point) => !sightBlocked(shape.origin, point, blockers);
-  // Right in front of him, on his level, you are noticed even if you duck under the beam.
-  const ahead = (player.x - guard.x) * guard.facing;
-  const level = Math.abs(feetY - (guard.y ?? 0)) <= guardCfg.closeSightUp;
-  if (level && ahead >= 0 && ahead <= guardCfg.closeSightDistance && points.some(clear)) return true;
-  return points.some((point) => pointInCone(shape, point) && clear(point));
+  const zone = closeZone(guard, guardCfg);
+  const points = bodyPoints(player.x, playerHeight(player, playerCfg), 6, player.y ?? 0);
+  return points.some((point) => (
+    (pointInCone(shape, point) || inZone(zone, point)) && !sightBlocked(shape.origin, point, blockers)
+  ));
 }
+
+// How strongly to draw his beam: faint while he is dazed and cannot see.
+export const beamStrength = (guard) => (guard.stun > 0 ? 0.25 : 1);

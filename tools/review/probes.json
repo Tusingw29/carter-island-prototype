@@ -1,0 +1,368 @@
+{
+  "timing": [
+    {
+      "distance": 1,
+      "stance": "still",
+      "question": 0.5333333333333339,
+      "alert": 1.249999999999998,
+      "lunge": 1.8499999999999959,
+      "grab": 2.199999999999995
+    },
+    {
+      "distance": 1,
+      "stance": "crouched still",
+      "question": 1.058333333333332,
+      "alert": 2.4916666666666605,
+      "lunge": 3.0916666666666583,
+      "grab": 3.441666666666657
+    },
+    {
+      "distance": 1,
+      "stance": "wary still",
+      "question": 0.3583333333333336,
+      "alert": 1.0666666666666653,
+      "lunge": 1.6666666666666632,
+      "grab": 2.016666666666662
+    },
+    {
+      "distance": 1,
+      "stance": "searching still",
+      "question": null,
+      "alert": 0.5333333333333339,
+      "lunge": 1.1333333333333317,
+      "grab": 1.4833333333333305
+    },
+    {
+      "distance": 3,
+      "stance": "still",
+      "question": 0.6916666666666667,
+      "alert": 1.466666666666664,
+      "lunge": 2.091666666666662,
+      "grab": 2.4416666666666607
+    },
+    {
+      "distance": 3,
+      "stance": "crouched still",
+      "question": 1.3749999999999976,
+      "alert": 2.8749999999999925,
+      "lunge": 3.4749999999999903,
+      "grab": 3.824999999999989
+    },
+    {
+      "distance": 3,
+      "stance": "wary still",
+      "question": 0.4583333333333339,
+      "alert": 1.2333333333333314,
+      "lunge": 1.8583333333333292,
+      "grab": 2.208333333333328
+    },
+    {
+      "distance": 3,
+      "stance": "searching still",
+      "question": null,
+      "alert": 0.7,
+      "lunge": 1.6499999999999966,
+      "grab": 1.9999999999999953
+    },
+    {
+      "distance": 6.5,
+      "stance": "still",
+      "question": 1.2416666666666647,
+      "alert": 2.583333333333327,
+      "lunge": 3.6416666666666564,
+      "grab": 3.991666666666655
+    },
+    {
+      "distance": 6.5,
+      "stance": "crouched still",
+      "question": 2.483333333333327,
+      "alert": 4.666666666666688,
+      "lunge": 5.366666666666723,
+      "grab": 5.7166666666667405
+    },
+    {
+      "distance": 6.5,
+      "stance": "wary still",
+      "question": 0.8333333333333328,
+      "alert": 2.174999999999995,
+      "lunge": 3.2333333333333245,
+      "grab": 3.5833333333333233
+    },
+    {
+      "distance": 6.5,
+      "stance": "searching still",
+      "question": null,
+      "alert": 1.2583333333333313,
+      "lunge": 2.8833333333333258,
+      "grab": 3.2333333333333245
+    }
+  ],
+  "mismatch": {
+    "closeGuard": {
+      "player": {
+        "x": 10.1,
+        "y": 0,
+        "crouching": true
+      },
+      "logic": true,
+      "drawn": false
+    },
+    "camera": {
+      "camera": {
+        "id": "c",
+        "min": 16.5,
+        "max": 21,
+        "halfWidth": 1.2,
+        "speed": 1.2,
+        "roomId": "stairwell",
+        "x": 16.5,
+        "awareness": 0,
+        "armed": true,
+        "beepIn": 0,
+        "cooldown": 0,
+        "sees": false,
+        "off": false,
+        "away": false
+      },
+      "samples": 100,
+      "disagree": 13,
+      "examples": [
+        {
+          "x": 15.300000000000004,
+          "logic": true,
+          "drawn": false
+        },
+        {
+          "x": 15.350000000000005,
+          "logic": true,
+          "drawn": false
+        },
+        {
+          "x": 15.400000000000006,
+          "logic": true,
+          "drawn": false
+        }
+      ]
+    }
+  },
+  "exploits": {
+    "cell-block pipe": {
+      "seconds": 90,
+      "seenTicks": 0,
+      "grabTicks": 0,
+      "ended": null
+    },
+    "laundry pipe": {
+      "seconds": 90,
+      "seenTicks": 0,
+      "grabTicks": 0,
+      "ended": null
+    },
+    "mess-hall pipe": {
+      "seconds": 90,
+      "seenTicks": 0,
+      "grabTicks": 0,
+      "ended": null
+    },
+    "pullIn": {
+      "pulledAt": 10.766666666666696,
+      "wakeAt": 89.75833333335083,
+      "calls": [
+        {
+          "at": 20.016666666666172,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 26.783333333332454,
+          "type": "guardMoved",
+          "guardId": "mh-guard-1",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 28.016666666665717,
+          "type": "checkIn",
+          "guardId": "la-guard",
+          "roomId": "laundry"
+        },
+        {
+          "at": 36.016666666665266,
+          "type": "checkIn",
+          "guardId": "mh-guard-1",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 44.01666666666481,
+          "type": "checkIn",
+          "guardId": "mh-guard-2",
+          "roomId": "mess-hall"
+        },
+        {
+          "at": 45.774999999998045,
+          "type": "guardMoved",
+          "guardId": "mh-guard-1",
+          "roomId": "mess-hall"
+        },
+        {
+          "at": 52.01666666666436,
+          "type": "checkIn",
+          "guardId": "sw-guard",
+          "roomId": "stairwell"
+        },
+        {
+          "at": 60.0166666666639,
+          "type": "checkIn",
+          "guardId": "yd-guard",
+          "roomId": "yard"
+        },
+        {
+          "at": 68.00833333333352,
+          "type": "checkIn",
+          "guardId": "yd-tower-1",
+          "roomId": "yard"
+        },
+        {
+          "at": 76.00833333333989,
+          "type": "checkIn",
+          "guardId": "yd-tower-2",
+          "roomId": "yard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 84.13333333334636,
+          "type": "guardMoved",
+          "guardId": "la-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 85.75833333334765,
+          "type": "bang",
+          "guardId": "cb-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 86.55833333334829,
+          "type": "bang",
+          "guardId": "cb-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 87.35833333334892,
+          "type": "bang",
+          "guardId": "cb-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 88.00833333334944,
+          "type": "checkIn",
+          "guardId": "la-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 88.15833333334956,
+          "type": "bang",
+          "guardId": "cb-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 88.9583333333502,
+          "type": "bang",
+          "guardId": "cb-guard",
+          "roomId": "cell-block"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "checkIn",
+          "guardId": "mh-guard-1",
+          "roomId": "mess-hall"
+        },
+        {
+          "at": 98.77500000002468,
+          "type": "guardMoved",
+          "guardId": "la-guard",
+          "roomId": "laundry"
+        },
+        {
+          "at": 105.82500000003029,
+          "type": "checkIn",
+          "guardId": "mh-guard-2",
+          "roomId": "mess-hall"
+        }
+      ],
+      "stats": {
+        "timesSpotted": 1,
+        "knockouts": 1,
+        "bodiesFound": 0,
+        "spottedBy": {
+          "guard": 1,
+          "camera": 0,
+          "searchlight": 0,
+          "snitch": 0,
+          "other": 0
+        },
+        "takedowns": {
+          "choke": 0,
+          "above": 0,
+          "pullIn": 1
+        },
+        "slams": 0,
+        "interrogations": 0,
+        "checkInsFaked": 0
+      }
+    },
+    "slideChain": {
+      "seconds": 10,
+      "distance": 69.12733333333259,
+      "speed": 6.912733333333259,
+      "noise": 1,
+      "detectionFactor": 0.5
+    },
+    "barrierGrab": {
+      "grabbed": false,
+      "at": 3.9999999999999885,
+      "playerX": 10.43,
+      "guardX": 9.53
+    },
+    "watchedHide": {
+      "before": {
+        "time": 0.5333333333333339,
+        "detection": 0.3333333333333332
+      },
+      "after": {
+        "time": 0.5416666666666672,
+        "detection": 1,
+        "state": "alert"
+      },
+      "grabbedAt": 1.1749999999999983
+    },
+    "interactHeight": {
+      "feetY": 5,
+      "keycardInReach": true,
+      "panelInReach": true
+    }
+  },
+  "performance": [
+    {
+      "room": "cell-block",
+      "steps": 12000,
+      "ms": 589.6909909999995
+    },
+    {
+      "room": "mess-hall",
+      "steps": 12000,
+      "ms": 398.7835299999997
+    },
+    {
+      "room": "yard",
+      "steps": 12000,
+      "ms": 553.3783370000001
+    },
+    {
+      "note": "searchlightShape called by camera detection, player look, drawing, debug drawing"
+    }
+  ]
+}

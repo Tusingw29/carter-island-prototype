@@ -7,6 +7,7 @@ import { updateGrab } from './grab.js';
 import { createGuard, isAwake, obstaclesFor } from './guard.js';
 import { updateGuardAI, updateGuardAway, updateSleeper } from './guard-ai.js';
 import { concealedIn, darkSpotAt, spotById, toggleHide } from './hiding.js';
+import { updatePursuits } from './pursuit.js';
 import { updateHold } from './holds.js';
 import { emptyIntent } from './intent.js';
 import { updateBedCheck } from './bedcheck.js';
@@ -121,6 +122,10 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     // The trip to solitary: used once it has happened, phase 'cell' or 'walk' while it plays
     // out, at is when it began, penalty is the seconds it cost.
     solitary: { used: false, phase: null, timer: 0, at: null, penalty: 0 },
+    // Heat: 0 to 3, raised by each escape from a hunt through a doorway (heat.js). lock is a
+    // room whose doors are locked down: { roomId, until }.
+    heat: 0,
+    lock: null,
     // The guard being held in a takedown: { guardId, time, asking, talked }, or null.
     hold: null,
     // What interrogated guards have told you, as { from, type, text }, for the map screen.
@@ -222,9 +227,10 @@ function noteWatchedHiding(world, wasConcealed, cfg) {
     const chasing = guard.state === 'alert' && (guard.seesPlayer || guard.trackTimer > 0);
     const watching = guard.seesPlayer && guard.detection >= cfg.glimpseThreshold;
     if (!chasing && !watching) continue;
-    const cause = { kind: 'watchedHiding', guard };
-    if (guard.state !== 'alert') raiseAlarm(world, world.player.x, 'sight', cfg, world.room.id, cause);
+    // He remembers the spot. His meter goes on filling as if he could still see you there
+    // (senses.js), and you are told at once.
     guard.knownSpotId = spotId;
+    if (guard.state !== 'alert') world.events.push({ type: 'sawHide', guardId: guard.id, spotId });
   }
 }
 
@@ -247,6 +253,7 @@ function updateEveryoneElse(world, dt, cfg) {
   }
   updateKnockedOut(world, dt, cfg);
   updateRadio(world, cfg.radio);
+  updatePursuits(world, cfg);
   // Gym guards stay on their own stretch of floor, even when chasing.
   for (const guard of world.allGuards) {
     if (guard.bounds) guard.x = Math.max(guard.bounds[0], Math.min(guard.bounds[1], guard.x));

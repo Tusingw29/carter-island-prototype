@@ -189,9 +189,11 @@ test('hiding while a guard is watching does not work', () => {
   const world = testWorld({ playerX: 25, guards: [sentry('g', 20)], hideSpots });
   runUntil(world, () => state(world) === 'suspicious', {}, 3);
   tap(world, 'up');
-  assert.equal(state(world), 'alert', 'he saw you get in');
-  assert.equal(world.guards[0].knownSpotId, 'locker');
-  runUntil(world, () => world.grab !== null, {}, 5);
+  // Step 15: he remembers the spot at once, but his meter fills at its usual rate before the
+  // "!", and he reaches in before he has you. See review-1.test.mjs for the timings.
+  assert.equal(world.guards[0].knownSpotId, 'locker', 'he saw you get in');
+  runUntil(world, () => state(world) === 'alert', {}, 5);
+  runUntil(world, () => world.grab !== null, {}, 6);
 });
 
 test('a pitch-dark spot hides you only while you stand still', () => {

@@ -1,0 +1,552 @@
+[
+  {
+    "departure": 0,
+    "error": null,
+    "seconds": 110.80000000003425,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 309.2000000001008,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 2,
+    "error": null,
+    "seconds": 110.80000000003425,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 309.2000000001008,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 4,
+    "error": null,
+    "seconds": 110.80000000003425,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 309.2000000001008,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 6,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 8,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 10,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 12,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 14,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 16,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  },
+  {
+    "departure": 18,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4
+    },
+    "slams": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "stats": {
+      "timesSpotted": 0,
+      "knockouts": 5,
+      "bodiesFound": 0,
+      "spottedBy": {
+        "guard": 0,
+        "camera": 0,
+        "searchlight": 0,
+        "snitch": 0,
+        "other": 0
+      },
+      "takedowns": {
+        "choke": 1,
+        "above": 0,
+        "pullIn": 4
+      },
+      "slams": 0,
+      "interrogations": 0,
+      "checkInsFaked": 0
+    }
+  }
+]

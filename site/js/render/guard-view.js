@@ -6,7 +6,7 @@ import { shownState } from '../game/alert.js';
 import { CONFIG } from '../game/config.js';
 import { FAN_POINTS } from '../game/sight.js';
 import { vaultPose } from '../game/guard.js';
-import { coneLit, coneShape } from '../game/vision.js';
+import { beamStrength, closeZone, coneLit, coneShape } from '../game/vision.js';
 import { block, placed } from './blocks.js';
 
 const CONE_Z = 0.35;
@@ -52,6 +52,14 @@ export function createGuardView(parent) {
   body.add(flash);
 
   const cone = fanMesh(STATE_COLORS.calm, 0.16);
+  // The close-awareness zone: the box right in front of him where he notices you even under
+  // his beam. Drawn so that the beam plus this box is everything he can see.
+  const close = new Mesh(
+    new BoxGeometry(1, 1, 0.02),
+    new MeshBasicMaterial({ color: STATE_COLORS.calm, transparent: true, opacity: 0.16, depthWrite: false }),
+  );
+  close.frustumCulled = false;
+  parent.add(close);
   const light = new SpotLight(0xffe2a0, 60, 12, 0.36, 0.5, 1.2);
   parent.add(body, cone, light, light.target);
 
@@ -66,6 +74,7 @@ export function createGuardView(parent) {
     const asleep = guard.state === 'asleep' || held;
     body.visible = !guard.hiddenIn;
     cone.visible = !out && !asleep;
+    close.visible = !out && !asleep;
     light.visible = !out && !asleep;
     torch.visible = !out && !asleep;
     // A knocked-out guard flashes white as the hit lands, then topples over and lies flat.
@@ -88,6 +97,11 @@ export function createGuardView(parent) {
       body.rotation.z = guard.stirTimer > 0 ? -0.15 : -0.45;
       body.position.set(guard.x, feetY - 0.25, -0.6);
     }
+    // Reaching into a hiding spot: he leans right over toward it. The tell before a pull-out.
+    if (guard.reach > 0) {
+      body.rotation.z = -guard.facing * 0.7;
+      body.position.x = guard.x + guard.facing * 0.35;
+    }
     // Vaulting low cover: he goes up and over it, leaning into it, slowly.
     const vault = vaultPose(guard);
     if (vault) {
@@ -107,6 +121,16 @@ export function createGuardView(parent) {
       cone.material.color.setHex(0xffffff);
       cone.material.opacity = 0.5;
     }
+    // Dazed, he cannot see: his beam is drawn faint and grey so it does not look like he can.
+    const strength = beamStrength(guard);
+    if (strength < 1) cone.material.color.setHex(0x8a94a0);
+    cone.material.opacity *= strength;
+    const zone = closeZone(guard);
+    close.scale.set(zone.x1 - zone.x0, zone.y1 - zone.y0, 1);
+    close.position.set((zone.x0 + zone.x1) / 2, (zone.y0 + zone.y1) / 2, CONE_Z);
+    close.material.color.copy(cone.material.color);
+    close.material.opacity = cone.material.opacity;
+    light.intensity = 60 * strength;
     light.color.setHex(guard.state === 'alert' ? 0xff9a8a : 0xffe2a0);
 
     // The real light points a little toward the back wall so the beam shows up on it.

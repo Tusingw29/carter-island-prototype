@@ -1,7 +1,7 @@
 // The score screen shown when a run ends.
 import { formatClock } from '../game/clock.js';
 import { spottedByText, takedownText } from '../game/playtest.js';
-import { RANKS } from '../game/run.js';
+import { RANKS, outcomeText } from '../game/run.js';
 
 const HEADLINES = {
   win: 'BACK IN BED',
@@ -12,13 +12,6 @@ const HEADLINES = {
 const KEYCARD = { slow: 'Taken slowly (quiet)', fast: 'Grabbed fast' };
 // The room is shown when the run ended somewhere other than your bed.
 const WHERE_LABELS = { caught: 'Caught in', headcount: 'Out of bed in' };
-const DETAILS = {
-  win: 'You have the keycard, and nobody knows.',
-  caught: 'Grabbed a second time.',
-  headcount: 'Your bed was empty when they counted.',
-  'empty-handed': 'You were in bed, but without the keycard.',
-};
-
 export function createEndScreen(onPlayAgain) {
   const byId = (id) => document.getElementById(id);
   const screen = byId('end-screen');
@@ -33,7 +26,8 @@ export function createEndScreen(onPlayAgain) {
     shown = result;
     screen.dataset.outcome = result.won ? 'win' : 'lose';
     byId('end-headline').textContent = HEADLINES[result.outcome];
-    byId('end-detail').textContent = DETAILS[result.outcome];
+    // The line matches the rank: only a Ghost win says nobody knows.
+    byId('end-detail').textContent = outcomeText(result.outcome, result.rank);
     byId('end-rank').textContent = RANKS[result.rank].name;
     byId('end-rank-means').textContent = RANKS[result.rank].means;
     byId('score-time').textContent = formatClock(result.timeLeft);

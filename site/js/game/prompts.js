@@ -42,6 +42,12 @@ export function currentPrompt(world) {
   // Holding a guard: the choices are shown in their own panel.
   if (world.hold) return null;
   if (player.hiddenIn) {
+    // A guard watched you get in. Said at the spot, at once, and for as long as it is true.
+    const watcher = world.guards.find((guard) => guard.knownSpotId === player.hiddenIn && guard.state !== 'out');
+    if (watcher) {
+      const text = watcher.reach > 0 ? 'HE IS REACHING IN!  UP: get out' : 'HE SAW YOU HIDE.  UP: get out';
+      return { text, x: player.x, y: 2.75, shake: true };
+    }
     const passing = pullInTarget(world);
     if (passing) return { text: 'SPACE: pull in', x: passing.x, y: (passing.y ?? 0) + 2.75 };
     if (canSleep(world)) return { text: 'E: sleep (end the run)   UP: get up', x: player.x, y: 1.6 };

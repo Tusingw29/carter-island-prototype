@@ -101,6 +101,8 @@ function newWorld() {
   if (params.has('timer')) world.timeLeft = Number(params.get('timer'));
   // ?boots starts with the work boots on, so the dash can be tried without the trip to the shed.
   if (params.has('boots')) world.player.hasBoots = true;
+  // ?heat=2 starts with the heat already raised, to try pursuit, lockdown, or radio ahead.
+  if (params.has('heat')) world.heat = Math.max(0, Math.min(3, Number(params.get('heat'))));
   // ?alarm acts as if a camera saw you earlier, so the next keycard grab sets off the silent alarm.
   if (params.has('alarm')) world.seenByCamera = true;
   mapOpen = params.has('map');
@@ -244,7 +246,7 @@ function frame(now) {
 }
 
 // Debug links skip the title screen, as does ?play.
-if (['play', 'room', 'timer', 'alarm', 'boots'].some((name) => params.has(name))) startRun();
+if (['play', 'room', 'timer', 'alarm', 'boots', 'heat'].some((name) => params.has(name))) startRun();
 else showTitle();
 // ?show=controls (or pause, or playtest) opens that screen straight away, for checking layouts.
 if (params.has('show')) screens.openOver(params.get('show'));
