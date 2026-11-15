@@ -7,7 +7,7 @@ import { raiseAlarm } from './alert.js';
 import { reachable } from './guard.js';
 import { isContainer, spotById } from './hiding.js';
 import { knockOut, knockoutTarget } from './knockout.js';
-import { say } from './messages.js';
+import { say, sayAfter } from './messages.js';
 
 export const heldGuard = (world) => (
   world.hold ? world.allGuards.find((guard) => guard.id === world.hold.guardId) : null
@@ -69,42 +69,47 @@ function talk(world, guard, cfg) {
   const { hold } = world;
   const extra = guard.talk ?? { type: 'story', text: 'I just walk the beat. I do not know anything.' };
   hold.talked = true;
+  hold.asking = 0;
   hold.time = 0;
   guard.interrogated = true;
   guard.codeKnown = true;
   world.stats.interrogations += 1;
-  let line = extra.text;
+  const line = extra.text ?? 'Same beat every night. Look, I will mark it for you.';
+  let payoff = `He said: "${line}"`;
   if (extra.type === 'patrols') {
-    const until = world.time + cfg.takedown.patrolRevealSeconds;
-    world.patrolReveal = { roomId: guard.homeRoomId ?? guard.roomId, until };
-    line = extra.text ?? 'Same beat every night. Look, I will mark it for you.';
+    const seconds = cfg.takedown.patrolRevealSeconds;
+    world.patrolReveal = { roomId: guard.homeRoomId ?? guard.roomId, until: world.time + seconds };
+    payoff = `Patrol reveal: the guard routes in this room are on your map (M) for ${seconds} seconds.`;
+  } else if (extra.type === 'secret') {
+    payoff = `Secret learned: ${line}`;
   }
   for (const id of extra.reveals ?? []) world.knownPortals.add(id);
   for (const id of extra.finds ?? []) world.found.add(id);
   world.intel.push({ from: guard.label ?? 'Guard', type: extra.type, text: line });
-  const gained = extra.type === 'patrols'
-    ? ` Patrols in this room are on your map for ${cfg.takedown.patrolRevealSeconds} seconds.` : '';
-  say(world, `"${line}" You have his radio code.${gained}`, cfg.hintSeconds);
+  // His words go up in a speech bubble over him. What you gained is spelled out in two
+  // messages, one after the other.
+  world.speech = { guardId: guard.id, text: line, until: world.time + cfg.takedown.speechSeconds };
+  say(world, 'Radio code learned: his check-ins will be faked.', 4.5);
+  sayAfter(world, payoff, cfg.hintSeconds);
   world.events.push({ type: 'talk', guardId: guard.id, talk: extra.type });
 }
 
-// The choices on screen while you hold a guard, with the buttons for keyboard and controller.
-// progress (0 to 1) is how far through an interrogation you are.
+// The choices in the pop-up while you hold a guard, with the buttons for keyboard and
+// controller. progress (0 to 1) is how far through an interrogation you are.
 export function holdOptions(world, cfg = CONFIG.takedown) {
   const guard = heldGuard(world);
   if (!guard) return [];
   const { hold } = world;
   const options = [{ id: 'knockOut', keys: 'SPACE', pad: 'X', label: 'knock out' }];
-  if (hold.talked) options.push({ id: 'letGo', keys: 'E', pad: 'A', label: 'let him go (he raises the alarm)' });
+  if (hold.talked) options.push({ id: 'letGo', keys: 'Q', pad: 'Y', label: 'let go (he raises the alarm)' });
   else if (guard.interrogated) {
     options.push({ id: 'interrogate', keys: '-', pad: '-', label: 'he has already talked' });
-  }
-  else {
+  } else {
     const progress = Math.min(1, hold.asking / cfg.interrogateSeconds);
-    options.push({ id: 'interrogate', keys: 'hold E', pad: 'hold A', label: 'interrogate', progress });
+    options.push({ id: 'interrogate', keys: 'Q', pad: 'Y', label: 'interrogate', progress });
   }
-  options.push({ id: 'slam', keys: 'F', pad: 'LB', label: 'throw him down (loud)' });
-  options.push({ id: 'drag', keys: 'A / D', pad: 'stick', label: 'drag him' });
+  options.push({ id: 'slam', keys: 'F', pad: 'LB', label: 'throw (loud)' });
+  options.push({ id: 'drag', keys: 'A / D', pad: 'stick', label: 'drag: just move' });
   return options;
 }
 
@@ -126,7 +131,8 @@ export function carryHeld(world, cfg = CONFIG) {
   guard.y = player.y ?? 0;
 }
 
-// Called every step while a guard is held. pressed is { action, interact, throw }: fresh presses.
+// Called every step while a guard is held. pressed is { action, ask, throw }: fresh presses.
+// One press of Ask starts the interrogation. It runs by itself: no need to hold anything.
 export function updateTakedown(world, intent, pressed, dt, cfg = CONFIG) {
   const { hold } = world;
   const guard = heldGuard(world);
@@ -140,19 +146,22 @@ export function updateTakedown(world, intent, pressed, dt, cfg = CONFIG) {
     slam(world, guard, cfg);
     return;
   }
-  if (hold.talked && pressed.interact) {
+  if (hold.talked && pressed.ask) {
     turnLoose(world, guard, 'letGo', cfg.takedown.releaseStunSeconds, cfg);
     world.events.push({ type: 'letGo', guardId: guard.id });
     return;
   }
-  const asking = !hold.talked && !guard.interrogated && intent.interact;
-  if (asking) {
+  if (!hold.talked && !guard.interrogated && hold.asking <= 0 && pressed.ask) {
+    hold.asking = dt;
+    world.events.push({ type: 'ask', guardId: guard.id });
+    return;
+  }
+  if (hold.asking > 0 && !hold.talked) {
     // The clock on him breaking free stops while he is talking.
     hold.asking += dt;
     if (hold.asking >= cfg.takedown.interrogateSeconds) talk(world, guard, cfg);
     return;
   }
-  hold.asking = 0;
   hold.time += dt;
   if (hold.time < cfg.takedown.holdSeconds) return;
   turnLoose(world, guard, 'brokeFree', 0, cfg);

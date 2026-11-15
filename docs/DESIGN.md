@@ -319,6 +319,60 @@ do not punish failure so hard that players replay long stretches.
   still win, but can only be ranked Inmate.
 - Add the solitary cell to the map screen once visited.
 
+## Heat-up detection and the Step 14 changes
+
+### What counts as spotted
+
+- The score screen shows "Spotted by:" with a count per source.
+- Being spotted counts ONCE per new Alert, not once per trigger.
+
+### Heat-up detection
+
+- Every guard, camera, searchlight, and snitch gets its OWN visible awareness meter, shown
+  right over it (an eye icon or arc that fills). If the source is off screen, show a small
+  arrow at the screen edge pointing to it, filling the same way.
+- Meter stages:
+  - Empty: unaware.
+  - Filling: the icon fills and pulses, and a rising sound plays. This is the TELL.
+    At about a third full, a guard turns his head toward you ("?").
+  - Full: "!" and the Alert (with the reaction pause from Step 9).
+- Slower fill times (config values):
+  - Guard, far edge of the cone: about 2.0 s. Up close: about 0.8 s (was 0.3 s).
+  - Crouching and standing still each slow the fill (about half speed each).
+  - Cameras and searchlights: about 1.2 s, with a beeping tell that speeds up.
+  - Snitches: about 1.0 s, and they visibly squint and point before yelling.
+- Draining: the meter drains slowly once you are out of sight (not instantly), so stepping
+  back into view soon after fills faster. Make that clear by keeping the icon half-visible
+  while it drains.
+- Keep cone sizes, patrols, and chase rules the same.
+
+### Takedown menu: clearer controls
+
+- New layout once you grab a guard (show it as a small pop-up with the four choices and
+  their buttons, next to the guard):
+  - Knock out: Space / X
+  - Interrogate: Q / Y
+  - Throw: F / Left Bumper
+  - Drag: just move
+- Interrogation takes about 2 s (was 3), shows a progress bar, and the guard's line appears
+  as a speech bubble. Then the pop-up returns with Knock out / Let go.
+- Add a one-time tutorial hint the first time you grab someone that explains the menu.
+- Make the payoff obvious: after interrogating, show "Radio code learned: his check-ins will
+  be faked" and the extra (patrol reveal, secret, or story bit) as its own message.
+
+### Drops from above: places to do it
+
+- Add ledges, pipes, or catwalks ABOVE guard patrol paths: at least one in the Mess Hall,
+  the Laundry, the Cell Block, and the Yard (the bleachers and towers already help).
+- When you are above an unaware guard and in range, show a target marker on him and the
+  prompt "SPACE: drop on him".
+- Add a one-time tutorial hint the first time this is possible.
+
+### Ghost marker: make it noticeable
+
+- Brighter outline, a small label "last seen" the first few times, and a one-time
+  tutorial hint explaining it.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

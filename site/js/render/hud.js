@@ -6,7 +6,6 @@ import { currentAnnouncement } from '../game/cues.js';
 import { currentMessage } from '../game/messages.js';
 import { shoveCharge } from '../game/shove.js';
 import { solitaryFade } from '../game/solitary.js';
-import { holdLeft, holdOptions } from '../game/takedown.js';
 import { throwableName } from '../game/throwing.js';
 import { peek } from '../game/vents.js';
 import { setHidden, setText, setWidth } from './dom.js';
@@ -84,10 +83,6 @@ export function createHud(build, cues = true) {
   const peekStrip = byId('peek-strip');
   const blackout = byId('solitary');
   const penalty = byId('penalty');
-  const takedown = byId('takedown');
-  const takedownList = byId('takedown-options');
-  const takedownFill = byId('takedown-fill');
-  let shownOptions = '';
   let shownRoom = null;
 
   // The choices while you hold a guard, with the buttons, and the time left before he breaks free.
@@ -169,7 +164,6 @@ export function createHud(build, cues = true) {
     setText(meterLabel, LABELS[summary.level]);
     setWidth(meterFill, summary.fill * 100);
 
-    updateTakedown(world);
     // The trip to solitary: a fade to black with the word on it, and the time lost by the timer.
     const fade = solitaryFade(world);
     setHidden(blackout, fade <= 0);

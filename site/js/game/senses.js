@@ -5,6 +5,7 @@ import { litAreaAt } from './lights.js';
 import { say } from './messages.js';
 import { canHear } from './noise.js';
 import { sightBlocked, sightBlockers } from './sight.js';
+import { stanceFactor } from './stance.js';
 import { coneShape, guardSeesPlayer, pointInCone } from './vision.js';
 
 // How fast the detection meter fills, per second. Close is fast, the edge of the beam is slow.
@@ -39,7 +40,8 @@ function senseSight(guard, world, dt, cfg) {
   }
   // Under a lamp you are plain to see: he is as sure as if you were right in front of him.
   const lit = litAreaAt(world.layout.rooms[guard.roomId], player);
-  const rate = detectionRate(guard, lit ? 0 : Math.abs(player.x - guard.x), cfg);
+  // Crouching and standing still each halve how fast he becomes sure.
+  const rate = detectionRate(guard, lit ? 0 : Math.abs(player.x - guard.x), cfg) * stanceFactor(player);
   guard.detection = Math.min(1, guard.detection + rate * dt);
   if (guard.detection >= 1) {
     const ahead = (player.x - guard.x) * guard.facing;

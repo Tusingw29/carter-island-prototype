@@ -107,11 +107,14 @@ export const CONFIG = Object.freeze({
 
     // Sight fills a detection meter. Full meter = Alert. Close up it fills fast.
     detectNearDistance: 2,
-    detectNearSeconds: 0.3,
-    detectFarSeconds: 1.3,
-    detectDrainPerSecond: 0.5,
-    // Meter level at which a calm guard gets Suspicious and comes to look.
-    glimpseThreshold: 0.3,
+    // Up close it takes detectNearSeconds, at the far edge of the beam detectFarSeconds.
+    // Crouching or standing still slows it (see awareness below).
+    detectNearSeconds: 0.8,
+    detectFarSeconds: 2,
+    // Out of his sight the meter drains this slowly, so it is not safe to step straight back.
+    detectDrainPerSecond: 0.35,
+    // Meter level at which a calm guard gets Suspicious, turns to you, and comes to look.
+    glimpseThreshold: 0.33,
     suspiciousDetectBoost: 1.5,
     searchingDetectBoost: 3,
 
@@ -162,9 +165,13 @@ export const CONFIG = Object.freeze({
   }),
 
   camera: Object.freeze({
-    // How long you can be in a camera's view before it registers you.
-    noticeSeconds: 0.35,
+    // How long a camera or a searchlight has to have you in view before it calls it in.
+    fillSeconds: 1.2,
+    // While you stay in view after that, it calls your position in again this often.
     cooldownSeconds: 4,
+    // The beep while its meter fills: this far apart at first, this far apart when nearly full.
+    beepSlowSeconds: 0.45,
+    beepFastSeconds: 0.12,
     // How high the camera hangs. Its line of sight starts here.
     mountHeight: 3.5,
   }),
@@ -190,7 +197,8 @@ export const CONFIG = Object.freeze({
     // Right at the bars they cannot see you. This is where you wait for them to look away.
     blindSpot: 0.6,
     lookSeconds: 4,
-    noticeSeconds: 0.3,
+    // How long a snitch has to have you in view before he yells.
+    fillSeconds: 1,
     cooldownSeconds: 5,
     reach: 0.9,
   }),
@@ -250,6 +258,14 @@ export const CONFIG = Object.freeze({
     reach: 1,
   }),
 
+  // Heat-up detection: how the player's movement slows every awareness meter, and how fast
+  // camera, searchlight, and snitch meters drain once you are out of view.
+  awareness: Object.freeze({
+    crouchFactor: 0.5,
+    stillFactor: 0.5,
+    drainPerSecond: 0.35,
+  }),
+
   // Solitary: what the first capture costs, instead of ending the run.
   solitary: Object.freeze({
     penaltySeconds: 60,
@@ -266,7 +282,9 @@ export const CONFIG = Object.freeze({
     holdGap: 0.6,
     // Hold him this long without choosing and he breaks free.
     holdSeconds: 6,
-    interrogateSeconds: 3,
+    interrogateSeconds: 2,
+    // How long his words stay up in a speech bubble.
+    speechSeconds: 7,
     // Speed while dragging a guard you are holding.
     dragSpeed: 1.2,
     // Thrown to the floor: stunned this long, heard this far, and pushed this far from you.

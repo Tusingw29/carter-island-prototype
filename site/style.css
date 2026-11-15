@@ -779,9 +779,24 @@ body.in-menu #gym-tuning {
 }
 
 /* Step 12: the takedown choices, the hearing arc, and patrols on the map. */
+#takedown,
+#speech,
+#drop-mark,
+.ghost-label,
+.eye {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
 #takedown {
-  top: 96px;
+  padding: 8px 10px;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 6px;
+  background: rgb(5 7 11 / 90%);
   color: #e8ecf2;
+  white-space: nowrap;
 }
 
 #takedown-options {
@@ -886,4 +901,77 @@ body.in-menu .hear-arc {
   color: #ff4a3c;
   font-size: 18px;
   font-weight: 700;
+}
+
+/* Step 14: awareness eyes, the speech bubble, the drop marker, and the ghost label. */
+.eye {
+  --fill: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: conic-gradient(#ffd24a calc(var(--fill) * 360deg), rgb(255 255 255 / 18%) 0);
+  color: #05070b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 26px;
+  text-align: center;
+  box-shadow: 0 0 0 2px rgb(5 7 11 / 80%);
+}
+
+.eye::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #05070b;
+  z-index: -1;
+}
+
+.eye[data-state='filling'] {
+  animation: eye-pulse 0.35s ease-in-out infinite alternate;
+}
+
+.eye[data-state='draining'] {
+  opacity: 0.5;
+}
+
+.eye[data-state='full'] {
+  background: #ff4a3c;
+  color: #fff;
+}
+
+@keyframes eye-pulse {
+  from { box-shadow: 0 0 0 2px rgb(5 7 11 / 80%); }
+  to { box-shadow: 0 0 0 5px rgb(255 210 74 / 55%); }
+}
+
+body.in-menu .eye,
+body.in-menu .ghost-label,
+body.in-menu #drop-mark {
+  display: none;
+}
+
+#speech {
+  max-width: 340px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #e8ecf2;
+  color: #05070b;
+  font-size: 14px;
+}
+
+#drop-mark {
+  color: #ff8a3a;
+  font-size: 26px;
+  animation: eye-pulse 0.35s ease-in-out infinite alternate;
+  text-shadow: 0 0 6px #000;
+}
+
+.ghost-label {
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgb(5 7 11 / 75%);
+  color: #cfe0ff;
+  font-size: 11px;
+  letter-spacing: 0.08em;
 }

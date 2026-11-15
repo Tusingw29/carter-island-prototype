@@ -487,7 +487,7 @@ test('searchlight: stepping into the pool is called in. Guards go Suspicious and
   const world = underLight(20, 20, false);
   const ground = guardById(world, 'yd-guard');
   ground.x = 34;
-  run(world, {}, CONFIG.camera.noticeSeconds + 0.1);
+  run(world, {}, CONFIG.camera.fillSeconds * 2 + 0.1);
   assert.ok(happened(world, 'searchlight'));
   assert.equal(world.stats.timesSpotted, 1);
   assert.match(currentMessage(world), /searchlight/i);

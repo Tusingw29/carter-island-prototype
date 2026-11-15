@@ -34,6 +34,8 @@ export function scoreRun(world) {
     timesSpotted,
     knockouts,
     bodiesFound,
+    // What each spotting was put down to: guard, camera, searchlight, snitch, other.
+    spottedBy: { ...world.stats.spottedBy },
     // Knockouts by how they were done, and the rest of the takedown tally.
     takedowns: { ...world.stats.takedowns },
     slams: world.stats.slams,

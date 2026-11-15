@@ -1,16 +1,22 @@
 // Security cameras. Each one watches a stretch of floor that sweeps back and forth.
 // Being seen sends nearby guards to Suspicious, and is remembered when you take the keycard.
 import { CONFIG } from './config.js';
-import { makeSuspicious } from './alert.js';
+import { countSpotted, makeSuspicious } from './alert.js';
 import { isAwake } from './guard.js';
 import { concealedIn } from './hiding.js';
 import { say } from './messages.js';
+import { stanceFactor } from './stance.js';
 import { playerHeight } from './player.js';
 import { bodyPoints } from './vision.js';
 import { fanPools, inFan, litFan, sightBlocked, sightBlockers } from './sight.js';
 
 export function createCamera(def, roomId) {
-  return { ...def, roomId, x: def.min, exposure: 0, cooldown: 0, sees: false, off: false, away: false };
+  // awareness is its meter, 0 to 1. armed means its next call-in counts as a new spotting:
+  // it is, once the meter has drained right down since the last one.
+  return {
+    ...def, roomId, x: def.min, awareness: 0, armed: true, beepIn: 0, cooldown: 0, sees: false, off: false,
+    away: false,
+  };
 }
 
 // A searchlight is a camera on a guard tower: a pool of light on the ground that sweeps on a
@@ -86,7 +92,8 @@ export function cameraSeesPlayer(camera, player, blockers = []) {
 // no part in the silent alarm.
 function searchlightTrigger(camera, world, cfg) {
   camera.cooldown = cfg.cooldownSeconds;
-  world.stats.timesSpotted += 1;
+  if (camera.armed) countSpotted(world, 'searchlight');
+  camera.armed = false;
   world.events.push({ type: 'searchlight', cameraId: camera.id });
   say(world, 'The searchlight has you! The tower guard calls it in.');
   for (const guard of world.guards.filter(isAwake)) makeSuspicious(world, guard, world.player.x);
@@ -100,7 +107,9 @@ function trigger(camera, world, cfg) {
   camera.cooldown = cfg.cooldownSeconds;
   world.seenByCamera = true;
   world.cameraSawIn ??= world.room.name;
-  world.stats.timesSpotted += 1;
+  // One stay in its view is one spotting, however long you stand there.
+  if (camera.armed) countSpotted(world, 'camera');
+  camera.armed = false;
   world.events.push({ type: 'camera', cameraId: camera.id });
   for (const guard of world.guards.filter(isAwake)) makeSuspicious(world, guard, world.player.x);
   // A camera in a room with no guards calls one over from next door.
@@ -114,16 +123,28 @@ export function cameraCanSee(camera, world) {
   return camera.roomId === world.room.id && cameraSeesPlayer(camera, world.player, sightBlockers(world.room));
 }
 
-export function updateCamera(camera, world, dt, cfg = CONFIG.camera) {
+export function updateCamera(camera, world, dt, cfg = CONFIG.camera, awareness = CONFIG.awareness) {
   const sweep = cameraSweep(camera, world.time);
   camera.x = sweep.x;
   camera.away = sweep.away;
   camera.cooldown = Math.max(0, camera.cooldown - dt);
   camera.sees = cameraCanSee(camera, world);
   if (!camera.sees) {
-    camera.exposure = Math.max(0, camera.exposure - dt);
+    // Out of view the meter drains slowly. Empty, the camera is ready to count you afresh.
+    camera.awareness = Math.max(0, camera.awareness - awareness.drainPerSecond * dt);
+    if (camera.awareness <= 0) camera.armed = true;
+    camera.beepIn = 0;
     return;
   }
-  camera.exposure += dt;
-  if (camera.exposure >= cfg.noticeSeconds && camera.cooldown <= 0) trigger(camera, world, cfg);
+  camera.awareness = Math.min(1, camera.awareness + (dt / cfg.fillSeconds) * stanceFactor(world.player, awareness));
+  if (camera.awareness < 1) {
+    // The tell: a beep that speeds up as the meter fills.
+    camera.beepIn -= dt;
+    if (camera.beepIn <= 0) {
+      camera.beepIn = cfg.beepSlowSeconds + (cfg.beepFastSeconds - cfg.beepSlowSeconds) * camera.awareness;
+      world.events.push({ type: 'camBeep', cameraId: camera.id });
+    }
+    return;
+  }
+  if (camera.cooldown <= 0) trigger(camera, world, cfg);
 }

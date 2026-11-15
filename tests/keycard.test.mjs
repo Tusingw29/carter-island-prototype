@@ -118,7 +118,9 @@ test('cameras sweep back and forth between their limits, the same every run', ()
 
 test('being seen by a camera sends the guards in the room to Suspicious', () => {
   const world = prisonWorld('stairwell', 16.5);
-  run(world, {}, CONFIG.camera.noticeSeconds + 0.1);
+  // Step 14: a camera needs 1.2 s of you, 2.4 s if you stand still. Hold it on the spot.
+  Object.assign(world.cameras.find((camera) => camera.id === 'sw-camera'), { min: 16.5, max: 16.5 });
+  run(world, {}, CONFIG.camera.fillSeconds * 2 + 0.1);
   assert.equal(world.seenByCamera, true);
   assert.equal(world.stats.timesSpotted, 1);
   assert.ok(eventTypes(world).includes('camera'));
@@ -139,7 +141,8 @@ test('a camera does not see you in a dark spot, in hiding, or outside its sweep'
 
 test('the Maintenance camera has no guards nearby, so it calls the Laundry guard to the door', () => {
   const world = prisonWorld('maintenance', 9.5);
-  run(world, {}, CONFIG.camera.noticeSeconds + 0.1);
+  Object.assign(world.cameras.find((camera) => camera.id === 'ma-camera'), { min: 9.5, max: 9.5 });
+  run(world, {}, CONFIG.camera.fillSeconds * 2 + 0.1);
   const guard = guardById(world, 'la-guard');
   assert.equal(guard.state, 'suspicious');
   assert.equal(guard.targetX, 26.5);

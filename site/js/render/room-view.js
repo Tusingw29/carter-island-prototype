@@ -131,7 +131,7 @@ function panelView(prop) {
 // Gym furniture: crates to climb, a ledge, and a wall with a low gap under it.
 const SOLID_COLORS = {
   crate: 0x6a5436, ledge: 0x56606e, wall: 0x39424e, bench: 0x5a4a34, hoop: 0xd8dde4, platform: 0x4a5058,
-  bleacher: 0x7a6a4a, roof: 0x5a4c3a,
+  bleacher: 0x7a6a4a, roof: 0x5a4c3a, pipe: 0x6b7480,
 };
 function solidView(solid) {
   if (solid.kind === 'fence') return fenceView(solid);

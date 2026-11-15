@@ -37,6 +37,11 @@
 //   { type: 'story', text } is a line about the mine. Story lines only ever hint.
 // Map: floor 0 is the basement. col and span place the room on the map screen.
 
+// A run of pipes or a catwalk up near the ceiling: you can stand on it and jump up through it.
+const pipe = (id, x, halfWidth) => ({
+  id, kind: 'pipe', x, halfWidth, bottom: 2.6, top: 2.8, through: true, seeThrough: true,
+});
+
 const cellBlock = {
   id: 'cell-block',
   name: 'Cell Block',
@@ -68,6 +73,10 @@ const cellBlock = {
     { id: 'cb-drop', type: 'vent', exitOnly: true, high: true, hidden: true, x: 28.6, to: 'guard-office',
       toPortal: 'go-drop' },
   ],
+  // A pipe run over the west end of the guard's beat, with a ladder up to it. From up there
+  // you can drop on him. Pipes are too thin to hide anything: they block no sight.
+  solids: [pipe('cb-pipe', 11.5, 1.9)],
+  ladders: [{ id: 'cb-ladder', x: 9.9, bottom: 0, top: 2.8 }],
   items: [{ id: 'cb-cup', type: 'cup', x: 21 }],
   guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1, checksBed: true,
     talk: { type: 'story', text: "Don't go near the deep shafts. Guys come back quiet." } }],
@@ -95,6 +104,9 @@ const laundry = {
     { id: 'la-soap-1', type: 'soap', x: 11.6 },
     { id: 'la-soap-2', type: 'soap', x: 18.4 },
   ],
+  // A pipe run over the east end of the guard's beat.
+  solids: [pipe('la-pipe', 18.3, 2)],
+  ladders: [{ id: 'la-ladder', x: 19.9, bottom: 0, top: 2.8 }],
   // A work lamp between the carts.
   lights: [{ id: 'la-lamp', x: 11.6, halfWidth: 1.4 }],
   guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1,
@@ -155,6 +167,9 @@ const messHall = {
     { id: 'mh-guard-2', patrol: [20, 31], startX: 24, facing: -1,
     talk: { type: 'story', text: 'Company calls it Ore Seven. Miners call it The Black. Nobody calls it safe.' } },
   ],
+  // A catwalk between the first two tables, over the first guard's beat.
+  solids: [pipe('mh-catwalk', 14.2, 2.2)],
+  ladders: [{ id: 'mh-ladder', x: 12.3, bottom: 0, top: 2.8 }],
   // The kitchen light.
   lights: [{ id: 'mh-lamp', x: 34.9, halfWidth: 0.7 }],
   // Hidden in the kitchen corner.

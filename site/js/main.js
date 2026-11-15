@@ -191,7 +191,8 @@ function handleMenus(intent) {
     startRun();
   } else if (cancel) {
     screens.show('pause');
-  } else if (controls) {
+  } else if (controls && !world.hold) {
+    // While you hold a guard, Y on the controller means Interrogate, not Controls.
     screens.show('pause');
     screens.openOver('controls');
   }

@@ -5,7 +5,7 @@ import { CONFIG } from './config.js';
 export function emptyIntent() {
   return {
     moveX: 0, up: false, crouch: false, run: false, action: false, interact: false, jump: false, dash: false,
-    throw: false,
+    throw: false, ask: false,
     map: false, pause: false, controls: false, zoom: false, debug: false, timerDown: false, timerUp: false,
   };
 }
@@ -27,6 +27,8 @@ export function intentFromKeys(codes) {
     dash: codes.has('KeyL'),
     // Hold to aim a throw, let go to throw.
     throw: codes.has('KeyF'),
+    // Interrogate a guard you are holding, then let him go.
+    ask: codes.has('KeyQ'),
     map: codes.has('KeyM'),
     pause: codes.has('Escape'),
     controls: codes.has('KeyC'),
@@ -61,6 +63,8 @@ export function intentFromGamepad(pad, cfg = CONFIG.stick) {
     dash: pressed(pad, 5),
     // Left bumper.
     throw: pressed(pad, 4),
+    // Y (top face button). It is also Controls, except while you hold a guard.
+    ask: pressed(pad, 3),
     map: pressed(pad, 8),
     pause: pressed(pad, 9),
     controls: pressed(pad, 3),
@@ -83,6 +87,7 @@ export function mergeIntents(a, b) {
     jump: a.jump || b.jump,
     dash: a.dash || b.dash,
     throw: a.throw || b.throw,
+    ask: a.ask || b.ask,
     map: a.map || b.map,
     pause: a.pause || b.pause,
     controls: a.controls || b.controls,
