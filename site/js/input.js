@@ -2,7 +2,7 @@
 import { intentFromGamepad, intentFromKeys, mergeIntents } from './game/intent.js';
 
 const GAME_KEYS = new RegExp([
-  '^(Key[WASDEMCZKLFQ]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|Enter|Escape',
+  '^(Key[WASDEMCZKLFQR]|Arrow(Up|Down|Left|Right)|Shift(Left|Right)|Space|Enter|Escape',
   '|F1|Backquote|Bracket(Left|Right))$',
 ].join(''));
 

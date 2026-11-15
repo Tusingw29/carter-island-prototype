@@ -228,12 +228,12 @@ const S = CONFIG.shove;
 // A guard at 20 facing right with the player `gap` metres in front of him.
 const facing = (gap, extra = {}) => testWorld({ width: 120, playerX: 20 + gap, guards: [sentry('g', 20)], ...extra });
 
-test('shove: Space on a guard who is facing you stuns him for 1.5 s and knocks him back', () => {
+test('shove: R on a guard who is facing you stuns him for 1.5 s and knocks him back', () => {
   assert.equal(S.stunSeconds, 1.5);
   const world = facing(1);
   world.player.facing = -1;
-  assert.equal(currentPrompt(world).text, 'SPACE: shove');
-  tap(world, 'action');
+  assert.equal(currentPrompt(world).text, 'R: shove');
+  tap(world, 'shove');
   const guard = world.guards[0];
   assert.ok(happened(world, 'shove'));
   assert.ok(!happened(world, 'knockout'), 'it is not a knockout');
@@ -252,7 +252,7 @@ test('shove: Space on a guard who is facing you stuns him for 1.5 s and knocks h
 test('shove: it sets off the Alert and counts as being spotted, once', () => {
   const world = facing(1);
   assert.equal(world.guards[0].state, 'calm');
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.equal(world.guards[0].state, 'alert');
   assert.equal(world.stats.timesSpotted, 1);
   assert.equal(world.lastAlarm.kind, 'shove');
@@ -261,7 +261,7 @@ test('shove: it sets off the Alert and counts as being spotted, once', () => {
   runUntil(chased, () => chased.guards[0].state === 'alert', {}, 5);
   assert.equal(chased.stats.timesSpotted, 1);
   chased.player.x = chased.guards[0].x + 1;
-  tap(chased, 'action');
+  tap(chased, 'shove');
   assert.ok(happened(chased, 'shove'));
   assert.equal(chased.stats.timesSpotted, 1);
 });
@@ -269,7 +269,7 @@ test('shove: it sets off the Alert and counts as being spotted, once', () => {
 test('shove: it is loud, about the same as running', () => {
   assert.equal(S.noiseRadius, CONFIG.noise.runRadius);
   const world = testWorld({ width: 120, playerX: 21, guards: [sentry('g', 20), sentry('far', 80, 1)] });
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.ok(world.noises.some((noise) => noise.radius === S.noiseRadius) || happened(world, 'shove'));
   // A guard in another part of a long room who cannot see you still comes: the room's alarm is up.
   assert.equal(world.guards[1].state, 'alert');
@@ -280,7 +280,7 @@ test('shove: it stops a lunge that is already winding up', () => {
   const guard = world.guards[0];
   runUntil(world, () => guard.lunge > 0, {}, 8);
   world.events.length = 0;
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.ok(happened(world, 'shove'));
   assert.equal(guard.lunge, 0);
   run(world, {}, CONFIG.guard.lungeWindupSeconds + 0.2);
@@ -291,20 +291,20 @@ test('shove: an 8 second cooldown, with a meter', () => {
   assert.equal(S.cooldownSeconds, 8);
   const world = facing(1);
   assert.equal(shoveCharge(world), 1, 'ready at the start');
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.ok(shoveCharge(world) < 0.05);
   const guard = world.guards[0];
   // Too soon: nothing happens but a "not ready" shake.
   world.player.x = guard.x + 1;
   world.events.length = 0;
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.ok(!happened(world, 'shove'));
   assert.ok(happened(world, 'tooRisky'));
   assert.equal(currentPrompt(world).text, 'SHOVE NOT READY');
   assert.equal(currentPrompt(world).shake, true);
   // Half way through, the meter is half full.
   const fresh = facing(1);
-  tap(fresh, 'action');
+  tap(fresh, 'shove');
   run(fresh, { moveX: 1, run: true }, S.cooldownSeconds / 2);
   assert.ok(Math.abs(shoveCharge(fresh) - 0.5) < 0.02);
   run(fresh, { moveX: 1, run: true }, S.cooldownSeconds / 2);
@@ -318,7 +318,7 @@ test('shove: you turn to face a guard who is behind you, and it works from eithe
   // He has caught up and is behind you while you face away.
   guard.x = world.player.x - 1;
   world.player.facing = 1;
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.ok(happened(world, 'shove'));
   assert.equal(world.player.facing, -1);
   assert.ok(guard.x < world.player.x - 1.9, 'pushed away from you');
@@ -339,9 +339,11 @@ test('shove: not from inside a hiding spot, and not on a sleeping guard', () => 
   const spot = { id: 'locker', type: 'locker', x: 21 };
   const hidden = facing(1, { hideSpots: [spot] });
   hidden.player.hiddenIn = 'locker';
-  tap(hidden, 'action');
+  tap(hidden, 'shove');
   assert.ok(!happened(hidden, 'shove'));
   const office = prisonWorld('guard-office', 14.2);
+  tap(office, 'shove');
+  assert.ok(!happened(office, 'shove'));
   tap(office, 'action');
   assert.ok(!happened(office, 'shove'));
   assert.ok(happened(office, 'grabGuard'), 'a sleeping guard is grabbed, from either side');

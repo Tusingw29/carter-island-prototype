@@ -17,6 +17,10 @@ import {
   eventTypes, guardById, prisonWorld, run, runUntil, tap, testWorld,
 } from './helpers.mjs';
 
+// Every cause a spotting can be put down to, all at zero.
+const NO_SPOTS = {
+  guard: 0, camera: 0, searchlight: 0, snitch: 0, shove: 0, brokeFree: 0, sleeperWoke: 0, emptyBed: 0, other: 0,
+};
 const G = CONFIG.guard;
 const A = CONFIG.awareness;
 const sentry = (id, x, facing = 1) => ({ id, patrol: [x, x], startX: x, facing });
@@ -41,7 +45,7 @@ test('spotted: a camera counts one long stay in its view once, not once every fe
   run(world, WALKING, 20);
   assert.equal(count(world, 'camera') > 3, true, 'it keeps calling your position in');
   assert.equal(world.stats.timesSpotted, 1, 'but that is one spotting (it was 5 before Step 14)');
-  assert.deepEqual(world.stats.spottedBy, { guard: 0, camera: 1, searchlight: 0, snitch: 0, other: 0 });
+  assert.deepEqual(world.stats.spottedBy, { ...NO_SPOTS, guard: 0, camera: 1, searchlight: 0, snitch: 0, other: 0 });
   // Leave until its meter has drained right down, then walk back in: that is a second one.
   world.player.x = 30;
   run(world, {}, 1 / A.drainPerSecond + 0.2);
@@ -106,9 +110,9 @@ test('spotted: one hunt counts once, however many times the guard loses you and 
 
 test('spotted: giving yourself away (a shove) and noise are told apart from being seen', () => {
   const world = testWorld({ playerX: 21, guards: [sentry('g', 20)] });
-  tap(world, 'action');
+  tap(world, 'shove');
   assert.ok(happened(world, 'shove'));
-  assert.deepEqual(world.stats.spottedBy, { guard: 0, camera: 0, searchlight: 0, snitch: 0, other: 1 });
+  assert.deepEqual(world.stats.spottedBy, { ...NO_SPOTS, shove: 1 });
   // Noise alone never counts: it makes a guard Suspicious, not Alert.
   const noisy = testWorld({ playerX: 2, guards: [sentry('g', 20)] });
   noisy.player.hiddenIn = 'elsewhere';
@@ -120,16 +124,16 @@ test('spotted: giving yourself away (a shove) and noise are told apart from bein
 
 test('score: "Spotted by" gives a count for each source', () => {
   assert.equal(
-    spottedByText({ guard: 3, camera: 1, searchlight: 0, snitch: 2, other: 1 }),
+    spottedByText({ ...NO_SPOTS, guard: 3, camera: 1, searchlight: 0, snitch: 2, other: 1 }),
     'guards 3, cameras 1, searchlights 0, snitches 2, other 1',
   );
   const world = testWorld({ playerX: WALL, cameras: [camera(WALL)] });
   run(world, WALKING, 3);
   world.over = 'win';
   const result = scoreRun(world);
-  assert.deepEqual(result.spottedBy, { guard: 0, camera: 1, searchlight: 0, snitch: 0, other: 0 });
+  assert.deepEqual(result.spottedBy, { ...NO_SPOTS, guard: 0, camera: 1, searchlight: 0, snitch: 0, other: 0 });
   assert.equal(result.timesSpotted, 1);
-  assert.match(playtestText(result, []), /Spotted by: guards 0, cameras 1, searchlights 0, snitches 0, other 0\./);
+  assert.match(playtestText(result, []), /Spotted by: guards 0, cameras 1, searchlights 0, snitches 0\./);
   const sum = Object.values(result.spottedBy).reduce((a, b) => a + b, 0);
   assert.equal(sum, result.timesSpotted, 'the counts add up to the total');
 });

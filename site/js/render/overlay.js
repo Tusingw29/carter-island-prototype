@@ -8,6 +8,7 @@ import { isDoorway, lockLeft } from '../game/heat.js';
 import { portalX } from '../game/portals.js';
 import { holdProgress } from '../game/holds.js';
 import { lastSeenMarkers } from '../game/lastseen.js';
+import { ledgeFor, shoveReady, shoveTarget, staggerLeft } from '../game/shove.js';
 import { dropTarget, heldGuard, holdInfo, holdLeft, holdOptions } from '../game/takedown.js';
 import { wakeProgress } from '../game/knockout.js';
 import { onRadioNow } from '../game/radio.js';
@@ -199,8 +200,36 @@ export function createOverlay() {
     lockTags.slice(doors.length).forEach((tag) => setHidden(tag, true));
   }
 
+  // A stun bar over a staggering guard: how long until HE can act again. And the edge tell:
+  // an arrow over the head of a guard a shove would send off his platform.
+  const stunBars = [];
+  const ledgeMark = document.getElementById('ledge-mark');
+  function updateStagger(world, camera) {
+    world.guards.forEach((guard, i) => {
+      if (!stunBars[i]) {
+        stunBars[i] = document.createElement('div');
+        stunBars[i].className = 'stun-bar';
+        stunBars[i].append(document.createElement('div'));
+        document.body.append(stunBars[i]);
+      }
+      const left = staggerLeft(guard);
+      setHidden(stunBars[i], !left);
+      if (!left) return;
+      setWidth(stunBars[i].firstChild, left.share * 100);
+      pin(stunBars[i], camera, guard.x, (guard.y ?? 0) + 2.15);
+    });
+    stunBars.slice(world.guards.length).forEach((bar) => setHidden(bar, true));
+    const target = shoveReady(world) ? shoveTarget(world) : null;
+    const ledge = target ? ledgeFor(world, target) : null;
+    setHidden(ledgeMark, !ledge);
+    if (!ledge) return;
+    setText(ledgeMark, ledge.side > 0 ? '\u2198' : '\u2199');
+    pin(ledgeMark, camera, target.x + ledge.side * 0.6, (target.y ?? 0) + 2.45);
+  }
+
   function update(world, camera, debug) {
     updateEyes(world, camera);
+    updateStagger(world, camera);
     updateLocks(world, camera);
     updateTakedown(world, camera);
     updateSpeech(world, camera);

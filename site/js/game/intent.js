@@ -5,7 +5,7 @@ import { CONFIG } from './config.js';
 export function emptyIntent() {
   return {
     moveX: 0, up: false, crouch: false, run: false, action: false, interact: false, jump: false, dash: false,
-    throw: false, ask: false,
+    throw: false, ask: false, shove: false,
     map: false, pause: false, controls: false, zoom: false, debug: false, timerDown: false, timerUp: false,
   };
 }
@@ -29,6 +29,8 @@ export function intentFromKeys(codes) {
     throw: codes.has('KeyF'),
     // Interrogate a guard you are holding, then let him go.
     ask: codes.has('KeyQ'),
+    // Shove a guard who is facing you or hunting you. Its own button: Space never shoves.
+    shove: codes.has('KeyR'),
     map: codes.has('KeyM'),
     pause: codes.has('Escape'),
     controls: codes.has('KeyC'),
@@ -65,6 +67,8 @@ export function intentFromGamepad(pad, cfg = CONFIG.stick) {
     throw: pressed(pad, 4),
     // Y (top face button). It is also Controls, except while you hold a guard.
     ask: pressed(pad, 3),
+    // Left trigger.
+    shove: (pad.buttons[6]?.value ?? 0) > cfg.triggerThreshold || pressed(pad, 6),
     map: pressed(pad, 8),
     pause: pressed(pad, 9),
     controls: pressed(pad, 3),
@@ -88,6 +92,7 @@ export function mergeIntents(a, b) {
     dash: a.dash || b.dash,
     throw: a.throw || b.throw,
     ask: a.ask || b.ask,
+    shove: a.shove || b.shove,
     map: a.map || b.map,
     pause: a.pause || b.pause,
     controls: a.controls || b.controls,

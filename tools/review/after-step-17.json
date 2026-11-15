@@ -1,0 +1,45 @@
+{
+  "note": "tools/review/shove-playtest.mjs rerun on Step 17. shove-results.json is the reviewer's, from before.",
+  "rear": [
+    {
+      "x": 35.4,
+      "prompt": "SPACE: grab the Tower 1 guard",
+      "state": "out",
+      "searchlightOff": true
+    },
+    {
+      "x": 35.8,
+      "prompt": "Move closer to grab",
+      "state": "calm",
+      "searchlightOff": false
+    },
+    {
+      "x": 36,
+      "prompt": "Move closer to grab",
+      "state": "calm",
+      "searchlightOff": false
+    }
+  ],
+  "edges": [
+    {
+      "startX": 33.8,
+      "pushed": 1
+    },
+    {
+      "startX": 34.6,
+      "pushed": 1
+    },
+    {
+      "startX": 36.4,
+      "pushed": 0
+    },
+    {
+      "startX": 37.2,
+      "pushed": 0
+    }
+  ],
+  "stunFollowUp": {
+    "prompt": "R: shove off the Tower 1 guard",
+    "held": false
+  }
+}

@@ -53,6 +53,9 @@ export function scoreRun(world) {
     // Knockouts by how they were done, and the rest of the takedown tally.
     takedowns: { ...world.stats.takedowns },
     slams: world.stats.slams,
+    // Shoves made (actions, not sightings), and guards sent off a ledge.
+    shoves: world.stats.shoves,
+    shovedOff: world.stats.shovedOff,
     interrogations: world.stats.interrogations,
     checkInsFaked: world.stats.checkInsFaked,
     // Why the trip home went the way it did.

@@ -37,6 +37,8 @@ export function createEndScreen(onPlayAgain) {
     byId('score-bodies').textContent = result.bodiesFound;
     byId('score-takedowns').textContent = takedownText(result.takedowns);
     byId('score-slams').textContent = result.slams;
+    byId('score-shoves').textContent = result.shoves;
+    byId('score-shoved-off').textContent = result.shovedOff;
     byId('score-interrogations').textContent = result.interrogations;
     byId('score-faked').textContent = result.checkInsFaked;
     byId('score-solitary').textContent = result.solitary ? `Yes: ${formatClock(result.solitaryPenalty)} lost` : 'No';

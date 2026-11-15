@@ -481,7 +481,7 @@ test('R8: a stunned guard\'s beam is drawn faint, because he cannot see', () => 
   assert.equal(beamStrength({ stun: 0 }), 1);
   assert.ok(beamStrength({ stun: 1.2 }) <= 0.3);
   const world = testWorld({ playerX: 21, guards: [sentry('g', 20)] });
-  tap(world, 'action');
+  tap(world, 'shove');
   const guard = world.guards[0];
   assert.ok(guard.stun > 0);
   run(world, {}, 0.2);

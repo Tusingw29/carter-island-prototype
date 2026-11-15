@@ -1020,3 +1020,38 @@ body.in-menu .lock-tag {
   padding-top: 6px;
   border-top: 1px solid rgb(255 255 255 / 18%);
 }
+
+/* Step 17: the stun bar over a staggering guard, and the arrow that says a shove sends him off. */
+.stun-bar,
+#ledge-mark {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.stun-bar {
+  width: 44px;
+  height: 6px;
+  border: 1px solid #cfe0ff;
+  border-radius: 2px;
+  background: rgb(5 7 11 / 80%);
+}
+
+.stun-bar > div {
+  height: 100%;
+  background: #cfe0ff;
+}
+
+#ledge-mark {
+  color: #ff8a3a;
+  font-size: 30px;
+  font-weight: 700;
+  text-shadow: 0 0 6px #000;
+  animation: eye-pulse 0.35s ease-in-out infinite alternate;
+}
+
+body.in-menu .stun-bar,
+body.in-menu #ledge-mark {
+  display: none;
+}

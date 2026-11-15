@@ -55,6 +55,9 @@ const CUES = {
   radioAhead: [[1800, 0, 0.03, 'square', 0.5], [1350, 0.05, 0.05, 'square', 0.5], [880, 0.14, 0.2, 'square', 0.8]],
   reachIn: [[260, 0, 0.3, 'sawtooth', 0.9, 620]],
   sawHide: [[620, 0, 0.08, 'triangle', 0.8], [440, 0.1, 0.16, 'triangle', 0.8]],
+  // A guard going off a ledge, and hitting the ground.
+  shoveOff: [[500, 0, 0.5, 'sine', 0.9, 120]],
+  fallLand: [[70, 0, 0.35, 'sine', 3.4, 30], [110, 0, 0.2, 'triangle', 2.4, 40], [600, 0, 0.04, 'square', 1]],
   // About to be spotted: a note that climbs each time the fullest meter passes another fifth.
   heat1: [[330, 0, 0.09, 'triangle', 0.5]],
   heat2: [[415, 0, 0.09, 'triangle', 0.6]],

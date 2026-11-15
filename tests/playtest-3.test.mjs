@@ -217,13 +217,15 @@ test('knockout: from behind when he has not seen you. A grab, then a choke (Step
   assert.equal(world.stats.timesSpotted, 0);
 });
 
-test('knockout: refused from the front. The button shoves him instead (Step 10)', () => {
+test('knockout: refused from the front. Space does nothing there, and R shoves (Step 17)', () => {
   const world = testWorld({ playerX: 20.8, guards: [sentry('g', 20)] });
-  assert.equal(currentPrompt(world).text, 'SPACE: shove');
+  assert.equal(currentPrompt(world).text, 'R: shove');
   tap(world, 'action');
   const guard = world.guards[0];
   assert.notEqual(guard.state, 'out');
   assert.equal(world.stats.knockouts, 0);
+  assert.ok(!happened(world, 'shove'), 'Space never shoves');
+  tap(world, 'shove');
   assert.ok(happened(world, 'shove'));
 });
 
@@ -235,8 +237,8 @@ test('knockout: refused on a guard who is already Alert, even from behind', () =
   world.events.length = 0;
   tap(world, 'action');
   assert.notEqual(guard.state, 'out');
+  assert.equal(guard.state, 'alert', 'no grab on a guard who is chasing you and on his feet');
   assert.equal(world.stats.knockouts, 0);
-  assert.ok(happened(world, 'shove'));
 });
 
 // ---------- How you got caught ----------

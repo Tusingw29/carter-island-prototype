@@ -447,7 +447,7 @@ test('knock out: Space again chokes him out, as a knockout always was', () => {
   assert.equal(world.player.holding, null);
   assert.ok(happened(world, 'knockout'), 'with the hit feedback event from Step 8');
   assert.equal(world.stats.knockouts, 1);
-  assert.deepEqual(world.stats.takedowns, { choke: 1, above: 0, pullIn: 0 });
+  assert.deepEqual(world.stats.takedowns, { choke: 1, above: 0, pullIn: 0, ledge: 0 });
   // He misses his radio check-in, and wakes after 75 s.
   runUntil(world, () => happened(world, 'missedCheckIn'), {}, 70);
   world.player.hiddenIn = 'elsewhere';
@@ -735,7 +735,7 @@ test('from above: on a ledge over an unaware guard, Space drops on him. Instant 
   assert.equal(guard.state, 'out');
   assert.equal(world.player.y, 0, 'you land where he stood');
   assert.ok(Math.abs(world.player.x - 20) < 0.01);
-  assert.deepEqual(world.stats.takedowns, { choke: 0, above: 1, pullIn: 0 });
+  assert.deepEqual(world.stats.takedowns, { choke: 0, above: 1, pullIn: 0, ledge: 0 });
   assert.equal(world.stats.knockouts, 1);
   assert.ok(happened(world, 'knockout'));
   const thud = world.pings.find((ping) => ping.radius === CONFIG.noise.landRadius);
@@ -780,7 +780,7 @@ test('from a hiding spot: an unaware guard passing within reach can be pulled in
   assert.equal(guard.state, 'out');
   assert.equal(guard.hiddenIn, 'locker', 'he is in the locker now');
   assert.equal(world.player.hiddenIn, null, 'and you have stepped out');
-  assert.deepEqual(world.stats.takedowns, { choke: 0, above: 0, pullIn: 1 });
+  assert.deepEqual(world.stats.takedowns, { choke: 0, above: 0, pullIn: 1, ledge: 0 });
   assert.equal(world.stats.knockouts, 1);
   assert.equal(world.stats.timesSpotted, 0);
   // The spot is full.
@@ -814,14 +814,14 @@ test('score: takedowns by type, guards thrown down, interrogations, and check-in
   world.stats.checkInsFaked = 2;
   world.over = 'win';
   const result = scoreRun(world);
-  assert.deepEqual(result.takedowns, { choke: 1, above: 0, pullIn: 0 });
+  assert.deepEqual(result.takedowns, { choke: 1, above: 0, pullIn: 0, ledge: 0 });
   assert.equal(result.slams, 1);
   assert.equal(result.interrogations, 1);
   assert.equal(result.checkInsFaked, 2);
   assert.equal(result.knockouts, 1);
   const text = playtestText(result, []);
   assert.match(text, /Takedowns: 1 from behind, 0 from above, 0 pulled into hiding/);
-  assert.match(text, /Thrown down: 1\. Interrogations: 1\. Check-ins faked: 2\./);
+  assert.match(text, /Thrown down: 1\. Shoves: 0\. Shoved off ledges: 0\. Interrogations: 1\. Check-ins faked: 2\./);
 });
 
 test('the old instant knockout is gone: one press never knocks a standing guard out', () => {

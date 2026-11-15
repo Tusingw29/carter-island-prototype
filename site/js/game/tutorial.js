@@ -82,8 +82,9 @@ export const TUTORIAL = Object.freeze([
   {
     id: 'shove',
     when: (world) => !knockoutTarget(world) && Boolean(shoveTarget(world)) && shoveReady(world),
-    text: 'He can see you, so no knockout. Press Space (or X) to shove him: he is stunned for a moment, '
-      + 'so run. It is loud, and it takes a few seconds before you can do it again.',
+    text: 'He can see you, so no quiet grab. Press R (or Left Trigger) to shove him: he staggers for a '
+      + 'moment. Run, or grab him with Space while he reels. It is loud, and it takes a few seconds '
+      + 'before you can do it again.',
   },
   {
     id: 'throw',

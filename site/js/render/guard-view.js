@@ -97,6 +97,8 @@ export function createGuardView(parent) {
       body.rotation.z = guard.stirTimer > 0 ? -0.15 : -0.45;
       body.position.set(guard.x, feetY - 0.25, -0.6);
     }
+    // Going off a ledge: he tips backwards as he reels and falls.
+    if (guard.falling) body.rotation.z = -guard.facing * 0.9;
     // Reaching into a hiding spot: he leans right over toward it. The tell before a pull-out.
     if (guard.reach > 0) {
       body.rotation.z = -guard.facing * 0.7;

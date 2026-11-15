@@ -125,8 +125,11 @@ test('the score screen numbers: time left, times spotted, knockouts, bodies foun
     outcome: 'win', won: true, rank: 'inmate', timeLeft: 123.4, timesSpotted: 2, knockouts: 1, bodiesFound: 1,
     silentAlarm: false, silentAlarmReason: null, keycardGrab: null, endedIn: 'Cell Block', caughtIn: null,
     caughtHow: null,
-    takedowns: { choke: 0, above: 0, pullIn: 0 }, slams: 0, interrogations: 0, checkInsFaked: 0,
+    takedowns: { choke: 0, above: 0, pullIn: 0, ledge: 0 }, slams: 0, interrogations: 0, checkInsFaked: 0,
     solitary: false, solitaryPenalty: 0,
-    spottedBy: { guard: 0, camera: 0, searchlight: 0, snitch: 0, other: 0 },
+    spottedBy: {
+      guard: 0, camera: 0, searchlight: 0, snitch: 0, shove: 0, brokeFree: 0, sleeperWoke: 0, emptyBed: 0, other: 0,
+    },
+    shoves: 0, shovedOff: 0,
   });
 });
