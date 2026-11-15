@@ -16,6 +16,8 @@ export function createPlayer(x) {
     hasScrewdriver: false,
     hasCigarettes: false,
     hasBedsheets: false,
+    // The throwable in hand, as { id, type }, or null. One at a time.
+    carrying: null,
     mode: 'idle',
     speed: 0,
     // Height of the feet above the floor, and the rest of what jump, slide, and dash need.

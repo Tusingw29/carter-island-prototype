@@ -1,10 +1,12 @@
 // Knocking guards out from behind, dragging the body, and stuffing it in a locker or cart.
 // Sneak up unseen and it is instant. Knocked-out guards wake up again after a while.
+// A guard who can see you cannot be knocked out: the same button shoves him instead (shove.js).
 import { CONFIG } from './config.js';
 import { beginSearch, makeSuspicious } from './alert.js';
 import { isAwake, isConscious } from './guard.js';
 import { nearestHideSpot, spotById } from './hiding.js';
 import { say } from './messages.js';
+import { shove, shoveReady, shoveTarget } from './shove.js';
 import { knockOutSnitch } from './snitch.js';
 
 // Ids of hiding spots that already hold a body. A full spot cannot hide the player.
@@ -16,9 +18,11 @@ export function fullSpotIds(world) {
 // A sleeping guard can be knocked out from either side.
 export function knockoutTarget(world, cfg = CONFIG.knockout) {
   const { player } = world;
-  if (player.hiddenIn || player.dragging || (player.y ?? 0) > cfg.reachUp) return null;
+  if (player.hiddenIn || player.dragging) return null;
   return world.guards.find((guard) => {
     const offset = player.x - guard.x;
+    // You have to be standing on his level.
+    if (Math.abs((player.y ?? 0) - (guard.y ?? 0)) > cfg.reachUp) return false;
     const behind = offset * guard.facing < 0 || guard.state === 'asleep';
     const unaware = !guard.seesPlayer && guard.state !== 'alert';
     return isConscious(guard) && behind && unaware && Math.abs(offset) <= cfg.reach;
@@ -31,6 +35,7 @@ export function dragTarget(world, cfg = CONFIG.knockout) {
   if (player.hiddenIn || player.dragging) return null;
   return world.guards.find((guard) => (
     guard.state === 'out' && !guard.hiddenIn && Math.abs(guard.x - player.x) <= cfg.reach
+      && Math.abs((player.y ?? 0) - (guard.y ?? 0)) <= cfg.reachUp
   )) ?? null;
 }
 
@@ -53,17 +58,7 @@ export function knockOut(world, guard) {
   world.events.push({ type: 'knockout', guardId: guard.id });
 }
 
-// A guard in reach who cannot be knocked out right now: he is facing you, can see you, or is
-// already Alert. Pressing the button on him does nothing but show "too risky".
-export function riskyTarget(world, cfg = CONFIG.knockout) {
-  const { player } = world;
-  if (player.hiddenIn || player.dragging || (player.y ?? 0) > cfg.reachUp) return null;
-  return world.guards.find((guard) => (
-    isAwake(guard) && Math.abs(player.x - guard.x) <= cfg.reach
-  )) ?? null;
-}
-
-// True while the "too risky" shake should show over a guard.
+// True while the "shove not ready" shake should show over a guard.
 export const tooRiskyNow = (world) => Boolean(world.risky) && world.time < world.risky.until;
 
 // The Knockout / Drag button. Returns what happened, or null.
@@ -79,16 +74,21 @@ export function pressAction(world) {
     return 'knockout';
   }
   if (knockOutSnitch(world)) return 'knockout';
+  // He can see you, or is in front of you: no knockout. A shove instead, if it is ready.
+  const awake = shoveTarget(world);
+  if (awake && shoveReady(world)) {
+    shove(world, awake);
+    return 'shove';
+  }
+  if (awake) {
+    world.risky = { guardId: awake.id, until: world.time + CONFIG.knockout.riskySeconds };
+    world.events.push({ type: 'tooRisky', guardId: awake.id });
+    return 'notReady';
+  }
   const body = dragTarget(world);
   if (body) {
     player.dragging = body.id;
     return 'dragging';
-  }
-  const risky = riskyTarget(world);
-  if (risky) {
-    world.risky = { guardId: risky.id, until: world.time + CONFIG.knockout.riskySeconds };
-    world.events.push({ type: 'tooRisky', guardId: risky.id });
-    return 'tooRisky';
   }
   return null;
 }

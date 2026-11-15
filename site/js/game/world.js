@@ -20,6 +20,7 @@ import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
 import { setUpRadio, updateRadio } from './radio.js';
 import { updateTimer } from './run.js';
+import { updateThrowing } from './throwing.js';
 import { createSnitch, openCell, updateSnitch } from './snitch.js';
 import { updateSenses } from './senses.js';
 import { upTarget } from './targets.js';
@@ -75,8 +76,13 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     keycardGrab: null,
     // Set while a guard is holding the player: { guardId, presses, timeLeft }.
     grab: null,
-    // The guard a knockout was just refused on, for the "too risky" shake: { guardId, until }.
+    // The guard a shove was just refused on, for the "not ready" shake: { guardId, until }.
     risky: null,
+    // The shove can be used again from this moment on.
+    shoveReadyAt: 0,
+    // True while the throw button is held (the arc is showing), and the things in the air.
+    aiming: false,
+    thrown: [],
     // What set off the last alarm and when, and the same for the last grab. For the score screen.
     lastAlarm: null,
     lastGrab: null,
@@ -236,6 +242,7 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
     updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
   }
   updateDrag(world);
+  updateThrowing(world, intent.throw, dt, cfg.throwing);
   player.inDark = darkSpotAt(player, spots);
   noteWatchedHiding(world, wasConcealed, cfg.guard);
 

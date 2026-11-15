@@ -27,9 +27,11 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Interact, pick up, sleep in bed | E | A (bottom face button) |
 | Keycard: grab fast / lift quietly | tap E / hold E | tap A / hold A |
 | Knock out from behind (unseen), drag body | Space | X (left face button) |
+| Shove a guard who can see you | Space | X (left face button) |
+| Throw what you are carrying (hold to aim) | F | Left Bumper |
 | Break free when grabbed | mash Space | mash X |
 | Map | M | View / Select |
-| Zoom the camera in or out | Z | Left Bumper |
+| Zoom the camera in or out | Z | Click the left stick |
 | Pause | Esc | Start |
 | Controls screen | C | Y (top face button) |
 | Debug mode | F1 or ` | Right stick click |

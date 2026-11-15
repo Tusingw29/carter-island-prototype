@@ -1,5 +1,7 @@
 // Builds the blocks for a room: floor, walls, cells, ways out, hiding spots, items, and cameras.
 import { Group } from '../../vendor/three.module.js';
+import { sightBlockers } from '../game/sight.js';
+import { isThrowable } from '../game/throwing.js';
 import { block, placed } from './blocks.js';
 import { createCameraView } from './camera-view.js';
 import { createSnitchView, createTraderView } from './inmate-views.js';
@@ -64,6 +66,32 @@ function crateView(item, color, size) {
   return group;
 }
 
+// What each throwable looks like: [width, height, depth, color, glow].
+export const THROWABLE_LOOKS = {
+  cup: [0.16, 0.2, 0.16, 0xd8dde4, 0x4a5058],
+  mug: [0.18, 0.2, 0.18, 0xb8502c, 0x4a1c0c],
+  soap: [0.26, 0.12, 0.16, 0xe8c8d8, 0x5a3a4a],
+  can: [0.2, 0.26, 0.2, 0x9aa23a, 0x3a3e10],
+  basketball: [0.34, 0.34, 0.34, 0xd9702a, 0x5a2a08],
+};
+
+export function throwableBlock(type) {
+  const [width, height, depth, color, glow] = THROWABLE_LOOKS[type];
+  return block(width, height, depth, color, glow);
+}
+
+// A throwable on a stool by the back wall, glowing a little so it can be found in the dark.
+function throwableView(item) {
+  const group = new Group();
+  const base = item.y ?? 0;
+  const height = THROWABLE_LOOKS[item.type][1];
+  // One that sits up on a crate needs no stool.
+  if (base > 0) return group.add(placed(throwableBlock(item.type), item.x, base + height / 2, -0.5));
+  group.add(placed(block(0.5, 0.45, 0.5, 0x4a4338), item.x, 0.225, WALL_Z + 0.9));
+  group.add(placed(throwableBlock(item.type), item.x, 0.45 + height / 2, WALL_Z + 0.9));
+  return group;
+}
+
 // The camera control panel: a box on the wall with a light that is green while the camera is on.
 function panelView(prop) {
   const group = new Group();
@@ -123,7 +151,8 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     spotViews.set(spot.id, view);
     group.add(view);
   }
-  const itemViews = (room.items ?? []).map((item) => ({ item, view: ITEM_VIEWS[item.type](item) }));
+  const viewFor = (item) => (isThrowable(item) ? throwableView(item) : ITEM_VIEWS[item.type](item));
+  const itemViews = (room.items ?? []).map((item) => ({ item, view: viewFor(item) }));
   for (const { view } of itemViews) group.add(view);
   const cameraViews = cameras.map((camera) => ({ camera, view: createCameraView(camera) }));
   for (const { view } of cameraViews) group.add(view.group);
@@ -145,7 +174,8 @@ export function createRoomView(room, cameras, snitches, options = {}) {
       view.visible = !(world.taken.has(item.id) || (item.type === 'keycard' && world.player.hasKeycard));
     }
     for (const view of liveViews) view.userData.update(world);
-    for (const { camera, view } of cameraViews) view.update(camera, far);
+    const blockers = sightBlockers(room);
+    for (const { camera, view } of cameraViews) view.update(camera, far, blockers);
     for (const { snitch, view } of snitchViews) view.update(snitch);
   }
   const dispose = () => {

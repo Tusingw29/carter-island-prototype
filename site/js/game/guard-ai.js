@@ -105,6 +105,12 @@ function search(guard, world, dt, cfg) {
 
 // A guard in the same room as the player.
 export function updateGuardAI(guard, world, dt, cfg = CONFIG.guard) {
+  // Stunned (a cup to the head): he does nothing until it wears off. A chasing guard's stun is
+  // handled in chase(), where what he knows keeps ticking.
+  if (guard.state !== 'alert' && guard.stun > 0) {
+    guard.stun -= dt;
+    return;
+  }
   if (guard.state === 'calm' && guard.duty?.type === 'radio') doRadioVisit(guard, world, dt, cfg);
   else if (guard.state === 'calm' && guard.duty) doBedCheck(guard, world, dt, cfg);
   else if (guard.state === 'calm') patrol(guard, dt, cfg);

@@ -40,7 +40,7 @@ let noteUntil = 0;
 // ?room=gym is the movement test room. It is not part of the prison.
 const inGym = params.get('room') === 'gym';
 const help = document.getElementById('help');
-const GYM_HELP = 'GYM  |  K: jump  |  L: dash  |  S + K while moving: slide  |  F1: tuning sliders';
+const GYM_HELP = 'GYM  |  K: jump  |  L: dash  |  S + K while moving: slide  |  F: throw  |  F1: tuning sliders';
 // In the gym the movement numbers can be changed live with sliders, so the game is given its
 // own copy of the settings. Everywhere else it uses config.js as written.
 let liveConfig = CONFIG;
@@ -50,6 +50,7 @@ let bestCourse = null;
 // A knockout landing: the game holds still for a moment and the picture shakes.
 let hitStopUntil = 0;
 let shakeUntil = 0;
+let shakeSize = CONFIG.feel.shakeMetres;
 const input = createInput();
 const sound = createSound();
 const movementSounds = createMovementSounds(sound);
@@ -128,7 +129,7 @@ function draw(dt) {
   stage.frame(framing, shakeNow());
   if (inGym) setText(help, GYM_HELP);
   view.update(debug, farness(framing));
-  setText(cameraLine, `Camera: ${framingLabel(framing)}. Z or Left Bumper zooms in and out.`);
+  setText(cameraLine, `Camera: ${framingLabel(framing)}. Z or a click of the left stick zooms in and out.`);
   setHidden(cameraNote, performance.now() > noteUntil);
   overlay.update(world, stage.camera, debug);
   hud.update(world, debug, stage.speedReport(), bestCourse);
@@ -143,16 +144,21 @@ function draw(dt) {
 function shakeNow() {
   const left = shakeUntil - performance.now();
   if (left <= 0) return { x: 0, y: 0 };
-  const size = CONFIG.feel.shakeMetres * (left / (CONFIG.feel.shakeSeconds * 1000));
+  const size = shakeSize * (left / (CONFIG.feel.shakeSeconds * 1000));
   return { x: Math.sin(left * 0.09) * size, y: Math.cos(left * 0.13) * size * 0.6 };
 }
 
-// Hit-stop, shake, and controller rumble when a knockout lands.
+// Hit-stop, shake, and controller rumble when a knockout lands. A shove, or a thrown item
+// hitting a head, gets the same but lighter.
 function feelHits(now) {
-  if (!world.events.some((event) => event.type === 'knockout')) return;
-  hitStopUntil = now + CONFIG.feel.hitStopSeconds * 1000;
-  shakeUntil = now + CONFIG.feel.shakeSeconds * 1000;
-  input.rumble(0.15, 0.9);
+  const feel = CONFIG.feel;
+  const heavy = world.events.some((event) => event.type === 'knockout');
+  const light = world.events.some((event) => event.type === 'shove' || event.type === 'bonk');
+  if (!heavy && !light) return;
+  hitStopUntil = now + (heavy ? feel.hitStopSeconds : feel.lightHitStopSeconds) * 1000;
+  shakeUntil = now + feel.shakeSeconds * 1000;
+  shakeSize = heavy ? feel.shakeMetres : feel.lightShakeMetres;
+  input.rumble(heavy ? 0.15 : 0.08, heavy ? 0.9 : 0.5);
 }
 
 // True only on the frame a button goes down.

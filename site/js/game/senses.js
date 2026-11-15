@@ -3,6 +3,7 @@ import { CONFIG } from './config.js';
 import { makeSuspicious, raiseAlarm } from './alert.js';
 import { say } from './messages.js';
 import { canHear } from './noise.js';
+import { sightBlocked, sightBlockers } from './sight.js';
 import { coneShape, guardSeesPlayer, pointInCone } from './vision.js';
 
 // How fast the detection meter fills, per second. Close is fast, the edge of the beam is slow.
@@ -18,7 +19,8 @@ export function detectionRate(guard, distance, cfg = CONFIG.guard) {
 
 function senseSight(guard, world, dt, cfg) {
   const { player } = world;
-  guard.seesPlayer = guard.stun <= 0 && guardSeesPlayer(guard, player);
+  const blockers = sightBlockers(world.layout.rooms[guard.roomId]);
+  guard.seesPlayer = guard.stun <= 0 && guardSeesPlayer(guard, player, cfg, CONFIG.player, blockers);
   if (!guard.seesPlayer) {
     if (guard.state !== 'alert') guard.detection = Math.max(0, guard.detection - cfg.detectDrainPerSecond * dt);
     return;
@@ -50,9 +52,11 @@ function senseNoise(guard, world, cfg) {
 // A guard notices a body lying in the open in his own room, whether or not the player is there.
 export function senseBodies(guard, world, cfg = CONFIG.guard) {
   const shape = coneShape(guard, cfg);
+  const blockers = sightBlockers(world.layout.rooms[guard.roomId]);
   for (const body of world.allGuards) {
     if (body.roomId !== guard.roomId || body.state !== 'out' || body.hiddenIn || body.bodyFound) continue;
-    if (!pointInCone(shape, { x: body.x, y: 0.3 })) continue;
+    const lying = { x: body.x, y: (body.y ?? 0) + 0.3 };
+    if (!pointInCone(shape, lying) || sightBlocked(shape.origin, lying, blockers)) continue;
     body.bodyFound = true;
     world.stats.bodiesFound += 1;
     world.events.push({ type: 'bodyFound', guardId: guard.id, bodyId: body.id, roomId: guard.roomId });
