@@ -40,6 +40,8 @@ export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.
     guard.lostFor = 0;
     guard.lunge = 0;
     if (reason === 'sight') guard.trackTimer = cfg.trackSeconds;
+    // From now until he calms down he is hunting, and has a belief about where you are.
+    guard.hunting = true;
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();
@@ -86,6 +88,7 @@ export function calmDown(world, guard) {
   guard.checkingSpotId = null;
   guard.knownSpotId = null;
   guard.pause = 0;
+  guard.hunting = false;
   setState(world, guard, 'calm');
 }
 

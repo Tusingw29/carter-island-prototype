@@ -250,6 +250,16 @@ export const CONFIG = Object.freeze({
     reach: 1,
   }),
 
+  // Solitary: what the first capture costs, instead of ending the run.
+  solitary: Object.freeze({
+    penaltySeconds: 60,
+    // How long you sit in the cell before a guard walks you back, and how long the fade lasts.
+    cellSeconds: 4,
+    fadeSeconds: 1.5,
+    // How long the time penalty stays on screen by the timer.
+    showSeconds: 8,
+  }),
+
   // Takedowns: grab a guard from behind, then choose.
   takedown: Object.freeze({
     // How far in front of you he is held.

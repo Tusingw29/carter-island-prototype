@@ -274,6 +274,51 @@ Replaces the old instant knockout from behind. The shove (from the front) and th
 
 - Add: takedowns by type, interrogations, check-ins faked.
 
+## Readable stealth (added in Step 13)
+
+Adam studied Mark of the Ninja (Klei, 2012), the closest game to Carter Island. Its lead
+designer's rules include: show the stealth rules on screen, warn before enemies react, and
+do not punish failure so hard that players replay long stretches.
+
+### Lit or hidden, at a glance
+
+- The player's look must always show whether a guard, camera, or searchlight COULD see them
+  right now, using the exact same visibility check as the game logic (one shared function):
+  - Hidden (in a dark spot, in shadow behind cover, inside a hiding spot, or out of every
+    light): the player turns into a dark silhouette with a thin outline.
+  - Visible (in any flashlight cone, camera view, or searchlight pool, or in a lit area):
+    full color, with a soft glow.
+- Switch instantly, no fade, so it reads like a clear yes or no.
+- Add lit areas where it makes sense (under a lamp, near the guard office desk light) and
+  make sure dark areas match what the player sees on screen.
+
+### "Last seen" marker
+
+- When a guard loses sight of the player during Alert or Searching, show a faint ghost
+  outline of the player at the spot the guard THINKS they are (his last known position).
+- One marker per guard who is hunting. It fades when that guard calms down.
+- If the guard moves his search to a new spot (for example he heard a noise), the marker
+  moves too, so the player always knows what the guards believe.
+
+### Solitary instead of restarting (softer failure)
+
+- The FIRST time the player is caught (grabbed and fails the break-free, or grabbed a second
+  time), the run does NOT end. Instead:
+  - Short fade to black, "SOLITARY" on screen.
+  - The timer loses 60 seconds (config value), shown clearly as a time penalty.
+  - The player wakes up in a new small SOLITARY CELL room next to the Cell Block. After a
+    few seconds a guard opens the door and the player is walked back to their own cell
+    (skip-able), and placed in bed.
+  - The keycard is taken back and returned to the Guard Office desk.
+  - Carried throwables are taken. Unlocks you have earned (screwdriver, work boots) are
+    KEPT, because losing them would feel unfair.
+  - Every guard stays wary (Suspicious level) for the rest of the run.
+  - The break-free chance resets, so the player again gets one mash-to-escape.
+- The SECOND time the player is caught, the run ends (Caught), as now.
+- Score screen: show "Solitary: yes/no" and the time lost. A run with a solitary trip can
+  still win, but can only be ranked Inmate.
+- Add the solitary cell to the map screen once visited.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

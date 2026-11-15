@@ -36,7 +36,9 @@ export function updateBedCheck(world, cfg = CONFIG) {
 
 function resolve(world) {
   let result = 'empty';
-  if (inBed(world)) result = 'in-bed';
+  // They know where you are if you are in solitary or being walked back from it.
+  if (world.solitary.phase) result = 'skipped';
+  else if (inBed(world)) result = 'in-bed';
   else if (world.dummyInBed) result = 'dummy';
   world.bedCheck.result = result;
   world.events.push({ type: 'bedCheckDone', result });

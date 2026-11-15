@@ -108,13 +108,18 @@ function trigger(camera, world, cfg) {
   if (called && isAwake(called)) makeSuspicious(world, called, camera.callsTo);
 }
 
+// Can this camera or searchlight see the player right now? Asked by the camera itself each
+// step and by the player's lit-or-hidden look (visibility.js).
+export function cameraCanSee(camera, world) {
+  return camera.roomId === world.room.id && cameraSeesPlayer(camera, world.player, sightBlockers(world.room));
+}
+
 export function updateCamera(camera, world, dt, cfg = CONFIG.camera) {
   const sweep = cameraSweep(camera, world.time);
   camera.x = sweep.x;
   camera.away = sweep.away;
   camera.cooldown = Math.max(0, camera.cooldown - dt);
-  camera.sees = camera.roomId === world.room.id
-    && cameraSeesPlayer(camera, world.player, sightBlockers(world.room));
+  camera.sees = cameraCanSee(camera, world);
   if (!camera.sees) {
     camera.exposure = Math.max(0, camera.exposure - dt);
     return;

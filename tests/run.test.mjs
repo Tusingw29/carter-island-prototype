@@ -88,6 +88,8 @@ test('lose: grabbed a second time', () => {
   const world = prisonWorld('cell-block', 12);
   const guard = guardById(world, 'cb-guard');
   Object.assign(guard, { x: 11, facing: 1 });
+  // The first capture of a run now means solitary (Step 13). This is the one after that.
+  world.solitary.used = true;
   world.breakFreeUsed = true;
   run(world, {}, 3);
   assert.equal(world.over, 'caught');
@@ -124,5 +126,6 @@ test('the score screen numbers: time left, times spotted, knockouts, bodies foun
     silentAlarm: false, silentAlarmReason: null, keycardGrab: null, endedIn: 'Cell Block', caughtIn: null,
     caughtHow: null,
     takedowns: { choke: 0, above: 0, pullIn: 0 }, slams: 0, interrogations: 0, checkInsFaked: 0,
+    solitary: false, solitaryPenalty: 0,
   });
 });

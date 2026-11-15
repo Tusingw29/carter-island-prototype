@@ -5,6 +5,7 @@ import { formatClock } from '../game/clock.js';
 import { currentAnnouncement } from '../game/cues.js';
 import { currentMessage } from '../game/messages.js';
 import { shoveCharge } from '../game/shove.js';
+import { solitaryFade } from '../game/solitary.js';
 import { holdLeft, holdOptions } from '../game/takedown.js';
 import { throwableName } from '../game/throwing.js';
 import { peek } from '../game/vents.js';
@@ -81,6 +82,8 @@ export function createHud(build, cues = true) {
   const peekPanel = byId('peek');
   const peekTitle = byId('peek-title');
   const peekStrip = byId('peek-strip');
+  const blackout = byId('solitary');
+  const penalty = byId('penalty');
   const takedown = byId('takedown');
   const takedownList = byId('takedown-options');
   const takedownFill = byId('takedown-fill');
@@ -167,6 +170,14 @@ export function createHud(build, cues = true) {
     setWidth(meterFill, summary.fill * 100);
 
     updateTakedown(world);
+    // The trip to solitary: a fade to black with the word on it, and the time lost by the timer.
+    const fade = solitaryFade(world);
+    setHidden(blackout, fade <= 0);
+    if (fade > 0) blackout.style.opacity = fade.toFixed(2);
+    const { solitary } = world;
+    const recent = solitary.used && world.time - solitary.at < CONFIG.solitary.showSeconds;
+    setHidden(penalty, !recent);
+    if (recent) setText(penalty, `-${formatClock(solitary.penalty)}  SOLITARY`);
     setHidden(mash, !world.grab);
     if (world.grab) setWidth(mashFill, (world.grab.presses / CONFIG.grab.mashNeeded) * 100);
 

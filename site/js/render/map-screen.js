@@ -10,8 +10,11 @@ const FLOOR_NAMES = ['BASEMENT', 'FLOOR 1', 'FLOOR 2'];
 const LABEL_W = 96;
 const LINK_SHIFT = { hatch: -16, door: 12 };
 
+// How many columns the map is shifted right, so a room left of the Cell Block (solitary) fits.
+let colShift = 0;
+
 function box(room) {
-  const x = LABEL_W + room.col * (CELL_W + GAP_X);
+  const x = LABEL_W + (room.col + colShift) * (CELL_W + GAP_X);
   const y = (TOP_FLOOR - room.floor) * (CELL_H + GAP_Y);
   const w = room.span * CELL_W + (room.span - 1) * GAP_X;
   return { x, y, w, h: CELL_H, cx: x + w / 2, cy: y + CELL_H / 2 };
@@ -110,7 +113,10 @@ export function createMapScreen() {
       return item;
     }));
     const rooms = new Map(model.rooms.map((room) => [room.id, room]));
-    const cols = Math.max(...model.rooms.map((room) => room.col + room.span));
+    // Only rooms that are drawn count: the solitary cell takes no space until you have been there.
+    const shown = model.rooms.filter((room) => room.visited || room.col >= 0);
+    colShift = -Math.min(0, ...shown.filter((room) => room.visited).map((room) => room.col));
+    const cols = Math.max(...shown.map((room) => room.col + room.span)) + colShift;
     const width = LABEL_W + cols * (CELL_W + GAP_X);
     const height = (TOP_FLOOR + 1) * (CELL_H + GAP_Y) - GAP_Y;
     const floors = FLOOR_NAMES.map((name, floor) => (

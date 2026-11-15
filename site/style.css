@@ -851,3 +851,39 @@ body.in-menu .hear-arc {
   stroke-width: 2;
   fill: #ffb03a;
 }
+
+/* Step 13: the trip to solitary. */
+#solitary {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #ff4a3c;
+  pointer-events: none;
+}
+
+#solitary[hidden] {
+  display: none;
+}
+
+#solitary strong {
+  font-size: 54px;
+  letter-spacing: 0.3em;
+}
+
+#solitary span {
+  color: #e8ecf2;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}
+
+#penalty {
+  color: #ff4a3c;
+  font-size: 18px;
+  font-weight: 700;
+}

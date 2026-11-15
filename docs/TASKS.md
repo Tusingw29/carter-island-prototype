@@ -28,6 +28,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 10 | Playtest 4: cover blocks sight, picture quality, gym values, shove, throwables | review, awaiting Adam's verdict | `step-10-playtest-4` |
 | 11 | The Yard: jump and slide everywhere, dash unlock, towers, searchlights, roof route | review, awaiting Adam's verdict | `step-11-yard` |
 | 12 | Playtest 5: searchlight and crate bugs, quieter sneaking, takedown system | review, awaiting Adam's verdict | `step-12-takedowns` |
+| 13 | Readable stealth: lit or hidden look, last-seen markers, solitary | review, awaiting Adam's verdict | `step-13-readable-stealth` |
 
 ---
 
@@ -1157,6 +1158,98 @@ it will count cover the moment a room has some (the Yard will).
 11. Read the new lines on the score screen.
 12. Do the options change how you plan a room? Which ones did you never use?
 13. All four playtest questions.
+
+---
+
+## Step 13: Readable stealth (lit or hidden look, last-seen markers, solitary)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-13-readable-stealth` (built on Step 12)
+- **Why:** three rules from Mark of the Ninja: show the stealth rules on screen, warn before
+  enemies react, and do not punish failure so hard that players replay long stretches.
+- **Not changed:** vision cones, patrols, hearing, takedowns, the timer length, and every
+  bot route (see the table).
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Guard Office, beside the desk lamp: https://tusingw29.github.io/carter-island-prototype/?room=guard-office&px=6
+  - Mess Hall, in front of a guard (stand still to be caught): https://tusingw29.github.io/carter-island-prototype/?room=mess-hall&px=13
+
+### What was built
+
+1. **Lit or hidden.** You are either full color with a soft glow, or a black shape with a
+   thin pale outline. It switches at once.
+   - **One check:** the look asks the same three functions the game asks every step: can
+     this guard see the player, can this camera or searchlight, can this snitch. So it
+     covers flashlights, cameras, searchlight pools, cover, dark patches, and hiding spots
+     without a second copy of any rule. Snitches count too.
+   - **Lit areas:** four lamps, each with a fixture, a real light, and a lit patch of
+     floor: the Guard Office desk lamp (the keycard is in its light), the Stairwell
+     checkpoint counter, a work lamp in the Laundry, and the Mess Hall kitchen corner.
+   - **What a lamp does:** in its light you always show as visible, and a guard who has
+     you in his beam is sure in 0.3 s however far away he is. Out of his beam it changes
+     nothing, so the bot's clean runs are untouched. No lamp overlaps a dark patch.
+2. **Last seen.** A pale ghost of the player stands where each hunting guard thinks you
+   are: his last known position while he chases, the middle of his search while he
+   searches, the noise if a noise pulls him off. One ghost per guard. It shows only while
+   he cannot see you, and fades over half a second when he calms down.
+3. **Solitary.** The first capture of a run fades to black with "SOLITARY", takes 60
+   seconds off the timer (shown in red under the timer for 8 s), and puts you in a new
+   Solitary room. After 4 seconds a guard opens the door and you are walked to your bed.
+   E skips to the bed.
+   - **Taken:** the keycard (back on the desk) and whatever throwable you carried.
+   - **Kept:** screwdriver, work boots, cigarettes, bedsheets.
+   - **After:** every guard is wary for the rest of the run, and you have one mash-to-escape
+     again. The next capture ends the run.
+   - **Score:** "Solitary: Yes, 1:00 lost" or "No". A win after solitary is ranked Inmate.
+   - **Map:** the Solitary box appears left of the Cell Block once you have been there.
+
+### Planning bot
+
+| Route | Result | Time | Before |
+| --- | --- | --- | --- |
+| Front door in, front door back | Ghost | 2:14 | 2:14 |
+| Front door in, one-way drop home | Ghost | 1:36 | 1:36 |
+| Vent route | Ghost | 1:23 | 1:23 |
+| Bed to work boots in hand | not noticed | 1:08 | 1:08 |
+| Boots, hoop climb to the roof, dash, window, drop home | Ghost | 2:14 | 2:14 |
+| Boots, Tower 1 (guard knocked out), roof, window, drop home | Shadow | 2:14 | 2:14 |
+
+All six are the same to the tenth of a second.
+
+### Choices I made that Adam should check
+
+- **Lamps have a rule, not only a look.** The spec says lit areas make you visible. With
+  nobody looking that would be a look with no meaning, so in a lamp's light a guard who
+  sees you is sure at once. Say if you want lamps to be cosmetic, or to do more.
+- **The walk back shows no guard.** You are moved to your bed with a message. Nothing can
+  see, hear, or grab you on the way, and no button hints show.
+- **The clock keeps running in solitary.** The trip costs about 9 more seconds unless you
+  skip. If the 60 seconds empties the clock, the run ends as "out of bed at headcount".
+- **A bed check that falls while you are in solitary is skipped.**
+- **Cigarettes and bedsheets are kept**, like the tools.
+- **A silent alarm that already fired stays fired.** Taking the keycard again does not
+  need to set it off twice.
+- **The look can lead a guard's senses by one step** (1/120 s) on the step he turns round,
+  because he looks, then moves. The test allows exactly that and nothing more.
+- **Test rooms and the gym have no solitary cell**, so a capture there ends the run as before.
+- **Not verified:** not played by a person. I do not know if the silhouette reads well on
+  your screen or if 60 seconds is the right price. Sounds unheard, a controller and the
+  2015 MacBook Air untested. Checked by 413 tests, the two bots, and headless Chrome.
+
+### How Adam tests it
+
+1. Open the Guard Office link. You should be a black shape. Walk to the desk: full color.
+2. Main game. Stand in a dark patch, step into a flashlight, hide in a locker. Watch your
+   color each time.
+3. Get chased and break line of sight. Look for the pale ghost where he thinks you are.
+   Make a noise somewhere else and see if it moves.
+4. Open the Mess Hall link and stand still. Do not mash. You should see SOLITARY, lose a
+   minute, and end up in bed. Try E to skip on another run.
+5. Check the keycard is back on the desk and your tools are still with you.
+6. Get caught again: the run should end.
+7. Win a run after a trip to solitary and read the rank and the Solitary line.
+8. Does the silhouette tell you at a glance? Does solitary make you keep going?
+9. All four playtest questions.
 
 ---
 

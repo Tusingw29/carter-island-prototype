@@ -25,6 +25,7 @@ function portalText(world, portal) {
   if (portal.type === 'stairs') return `UP: stairs ${portal.dir}`;
   if (portal.type === 'window') return 'UP: climb through the window';
   if (portal.type === 'hatch') return portal.y > 0 ? 'UP: open the hatch and climb down' : 'UP: climb up to the hatch';
+  if (portal.locked) return 'The door to solitary. Locked';
   if (portal.exitOnly) return 'Door, latched from the inside';
   return 'UP: open door';
 }
@@ -32,7 +33,8 @@ function portalText(world, portal) {
 // Returns { text, x, y } in world metres, or null when there is nothing to do here.
 export function currentPrompt(world) {
   const { player } = world;
-  if (world.grab || world.over) return null;
+  // No hints during the trip to solitary: the buttons do nothing then.
+  if (world.grab || world.over || world.solitary.phase) return null;
   if (tooRiskyNow(world)) {
     const risky = world.allGuards.find((guard) => guard.id === world.risky.guardId);
     return { text: 'SHOVE NOT READY', x: risky.x, y: (risky.y ?? 0) + 2.75, shake: true };

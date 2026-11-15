@@ -11,8 +11,10 @@ export const RANKS = Object.freeze({
   caught: { name: 'Caught', means: 'did not make it back' },
 });
 
-export function rankFor({ won, timesSpotted, knockouts }) {
+// A run with a trip to solitary can still be won, but only as Inmate.
+export function rankFor({ won, timesSpotted, knockouts, solitary = false }) {
   if (!won) return 'caught';
+  if (solitary) return 'inmate';
   if (timesSpotted === 0 && knockouts === 0) return 'ghost';
   if (timesSpotted === 0) return 'shadow';
   return 'inmate';
@@ -24,7 +26,10 @@ export function scoreRun(world) {
   return {
     outcome: world.over,
     won,
-    rank: rankFor({ won, timesSpotted, knockouts }),
+    rank: rankFor({ won, timesSpotted, knockouts, solitary: world.solitary.used }),
+    // Whether the first capture sent you to solitary, and the seconds it cost.
+    solitary: world.solitary.used,
+    solitaryPenalty: world.solitary.penalty,
     timeLeft: world.timeLeft,
     timesSpotted,
     knockouts,
