@@ -1,0 +1,128 @@
+{
+  "build": "35cacb3786c6",
+  "beforePlayer": "player   idle  0.0 m/s  x 35.7  y 5.8",
+  "beforePrompt": "SPACE: shove",
+  "samples": [
+    {
+      "ms": 120,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 220,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 320,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 420,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 520,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 620,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 720,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 820,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 920,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 1020,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 1120,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 1220,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 1320,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 1420,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees n 100%  x 33.8"
+    },
+    {
+      "ms": 1520,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 33.8"
+    },
+    {
+      "ms": 1620,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 34.4"
+    },
+    {
+      "ms": 1720,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 34.5"
+    },
+    {
+      "ms": 1820,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 34.5"
+    },
+    {
+      "ms": 1920,
+      "player": "player   idle  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 34.5"
+    },
+    {
+      "ms": 2020,
+      "player": "player   grabbed  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 35.4"
+    },
+    {
+      "ms": 2120,
+      "player": "player   grabbed  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 35.4"
+    },
+    {
+      "ms": 2220,
+      "player": "player   grabbed  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 35.4"
+    },
+    {
+      "ms": 2320,
+      "player": "player   grabbed  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 35.4"
+    },
+    {
+      "ms": 2420,
+      "player": "player   grabbed  0.0 m/s  x 35.7  y 5.8",
+      "tower": "yd-tower-1  alert      sees Y 100%  x 35.4"
+    }
+  ],
+  "lastGrabbed": true
+}
