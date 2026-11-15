@@ -3,6 +3,9 @@ import { isAwake } from './guard.js';
 import { knockoutTarget } from './knockout.js';
 import { inBed } from './run.js';
 import { shoveReady, shoveTarget } from './shove.js';
+import { lastSeenMarkers } from './lastseen.js';
+import { climbableAt } from './moves.js';
+import { dropTarget } from './takedown.js';
 import { throwableInReach } from './throwing.js';
 import { upTarget } from './targets.js';
 
@@ -48,8 +51,33 @@ export const TUTORIAL = Object.freeze([
   {
     id: 'knockout',
     when: (world) => Boolean(knockoutTarget(world)),
-    text: 'You are behind him and he has not seen you. Press Space (or X) to grab him. Then choose: '
-      + 'Space knocks him out, holding E makes him talk, F throws him down. Choose within six seconds.',
+    text: 'You are behind him and he has not seen you. Press Space (or X) to grab him. '
+      + 'You then get a short menu of what to do with him.',
+  },
+  {
+    id: 'takedown',
+    when: (world) => Boolean(world.hold),
+    text: 'You have him. The menu by his head is your choices: Space (X) knocks him out. Q (Y) makes him '
+      + 'talk: you get his radio code, so nobody misses him, and one more thing. F (Left Bumper) throws him '
+      + 'down so you can run. Moving drags him. Choose within six seconds or he breaks free.',
+  },
+  {
+    id: 'drop',
+    when: (world) => Boolean(dropTarget(world)),
+    text: 'You are right over a guard who has not noticed you. Press Space (or X) to drop on him: '
+      + 'an instant knockout.',
+  },
+  {
+    id: 'ladder',
+    when: (world) => !world.room.outdoor && !world.player.hiddenIn && Boolean(climbableAt(world.room, world.player)),
+    text: 'Hold W (or Up) to climb. Guards do not look up: from the pipes you can wait for one to pass '
+      + 'underneath and drop on him.',
+  },
+  {
+    id: 'ghost',
+    when: (world) => lastSeenMarkers(world).length > 0,
+    text: 'The pale ghost is where that guard THINKS you are. He will go there, not to you. '
+      + 'It moves if a noise changes his mind, and fades when he gives up.',
   },
   {
     id: 'shove',

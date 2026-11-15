@@ -288,7 +288,8 @@ const liftCard = (world) => run(world, { interact: true }, CONFIG.hold.slowSecon
 
 test('silent alarm reason: a camera saw you earlier, and it names the room', () => {
   const world = prisonWorld('stairwell', 16.5);
-  run(world, {}, 1);
+  Object.assign(world.cameras.find((camera) => camera.id === 'sw-camera'), { min: 16.5, max: 16.5 });
+  run(world, {}, 2.6);
   assert.equal(world.seenByCamera, true);
   assert.equal(world.cameraSawIn, 'Stairwell Checkpoint');
   assert.equal(silentAlarmReason(world), null, 'no reason until it fires');

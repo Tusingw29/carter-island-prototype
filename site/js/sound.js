@@ -46,6 +46,14 @@ const CUES = {
   checkInFaked: [
     [1800, 0, 0.03, 'square', 0.35], [1350, 0.05, 0.05, 'square', 0.35], [1800, 0.14, 0.05, 'square', 0.3],
   ],
+  // About to be spotted: a note that climbs each time the fullest meter passes another fifth.
+  heat1: [[330, 0, 0.09, 'triangle', 0.5]],
+  heat2: [[415, 0, 0.09, 'triangle', 0.6]],
+  heat3: [[523, 0, 0.09, 'triangle', 0.75]],
+  heat4: [[659, 0, 0.11, 'triangle', 0.9]],
+  // A camera or searchlight filling its meter: one beep, played faster and faster.
+  camBeep: [[1500, 0, 0.04, 'square', 0.45]],
+  ask: [[260, 0, 0.1, 'sawtooth', 0.5, 200]],
   // A guard half hearing something.
   glance: [[500, 0, 0.06, 'triangle', 0.35]],
   // Sent to solitary: a heavy door, low and final.

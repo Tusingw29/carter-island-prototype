@@ -20,7 +20,7 @@ export function usePanel(world, panel) {
   const camera = world.cameras.find((entry) => entry.id === panel.controls);
   camera.off = !camera.off;
   camera.sees = false;
-  camera.exposure = 0;
+  camera.awareness = 0;
   world.events.push({ type: 'panel', off: camera.off });
   say(world, `Stairwell camera: ${camera.off ? 'OFF' : 'ON'}`);
 }

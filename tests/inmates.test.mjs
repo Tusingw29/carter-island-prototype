@@ -42,7 +42,8 @@ test('seen by a snitch: he yells, and the nearest guard goes Suspicious and walk
   const world = inHisView();
   const guard = guardById(world, 'cb-guard');
   Object.assign(guard, { x: 9.5, facing: -1, patrolDir: -1 });
-  run(world, {}, S.noticeSeconds + 0.05);
+  // Step 14: his meter takes a second to fill, two if you stand still.
+  run(world, {}, S.fillSeconds * 2 + 0.1);
   assert.ok(eventTypes(world).includes('yell'));
   assert.equal(guard.state, 'suspicious');
   assert.equal(guard.targetX, 16);
@@ -68,7 +69,7 @@ test('a snitch does not see you in his blind spot, on his other side, or in hidi
 test('a snitch does not yell again straight away', () => {
   const world = inHisView();
   guardById(world, 'cb-guard').state = 'out';
-  run(world, {}, 2);
+  run(world, {}, 3.5);
   assert.equal(eventTypes(world).filter((type) => type === 'yell').length, 1);
 });
 

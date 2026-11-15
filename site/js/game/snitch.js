@@ -2,10 +2,11 @@
 // the other, on a fixed beat. If he sees you he yells, and the nearest guard comes to look.
 // Once you have the keycard you can open his cell and knock him out.
 import { CONFIG } from './config.js';
-import { makeSuspicious } from './alert.js';
+import { countSpotted, makeSuspicious } from './alert.js';
 import { isAwake } from './guard.js';
 import { concealedIn } from './hiding.js';
 import { say } from './messages.js';
+import { stanceFactor } from './stance.js';
 
 export function createSnitch(def, roomId) {
   return {
@@ -17,7 +18,9 @@ export function createSnitch(def, roomId) {
     // awake or out (knocked out).
     state: 'awake',
     cellOpen: false,
-    exposure: 0,
+    // His awareness meter, and whether his next yell counts as a new spotting.
+    awareness: 0,
+    armed: true,
     cooldown: 0,
     sees: false,
   };
@@ -31,7 +34,8 @@ export function snitchWindow(snitch, cfg = CONFIG.snitch) {
 }
 
 export function snitchSeesPlayer(snitch, player, cfg = CONFIG.snitch) {
-  if (snitch.state !== 'awake' || concealedIn(player)) return false;
+  // He watches the floor outside his cell, not the pipes over it.
+  if (snitch.state !== 'awake' || concealedIn(player) || (player.y ?? 0) > 1.5) return false;
   const [from, to] = snitchWindow(snitch, cfg);
   return player.x >= from && player.x <= to;
 }
@@ -44,7 +48,9 @@ export function snitchCanSee(snitch, world, cfg = CONFIG.snitch) {
 
 function yell(snitch, world, cfg) {
   snitch.cooldown = cfg.cooldownSeconds;
-  world.stats.timesSpotted += 1;
+  // One stay in his view is one spotting, however many times he yells.
+  if (snitch.armed) countSpotted(world, 'snitch');
+  snitch.armed = false;
   world.events.push({ type: 'yell', snitchId: snitch.id });
   say(world, 'A snitch yells: "Guard! Over here!"');
   let nearest = null;
@@ -65,11 +71,13 @@ export function updateSnitch(snitch, world, dt, cfg = CONFIG.snitch) {
   snitch.cooldown = Math.max(0, snitch.cooldown - dt);
   snitch.sees = snitchCanSee(snitch, world, cfg);
   if (!snitch.sees) {
-    snitch.exposure = Math.max(0, snitch.exposure - dt);
+    snitch.awareness = Math.max(0, snitch.awareness - CONFIG.awareness.drainPerSecond * dt);
+    if (snitch.awareness <= 0) snitch.armed = true;
     return;
   }
-  snitch.exposure += dt;
-  if (snitch.exposure >= cfg.noticeSeconds && snitch.cooldown <= 0) yell(snitch, world, cfg);
+  // He squints and points while it fills (drawn from awareness), then yells.
+  snitch.awareness = Math.min(1, snitch.awareness + (dt / cfg.fillSeconds) * stanceFactor(world.player));
+  if (snitch.awareness >= 1 && snitch.cooldown <= 0) yell(snitch, world, cfg);
 }
 
 // The awake snitch whose cell the player is standing at.

@@ -2,7 +2,10 @@
 import { Vector3 } from '../../vendor/three.module.js';
 import { shownState } from '../game/alert.js';
 import { CONFIG } from '../game/config.js';
+import { awarenessMeters } from '../game/awareness.js';
 import { holdProgress } from '../game/holds.js';
+import { lastSeenMarkers } from '../game/lastseen.js';
+import { dropTarget, heldGuard, holdLeft, holdOptions } from '../game/takedown.js';
 import { wakeProgress } from '../game/knockout.js';
 import { onRadioNow } from '../game/radio.js';
 import { currentPrompt } from '../game/prompts.js';
@@ -70,7 +73,124 @@ export function createOverlay() {
     return icons[index];
   }
 
+  // ---------- Awareness meters ----------
+  const eyes = new Map();
+  const EDGE = 26;
+  const ARROWS = { left: '\u25C0', right: '\u25B6', up: '\u25B2', down: '\u25BC' };
+
+  function eyeFor(id) {
+    if (!eyes.has(id)) {
+      const eye = document.createElement('div');
+      eye.className = 'eye';
+      document.body.append(eye);
+      eyes.set(id, eye);
+    }
+    return eyes.get(id);
+  }
+
+  // One eye per thing that is noticing you, right over it, filling as its meter fills. If it
+  // is off screen the eye sits at the edge of the screen as an arrow pointing to it.
+  function updateEyes(world, camera) {
+    const meters = awarenessMeters(world);
+    for (const meter of meters) {
+      const eye = eyeFor(meter.id);
+      // A guard whose meter is full already has his big "!" over him.
+      if (meter.kind === 'guard' && meter.full) {
+        setHidden(eye, true);
+        continue;
+      }
+      point.set(meter.x, meter.y, 0).project(camera);
+      const x = (point.x * 0.5 + 0.5) * window.innerWidth;
+      const y = (-point.y * 0.5 + 0.5) * window.innerHeight;
+      let edge = '';
+      if (x < EDGE) edge = 'left';
+      else if (x > window.innerWidth - EDGE) edge = 'right';
+      else if (y < EDGE) edge = 'up';
+      else if (y > window.innerHeight - EDGE) edge = 'down';
+      const left = Math.max(EDGE, Math.min(window.innerWidth - EDGE, x));
+      const top = Math.max(EDGE + 14, Math.min(window.innerHeight - EDGE, y));
+      moveTo(eye, left, top);
+      setText(eye, edge ? ARROWS[edge] : (meter.full ? '!' : ''));
+      const fill = Math.round(meter.fill * 24) / 24;
+      if (eye.dataset.fill !== String(fill)) {
+        eye.dataset.fill = String(fill);
+        eye.style.setProperty('--fill', fill);
+      }
+      // Filling: bright and pulsing. Draining: half faded. Full: red.
+      const state = meter.full ? 'full' : (meter.seeing ? 'filling' : 'draining');
+      if (eye.dataset.state !== state) eye.dataset.state = state;
+      setHidden(eye, false);
+    }
+    for (const [id, eye] of eyes) if (!meters.some((meter) => meter.id === id)) setHidden(eye, true);
+  }
+
+  // ---------- The takedown pop-up, the speech bubble, and markers ----------
+  const takedown = document.getElementById('takedown');
+  const takedownList = document.getElementById('takedown-options');
+  const takedownFill = document.getElementById('takedown-fill');
+  const speech = document.getElementById('speech');
+  const dropMark = document.getElementById('drop-mark');
+  let shownOptions = '';
+  const ghostLabels = [];
+
+  // The four choices and their buttons, next to the guard you are holding.
+  function updateTakedown(world, camera) {
+    const options = holdOptions(world);
+    setHidden(takedown, options.length === 0);
+    if (options.length === 0) return;
+    const guard = heldGuard(world);
+    setWidth(takedownFill, holdLeft(world) * 100);
+    const html = options.map((option) => {
+      const bar = option.progress == null ? ''
+        : `<span class="bar"><span style="width:${Math.round(option.progress * 100)}%"></span></span>`;
+      return `<li><b>${option.keys}</b><i>${option.pad}</i><span>${option.label}</span>${bar}</li>`;
+    }).join('');
+    if (html !== shownOptions) {
+      shownOptions = html;
+      takedownList.innerHTML = html;
+    }
+    // Beside him, clear of both of you and of the message line at the top.
+    pin(takedown, camera, guard.x + 3.4, (guard.y ?? 0) + 1.9);
+  }
+
+  // What an interrogated guard said, in a bubble over his head.
+  function updateSpeech(world, camera) {
+    const said = world.speech;
+    const guard = said && world.time < said.until ? world.guards.find((entry) => entry.id === said.guardId) : null;
+    setHidden(speech, !guard);
+    if (!guard) return;
+    setText(speech, `\u201C${said.text}\u201D`);
+    // Under his feet, hanging down, so it never covers the menu or the two of you.
+    point.set(guard.x, (guard.y ?? 0) - 0.15, 0).project(camera);
+    const left = Math.round((point.x * 0.5 + 0.5) * window.innerWidth);
+    const top = Math.round((-point.y * 0.5 + 0.5) * window.innerHeight);
+    speech.style.transform = `translate(${left}px, ${top}px) translate(-50%, 0)`;
+  }
+
+  // A marker on the guard you could drop on, and the words "last seen" on the first few ghosts.
+  function updateMarkers(world, camera) {
+    const below = dropTarget(world);
+    setHidden(dropMark, !below);
+    if (below) pin(dropMark, camera, below.x, (below.y ?? 0) + 2.3);
+    const labelled = lastSeenMarkers(world).filter((marker) => marker.label);
+    labelled.forEach((marker, i) => {
+      if (!ghostLabels[i]) {
+        ghostLabels[i] = document.createElement('div');
+        ghostLabels[i].className = 'ghost-label';
+        ghostLabels[i].textContent = 'last seen';
+        document.body.append(ghostLabels[i]);
+      }
+      setHidden(ghostLabels[i], false);
+      pin(ghostLabels[i], camera, marker.x, marker.y + 2.15);
+    });
+    ghostLabels.slice(labelled.length).forEach((label) => setHidden(label, true));
+  }
+
   function update(world, camera, debug) {
+    updateEyes(world, camera);
+    updateTakedown(world, camera);
+    updateSpeech(world, camera);
+    updateMarkers(world, camera);
     const hint = currentPrompt(world);
     const progress = holdProgress(world);
     setHidden(prompt, !hint);

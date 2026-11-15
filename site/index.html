@@ -41,11 +41,12 @@
       <span id="prompt-text"></span>
       <div class="bar" hidden><div id="hold-fill"></div></div>
     </div>
-    <div id="takedown" class="banner" hidden>
-      <strong>YOU HAVE HIM. Choose before he breaks free</strong>
+    <div id="takedown" hidden>
       <div class="bar"><div id="takedown-fill"></div></div>
       <ul id="takedown-options"></ul>
     </div>
+    <div id="speech" hidden></div>
+    <div id="drop-mark" hidden>&#9660;</div>
     <div id="mash" class="banner" hidden>
       <strong>GRABBED! Mash SPACE (or X) to break free</strong>
       <div class="bar"><div id="mash-fill"></div></div>
@@ -91,7 +92,8 @@
       <tr><td>Keycard: grab fast / lift quietly</td><td>tap E / hold E</td><td>tap A / hold A</td></tr>
       <tr><td>Grab a guard from behind (unseen), drag a body</td><td>Space</td><td>X (left button)</td></tr>
       <tr><td>Holding a guard: knock him out</td><td>Space</td><td>X (left button)</td></tr>
-      <tr><td>Holding a guard: interrogate</td><td>hold E</td><td>hold A</td></tr>
+      <tr><td>Interrogations: holding a guard, make him talk (2 s)</td><td>Q</td><td>Y (top button)</td></tr>
+      <tr><td>After he talks: let him go</td><td>Q</td><td>Y (top button)</td></tr>
       <tr><td>Holding a guard: throw him down (loud)</td><td>F</td><td>Left Bumper</td></tr>
       <tr><td>Holding a guard: drag him</td><td>A / D</td><td>Left stick or D-pad</td></tr>
       <tr><td>Drop on a guard from above, or pull one into hiding</td><td>Space</td><td>X (left button)</td></tr>
@@ -107,9 +109,11 @@
       <tr><td>Climb a ladder or a chain-link fence</td><td>hold W / S</td><td>hold Up / Down</td></tr>
       <tr><td>Dash (needs the work boots from the Yard)</td><td>L</td><td>Right Bumper</td></tr>
       <tr><td>Pause</td><td>Esc</td><td>Start</td></tr>
-      <tr><td>This screen</td><td>C</td><td>Y (top button)</td></tr>
+      <tr><td>This screen</td><td>C</td><td>Y (not while holding a guard)</td></tr>
     </table>
     <p class="fine">
+      Nothing spots you at once. An eye over a guard, camera, searchlight, or snitch fills while
+      it has you in view: get out before it is full. Crouching or standing still slows it.
       Walking is quiet, running is loud, crouching is silent. The faint ring round you is how far
       your noise carries, and the arc over a guard's head is how much he has heard. A guard's
       flashlight is what he can see.
@@ -143,6 +147,7 @@
     <table>
       <tr><td>Time left</td><td id="score-time"></td></tr>
       <tr><td>Times spotted</td><td id="score-spotted"></td></tr>
+      <tr><td>Spotted by</td><td id="score-spotted-by"></td></tr>
       <tr><td>Knockouts</td><td id="score-knockouts"></td></tr>
       <tr><td>Bodies found by guards</td><td id="score-bodies"></td></tr>
       <tr><td>Takedowns</td><td id="score-takedowns"></td></tr>

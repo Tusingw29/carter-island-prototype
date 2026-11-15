@@ -89,8 +89,9 @@ export function createGameView(world, options = {}) {
         data.shown = Math.max(0, data.shown - dt * 2);
       }
       ghost.visible = data.shown > 0;
-      data.material.opacity = 0.16 * data.shown;
-      data.frame.opacity = 0.5 * data.shown;
+      // Bright enough to notice: a pale fill and a strong outline that pulses a little.
+      data.material.opacity = 0.3 * data.shown;
+      data.frame.opacity = (0.8 + 0.2 * Math.sin(world.time * 6)) * data.shown;
     });
   }
   let lastTime = world.time;

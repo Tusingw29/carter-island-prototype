@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { cameraSeesPlayer, createCamera, searchlightShape } from '../site/js/game/camera.js';
 import { CONFIG } from '../site/js/game/config.js';
 import { obstaclesFor } from '../site/js/game/guard.js';
-import { intentFromGamepad } from '../site/js/game/intent.js';
+import { intentFromGamepad, intentFromKeys } from '../site/js/game/intent.js';
 import { mapModel } from '../site/js/game/map.js';
 import { currentMessage } from '../site/js/game/messages.js';
 import { playtestText } from '../site/js/game/playtest.js';
@@ -378,6 +378,12 @@ function behind(extra = {}) {
   return testWorld({ width: 80, playerX: 19.2, ...extra, guards });
 }
 
+// One press of Q (or Y) and he talks, two seconds later.
+function askHim(world) {
+  tap(world, 'ask');
+  run(world, {}, T.interrogateSeconds + 0.05);
+}
+
 function grab(extra) {
   const world = behind(extra);
   tap(world, 'action');
@@ -415,17 +421,20 @@ test('grab: the choices are shown with their buttons, and no two share a control
   const world = grab();
   const options = holdOptions(world);
   assert.deepEqual(options.map((option) => option.id), ['knockOut', 'interrogate', 'slam', 'drag']);
-  assert.deepEqual(options.map((option) => option.keys), ['SPACE', 'hold E', 'F', 'A / D']);
-  assert.deepEqual(options.map((option) => option.pad), ['X', 'hold A', 'LB', 'stick']);
+  assert.deepEqual(options.map((option) => option.keys), ['SPACE', 'Q', 'F', 'A / D']);
+  assert.deepEqual(options.map((option) => option.pad), ['X', 'Y', 'LB', 'stick']);
   assert.equal(new Set(options.map((option) => option.pad)).size, options.length);
-  // Those are the buttons the game already uses for Takedown, Interact, and Throw.
+  // Step 14: Interrogate moved off Interact (E / A), which is for pick-ups and the keycard.
   const pad = (index) => intentFromGamepad({
     buttons: Array.from({ length: 17 }, (_, i) => ({ pressed: i === index, value: i === index ? 1 : 0 })),
     axes: [0, 0],
   });
   assert.equal(pad(2).action, true);
-  assert.equal(pad(0).interact, true);
+  assert.equal(pad(3).ask, true);
   assert.equal(pad(4).throw, true);
+  assert.equal(pad(0).ask, false, 'A is not part of the menu');
+  assert.equal(intentFromKeys(new Set(['KeyQ'])).ask, true);
+  assert.equal(intentFromKeys(new Set(['KeyE'])).ask, false);
   assert.equal(holdOptions(behind()).length, 0, 'nothing shown when nobody is held');
 });
 
@@ -446,45 +455,62 @@ test('knock out: Space again chokes him out, as a knockout always was', () => {
   assert.ok(guard.outFor === 0 && world.time > CONFIG.knockout.wakeSeconds);
 });
 
-test('interrogate: hold E for 3 s and he talks. You cannot move while he does', () => {
-  assert.equal(T.interrogateSeconds, 3);
+test('interrogate: one press of Q, 2 s with a progress bar, and he talks. You cannot move meanwhile', () => {
+  assert.equal(T.interrogateSeconds, 2);
   const world = grab();
   const guard = world.guards[0];
   const stoodAt = world.player.x;
-  run(world, { interact: true, moveX: -1 }, 1.5);
+  tap(world, 'ask');
+  assert.ok(happened(world, 'ask'));
+  // Nothing needs holding. Moving does nothing until he has talked.
+  run(world, { moveX: -1 }, 1);
   assert.equal(world.player.x, stoodAt, 'no moving while interrogating');
-  assert.ok(Math.abs(holdOptions(world)[1].progress - 0.5) < 0.02, 'the bar is half full');
+  assert.ok(Math.abs(holdOptions(world)[1].progress - 0.5) < 0.03, 'the bar is half full');
   assert.equal(guard.interrogated, false);
-  run(world, { interact: true }, 1.6);
+  run(world, {}, 1.05);
   assert.equal(guard.interrogated, true);
   assert.ok(happened(world, 'talk'));
   assert.equal(world.stats.interrogations, 1);
-  assert.match(currentMessage(world), /The Black\./);
-  assert.match(currentMessage(world), /radio code/);
   assert.deepEqual(world.intel, [{ from: 'Test guard', type: 'story', text: 'The Black.' }]);
-  // He is still in your hands, and now you choose: knock him out, or let him go.
+  // He is still in your hands, and the menu is back: knock him out, or let him go.
   assert.equal(guard.state, 'held');
   assert.deepEqual(holdOptions(world).map((option) => option.id), ['knockOut', 'letGo', 'slam', 'drag']);
+  assert.deepEqual(holdOptions(world).slice(0, 2).map((option) => option.keys), ['SPACE', 'Q']);
 });
 
-test('interrogate: letting go of E early starts it again, and the break-free clock waits while he talks', () => {
+test('interrogate: his line is a speech bubble, and the payoff is spelled out in two messages', () => {
   const world = grab();
-  run(world, { interact: true }, 2);
-  run(world, {}, 0.1);
-  assert.equal(world.hold.asking, 0);
-  run(world, { interact: true }, 2.9);
+  askHim(world);
+  assert.equal(world.speech.guardId, 'g');
+  assert.equal(world.speech.text, 'The Black.');
+  assert.ok(world.speech.until - world.time > 5);
+  assert.equal(currentMessage(world), 'Radio code learned: his check-ins will be faked.');
+  run(world, { moveX: -1 }, 5);
+  assert.equal(currentMessage(world), 'He said: "The Black."', 'then the extra, as its own message');
+});
+
+test('interrogate: E and A do nothing while you hold a guard, and the break-free clock waits while he talks', () => {
+  const world = grab({ items: [{ id: 'cup', type: 'cup', x: 19.2 }] });
+  run(world, { interact: true }, 2.5);
   assert.equal(world.guards[0].interrogated, false);
+  assert.equal(world.player.carrying, null, 'no pick-up either: no clash');
   const fresh = grab();
-  run(fresh, { interact: true }, 3.1);
-  assert.ok(fresh.hold.time < 0.2, 'three seconds of talking did not use up the six');
+  askHim(fresh);
+  assert.ok(fresh.hold.time < 0.2, 'two seconds of talking did not use up the six');
   assert.ok(holdLeft(fresh) > 0.95);
+  // Space still knocks him out half way through the questions.
+  const hasty = grab();
+  tap(hasty, 'ask');
+  run(hasty, {}, 1);
+  tap(hasty, 'action');
+  assert.equal(hasty.guards[0].state, 'out');
+  assert.equal(hasty.guards[0].interrogated, false);
 });
 
 test('interrogate: his radio code. Knocked out, his check-ins are faked until he wakes, and nobody comes', () => {
   const world = grab({ guards: [sentry('other', 40, 1)] });
   const [guard, other] = world.guards;
-  run(world, { interact: true }, 3.1);
-  run(world, {}, 0.05);
+  askHim(world);
   tap(world, 'action');
   assert.equal(guard.state, 'out');
   assert.equal(guard.codeKnown, true);
@@ -504,8 +530,7 @@ test('interrogate: his radio code. Knocked out, his check-ins are faked until he
 test('interrogate: each guard only once per run', () => {
   const world = grab();
   const guard = world.guards[0];
-  run(world, { interact: true }, 3.1);
-  run(world, {}, 0.05);
+  askHim(world);
   tap(world, 'action');
   world.player.hiddenIn = 'elsewhere';
   runUntil(world, () => guard.state === 'calm', {}, 200);
@@ -516,7 +541,7 @@ test('interrogate: each guard only once per run', () => {
   tap(world, 'action');
   assert.equal(guard.state, 'held');
   assert.equal(holdOptions(world)[1].label, 'he has already talked');
-  run(world, { interact: true }, 3.5);
+  askHim(world);
   assert.equal(world.stats.interrogations, 1);
   assert.equal(createWorld().allGuards.every((entry) => !entry.interrogated), true, 'a new run starts fresh');
 });
@@ -524,9 +549,8 @@ test('interrogate: each guard only once per run', () => {
 test('let go: after he talks you can let him go. He is dazed for 2 s, then raises the alarm', () => {
   const world = grab();
   const guard = world.guards[0];
-  run(world, { interact: true }, 3.1);
-  run(world, {}, 0.05);
-  tap(world, 'interact');
+  askHim(world);
+  tap(world, 'ask');
   assert.equal(world.hold, null);
   assert.equal(guard.state, 'alert');
   assert.ok(Math.abs(guard.stun - T.releaseStunSeconds) < 0.05);
@@ -654,7 +678,7 @@ function interrogate(roomId, guardId) {
   Object.assign(world.player, { x: guard.x - 0.8, y: guard.y });
   tap(world, 'action');
   assert.equal(guard.state, 'held', `${guardId} grabbed`);
-  run(world, { interact: true }, T.interrogateSeconds + 0.1);
+  askHim(world);
   return { world, guard };
 }
 
@@ -668,7 +692,8 @@ test('talk: a patrol reveal shows the room\'s guard routes on the map for 60 s',
   assert.ok(Math.abs(one.from - 7 / 38) < 1e-9 && Math.abs(one.to - 18 / 38) < 1e-9, 'each beat, end to end');
   assert.ok(one.at >= 0 && one.at <= 1, 'and where he is now');
   assert.deepEqual(mapModel(world).rooms.find((room) => room.id === 'cell-block').patrols, [], 'only that room');
-  assert.match(currentMessage(world), /on your map for 60 seconds/);
+  assert.equal(currentMessage(world), 'Radio code learned: his check-ins will be faked.');
+  assert.match(world.messageQueue[0].text, /^Patrol reveal: .* on your map \(M\) for 60 seconds/);
   tap(world, 'action');
   world.player.hiddenIn = 'elsewhere';
   run(world, {}, 61);
@@ -677,17 +702,19 @@ test('talk: a patrol reveal shows the room\'s guard routes on the map for 60 s',
 
 test('talk: a secret says where something is and puts it on the map', () => {
   const office = interrogate('guard-office', 'go-guard').world;
-  assert.match(currentMessage(office), /roof hatch/);
+  assert.match(office.speech.text, /roof hatch/);
+  assert.match(office.messageQueue[0].text, /^Secret learned: .*roof hatch/);
   assert.ok(office.knownPortals.has('yd-hatch') && office.knownPortals.has('mh-yard'));
   assert.equal(mapModel(office).links.find((link) => link.type === 'hatch').known, true);
   const stairwell = interrogate('stairwell', 'sw-guard').world;
-  assert.match(currentMessage(stairwell), /Maintenance Hall/);
+  assert.match(stairwell.speech.text, /Maintenance Hall/);
   assert.ok(stairwell.found.has('ma-panel'));
 });
 
 test('talk: a story bit is one uneasy line, kept in your notes', () => {
   const { world, guard } = interrogate('cell-block', 'cb-guard');
-  assert.match(currentMessage(world), /deep shafts/);
+  assert.match(world.speech.text, /deep shafts/);
+  assert.match(world.messageQueue[0].text, /^He said: "Don't go near the deep shafts/);
   assert.deepEqual(world.intel.at(-1), { from: 'Cell Block guard', type: 'story', text: guard.talk.text });
 });
 
@@ -779,8 +806,7 @@ test('from a hiding spot: from a cart or under a table too, but not on a guard w
 
 test('score: takedowns by type, guards thrown down, interrogations, and check-ins faked', () => {
   const world = grab({ guards: [sentry('h', 30, 1), sentry('i', 40, 1)] });
-  run(world, { interact: true }, 3.1);
-  run(world, {}, 0.05);
+  askHim(world);
   tap(world, 'action');
   world.player.x = 29.2;
   tap(world, 'action');

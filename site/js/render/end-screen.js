@@ -1,6 +1,6 @@
 // The score screen shown when a run ends.
 import { formatClock } from '../game/clock.js';
-import { takedownText } from '../game/playtest.js';
+import { spottedByText, takedownText } from '../game/playtest.js';
 import { RANKS } from '../game/run.js';
 
 const HEADLINES = {
@@ -38,6 +38,7 @@ export function createEndScreen(onPlayAgain) {
     byId('end-rank-means').textContent = RANKS[result.rank].means;
     byId('score-time').textContent = formatClock(result.timeLeft);
     byId('score-spotted').textContent = result.timesSpotted;
+    byId('score-spotted-by').textContent = spottedByText(result.spottedBy);
     byId('score-knockouts').textContent = result.knockouts;
     byId('score-bodies').textContent = result.bodiesFound;
     byId('score-takedowns').textContent = takedownText(result.takedowns);

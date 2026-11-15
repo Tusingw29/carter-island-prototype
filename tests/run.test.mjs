@@ -127,5 +127,6 @@ test('the score screen numbers: time left, times spotted, knockouts, bodies foun
     caughtHow: null,
     takedowns: { choke: 0, above: 0, pullIn: 0 }, slams: 0, interrogations: 0, checkInsFaked: 0,
     solitary: false, solitaryPenalty: 0,
+    spottedBy: { guard: 0, camera: 0, searchlight: 0, snitch: 0, other: 0 },
   });
 });

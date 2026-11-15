@@ -11,6 +11,17 @@ export const QUESTIONS = Object.freeze([
 
 const KEYCARD = { slow: 'taken slowly', fast: 'grabbed fast' };
 
+const SOURCES = [
+  ['guard', 'guards'], ['camera', 'cameras'], ['searchlight', 'searchlights'], ['snitch', 'snitches'],
+  ['other', 'other'],
+];
+
+// "guards 3, cameras 1, searchlights 0, snitches 2, other 0". "other" is anything you did to
+// give yourself away (a shove, a guard thrown down or let go), a sleeper waking, or the empty bed.
+export function spottedByText(spottedBy = {}) {
+  return SOURCES.map(([key, name]) => `${name} ${spottedBy[key] ?? 0}`).join(', ');
+}
+
 // "2 from behind, 1 from above, 0 pulled into hiding".
 export function takedownText(takedowns = {}) {
   return `${takedowns.choke ?? 0} from behind, ${takedowns.above ?? 0} from above, `
@@ -22,6 +33,7 @@ function runLine(result) {
   return `Run: ${result.won ? 'made it back' : 'did not make it back'}, rank ${RANKS[result.rank].name}, `
     + `${formatClock(result.timeLeft)} left, spotted ${result.timesSpotted}, `
     + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`
+    + `\nSpotted by: ${spottedByText(result.spottedBy)}.`
     + `\nTakedowns: ${takedownText(result.takedowns)}. Thrown down: ${result.slams ?? 0}. `
     + `Interrogations: ${result.interrogations ?? 0}. Check-ins faked: ${result.checkInsFaked ?? 0}.`
     + `\nSolitary: ${result.solitary ? `yes, ${result.solitaryPenalty} s lost` : 'no'}.`

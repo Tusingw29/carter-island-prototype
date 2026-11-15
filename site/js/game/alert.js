@@ -22,6 +22,18 @@ export function makeSuspicious(world, guard, x) {
   setState(world, guard, 'suspicious');
 }
 
+// What a spotting is put down to on the score screen.
+const SPOTTED_BY = {
+  closeSight: 'guard', beam: 'guard', watchedHiding: 'guard', foundHiding: 'guard', sight: 'guard',
+};
+
+// Counts one spotting. by is 'guard', 'camera', 'searchlight', 'snitch', or 'other' (things you
+// did to give yourself away, a sleeper waking, the empty bed).
+export function countSpotted(world, by) {
+  world.stats.timesSpotted += 1;
+  world.stats.spottedBy[by] = (world.stats.spottedBy[by] ?? 0) + 1;
+}
+
 // The alarm: every conscious guard goes Alert and heads for x.
 // reason is 'sight' (the player was clearly seen) or 'body' (a body was found).
 // roomId is the room it happens in. Left out, it is the room the player is in.
@@ -29,6 +41,8 @@ export function makeSuspicious(world, guard, x) {
 export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.room.id, cause = null) {
   const here = world.allGuards.filter((guard) => guard.roomId === roomId);
   const alreadyAlert = here.some((guard) => guard.state === 'alert');
+  // One hunt counts once, however many times they lose you and find you again before it is over.
+  const alreadyHunting = here.some((guard) => guard.hunting && guard.state !== 'out');
   // A guard the player is holding stays held, whatever the others do.
   for (const guard of here.filter((entry) => isConscious(entry) && entry.state !== 'held')) {
     // Seen is not caught: a guard who was not already chasing freezes for a moment first.
@@ -46,7 +60,7 @@ export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.
   }
   world.searchClaims = new Set();
   if (alreadyAlert) return;
-  if (reason === 'sight') world.stats.timesSpotted += 1;
+  if (reason === 'sight' && !alreadyHunting) countSpotted(world, SPOTTED_BY[cause?.kind ?? 'sight'] ?? 'other');
   world.lastAlarm = {
     at: world.time, kind: cause?.kind ?? reason, by: cause?.guard?.label ?? null, roomId,
   };
@@ -66,7 +80,7 @@ export function alarmEverywhere(world) {
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();
-  world.stats.timesSpotted += 1;
+  countSpotted(world, 'other');
   world.lastAlarm = { at: world.time, kind: 'emptyBed', by: null, roomId: world.room.id };
   world.events.push({ type: 'lockdown' });
 }

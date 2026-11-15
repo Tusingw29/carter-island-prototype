@@ -15,8 +15,10 @@ import { keycardInReach, takeKeycard } from './keycard.js';
 import {
   fullSpotIds, pressAction, stuffBody, updateDrag, updateKnockedOut,
 } from './knockout.js';
+import { updateHeat } from './awareness.js';
+import { noteLastSeen } from './lastseen.js';
 import { notePlaces } from './map.js';
-import { say } from './messages.js';
+import { say, updateMessages } from './messages.js';
 import { updateCourse, updateMover } from './moves.js';
 import { noiseRadius } from './noise.js';
 import { createPlayer, updatePlayer } from './player.js';
@@ -107,6 +109,8 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     dashWasHeld: false,
     stats: {
       timesSpotted: 0, knockouts: 0, bodiesFound: 0,
+      // What each spotting was put down to.
+      spottedBy: { guard: 0, camera: 0, searchlight: 0, snitch: 0, other: 0 },
       // Knockouts by how they were done, guards thrown down, guards who talked, and radio
       // check-ins answered for a guard whose code you had.
       takedowns: { choke: 0, above: 0, pullIn: 0 },
@@ -126,6 +130,15 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     // One-off noises just made, as { x, y, radius, at }, so they can be drawn as rings.
     pings: [],
     throwWasHeld: false,
+    askWasHeld: false,
+    // Messages waiting their turn, a guard's words in a speech bubble ({ guardId, text, until }),
+    // how far the rising "about to be spotted" sound has got, and how many "last seen" ghosts
+    // have appeared so far (the first few carry a label).
+    messageQueue: [],
+    speech: null,
+    heatStage: 0,
+    lastSeenIds: [],
+    lastSeenCount: 0,
     throwLock: false,
   };
   setUpRadio(world, cfg.radio);
@@ -274,11 +287,13 @@ export function stepWorld(world, input, dt, cfg = CONFIG) {
 
   const throwPressed = intent.throw && !world.throwWasHeld;
   world.throwWasHeld = intent.throw;
+  const askPressed = intent.ask && !world.askWasHeld;
+  world.askWasHeld = intent.ask;
   const wasConcealed = concealedIn(player);
   // With a guard in your hands the buttons mean the takedown choices and nothing else.
   const holding = Boolean(world.hold);
   if (holding) {
-    const pressed = { action: actionPressed, interact: interactPressed, throw: throwPressed };
+    const pressed = { action: actionPressed, ask: askPressed, throw: throwPressed };
     take.updateTakedown(world, intent, pressed, dt, cfg);
   } else {
     if (actionPressed) pressAction(world, take);
@@ -332,6 +347,9 @@ export function stepWorld(world, input, dt, cfg = CONFIG) {
   notePlaces(world);
 
   updateEveryoneElse(world, dt, cfg);
+  updateHeat(world);
+  noteLastSeen(world);
+  updateMessages(world);
   world.time += dt;
   updateTimer(world, dt);
   if (!world.over) updateBedCheck(world, cfg);

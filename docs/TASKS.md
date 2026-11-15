@@ -29,6 +29,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 11 | The Yard: jump and slide everywhere, dash unlock, towers, searchlights, roof route | review, awaiting Adam's verdict | `step-11-yard` |
 | 12 | Playtest 5: searchlight and crate bugs, quieter sneaking, takedown system | review, awaiting Adam's verdict | `step-12-takedowns` |
 | 13 | Readable stealth: lit or hidden look, last-seen markers, solitary | review, awaiting Adam's verdict | `step-13-readable-stealth` |
+| 14 | Heat-up detection, spotted counts, clearer takedown menu, places to drop from | review, awaiting Adam's verdict | `step-14-heat-up` |
 
 ---
 
@@ -1250,6 +1251,152 @@ All six are the same to the tenth of a second.
 7. Win a run after a trip to solitary and read the rank and the Solitary line.
 8. Does the silhouette tell you at a glance? Does solitary make you keep going?
 9. All four playtest questions.
+
+---
+
+## Step 14: Heat-up (awareness meters, spotted counts, takedown menu, drops, ghost)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-14-heat-up` (built on Step 13)
+- **Playtest results (Adam, two runs):** Run A won with 0:10 left as Inmate, spotted 17,
+  knockouts 8 (5 pulled into hiding). Run B ran out of time without the keycard, spotted
+  25, went to solitary once. Pull-ins are fun and fair: kept as they are. Interrogation
+  never used ("the controls and setup seem off"). Drops never used: no good ledges, and he
+  did not know he could. The lit or hidden look helped a lot. The ghost may not have been
+  noticed. Getting spotted is too easy: he wants a heat-up meter and a clear tell.
+- **Not changed:** cone sizes, patrols, the chase, pull-ins, hearing, solitary, and the
+  7:00 timer.
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Mess Hall, at the catwalk ladder: https://tusingw29.github.io/carter-island-prototype/?room=mess-hall&px=12.3
+  - Cell Block, at the pipe ladder: https://tusingw29.github.io/carter-island-prototype/?room=cell-block&px=9.9
+
+### Explain the 25 (measured on the Step 13 rules, before anything was changed)
+
+What added 1 to "spotted" then:
+
+| Source | When it counted | 20 seconds of it |
+| --- | --- | --- |
+| Guard sight | each time a room went to Alert with no guard in it already Alert | 1 per chase, plus 1 for every time he lost you and saw you again |
+| Camera | every time it called in, with a 4 s cooldown | 5 |
+| Searchlight | the same | 5 |
+| Snitch | every yell, with a 5 s cooldown, while he looked your way | 3 |
+| Shove, guard thrown down, let go, or broke free | once each, if nobody there was Alert | |
+| Empty bed, or a sleeper waking | once | |
+| Noise | never | 0 |
+
+- **Yes, one sighting was counted many times.** Standing in a camera or a searchlight for
+  20 seconds counted 5. A snitch counted again every 5 seconds. One guard losing you and
+  finding you again counted each time.
+- **A scripted careless run** (walk the front-door route without hiding, run when chased)
+  counted 5 before it was caught: 3 from guards and 2 from snitches. The run was short.
+- **Where 25 likely came from:** your run was not recorded, so this is a reading of the
+  rules, not a replay. Run B lasted the full seven minutes with no keycard, which means a
+  lot of time near the same guards. Each chase that broke and re-formed added 1, and each
+  pass by the Cell Block snitches or a camera added 1 for every few seconds in view. Noise
+  added nothing. On those rules 25 is about what a long, hunted run would show, and it
+  overstated how often you were truly caught out.
+- **Now:** a camera, searchlight, or snitch counts once per stay in its view (it has to
+  lose you until its meter is empty before it can count again). A guard hunt counts once
+  from the first "!" until those guards calm down. The same three 20-second tests now
+  count 1, 1, and 1.
+
+### What was built
+
+1. **"Spotted by"** on the score screen and in the playtest text: guards, cameras,
+   searchlights, snitches, other. "Other" is a shove, a guard thrown down or let go, a
+   sleeper waking, or the empty bed. The counts add up to the total.
+2. **Heat-up detection.** Each guard, camera, searchlight, and snitch has its own meter,
+   drawn as a ring over it that fills.
+   - **Fill times:** guard 2.0 s at the far edge of his beam and 0.8 s up close (was 1.3
+     and 0.3). Camera and searchlight 1.2 s (was 0.35). Snitch 1.0 s (was 0.3).
+   - **Slower:** crouching halves the rate. Standing still halves it. Both quarter it.
+   - **The tell:** the ring pulses while it fills, a note climbs in four steps, and cameras
+     and searchlights beep faster and faster. At a third full a guard goes "?" and comes
+     to look. Full is the "!" and the Step 9 pause.
+   - **Off screen:** the ring sits at the edge of the screen as an arrow pointing to it.
+   - **Draining:** 0.35 per second once you are out of view, drawn half faded. Step back
+     in early and it carries on from where it was.
+   - **Snitches:** the ring over his cell is his squint. He is not redrawn pointing.
+3. **Takedown menu.** A small pop-up beside the guard with the four choices and their
+   keyboard and controller buttons, and a bar for the time before he breaks free.
+   - Knock out: Space / X. Interrogate: Q / Y. Throw: F / Left Bumper. Drag: move.
+   - **One press** starts the interrogation. It runs for 2 s by itself with a progress
+     bar. You cannot move meanwhile. Space still knocks him out half way.
+   - His line shows as a speech bubble under him. Then "Radio code learned: his check-ins
+     will be faked", then the extra as its own message ("Patrol reveal: ...", "Secret
+     learned: ...", or "He said: ...").
+   - After he talks the pop-up shows Knock out, Let go (Q / Y), Throw, Drag.
+   - One-time hint on your first grab. An "Interrogations" line on the controls screen.
+4. **Places to drop from.** A run of pipes with a ladder over the guard's beat in the Cell
+   Block (x 9.6 to 13.4), the Laundry (16.3 to 20.3), and the Mess Hall (12 to 16.4, between
+   the first two tables). In the Yard, Tower 1's platform is over the ground guard's beat.
+   Guards and snitches do not see you up there. A pulsing arrow marks the guard you can
+   drop on, with "SPACE: drop on him". One-time hints at a ladder and at your first drop.
+5. **Ghost marker.** Brighter, with a pulsing outline. The first three of a run carry the
+   words "last seen". One-time hint the first time one appears.
+
+### Controls audit
+
+- **The clash was real.** Interrogate was "hold E", and E is also pick up, the keycard,
+  sleep, and the trader. Holding a guard, E now does nothing.
+- **Y on a controller** was the Controls screen. It is now Interrogate while you hold a
+  guard, and Controls the rest of the time. The controls screen says so.
+- **F / Left Bumper** is also "throw what you carry". Holding a guard it throws the guard,
+  and the same press never throws your cup as well. No change needed.
+- **Q** was unused.
+
+### Planning bot
+
+| Route | Result | Time | Before |
+| --- | --- | --- | --- |
+| Front door in, front door back | Ghost | 2:14 | 2:14 |
+| Front door in, one-way drop home | Ghost | 1:36 | 1:36 |
+| Vent route | Ghost | 1:23 | 1:23 |
+| Bed to work boots in hand | not noticed | 1:08 | 1:08 |
+| Boots, hoop climb to the roof, dash, window, drop home | Ghost | 2:14 | 2:14 |
+| Boots, Tower 1 (guard knocked out), roof, window, drop home | Shadow | 2:14 | 2:14 |
+
+Unchanged. The bot is never in anything's view, so slower meters do not alter its runs,
+and the pipes are not in any guard's way.
+
+### Choices I made that Adam should check
+
+- **A guard hunt counts once until he calms down**, not once per "!". The spec says once
+  per new Alert. Losing him and being found again inside the same hunt would still have
+  counted several times under that reading.
+- **Standing still slows every meter.** A camera on someone standing still takes 2.4 s,
+  and a crouched, still player takes 4.8 s. Freezing when a ring starts to fill is now a
+  real choice. Say if that is too generous.
+- **At a third full a guard still becomes Suspicious and walks over**, as before. The spec
+  says he turns his head. Suspicious guards notice 1.5 times faster, also as before.
+- **Under a lamp** a guard is sure at the close-up rate (0.8 s), no longer 0.3 s.
+- **The pipes are a safe place.** Nothing sees you up there, so a pipe is also a way to
+  let a guard walk past underneath. Each is about 4 m long, and you are in plain view on
+  the ladder.
+- **Throw stays in the menu after he talks.** The spec lists Knock out and Let go there.
+- **Snitches do not visibly squint or point.** The ring over the cell is the tell.
+- **The Yard got no new ledge.** Tower 1's platform already sits over the ground guard.
+- **Not verified:** not played by a person. I do not know if spotting now feels fair or
+  too slow, or if the rings read well. Sounds unheard, a controller and the 2015 MacBook
+  Air untested. Checked by 433 tests, the two bots, and headless Chrome.
+
+### How Adam tests it
+
+1. Walk into a flashlight from far away. Watch the ring over the guard fill and listen for
+   the climbing note. Step out before it is full and watch it fade down slowly.
+2. Do it again crouched, then standing still.
+3. Stand in the Stairwell camera's view: beeps speeding up, a ring at the camera.
+4. In the Yard, let a searchlight catch you with the tower off screen: look for the arrow
+   at the edge of the screen.
+5. Grab a guard. Read the pop-up. Press Q once and wait. Read the bubble and the two
+   messages. Then knock him out and wait for "Check-in faked".
+6. Open the Mess Hall link. Climb the ladder (hold W), wait for the guard to pass under,
+   and press Space when the arrow shows.
+7. Get chased, break line of sight, and look for the ghost and its "last seen" label.
+8. Finish a run and read "Spotted by".
+9. Is being spotted fair now? Is the tell early enough to act on?
+10. All four playtest questions.
 
 ---
 

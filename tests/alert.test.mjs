@@ -73,10 +73,11 @@ test('Suspicious to Alert: he walks over and sees the player clearly', () => {
   assert.ok(eventTypes(world).includes('alert'));
 });
 
-test('Calm to Alert: close up, detection is nearly instant', () => {
+test('Calm to Alert: close up, detection is quicker than far away, but never instant', () => {
+  // Step 14: 0.8 s up close for a moving player. This one stands still, which halves the rate.
   const world = testWorld({ playerX: 22, guards: [sentry('g', 20)] });
-  const time = runUntil(world, () => state(world) === 'alert', {}, 2);
-  assert.ok(time <= G.detectNearSeconds + 0.05);
+  const time = runUntil(world, () => state(world) === 'alert', {}, 3);
+  assert.ok(time > 0.5 && time <= G.detectNearSeconds / 0.5 + 0.05, `${time} s`);
   assert.ok(detectionRate({ state: 'calm' }, 1) > detectionRate({ state: 'calm' }, 6.5));
   assert.ok(detectionRate({ state: 'searching' }, 5) > detectionRate({ state: 'calm' }, 5));
 });
@@ -141,7 +142,8 @@ test('Searching guards check hiding spots near where they lost the player', () =
   runUntil(world, () => state(world) === 'searching', {}, 20);
   runUntil(world, () => world.grab !== null, {}, 20);
   assert.equal(world.player.hiddenIn, null, 'he pulled the player out');
-  assert.equal(world.stats.timesSpotted, 2);
+  // Step 14: one hunt is one spotting, however many times he loses you and finds you.
+  assert.equal(world.stats.timesSpotted, 1);
 });
 
 test('a hiding spot far from where he lost you is safe', () => {
@@ -174,16 +176,18 @@ test('Searching to Alert: seen again while he is searching', () => {
   run(world, { moveX: 1, run: true }, 6);
   runUntil(world, () => state(world) === 'searching', { moveX: 1, crouch: true }, 20);
   const guard = world.guards[0];
-  world.player.x = guard.x + guard.facing * 3;
-  runUntil(world, () => state(world) === 'alert', {}, 1);
-  assert.equal(world.stats.timesSpotted, 2);
+  // Stay in front of him, wherever he turns, until his meter is full again.
+  runUntil(world, () => {
+    world.player.x = guard.x + guard.facing * 3;
+    return state(world) === 'alert';
+  }, {}, 4);
+  assert.equal(world.stats.timesSpotted, 1, 'still the same hunt: it counts once');
 });
 
 test('hiding while a guard is watching does not work', () => {
   const hideSpots = [{ id: 'locker', type: 'locker', x: 25 }];
   const world = testWorld({ playerX: 25, guards: [sentry('g', 20)], hideSpots });
-  run(world, {}, 0.4);
-  assert.equal(state(world), 'suspicious');
+  runUntil(world, () => state(world) === 'suspicious', {}, 3);
   tap(world, 'up');
   assert.equal(state(world), 'alert', 'he saw you get in');
   assert.equal(world.guards[0].knownSpotId, 'locker');

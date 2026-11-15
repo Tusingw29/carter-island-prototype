@@ -44,7 +44,7 @@ test('reaction: a guard who goes Alert freezes for 0.6 s before he moves', () =>
 test('reaction: close-up sight fills the meter fast but still ends in the pause, never an instant grab', () => {
   const world = facingGuard(0.5);
   const alertAt = untilAlert(world);
-  assert.ok(alertAt < 0.5, 'up close he is sure very quickly');
+  assert.ok(alertAt < 1.7, 'up close he is sure sooner than far away (0.8 s, doubled for standing still)');
   run(world, {}, G.reactSeconds + G.lungeWindupSeconds - 0.05);
   assert.equal(world.grab, null, 'no grab until the pause and the wind-up are over');
   run(world, {}, 0.2);
