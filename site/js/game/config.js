@@ -51,7 +51,8 @@ export const CONFIG = Object.freeze({
   player: Object.freeze({
     walkSpeed: 3.2,
     runSpeed: 6.5,
-    crouchSpeed: 1.5,
+    // 70% of walking speed, and silent.
+    crouchSpeed: 2.24,
     standHeight: 1.7,
     crouchHeight: 0.9,
     // Keeps the player this far from the room's end walls.
@@ -62,13 +63,17 @@ export const CONFIG = Object.freeze({
 
   // How far each kind of movement can be heard.
   noise: Object.freeze({
-    walkRadius: 2.5,
+    // Walking is heard only from very close. Running is not.
+    walkRadius: 1,
     runRadius: 8,
     crouchRadius: 0,
     dragRadius: 1.5,
     // Jumping and landing are small noises, a slide is quiet, a dash is the loudest thing you can do.
     jumpRadius: 1.5,
     landRadius: 1.5,
+    // How much of a guard's hearing meter a small one-off noise (a jump, a landing) fills.
+    // Enough for a glance, not enough to bring him over. A loud one-off noise fills it all.
+    smallAmount: 0.5,
     slideRadius: 1,
     dashRadius: 11,
   }),
@@ -110,6 +115,15 @@ export const CONFIG = Object.freeze({
     suspiciousDetectBoost: 1.5,
     searchingDetectBoost: 3,
 
+    // Hearing fills a meter. Steady noise (footsteps) in earshot fills it in hearSeconds at the
+    // edge of earshot, and up to twice as fast close by. It drains when you go quiet.
+    hearSeconds: 1,
+    hearDrainPerSecond: 0.5,
+    // Past this much he glances back over his shoulder for a moment. Full, he comes to look.
+    glanceAt: 0.4,
+    glanceSeconds: 0.8,
+    glanceCooldownSeconds: 3,
+
     // How long a guard looks around at a spot before giving up.
     lookAroundSeconds: 3,
     // After losing sight, a chasing guard still knows where you are for this long.
@@ -125,6 +139,10 @@ export const CONFIG = Object.freeze({
     closeSightDistance: 1.2,
     // ...but only if your feet are within this much of his, up or down.
     closeSightUp: 1.5,
+    // Solid things in his way. Cover up to this high he vaults, which takes this long. Anything
+    // taller stops him.
+    vaultMaxHeight: 1.4,
+    vaultSeconds: 0.8,
     // A guard cannot grab someone whose feet are higher than this above him.
     grabReachUp: 1.2,
     // A sleeping guard who is disturbed wakes up this long after, if you are still in the room.
@@ -232,6 +250,31 @@ export const CONFIG = Object.freeze({
     reach: 1,
   }),
 
+  // Takedowns: grab a guard from behind, then choose.
+  takedown: Object.freeze({
+    // How far in front of you he is held.
+    holdGap: 0.6,
+    // Hold him this long without choosing and he breaks free.
+    holdSeconds: 6,
+    interrogateSeconds: 3,
+    // Speed while dragging a guard you are holding.
+    dragSpeed: 1.2,
+    // Thrown to the floor: stunned this long, heard this far, and pushed this far from you.
+    slamStunSeconds: 2,
+    slamNoiseRadius: 10,
+    slamPushMetres: 1,
+    // Let go after he has talked: this long before he comes to his senses.
+    releaseStunSeconds: 2,
+    // Dropping on a guard from above: how far below you he can be, and how far to the side.
+    aboveMinDrop: 1,
+    aboveMaxDrop: 8,
+    aboveReach: 1,
+    // Pulling a guard into your hiding spot.
+    pullInReach: 1.2,
+    // An interrogated guard can show his room's patrols on your map for this long.
+    patrolRevealSeconds: 60,
+  }),
+
   // Radio check-ins. The first guard calls in at firstSeconds, the next staggerSeconds later,
   // and so on. Each guard then calls in again every intervalSeconds.
   radio: Object.freeze({
@@ -239,6 +282,8 @@ export const CONFIG = Object.freeze({
     staggerSeconds: 8,
     intervalSeconds: 60,
     showSeconds: 2,
+    // A guard who cannot answer because he is being held is tried again this soon.
+    retrySeconds: 5,
   }),
 
   // How a knockout feels. All of it is drawing and sound: none of it changes the rules.

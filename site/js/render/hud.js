@@ -5,6 +5,7 @@ import { formatClock } from '../game/clock.js';
 import { currentAnnouncement } from '../game/cues.js';
 import { currentMessage } from '../game/messages.js';
 import { shoveCharge } from '../game/shove.js';
+import { holdLeft, holdOptions } from '../game/takedown.js';
 import { throwableName } from '../game/throwing.js';
 import { peek } from '../game/vents.js';
 import { setHidden, setText, setWidth } from './dom.js';
@@ -80,7 +81,28 @@ export function createHud(build, cues = true) {
   const peekPanel = byId('peek');
   const peekTitle = byId('peek-title');
   const peekStrip = byId('peek-strip');
+  const takedown = byId('takedown');
+  const takedownList = byId('takedown-options');
+  const takedownFill = byId('takedown-fill');
+  let shownOptions = '';
   let shownRoom = null;
+
+  // The choices while you hold a guard, with the buttons, and the time left before he breaks free.
+  function updateTakedown(world) {
+    const options = holdOptions(world);
+    setHidden(takedown, options.length === 0);
+    if (options.length === 0) return;
+    setWidth(takedownFill, holdLeft(world) * 100);
+    const html = options.map((option) => {
+      const bar = option.progress == null ? ''
+        : `<span class="bar"><span style="width:${Math.round(option.progress * 100)}%"></span></span>`;
+      return `<li><b>${option.keys}</b><i>${option.pad}</i><span>${option.label}</span>${bar}</li>`;
+    }).join('');
+    if (html !== shownOptions) {
+      shownOptions = html;
+      takedownList.innerHTML = html;
+    }
+  }
   let lastPeek = '';
 
   // Looking down through a grate: a strip showing the room below, with its guards and cameras.
@@ -144,6 +166,7 @@ export function createHud(build, cues = true) {
     setText(meterLabel, LABELS[summary.level]);
     setWidth(meterFill, summary.fill * 100);
 
+    updateTakedown(world);
     setHidden(mash, !world.grab);
     if (world.grab) setWidth(mashFill, (world.grab.presses / CONFIG.grab.mashNeeded) * 100);
 

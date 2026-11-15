@@ -1,5 +1,6 @@
 // The score screen shown when a run ends.
 import { formatClock } from '../game/clock.js';
+import { takedownText } from '../game/playtest.js';
 import { RANKS } from '../game/run.js';
 
 const HEADLINES = {
@@ -39,6 +40,10 @@ export function createEndScreen(onPlayAgain) {
     byId('score-spotted').textContent = result.timesSpotted;
     byId('score-knockouts').textContent = result.knockouts;
     byId('score-bodies').textContent = result.bodiesFound;
+    byId('score-takedowns').textContent = takedownText(result.takedowns);
+    byId('score-slams').textContent = result.slams;
+    byId('score-interrogations').textContent = result.interrogations;
+    byId('score-faked').textContent = result.checkInsFaked;
     byId('score-keycard').textContent = KEYCARD[result.keycardGrab] ?? 'Not taken';
     byId('score-alarm').textContent = result.silentAlarm ? `Yes: ${result.silentAlarmReason}` : 'No';
     byId('score-where-row').hidden = !WHERE_LABELS[result.outcome];

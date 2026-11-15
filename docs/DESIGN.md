@@ -202,6 +202,78 @@ hold up when the world grows?
   The window and the roof route only show once discovered.
 - Keep the 7:00 timer for now.
 
+## Searchlights and solid props (rules added in Step 12)
+
+- Make the visible light and the detection area EXACTLY the same shape, from one shared
+  function used by both the renderer and the game logic.
+- Draw the light POOL on the ground (and on platforms it hits), not just a beam in the
+  air. Add the warning glow just before a pool arrives.
+- Height: the light hits whatever it actually reaches. If you are up on a platform, it
+  checks your real position, and cover between the tower and you blocks it (Step 10
+  line-of-sight rules).
+- A debug view (F1) outlines each searchlight's detection area.
+- Guards must respect solid props. Low crates: the guard VAULTS over (about 0.8 s, slow,
+  clear animation), which gives the player time. Tall crates and walls: he cannot pass
+  and must stop or take another way.
+- No patrol walks through anything.
+
+## Quieter sneaking (added in Step 12)
+
+- Walking noise radius drops to about 1 m (config value). Running stays loud.
+- Hearing meter: noise fills a meter instead of making a guard Suspicious at once.
+  - Partly full: he glances back over his shoulder for a moment, then keeps patrolling.
+  - Full: he goes Suspicious and walks to the sound.
+  - It drains when you go quiet. Show it as a small arc over the guard.
+- Crouch-walking stays silent but is faster (about 70% of walking speed, config value).
+- Noise rings are always visible as a faint circle around the player (not only in debug),
+  so the player knows how loud they are.
+
+## The takedown system (added in Step 12)
+
+Replaces the old instant knockout from behind. The shove (from the front) and throwables stay.
+
+### Grab
+
+- Get close behind a guard who cannot see you (or a sleeping one): the prompt
+  "SPACE: grab" appears. Press it: you grab him from behind. He cannot call out.
+- While holding him, the options show on screen:
+  - KNOCK OUT (Space / X again): quick choke, he goes down. Same as before: wakes after
+    75 s, misses radio check-ins. Hit feedback from Step 8.
+  - INTERROGATE (hold E / A for about 3 s): he talks (see below), then you still choose to
+    knock him out or let him go. You cannot move while interrogating. If another guard
+    sees you, he goes Alert.
+  - THROW (F / Left Bumper): slam him to the floor. Stunned about 2 s, LOUD, then he gets up
+    Alert. Use it to escape.
+  - DRAG (move while holding): walk him slowly to a better spot, then pick an option.
+- If you hold him for more than about 6 s without choosing, he breaks free and goes Alert.
+- Controller layout must not clash with existing buttons. Show the button hints on screen.
+
+### What interrogating gets you (all four)
+
+- Every interrogation gives his RADIO CODE: after you knock him out, his radio check-ins
+  are answered (faked) until he wakes up, so nobody comes looking. Show "Check-in faked"
+  when it happens.
+- Plus ONE extra, set per guard in rooms.js (same every run, so it is learnable):
+  - PATROL REVEAL: the guard routes in this room show on the map for 60 s.
+  - A SECRET: where something is (the work boots, a vent, a throwable, the camera panel).
+  - A STORY BIT: a short, uneasy line about The Black / Ore Seven. Never explain it. Hints
+    only. Examples of the tone: "Don't go near the deep shafts. Guys come back quiet.",
+    "Company calls it Ore Seven. Miners call it The Black. Nobody calls it safe.",
+    "Lights flicker near the old wall. Every night. Same time."
+- Each guard can only be interrogated once per run.
+
+### Extra takedowns
+
+- FROM ABOVE: stand on a ledge or platform over an unaware guard and press Space to drop on
+  him: instant knockout. Landing makes a small noise.
+- FROM A HIDING SPOT: while hidden in a locker, cart, or under a table, if an unaware guard
+  passes within reach, the prompt "SPACE: pull in" appears. He is knocked out and stored in
+  that spot (the spot is then full, and you step out).
+
+### Score screen
+
+- Add: takedowns by type, interrogations, check-ins faked.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

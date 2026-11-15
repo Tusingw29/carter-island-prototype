@@ -3,11 +3,11 @@ import { CONFIG } from './config.js';
 import { beginSearch, calmDown, raiseAlarm } from './alert.js';
 import { doBedCheck } from './bedcheck.js';
 import { canLunge, finishLunge, startLunge, tryPullOut } from './grab.js';
-import { disturb, lookAround, moveToward, patrol } from './guard.js';
+import { disturb, lookAround, moveToward, patrol, updateVault } from './guard.js';
 import { concealedIn, spotById } from './hiding.js';
 import { canHear } from './noise.js';
 import { doRadioVisit } from './radio.js';
-import { senseBodies } from './senses.js';
+import { endGlance, senseBodies } from './senses.js';
 
 const spotsFor = (guard, world) => world.layout.rooms[guard.roomId].hideSpots ?? [];
 
@@ -26,7 +26,9 @@ function chase(guard, world, dt, cfg) {
     guard.trackTimer -= dt;
     if (!knownSpot) guard.lastKnownX = world.player.x;
   }
-  guard.lostFor = guard.seesPlayer ? 0 : guard.lostFor + dt;
+  // Time out of his sight only counts while he is able to look: not while he is dazed.
+  if (guard.seesPlayer) guard.lostFor = 0;
+  else if (guard.stun <= 0) guard.lostFor += dt;
   if (guard.react > 0) {
     guard.react -= dt;
     guard.facing = Math.sign(guard.lastKnownX - guard.x) || guard.facing;
@@ -105,11 +107,25 @@ function search(guard, world, dt, cfg) {
 
 // A guard in the same room as the player.
 export function updateGuardAI(guard, world, dt, cfg = CONFIG.guard) {
+  // Half way over a crate he can do nothing else.
+  if (updateVault(guard, dt)) return;
   // Stunned (a cup to the head): he does nothing until it wears off. A chasing guard's stun is
   // handled in chase(), where what he knows keeps ticking.
   if (guard.state !== 'alert' && guard.stun > 0) {
     guard.stun -= dt;
     return;
+  }
+  // A glance back over his shoulder: he stands and looks for a moment, then carries on.
+  if (guard.glance > 0) {
+    if (guard.state !== 'calm') guard.glance = 0;
+    else {
+      guard.glance -= dt;
+      if (guard.glance <= 0) {
+        guard.glance = dt;
+        endGlance(guard, cfg);
+      }
+      return;
+    }
   }
   if (guard.state === 'calm' && guard.duty?.type === 'radio') doRadioVisit(guard, world, dt, cfg);
   else if (guard.state === 'calm' && guard.duty) doBedCheck(guard, world, dt, cfg);

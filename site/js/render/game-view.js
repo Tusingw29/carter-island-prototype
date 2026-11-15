@@ -1,5 +1,7 @@
 // Everything drawn for one run of the game, under a single group so a restart can swap it out.
-import { Group } from '../../vendor/three.module.js';
+import {
+  BufferGeometry, Group, LineBasicMaterial, LineLoop, Vector3,
+} from '../../vendor/three.module.js';
 import { spotById } from '../game/hiding.js';
 import { sightBlockers } from '../game/sight.js';
 import { throwArc } from '../game/throwing.js';
@@ -21,6 +23,37 @@ export function createGameView(world, options = {}) {
   const debugView = createDebugView(world);
   root.add(roomView.group, playerView.group, debugView.group);
   const blockers = sightBlockers(world.room);
+
+  // How loud you are: a faint ring round the player as far as your footsteps carry, always
+  // shown, and a ring that fades for each one-off noise (a landing, a cup, a slammed door).
+  const circle = () => {
+    const points = Array.from({ length: 48 }, (_, i) => (
+      new Vector3(Math.cos((i / 48) * Math.PI * 2), Math.sin((i / 48) * Math.PI * 2), 0)
+    ));
+    const material = new LineBasicMaterial({ color: 0x9fe8b4, transparent: true, opacity: 0.35 });
+    return new LineLoop(new BufferGeometry().setFromPoints(points), material);
+  };
+  const noiseRing = circle();
+  const pingRings = Array.from({ length: 4 }, circle);
+  root.add(noiseRing, ...pingRings);
+
+  function updateNoise(debug) {
+    const radius = world.noiseRadius;
+    noiseRing.visible = radius > 0;
+    noiseRing.position.set(world.player.x, (world.player.y ?? 0) + 0.2, 0.6);
+    noiseRing.scale.setScalar(radius || 1);
+    noiseRing.material.opacity = debug ? 0.9 : 0.35;
+    const recent = world.pings.slice(-pingRings.length);
+    pingRings.forEach((ring, i) => {
+      const ping = recent[i];
+      ring.visible = Boolean(ping);
+      if (!ping) return;
+      const age = (world.time - ping.at) / 0.5;
+      ring.position.set(ping.x, ping.y + 0.2, 0.6);
+      ring.scale.setScalar(ping.radius * (0.6 + 0.4 * age));
+      ring.material.opacity = 0.5 * (1 - age);
+    });
+  }
 
   // The dotted arc shown while aiming a throw, and the things in the air.
   const dots = Array.from({ length: 16 }, () => block(0.09, 0.09, 0.09, 0xffffff, 0xcfd8e8));
@@ -60,6 +93,7 @@ export function createGameView(world, options = {}) {
     playerView.update(world.player, spotById(world.room.hideSpots ?? [], world.player.hiddenIn), world.time);
     world.guards.forEach((guard, i) => guardViews[i].update(guard, far, world.time, blockers));
     updateThrows();
+    updateNoise(debug);
     debugView.update(world, debug);
   }
 

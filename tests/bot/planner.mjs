@@ -156,7 +156,15 @@ function expand(node, frames, room, darkSpots) {
   }
   for (const spot of spots) {
     const halfWidth = spot.halfWidth ?? 0;
-    if (Math.max(0, Math.abs(spot.x - node.x) - halfWidth) > CONFIG.hide.reach - 0.05) continue;
+    const toSpot = Math.max(0, Math.abs(spot.x - node.x) - halfWidth);
+    if (toSpot > CONFIG.hide.reach - 0.05) continue;
+    // Up goes to whichever is nearer, a door or a hiding spot. Never press it for a spot while
+    // a door is at least as near: that would open the door instead.
+    const doorNearer = (room.portals ?? []).some((portal) => (
+      portal.type !== 'hall' && Math.abs(portal.x - node.x) <= CONFIG.door.reach + 0.1
+        && Math.abs(portal.x - node.x) <= toSpot + 0.1
+    ));
+    if (doorNearer) continue;
     add(Math.max(spot.x - halfWidth, Math.min(spot.x + halfWidth, node.x)), spot.id, { up: true });
   }
   return next;

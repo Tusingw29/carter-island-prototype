@@ -4,7 +4,7 @@ import { PRISON } from './rooms.js';
 import { raiseAlarm } from './alert.js';
 import { createCamera, updateCamera } from './camera.js';
 import { updateGrab } from './grab.js';
-import { createGuard, isAwake } from './guard.js';
+import { createGuard, isAwake, obstaclesFor } from './guard.js';
 import { updateGuardAI, updateGuardAway, updateSleeper } from './guard-ai.js';
 import { concealedIn, darkSpotAt, spotById, toggleHide } from './hiding.js';
 import { updateHold } from './holds.js';
@@ -22,6 +22,7 @@ import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
 import { setUpRadio, updateRadio } from './radio.js';
 import { updateTimer } from './run.js';
+import * as take from './takedown.js';
 import { updateThrowing } from './throwing.js';
 import { createSnitch, openCell, updateSnitch } from './snitch.js';
 import { updateSenses } from './senses.js';
@@ -40,7 +41,9 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     timeLeft: cfg.headcountSeconds,
     player: createPlayer(start.playerStart),
     // Every guard in the prison, and the ones in the player's current room.
-    allGuards: rooms.flatMap((room) => (room.guards ?? []).map((def) => ({ ...createGuard(def), roomId: room.id }))),
+    allGuards: rooms.flatMap((room) => (room.guards ?? []).map((def) => (
+      { ...createGuard(def), roomId: room.id, obstacles: obstaclesFor(room, def.y ?? 0) }
+    ))),
     guards: [],
     cameras: rooms.flatMap((room) => (room.cameras ?? []).map((def) => createCamera(def, room.id))),
     snitches: rooms.flatMap((room) => (room.snitches ?? []).map((def) => createSnitch(def, room.id))),
@@ -100,7 +103,25 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     interactWasHeld: false,
     jumpWasHeld: false,
     dashWasHeld: false,
-    stats: { timesSpotted: 0, knockouts: 0, bodiesFound: 0 },
+    stats: {
+      timesSpotted: 0, knockouts: 0, bodiesFound: 0,
+      // Knockouts by how they were done, guards thrown down, guards who talked, and radio
+      // check-ins answered for a guard whose code you had.
+      takedowns: { choke: 0, above: 0, pullIn: 0 },
+      slams: 0,
+      interrogations: 0,
+      checkInsFaked: 0,
+    },
+    // The guard being held in a takedown: { guardId, time, asking, talked }, or null.
+    hold: null,
+    // What interrogated guards have told you, as { from, type, text }, for the map screen.
+    intel: [],
+    // A room whose patrols are showing on the map: { roomId, until }.
+    patrolReveal: null,
+    // One-off noises just made, as { x, y, radius, at }, so they can be drawn as rings.
+    pings: [],
+    throwWasHeld: false,
+    throwLock: false,
   };
   setUpRadio(world, cfg.radio);
   enterRoom(world, start.id, start.playerStart);
@@ -237,16 +258,33 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   world.jumpWasHeld = intent.jump;
   world.dashWasHeld = intent.dash;
 
+  const throwPressed = intent.throw && !world.throwWasHeld;
+  world.throwWasHeld = intent.throw;
   const wasConcealed = concealedIn(player);
-  if (actionPressed) pressAction(world);
-  handleUp(world, intent, upPressed, dt);
-  handleInteract(world, intent, interactPressed, dt);
+  // With a guard in your hands the buttons mean the takedown choices and nothing else.
+  const holding = Boolean(world.hold);
+  if (holding) {
+    const pressed = { action: actionPressed, interact: interactPressed, throw: throwPressed };
+    take.updateTakedown(world, intent, pressed, dt, cfg);
+  } else {
+    if (actionPressed) pressAction(world, take);
+    // The press that grabbed him must not also count as the first choice.
+    if (!world.hold) {
+      handleUp(world, intent, upPressed, dt);
+      handleInteract(world, intent, interactPressed, dt);
+    }
+  }
   if (world.over) return;
-  const hall = hallBeingEntered(world, intent);
+  const hall = holding || world.hold ? null : hallBeingEntered(world, intent);
   if (hall) travel(world, hall);
   const spots = world.room.hideSpots ?? [];
   const hideSpot = player.hiddenIn ? spotById(spots, player.hiddenIn) : null;
   let moving = intent;
+  // Holding a guard you can only walk him along, slowly. Interrogating, you cannot move at all.
+  if (world.hold) {
+    const moveX = take.interrogating(world) ? 0 : intent.moveX;
+    moving = { ...intent, moveX, up: false, crouch: false, run: false, jump: false, dash: false };
+  }
   // In the duct there is no room to stand: you crawl, which is slow but silent.
   if (world.room.crawl) moving = { ...intent, crouch: true, run: false };
   if (!world.room.crawl && !player.hiddenIn) {
@@ -258,14 +296,24 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
     updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
   }
   updateDrag(world);
-  updateThrowing(world, intent.throw, dt, cfg.throwing);
+  take.carryHeld(world, cfg);
+  // The press that threw a guard down must not also start aiming whatever you are carrying.
+  if (holding || world.hold) world.throwLock = true;
+  else if (!intent.throw) world.throwLock = false;
+  updateThrowing(world, intent.throw && !world.throwLock, dt, cfg.throwing);
   player.inDark = darkSpotAt(player, spots);
   noteWatchedHiding(world, wasConcealed, cfg.guard);
 
   world.noiseRadius = noiseRadius(player.mode);
   world.noises = world.pendingNoises;
   world.pendingNoises = [];
-  if (world.noiseRadius > 0) world.noises.push({ x: player.x, y: player.y, radius: world.noiseRadius });
+  // One-off noises are remembered for a moment so they can be drawn.
+  world.pings = world.pings.filter((ping) => world.time - ping.at < 0.5);
+  for (const { x, y = 0, radius } of world.noises) world.pings.push({ x, y, radius, at: world.time });
+  // Footsteps are a steady noise: they fill a guard's hearing meter over time.
+  if (world.noiseRadius > 0) {
+    world.noises.push({ x: player.x, y: player.y, radius: world.noiseRadius, steady: true });
+  }
   notePlaces(world);
 
   updateEveryoneElse(world, dt, cfg);

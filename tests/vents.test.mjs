@@ -76,7 +76,7 @@ test('the crawl path: Maintenance vent, along the duct, drop into the Guard Offi
   tap(world, 'up');
   const crawlStart = world.time;
   runUntil(world, () => world.player.x >= 28.5 - 0.5, { moveX: 1 }, 30);
-  assert.ok(world.time - crawlStart > 15, 'it is a slow crawl');
+  assert.ok(world.time - crawlStart > 11, 'it is a slow crawl: slower than walking it would be');
   assert.match(currentPrompt(world).text, /drop down \(one way\)/);
   tap(world, 'up');
   assert.equal(world.room.id, 'guard-office');

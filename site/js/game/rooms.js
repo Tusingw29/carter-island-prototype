@@ -28,6 +28,10 @@
 //   sleeper is asleep until something wakes him.
 // Guards can have y (the height they stand at, for a tower), bounds (the stretch of floor they
 // never leave), and a name for the radio.
+//   talk is what a guard gives up when interrogated, on top of his radio code. One thing each,
+//   the same every run: { type: 'patrols' } shows his room's patrols on the map for a while,
+//   { type: 'secret', text, reveals, finds } says where something is and puts it on the map,
+//   { type: 'story', text } is a line about the mine. Story lines only ever hint.
 // Map: floor 0 is the basement. col and span place the room on the map screen.
 
 const cellBlock = {
@@ -60,7 +64,8 @@ const cellBlock = {
       toPortal: 'go-drop' },
   ],
   items: [{ id: 'cb-cup', type: 'cup', x: 21 }],
-  guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1, checksBed: true }],
+  guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1, checksBed: true,
+    talk: { type: 'story', text: "Don't go near the deep shafts. Guys come back quiet." } }],
 };
 
 const laundry = {
@@ -85,7 +90,8 @@ const laundry = {
     { id: 'la-soap-1', type: 'soap', x: 11.6 },
     { id: 'la-soap-2', type: 'soap', x: 18.4 },
   ],
-  guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1 }],
+  guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1,
+    talk: { type: 'story', text: 'They sealed Shaft Nine in a day. Nobody brought the crew up first.' } }],
 };
 
 const maintenance = {
@@ -137,8 +143,10 @@ const messHall = {
     { id: 'mh-yard', type: 'door', creaky: true, x: 33.2, to: 'yard', toPortal: 'yd-door' },
   ],
   guards: [
-    { id: 'mh-guard-1', patrol: [7, 18], startX: 11, facing: 1 },
-    { id: 'mh-guard-2', patrol: [20, 31], startX: 24, facing: -1 },
+    { id: 'mh-guard-1', patrol: [7, 18], startX: 11, facing: 1,
+    talk: { type: 'patrols' } },
+    { id: 'mh-guard-2', patrol: [20, 31], startX: 24, facing: -1,
+    talk: { type: 'story', text: 'Company calls it Ore Seven. Miners call it The Black. Nobody calls it safe.' } },
   ],
   // Hidden in the kitchen corner.
   items: [
@@ -168,7 +176,11 @@ const stairwell = {
     { id: 'sw-door', type: 'door', creaky: true, x: 24, to: 'guard-office', toPortal: 'go-door' },
   ],
   items: [{ id: 'sw-mug', type: 'mug', x: 4.5 }],
-  guards: [{ id: 'sw-guard', patrol: [9, 9], facing: -1, turnEvery: 5 }],
+  guards: [{ id: 'sw-guard', patrol: [9, 9], facing: -1, turnEvery: 5,
+    talk: {
+      type: 'secret', finds: ['ma-panel'],
+      text: 'The panel for that camera is down in the Maintenance Hall. Flip it and the eye goes blind.',
+    } }],
   cameras: [{ id: 'sw-camera', min: 16.5, max: 21, halfWidth: 1.2, speed: 1.2 }],
 };
 
@@ -192,7 +204,11 @@ const guardOffice = {
       toPortal: 'cb-drop' },
   ],
   items: [{ id: 'keycard', type: 'keycard', x: 10.5 }],
-  guards: [{ id: 'go-guard', patrol: [13.5, 13.5], facing: -1, sleeper: true }],
+  guards: [{ id: 'go-guard', patrol: [13.5, 13.5], facing: -1, sleeper: true,
+    talk: {
+      type: 'secret', reveals: ['mh-yard', 'yd-hatch'],
+      text: 'Work boots? Equipment shed, out in the Yard. Door is latched. The only way in is the roof hatch.',
+    } }],
 };
 
 // The duct runs above the Cell Block and Mess Hall. No guards, no room to stand: you crawl.
@@ -309,15 +325,18 @@ const yard = {
   guards: [
     // He walks between the east end of the court and the bleachers. The open court belongs to
     // Tower 1's searchlight.
-    { id: 'yd-guard', name: 'Yard guard', patrol: [31.5, 39.5], startX: 34, facing: 1, bounds: [8.8, 48.5] },
-    { id: 'yd-tower-1', name: 'Tower 1 guard', patrol: [34.6, 34.6], facing: -1, y: TOWER, bounds: [33.8, 37.2] },
-    { id: 'yd-tower-2', name: 'Tower 2 guard', patrol: [70.1, 70.1], facing: -1, y: TOWER, bounds: [69.3, 72.7] },
+    { id: 'yd-guard', name: 'Yard guard', patrol: [31.5, 39.5], startX: 34, facing: 1, bounds: [8.8, 48.5],
+    talk: { type: 'patrols' } },
+    { id: 'yd-tower-1', name: 'Tower 1 guard', patrol: [34.6, 34.6], facing: -1, y: TOWER, bounds: [33.8, 37.2],
+    talk: { type: 'story', text: 'Lights flicker near the old wall. Every night. Same time.' } },
+    { id: 'yd-tower-2', name: 'Tower 2 guard', patrol: [70.1, 70.1], facing: -1, y: TOWER, bounds: [69.3, 72.7],
+    talk: { type: 'story', text: 'The dogs will not cross the Yard after dark. They never used to mind.' } },
   ],
   cameras: [
     { id: 'yd-light-1', kind: 'searchlight', min: 13, max: 25, halfWidth: 2.2, speed: 2.2, awaySeconds: 3,
-      mountX: 33.2, mountY: 7.8, guardId: 'yd-tower-1', maxY: 3 },
+      mountX: 33.2, mountY: 7.8, guardId: 'yd-tower-1' },
     { id: 'yd-light-2', kind: 'searchlight', min: 52, max: 66, halfWidth: 2.2, speed: 1.8, awaySeconds: 3,
-      mountX: 68.7, mountY: 7.8, guardId: 'yd-tower-2', maxY: 3 },
+      mountX: 68.7, mountY: 7.8, guardId: 'yd-tower-2' },
   ],
   // On the map the roof is its own box, next to the Guard Office, and shows once you get up there.
   mapParts: [
@@ -406,7 +425,8 @@ const gym = {
   portals: [],
   // On top of the tall crate, where the course takes you anyway.
   items: [{ id: 'gym-cup', type: 'cup', x: 62.6, y: 2 }],
-  guards: [{ id: 'gym-guard', patrol: [64.5, 75.5], startX: 68, facing: 1, bounds: [63.7, 76.6] }],
+  guards: [{ id: 'gym-guard', patrol: [64.5, 75.5], startX: 68, facing: 1, bounds: [63.7, 76.6],
+    talk: { type: 'story', text: 'My badge logs a door on sub-level four. There is no sub-level four.' } }],
   finish: { x: 80 },
 };
 

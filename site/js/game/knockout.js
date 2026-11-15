@@ -1,5 +1,6 @@
-// Knocking guards out from behind, dragging the body, and stuffing it in a locker or cart.
-// Sneak up unseen and it is instant. Knocked-out guards wake up again after a while.
+// Knocked-out guards: who can be grabbed, dragging the body, stuffing it in a locker or cart,
+// and waking up. The grab itself and its choices are in takedown.js.
+// Sneak up unseen and you can grab him. Knocked-out guards wake up again after a while.
 // A guard who can see you cannot be knocked out: the same button shoves him instead (shove.js).
 import { CONFIG } from './config.js';
 import { beginSearch, makeSuspicious } from './alert.js';
@@ -25,7 +26,7 @@ export function knockoutTarget(world, cfg = CONFIG.knockout) {
     if (Math.abs((player.y ?? 0) - (guard.y ?? 0)) > cfg.reachUp) return false;
     const behind = offset * guard.facing < 0 || guard.state === 'asleep';
     const unaware = !guard.seesPlayer && guard.state !== 'alert';
-    return isConscious(guard) && behind && unaware && Math.abs(offset) <= cfg.reach;
+    return isConscious(guard) && guard.state !== 'held' && behind && unaware && Math.abs(offset) <= cfg.reach;
   }) ?? null;
 }
 
@@ -45,8 +46,11 @@ export function stuffTarget(world) {
   return nearestHideSpot(world.player, world.room.hideSpots, fullSpotIds(world));
 }
 
-export function knockOut(world, guard) {
+// how is 'choke' (grabbed from behind), 'above' (dropped on), or 'pullIn' (from a hiding spot).
+export function knockOut(world, guard, how = 'choke') {
+  world.stats.takedowns[how] += 1;
   guard.state = 'out';
+  guard.vault = null;
   guard.detection = 0;
   guard.seesPlayer = false;
   guard.stun = 0;
@@ -69,17 +73,29 @@ export function knockOut(world, guard) {
 // True while the "shove not ready" shake should show over a guard.
 export const tooRiskyNow = (world) => Boolean(world.risky) && world.time < world.risky.until;
 
-// The Knockout / Drag button. Returns what happened, or null.
-export function pressAction(world) {
+// The Takedown / Drag button, when no guard is being held. Returns what happened, or null.
+// take has the takedown moves (see takedown.js), passed in so the two files do not import
+// each other in a circle.
+export function pressAction(world, take) {
   const { player } = world;
   if (player.dragging) {
     player.dragging = null;
     return 'dropped';
   }
+  const passing = take.pullInTarget(world);
+  if (passing) {
+    take.pullIn(world, passing);
+    return 'pullIn';
+  }
   const guard = knockoutTarget(world);
   if (guard) {
-    knockOut(world, guard);
-    return 'knockout';
+    take.startHold(world, guard);
+    return 'grab';
+  }
+  const below = take.dropTarget(world);
+  if (below) {
+    take.dropOn(world, below);
+    return 'above';
   }
   if (knockOutSnitch(world)) return 'knockout';
   // He can see you, or is in front of you: no knockout. A shove instead, if it is ready.

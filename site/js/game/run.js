@@ -29,6 +29,11 @@ export function scoreRun(world) {
     timesSpotted,
     knockouts,
     bodiesFound,
+    // Knockouts by how they were done, and the rest of the takedown tally.
+    takedowns: { ...world.stats.takedowns },
+    slams: world.stats.slams,
+    interrogations: world.stats.interrogations,
+    checkInsFaked: world.stats.checkInsFaked,
     // Why the trip home went the way it did.
     silentAlarm: world.silentAlarm,
     silentAlarmReason: silentAlarmReason(world),

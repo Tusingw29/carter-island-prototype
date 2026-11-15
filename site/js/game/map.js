@@ -21,6 +21,18 @@ export function notePlaces(world) {
   if (part) world.visitedParts.add(part.id);
 }
 
+// The guards of a room whose patrols are showing, each as { from, to, at } in shares of the
+// room's width (0 is its left wall, 1 its right). Empty unless a guard has just given them up.
+export function revealedPatrols(world, room) {
+  const reveal = world.patrolReveal;
+  if (!reveal || reveal.roomId !== room.id || world.time >= reveal.until) return [];
+  return world.allGuards.filter((guard) => guard.homeRoomId === room.id && guard.state !== 'out')
+    .map((guard) => ({
+      from: guard.patrolMin / room.width, to: guard.patrolMax / room.width, at: guard.x / room.width,
+      high: (guard.y ?? 0) > 0,
+    }));
+}
+
 export function mapModel(world) {
   const all = Object.values(world.layout.rooms);
   const here = currentPart(world);
@@ -35,6 +47,7 @@ export function mapModel(world) {
       visited: world.visited.has(room.id),
       current: world.room.id === room.id && !here,
       marks: world.visited.has(room.id) ? (room.mapMarks ?? []) : [],
+      patrols: revealedPatrols(world, room),
     });
     for (const part of room.mapParts ?? []) {
       rooms.push({
@@ -46,6 +59,7 @@ export function mapModel(world) {
         visited: world.visitedParts.has(part.id),
         current: here?.id === part.id,
         marks: [],
+        patrols: [],
       });
     }
   }

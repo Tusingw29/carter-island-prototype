@@ -41,12 +41,47 @@ function senseSight(guard, world, dt, cfg) {
   else if (guard.state === 'calm' && guard.detection >= cfg.glimpseThreshold) makeSuspicious(world, guard, player.x);
 }
 
-function senseNoise(guard, world, cfg) {
+// Noise fills his hearing meter. A steady noise (footsteps) fills it over about a second,
+// faster the closer it is. A one-off noise adds its amount at once: a loud one fills it.
+// Part full, a calm guard glances back over his shoulder. Full, he goes to look.
+function senseNoise(guard, world, dt, cfg) {
+  guard.glanceCooldown = Math.max(0, guard.glanceCooldown - dt);
+  let heard = false;
   for (const noise of world.noises) {
     if (!canHear(guard.x, noise, guard.y ?? 0)) continue;
-    if (guard.state === 'alert') guard.lastKnownX = noise.x;
-    else if (guard.state !== 'suspicious' || guard.targetX !== noise.x) makeSuspicious(world, guard, noise.x);
+    if (guard.state === 'alert') {
+      guard.lastKnownX = noise.x;
+      continue;
+    }
+    heard = true;
+    const distance = Math.hypot(guard.x - noise.x, (guard.y ?? 0) - (noise.y ?? 0));
+    const steady = (dt / cfg.hearSeconds) * (2 - distance / noise.radius);
+    guard.hearing = Math.min(1, guard.hearing + (noise.steady ? steady : (noise.amount ?? 1)));
+    guard.heardX = noise.x;
   }
+  if (!heard) {
+    guard.hearing = Math.max(0, guard.hearing - cfg.hearDrainPerSecond * dt);
+    return;
+  }
+  if (guard.hearing >= 1) {
+    guard.hearing = 0;
+    endGlance(guard);
+    makeSuspicious(world, guard, guard.heardX);
+  } else if (guard.state === 'calm' && guard.hearing >= cfg.glanceAt && guard.glance <= 0
+    && guard.glanceCooldown <= 0 && !guard.duty) {
+    guard.glance = cfg.glanceSeconds;
+    guard.facingBeforeGlance = guard.facing;
+    guard.facing = Math.sign(guard.heardX - guard.x) || guard.facing;
+    world.events.push({ type: 'glance', guardId: guard.id, roomId: guard.roomId });
+  }
+}
+
+// Stops a glance and turns him back the way he was facing.
+export function endGlance(guard, cfg = CONFIG.guard) {
+  if (guard.glance <= 0) return;
+  guard.glance = 0;
+  guard.facing = guard.facingBeforeGlance;
+  guard.glanceCooldown = cfg.glanceCooldownSeconds;
 }
 
 // A guard notices a body lying in the open in his own room, whether or not the player is there.
@@ -69,6 +104,6 @@ export function senseBodies(guard, world, cfg = CONFIG.guard) {
 
 export function updateSenses(guard, world, dt, cfg = CONFIG.guard) {
   senseSight(guard, world, dt, cfg);
-  senseNoise(guard, world, cfg);
+  senseNoise(guard, world, dt, cfg);
   if (guard.stun <= 0) senseBodies(guard, world, cfg);
 }

@@ -16,7 +16,7 @@ import { travel } from '../site/js/game/portals.js';
 import { PRISON } from '../site/js/game/rooms.js';
 import { jumpTimer } from '../site/js/game/run.js';
 import { createWorld } from '../site/js/game/world.js';
-import { eventTypes, guardById, prisonWorld, run, tap } from './helpers.mjs';
+import { eventTypes, guardById, prisonWorld, run, tap, knock } from './helpers.mjs';
 
 const VIEW = CONFIG.view;
 const FRAME = 1 / 60;
@@ -308,7 +308,7 @@ test('silent alarm reason: a camera saw you earlier, and it names the room', () 
 
 test('silent alarm reason: the office guard was knocked out', () => {
   const world = prisonWorld('guard-office', 13);
-  tap(world, 'action');
+  knock(world);
   world.player.x = 10.5;
   liftCard(world);
   assert.deepEqual(world.silentAlarmReasons, ['knockout']);
@@ -319,7 +319,7 @@ test('silent alarm reason: the office guard was knocked out', () => {
 test('silent alarm reason: both at once are both named', () => {
   const world = prisonWorld('guard-office', 13);
   world.seenByCamera = true;
-  tap(world, 'action');
+  knock(world);
   world.player.x = 10.5;
   liftCard(world);
   assert.equal(silentAlarmReason(world), 'a camera saw you earlier, and the office guard was knocked out');

@@ -205,9 +205,11 @@ test('losing a guard: a hiding spot he watched you get into does not', () => {
 
 // ---------- Knockouts ----------
 
-test('knockout: instant from behind when he has not seen you', () => {
+test('knockout: from behind when he has not seen you. A grab, then a choke (Step 12)', () => {
   const world = testWorld({ playerX: 19.2, guards: [sentry('g', 20)] });
-  assert.equal(currentPrompt(world).text, 'SPACE: knock out');
+  assert.equal(currentPrompt(world).text, 'SPACE: grab');
+  tap(world, 'action');
+  assert.equal(world.guards[0].state, 'held');
   tap(world, 'action');
   assert.equal(world.guards[0].state, 'out');
   assert.equal(world.stats.knockouts, 1);

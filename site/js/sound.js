@@ -38,6 +38,16 @@ const CUES = {
   dash: [[700, 0, 0.16, 'sawtooth', 0.9, 180], [90, 0, 0.12, 'square', 1.2]],
   slide: [[220, 0, 0.3, 'sawtooth', 0.25, 120]],
   fell: [[400, 0, 0.4, 'sine', 0.8, 80]],
+  // Takedowns: the grab, him talking, being thrown down, breaking free, and a faked check-in.
+  grabGuard: [[130, 0, 0.1, 'sine', 1.6, 80], [300, 0, 0.03, 'square', 0.4]],
+  talk: [[330, 0, 0.08, 'triangle', 0.6], [392, 0.1, 0.08, 'triangle', 0.6], [330, 0.2, 0.14, 'triangle', 0.6]],
+  slam: [[120, 0, 0.3, 'sine', 3.4, 35], [70, 0, 0.35, 'triangle', 2.6, 30], [500, 0, 0.04, 'square', 1]],
+  brokeFree: [[400, 0, 0.08, 'sawtooth', 0.9, 700], [700, 0.08, 0.12, 'sawtooth', 0.9]],
+  checkInFaked: [
+    [1800, 0, 0.03, 'square', 0.35], [1350, 0.05, 0.05, 'square', 0.35], [1800, 0.14, 0.05, 'square', 0.3],
+  ],
+  // A guard half hearing something.
+  glance: [[500, 0, 0.06, 'triangle', 0.35]],
   bodyFound: [[700, 0, 0.3, 'sawtooth']],
   grab: [[150, 0, 0.3, 'sawtooth']],
   free: [[300, 0, 0.07, 'square'], [500, 0.08, 0.07, 'square'], [800, 0.16, 0.14, 'square']],
