@@ -44,6 +44,7 @@ export function createEndScreen(onPlayAgain) {
     byId('score-slams').textContent = result.slams;
     byId('score-interrogations').textContent = result.interrogations;
     byId('score-faked').textContent = result.checkInsFaked;
+    byId('score-solitary').textContent = result.solitary ? `Yes: ${formatClock(result.solitaryPenalty)} lost` : 'No';
     byId('score-keycard').textContent = KEYCARD[result.keycardGrab] ?? 'Not taken';
     byId('score-alarm').textContent = result.silentAlarm ? `Yes: ${result.silentAlarmReason}` : 'No';
     byId('score-where-row').hidden = !WHERE_LABELS[result.outcome];

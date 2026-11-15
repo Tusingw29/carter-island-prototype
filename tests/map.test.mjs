@@ -30,7 +30,8 @@ function reachable(start, types) {
 test('the prison has the six areas from the spec on three floors', () => {
   const byFloor = (floor) => rooms.filter((room) => room.floor === floor).map((room) => room.name).sort();
   // The Yard and its shed were added in Step 11, outside on the ground floor.
-  assert.deepEqual(byFloor(1), ['Cell Block', 'Equipment Shed', 'Mess Hall', 'Stairwell Checkpoint', 'Yard']);
+  const groundFloor = ['Cell Block', 'Equipment Shed', 'Mess Hall', 'Solitary', 'Stairwell Checkpoint', 'Yard'];
+  assert.deepEqual(byFloor(1), groundFloor);
   assert.deepEqual(byFloor(0), ['Laundry', 'Maintenance Hall']);
   assert.ok(byFloor(2).includes('Guard Office'));
 });
@@ -99,7 +100,8 @@ test('you never step into a room straight into a flashlight: every way in is unw
   for (const { room, portal } of portals) {
     const x = portalX(room, portal);
     const dark = (room.hideSpots ?? []).some((s) => s.type === 'dark' && Math.abs(s.x - x) < s.halfWidth);
-    if (dark) continue;
+    // The solitary door is only ever used with a guard walking you, when nobody is looking for you.
+    if (dark || portal.locked) continue;
     for (let tick = 0; tick < frames.length; tick += 12) {
       const guards = frames[tick].guards.filter((g) => g.roomId === room.id && g.state === 'calm');
       const player = { x, crouching: false, hiddenIn: null, inDark: null };
@@ -167,7 +169,8 @@ test('the map places rooms on three floors', () => {
   assert.deepEqual([...new Set(model.rooms.map((room) => room.floor))].sort(), [0, 1, 2]);
   // Five inside the prison. Step 11 added five for the Yard: the side door, the office window,
   // the shed hatch, the shed door, and the tower ladders up to the roof.
-  assert.equal(model.links.filter((link) => link.type !== 'vent').length, 10);
+  // Step 13 added the locked door to the solitary cell.
+  assert.equal(model.links.filter((link) => link.type !== 'vent').length, 11);
   assert.equal(model.links.filter((link) => link.type === 'vent').length, 3);
   assert.ok(CONFIG.headcountSeconds > 0);
 });

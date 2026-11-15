@@ -341,6 +341,8 @@ test('score: silent alarm and why, how the keycard was taken, and the room you w
   tap(world, 'interact');
   assert.equal(world.keycardGrab, 'fast');
   // Wait for the guard to wake and grab, lose the mash, and get grabbed again.
+  // The trip to solitary has already been used up.
+  world.solitary.used = true;
   world.breakFreeUsed = true;
   run(world, {}, 12);
   assert.equal(world.over, 'caught');

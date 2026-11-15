@@ -73,7 +73,7 @@ export function coneLit(shape, blockers = [], floorY = 0) {
 export function guardSeesPlayer(
   guard, player, guardCfg = CONFIG.guard, playerCfg = CONFIG.player, blockers = [],
 ) {
-  if (player.hiddenIn || player.inDark) return false;
+  if (player.hiddenIn || player.inDark || player.escorted) return false;
   const shape = coneShape(guard, guardCfg);
   const feetY = player.y ?? 0;
   const points = bodyPoints(player.x, playerHeight(player, playerCfg), 6, feetY);

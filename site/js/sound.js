@@ -48,6 +48,9 @@ const CUES = {
   ],
   // A guard half hearing something.
   glance: [[500, 0, 0.06, 'triangle', 0.35]],
+  // Sent to solitary: a heavy door, low and final.
+  solitary: [[90, 0, 0.5, 'sawtooth', 2, 40], [60, 0.1, 0.8, 'sine', 2.4, 35], [300, 0.02, 0.05, 'square', 1]],
+  backInBed: [[240, 0, 0.08, 'sine'], [200, 0.1, 0.12, 'sine']],
   bodyFound: [[700, 0, 0.3, 'sawtooth']],
   grab: [[150, 0, 0.3, 'sawtooth']],
   free: [[300, 0, 0.07, 'square'], [500, 0.08, 0.07, 'square'], [800, 0.16, 0.14, 'square']],

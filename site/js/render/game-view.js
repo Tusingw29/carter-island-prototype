@@ -1,8 +1,10 @@
 // Everything drawn for one run of the game, under a single group so a restart can swap it out.
 import {
-  BufferGeometry, Group, LineBasicMaterial, LineLoop, Vector3,
+  BackSide, BoxGeometry, BufferGeometry, Group, LineBasicMaterial, LineLoop, Mesh, MeshBasicMaterial, Vector3,
 } from '../../vendor/three.module.js';
 import { spotById } from '../game/hiding.js';
+import { lastSeenMarkers } from '../game/lastseen.js';
+import { playerLook } from '../game/visibility.js';
 import { sightBlockers } from '../game/sight.js';
 import { throwArc } from '../game/throwing.js';
 import { block } from './blocks.js';
@@ -55,6 +57,44 @@ export function createGameView(world, options = {}) {
     });
   }
 
+  // "Last seen" ghosts: a faint outline of the player where each hunting guard thinks they are.
+  // One ghost per guard. It fades out when that guard stops hunting.
+  const ghosts = world.guards.map(() => {
+    const ghost = new Group();
+    const material = new MeshBasicMaterial({ color: 0xbcd4ff, transparent: true, opacity: 0, depthWrite: false });
+    const frame = new MeshBasicMaterial({ color: 0xe8f0ff, transparent: true, opacity: 0, side: BackSide });
+    for (const [width, height, y] of [[0.6, 1.3, 0.65], [0.36, 0.36, 1.5]]) {
+      const part = new Mesh(new BoxGeometry(width, height, 0.3), material);
+      part.position.y = y;
+      const edge = new Mesh(new BoxGeometry(width + 0.08, height + 0.08, 0.38), frame);
+      edge.position.y = y;
+      ghost.add(part, edge);
+    }
+    ghost.userData = { material, frame, shown: 0 };
+    root.add(ghost);
+    return ghost;
+  });
+
+  function updateGhosts(dt) {
+    const markers = lastSeenMarkers(world);
+    world.guards.forEach((guard, i) => {
+      const ghost = ghosts[i];
+      const marker = markers.find((entry) => entry.guardId === guard.id);
+      const data = ghost.userData;
+      // It appears at once and moves at once. Only its going away is a fade.
+      if (marker) {
+        data.shown = 1;
+        ghost.position.set(marker.x, marker.y, 0.1);
+      } else {
+        data.shown = Math.max(0, data.shown - dt * 2);
+      }
+      ghost.visible = data.shown > 0;
+      data.material.opacity = 0.16 * data.shown;
+      data.frame.opacity = 0.5 * data.shown;
+    });
+  }
+  let lastTime = world.time;
+
   // The dotted arc shown while aiming a throw, and the things in the air.
   const dots = Array.from({ length: 16 }, () => block(0.09, 0.09, 0.09, 0xffffff, 0xcfd8e8));
   const flying = new Map();
@@ -90,7 +130,10 @@ export function createGameView(world, options = {}) {
   // far is 0 with the camera close and 1 with it pulled right back.
   function update(debug, far = 0) {
     roomView.update(world, far);
-    playerView.update(world.player, spotById(world.room.hideSpots ?? [], world.player.hiddenIn), world.time);
+    const spot = spotById(world.room.hideSpots ?? [], world.player.hiddenIn);
+    playerView.update(world.player, spot, world.time, playerLook(world));
+    updateGhosts(Math.max(0, world.time - lastTime));
+    lastTime = world.time;
     world.guards.forEach((guard, i) => guardViews[i].update(guard, far, world.time, blockers));
     updateThrows();
     updateNoise(debug);

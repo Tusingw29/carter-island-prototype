@@ -3,7 +3,7 @@ import { CONFIG } from './config.js';
 import { reachable as furthestReach } from './guard.js';
 import { concealedIn } from './hiding.js';
 import { clampToRoom } from './player.js';
-import { endRun } from './run.js';
+import { capture } from './solitary.js';
 import { dropHeldGuard } from './takedown.js';
 
 // A guard cannot grab someone well above or below him.
@@ -31,7 +31,8 @@ function grab(guard, world, cfg) {
     alarmKind: alarm?.kind ?? null, alarmBy: alarm?.by ?? null,
   };
   if (world.breakFreeUsed) {
-    endRun(world, 'caught');
+    // Grabbed a second time. The first capture of a run means solitary, not the end.
+    capture(world, cfg);
     return;
   }
   world.grab = { guardId: guard.id, presses: 0, timeLeft: cfg.grab.mashSeconds };
@@ -104,6 +105,6 @@ export function updateGrab(world, mashed, dt, cfg = CONFIG) {
   if (grab.presses >= cfg.grab.mashNeeded) {
     breakFree(world, cfg);
   } else if (grab.timeLeft <= 0) {
-    endRun(world, 'caught');
+    capture(world, cfg);
   }
 }

@@ -36,6 +36,12 @@ export function snitchSeesPlayer(snitch, player, cfg = CONFIG.snitch) {
   return player.x >= from && player.x <= to;
 }
 
+// Can this snitch see the player right now? Asked by the snitch each step and by the player's
+// lit-or-hidden look (visibility.js).
+export function snitchCanSee(snitch, world, cfg = CONFIG.snitch) {
+  return snitch.roomId === world.room.id && snitchSeesPlayer(snitch, world.player, cfg);
+}
+
 function yell(snitch, world, cfg) {
   snitch.cooldown = cfg.cooldownSeconds;
   world.stats.timesSpotted += 1;
@@ -57,7 +63,7 @@ export function updateSnitch(snitch, world, dt, cfg = CONFIG.snitch) {
     snitch.facing = -snitch.facing;
   }
   snitch.cooldown = Math.max(0, snitch.cooldown - dt);
-  snitch.sees = snitch.roomId === world.room.id && snitchSeesPlayer(snitch, world.player, cfg);
+  snitch.sees = snitchCanSee(snitch, world, cfg);
   if (!snitch.sees) {
     snitch.exposure = Math.max(0, snitch.exposure - dt);
     return;

@@ -9,6 +9,7 @@
 //   window   on the back wall; press Up. The Guard Office window opens onto the Yard's roof ledge.
 //   hatch    press Up. The way into the equipment shed, on its roof.
 //   A portal with y is up on a ledge or a roof: you have to be standing up there to use it.
+//   A door with locked is never the player's to open (the solitary cell).
 //   A door with exitOnly is latched on the other side: you can come out of it but not go in.
 //   hall     an open archway at the left or right end of the room; walk into it
 //   stairs   on the back wall; press Up
@@ -18,6 +19,8 @@
 //            you can come out of it but never go in. drop means you fall and land with a thud.
 //            hidden keeps a vent off the map until you have walked up to it.
 // Items are things to pick up with Interact. Cups, mugs, soap, and cans are throwables (throwing.js).
+// Lights are lamps: lights: [{ id, x, halfWidth }]. Standing in one you are plain to see
+// (lights.js). They never overlap a dark patch.
 // Props are things on the back wall that are not ways out, like the welded vent and the camera panel.
 // Snitches are inmates who yell if they see you. firstLook is the side they watch first.
 // The trader swaps cigarettes for a hint.
@@ -60,6 +63,8 @@ const cellBlock = {
     { id: 'cb-stairs', type: 'stairs', dir: 'down', x: 1.3, to: 'laundry', toPortal: 'la-stairs' },
     { id: 'cb-east', type: 'hall', side: 'right', to: 'mess-hall', toPortal: 'mh-west' },
     // Where the one-way drop from the Guard Office comes out. It lands you in the dark archway.
+    // The way to the solitary cell. Only a guard opens it.
+    { id: 'cb-solitary', type: 'door', locked: true, hidden: true, x: 19.9, to: 'solitary', toPortal: 'so-door' },
     { id: 'cb-drop', type: 'vent', exitOnly: true, high: true, hidden: true, x: 28.6, to: 'guard-office',
       toPortal: 'go-drop' },
   ],
@@ -90,6 +95,8 @@ const laundry = {
     { id: 'la-soap-1', type: 'soap', x: 11.6 },
     { id: 'la-soap-2', type: 'soap', x: 18.4 },
   ],
+  // A work lamp between the carts.
+  lights: [{ id: 'la-lamp', x: 11.6, halfWidth: 1.4 }],
   guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1,
     talk: { type: 'story', text: 'They sealed Shaft Nine in a day. Nobody brought the crew up first.' } }],
 };
@@ -148,6 +155,8 @@ const messHall = {
     { id: 'mh-guard-2', patrol: [20, 31], startX: 24, facing: -1,
     talk: { type: 'story', text: 'Company calls it Ore Seven. Miners call it The Black. Nobody calls it safe.' } },
   ],
+  // The kitchen light.
+  lights: [{ id: 'mh-lamp', x: 34.9, halfWidth: 0.7 }],
   // Hidden in the kitchen corner.
   items: [
     { id: 'cigarettes', type: 'cigarettes', x: 34.6 },
@@ -176,6 +185,8 @@ const stairwell = {
     { id: 'sw-door', type: 'door', creaky: true, x: 24, to: 'guard-office', toPortal: 'go-door' },
   ],
   items: [{ id: 'sw-mug', type: 'mug', x: 4.5 }],
+  // The lamp over the checkpoint counter.
+  lights: [{ id: 'sw-lamp', x: 9, halfWidth: 1.8 }],
   guards: [{ id: 'sw-guard', patrol: [9, 9], facing: -1, turnEvery: 5,
     talk: {
       type: 'secret', finds: ['ma-panel'],
@@ -203,6 +214,8 @@ const guardOffice = {
     { id: 'go-drop', type: 'vent', oneWay: true, drop: true, floor: true, hidden: true, x: 19.5, to: 'cell-block',
       toPortal: 'cb-drop' },
   ],
+  // The desk lamp. The keycard lies in its light.
+  lights: [{ id: 'go-lamp', x: 10.5, halfWidth: 1.6 }],
   items: [{ id: 'keycard', type: 'keycard', x: 10.5 }],
   guards: [{ id: 'go-guard', patrol: [13.5, 13.5], facing: -1, sleeper: true,
     talk: {
@@ -363,6 +376,22 @@ const shed = {
   guards: [],
 };
 
+// Where you wake up the first time you are caught. Nothing in it, and the door is not yours to open.
+const solitary = {
+  id: 'solitary',
+  name: 'Solitary',
+  floor: 1,
+  col: -1,
+  width: 8,
+  wallColor: 0x2a2e36,
+  playerStart: 3,
+  hideSpots: [],
+  portals: [
+    { id: 'so-door', type: 'door', locked: true, hidden: true, x: 6.5, to: 'cell-block', toPortal: 'cb-solitary' },
+  ],
+  guards: [],
+};
+
 export const ROOMS = Object.freeze({
   'vent-duct': ventDuct,
   'cell-block': cellBlock,
@@ -373,6 +402,7 @@ export const ROOMS = Object.freeze({
   'guard-office': guardOffice,
   yard,
   shed,
+  solitary,
 });
 
 export const PRISON = Object.freeze({ startRoom: 'cell-block', rooms: ROOMS });

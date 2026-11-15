@@ -18,6 +18,7 @@
     </div>
     <div id="top-right">
       <div id="timer">9:00</div>
+      <div id="penalty" hidden></div>
       <div id="bed-check"></div>
       <div id="keycard" class="badge" hidden>KEYCARD</div>
       <div id="screwdriver" class="badge tool" hidden>SCREWDRIVER</div>
@@ -51,6 +52,7 @@
     </div>
     <p id="help">Esc: pause and controls &nbsp; M: map &nbsp; Z: zoom &nbsp; K: jump &nbsp; F: throw</p>
   </div>
+  <div id="solitary" hidden><strong>SOLITARY</strong><span>one minute lost</span></div>
   <pre id="debug-panel" class="debug-only"></pre>
   <div id="gym-tuning" hidden></div>
 
@@ -114,7 +116,10 @@
       Stand still in a pitch-dark patch and nobody can see you. Seen is not caught: a guard who
       spots you freezes for a moment, then chases, and he is slower than your run. He has to wind
       up a lunge to grab you, so run when he crouches. Out of his sight for two seconds and he
-      loses you. If he gets close, shove him and run. A thrown cup stuns a guard if it hits his
+      loses you. Your own color tells you if anything can see you: full color and glowing means
+      seen or lit, a dark outline means hidden. A pale ghost shows where a hunting guard thinks you
+      are. The first time you are caught you go to solitary and lose a minute, not the run.
+      If he gets close, shove him and run. A thrown cup stuns a guard if it hits his
       head, and if it misses he walks over to where it landed. Knocked-out guards wake up after a
       while, and every guard calls in on the radio once a minute: a missed call brings someone to look.
     </p>
@@ -144,6 +149,7 @@
       <tr><td>Guards thrown down</td><td id="score-slams"></td></tr>
       <tr><td>Interrogations</td><td id="score-interrogations"></td></tr>
       <tr><td>Check-ins faked</td><td id="score-faked"></td></tr>
+      <tr><td>Solitary</td><td id="score-solitary"></td></tr>
       <tr><td>Keycard</td><td id="score-keycard"></td></tr>
       <tr><td>Silent alarm</td><td id="score-alarm"></td></tr>
       <tr id="score-where-row"><td id="score-where-label"></td><td id="score-where"></td></tr>

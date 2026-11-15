@@ -36,7 +36,7 @@ function wayBetween(layout, fromId, toId) {
   // Guards use doors, halls, and stairs at floor level. Not vents, windows, hatches, or doors
   // that only open from the other side.
   const walkable = (entry) => ['door', 'hall', 'stairs'].includes(entry.type) && !entry.exitOnly && !entry.oneWay
-    && !(entry.y > 0);
+    && !entry.locked && !(entry.y > 0);
   const portal = (from.portals ?? []).find((entry) => entry.to === toId && walkable(entry));
   if (!portal) return null;
   const there = findPortal(layout, portal.toPortal);

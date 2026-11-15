@@ -24,6 +24,7 @@ function runLine(result) {
     + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`
     + `\nTakedowns: ${takedownText(result.takedowns)}. Thrown down: ${result.slams ?? 0}. `
     + `Interrogations: ${result.interrogations ?? 0}. Check-ins faked: ${result.checkInsFaked ?? 0}.`
+    + `\nSolitary: ${result.solitary ? `yes, ${result.solitaryPenalty} s lost` : 'no'}.`
     + `\nKeycard: ${KEYCARD[result.keycardGrab] ?? 'not taken'}. `
     + `Silent alarm: ${result.silentAlarm ? `yes, ${result.silentAlarmReason}` : 'no'}.`
     + (result.caughtIn ? ` Caught in: ${result.caughtIn}.` : '')

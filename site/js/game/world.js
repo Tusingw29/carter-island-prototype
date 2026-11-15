@@ -8,6 +8,7 @@ import { createGuard, isAwake, obstaclesFor } from './guard.js';
 import { updateGuardAI, updateGuardAway, updateSleeper } from './guard-ai.js';
 import { concealedIn, darkSpotAt, spotById, toggleHide } from './hiding.js';
 import { updateHold } from './holds.js';
+import { emptyIntent } from './intent.js';
 import { updateBedCheck } from './bedcheck.js';
 import { noteFinds, pressInteract } from './interact.js';
 import { keycardInReach, takeKeycard } from './keycard.js';
@@ -22,6 +23,7 @@ import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
 import { setUpRadio, updateRadio } from './radio.js';
 import { updateTimer } from './run.js';
+import { solitaryStep } from './solitary.js';
 import * as take from './takedown.js';
 import { updateThrowing } from './throwing.js';
 import { createSnitch, openCell, updateSnitch } from './snitch.js';
@@ -112,6 +114,9 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
       interrogations: 0,
       checkInsFaked: 0,
     },
+    // The trip to solitary: used once it has happened, phase 'cell' or 'walk' while it plays
+    // out, at is when it began, penalty is the seconds it cost.
+    solitary: { used: false, phase: null, timer: 0, at: null, penalty: 0 },
     // The guard being held in a takedown: { guardId, time, asking, talked }, or null.
     hold: null,
     // What interrogated guards have told you, as { from, type, text }, for the map screen.
@@ -156,6 +161,11 @@ function handleUp(world, intent, pressed, dt) {
   // Walking up to a vent, or any other hidden way, is enough to find it, so it goes on the map.
   if (portal?.type === 'vent' || portal?.hidden) world.knownPortals.add(portal.id);
   if (!pressed) return;
+  if (portal?.locked) {
+    say(world, 'Locked. That is the door to solitary.');
+    world.events.push({ type: 'locked' });
+    return;
+  }
   if (portal?.exitOnly && portal.type !== 'vent') {
     say(world, 'Latched from the inside. It only opens from the other side.');
     world.events.push({ type: 'locked' });
@@ -230,9 +240,13 @@ function updateEveryoneElse(world, dt, cfg) {
   }
 }
 
-export function stepWorld(world, intent, dt, cfg = CONFIG) {
+export function stepWorld(world, input, dt, cfg = CONFIG) {
   if (world.over) return;
   const { player } = world;
+  // In solitary, or being walked back from it, the buttons only skip the walk.
+  const trip = solitaryStep(world, input.interact && !world.interactWasHeld, dt);
+  const intent = trip ? { ...emptyIntent(), ...trip, interact: input.interact } : input;
+  if (trip) world.interactWasHeld = true;
 
   // Buttons act once per press, not every frame they are held.
   const upPressed = intent.up && !world.upWasHeld;
@@ -304,7 +318,8 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   player.inDark = darkSpotAt(player, spots);
   noteWatchedHiding(world, wasConcealed, cfg.guard);
 
-  world.noiseRadius = noiseRadius(player.mode);
+  // Being walked back from solitary, your footsteps are nobody's business.
+  world.noiseRadius = player.escorted ? 0 : noiseRadius(player.mode);
   world.noises = world.pendingNoises;
   world.pendingNoises = [];
   // One-off noises are remembered for a moment so they can be drawn.

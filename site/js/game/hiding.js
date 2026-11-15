@@ -52,6 +52,8 @@ export function darkSpotAt(player, spots) {
 }
 
 // The id of whatever is hiding the player right now, or null if they are in the open.
+// Being walked back from solitary counts: nobody is looking for you then.
 export function concealedIn(player) {
+  if (player.escorted) return 'escort';
   return player.hiddenIn ?? player.inDark ?? null;
 }

@@ -1,5 +1,5 @@
 // Builds the blocks for a room: floor, walls, cells, ways out, hiding spots, items, and cameras.
-import { Group } from '../../vendor/three.module.js';
+import { Group, Mesh, MeshBasicMaterial, PlaneGeometry, PointLight } from '../../vendor/three.module.js';
 import { sightBlockers } from '../game/sight.js';
 import { isThrowable } from '../game/throwing.js';
 import { block, placed } from './blocks.js';
@@ -98,6 +98,23 @@ function throwableView(item) {
   return group;
 }
 
+// A lamp: the fixture, a real light, and the patch of floor it lights. Standing on that patch
+// you are plain to see (lights.js).
+function lampView(light) {
+  const group = new Group();
+  const base = light.y ?? 0;
+  group.add(placed(block(0.08, 0.7, 0.08, 0x2a2e36), light.x, base + 4.1, -0.6));
+  group.add(placed(block(0.7, 0.16, 0.5, 0x3a3e46, 0xffd9a0), light.x, base + 3.7, -0.6));
+  const glow = new PointLight(0xffd9a0, 14, 6.5, 1.6);
+  glow.position.set(light.x, base + 3.2, 0.4);
+  group.add(glow);
+  const material = new MeshBasicMaterial({ color: 0xffe2b0, transparent: true, opacity: 0.16, depthWrite: false });
+  const patch = new Mesh(new PlaneGeometry(light.halfWidth * 2, 3.8), material);
+  patch.rotation.x = -Math.PI / 2;
+  group.add(placed(patch, light.x, base + 0.02, -0.1));
+  return group;
+}
+
 // The camera control panel: a box on the wall with a light that is green while the camera is on.
 function panelView(prop) {
   const group = new Group();
@@ -148,6 +165,7 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     group.add(view);
   }
   for (const solid of room.solids ?? []) group.add(solidView(solid));
+  for (const light of room.lights ?? []) group.add(lampView(light));
   for (const ladder of room.ladders ?? []) group.add(ladderView(ladder));
   for (const tower of room.towers ?? []) group.add(towerView(tower));
   for (const shed of room.sheds ?? []) group.add(shedView(shed));

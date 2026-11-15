@@ -1,6 +1,7 @@
 // What a guard notices each moment: the player in his flashlight, noises, and bodies.
 import { CONFIG } from './config.js';
 import { makeSuspicious, raiseAlarm } from './alert.js';
+import { litAreaAt } from './lights.js';
 import { say } from './messages.js';
 import { canHear } from './noise.js';
 import { sightBlocked, sightBlockers } from './sight.js';
@@ -17,10 +18,16 @@ export function detectionRate(guard, distance, cfg = CONFIG.guard) {
   return boost / seconds;
 }
 
+// Can this guard see the player right now? The one question asked both by his senses and by
+// the player's lit-or-hidden look (visibility.js).
+export function guardCanSee(guard, world, cfg = CONFIG.guard) {
+  const blockers = sightBlockers(world.layout.rooms[guard.roomId]);
+  return guard.stun <= 0 && guardSeesPlayer(guard, world.player, cfg, CONFIG.player, blockers);
+}
+
 function senseSight(guard, world, dt, cfg) {
   const { player } = world;
-  const blockers = sightBlockers(world.layout.rooms[guard.roomId]);
-  guard.seesPlayer = guard.stun <= 0 && guardSeesPlayer(guard, player, cfg, CONFIG.player, blockers);
+  guard.seesPlayer = guardCanSee(guard, world, cfg);
   if (!guard.seesPlayer) {
     if (guard.state !== 'alert') guard.detection = Math.max(0, guard.detection - cfg.detectDrainPerSecond * dt);
     return;
@@ -30,7 +37,9 @@ function senseSight(guard, world, dt, cfg) {
     guard.trackTimer = cfg.trackSeconds;
     return;
   }
-  const rate = detectionRate(guard, Math.abs(player.x - guard.x), cfg);
+  // Under a lamp you are plain to see: he is as sure as if you were right in front of him.
+  const lit = litAreaAt(world.layout.rooms[guard.roomId], player);
+  const rate = detectionRate(guard, lit ? 0 : Math.abs(player.x - guard.x), cfg);
   guard.detection = Math.min(1, guard.detection + rate * dt);
   if (guard.detection >= 1) {
     const ahead = (player.x - guard.x) * guard.facing;
