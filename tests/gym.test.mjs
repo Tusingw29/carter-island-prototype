@@ -65,7 +65,6 @@ test('gym: a separate practice room, not connected to the prison, with no headco
   assert.deepEqual(gymRoom.portals, []);
   for (const room of Object.values(PRISON.rooms)) {
     assert.ok((room.portals ?? []).every((portal) => portal.to !== 'gym'));
-    assert.ok(!room.moves, 'the main map does not have the new moves');
   }
   const world = gym();
   const before = world.timeLeft;
@@ -116,15 +115,16 @@ test('gym controls: K and L, controller B and right bumper, and none of them is 
   assert.deepEqual(Object.entries(pad(5)).filter(([, on]) => on), [['dash', true]]);
 });
 
-test('the new moves do nothing in the prison, and running there is unchanged', () => {
+test('in the prison: jump works from the start, dash does not, and running is unchanged', () => {
   const world = prisonWorld('mess-hall', 19);
   for (const guard of world.allGuards) guard.state = 'out';
   run(world, { jump: true }, 0.2);
-  assert.equal(world.player.y, 0);
+  assert.ok(world.player.y > 0.5, 'jump is there from the start of a run (Step 11)');
+  run(world, {}, 1);
   const x = world.player.x;
   tap(world, 'dash');
   run(world, {}, 0.3);
-  assert.equal(world.player.x, x);
+  assert.equal(world.player.x, x, 'no dash without the work boots');
   run(world, { moveX: 1, run: true }, 1);
   assert.ok(Math.abs(world.player.x - x - CONFIG.player.runSpeed) < 0.06);
 });

@@ -1,7 +1,7 @@
 // Hiding spots: lockers and laundry carts you climb into, and pitch-dark spots you stand still in.
 import { CONFIG } from './config.js';
 
-const CONTAINERS = ['locker', 'cart', 'bed', 'table', 'counter', 'desk', 'shelf'];
+const CONTAINERS = ['locker', 'cart', 'bed', 'table', 'counter', 'desk', 'shelf', 'bleachers'];
 
 export const isContainer = (spot) => CONTAINERS.includes(spot.type);
 
@@ -19,6 +19,8 @@ export function nearestHideSpot(player, spots, fullIds = [], cfg = CONFIG.hide) 
   let best = null;
   for (const spot of spots) {
     if (!isContainer(spot) || fullIds.includes(spot.id)) continue;
+    // You have to be standing on the same level as the spot.
+    if (Math.abs((player.y ?? 0) - (spot.y ?? 0)) > 0.3) continue;
     const distance = distanceToSpot(spot, player.x);
     if (distance <= cfg.reach && (!best || distance < distanceToSpot(best, player.x))) best = spot;
   }
@@ -43,7 +45,9 @@ export function toggleHide(player, spots, fullIds = [], cfg = CONFIG.hide) {
 // The dark spot the player is standing still in, or null. Moving gives you away.
 export function darkSpotAt(player, spots) {
   if (player.hiddenIn || player.dragging || player.mode !== 'idle') return null;
-  const spot = spots.find((s) => s.type === 'dark' && Math.abs(s.x - player.x) <= s.halfWidth);
+  const spot = spots.find((s) => (
+    s.type === 'dark' && Math.abs(s.x - player.x) <= s.halfWidth && Math.abs((player.y ?? 0) - (s.y ?? 0)) <= 1
+  ));
   return spot ? spot.id : null;
 }
 

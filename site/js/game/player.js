@@ -16,12 +16,13 @@ export function createPlayer(x) {
     hasScrewdriver: false,
     hasCigarettes: false,
     hasBedsheets: false,
+    // The work boots from the Yard's equipment shed: with them you can dash.
+    hasBoots: false,
     // The throwable in hand, as { id, type }, or null. One at a time.
     carrying: null,
     mode: 'idle',
     speed: 0,
     // Height of the feet above the floor, and the rest of what jump, slide, and dash need.
-    // Only rooms with moves (the gym) ever change these.
     y: 0,
     vy: 0,
     onGround: true,
@@ -42,6 +43,9 @@ export function createPlayer(x) {
     landedAt: null,
     dashedAt: null,
     dashFromX: 0,
+    // The ladder or fence side being climbed (see moves.js), and a ledge being dropped through.
+    climbing: null,
+    dropping: null,
   };
 }
 

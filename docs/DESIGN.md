@@ -126,6 +126,82 @@ questions and decisions go in [TASKS.md](TASKS.md).
   behind each crate.
 - Cameras follow the same rule.
 
+## The Yard (added in Step 11)
+
+Add the first new area built for the platforming movement: THE YARD. It tests two things
+at once: does Mega Man X style movement work inside the stealth game, and does the loop
+hold up when the world grows?
+
+### Movement in the main game
+
+- From now on, JUMP and SLIDE are available from the start of every run (main game).
+  Use the gym values locked in Step 10.
+- DASH is a metroidvania unlock: you only have it after picking up the WORK BOOTS in the
+  Yard's equipment shed (see below). The gym keeps all moves for testing.
+- Jumping and landing make a small noise. Dash is LOUD. Slide is quiet.
+- Rooms can now have platforms and ledges you stand on, plus ladders (hold Up/Down to
+  climb). Add what the engine needs for this, with tests.
+- Keep main-game running and walking exactly as they are.
+
+### The Yard: layout (night, lights out)
+
+```
+                 [TOWER 1]                          [TOWER 2]
+                  searchlight                        searchlight
+                      |                                  |
+ ROOF      ...[Guard Office window]=====(roof ledge)======|
+                      |                                  |
+ GROUND    [Mess Hall]--[ Court + bleachers ]--[ fence ]--[ Equipment shed ]--[ OUTER WALL ]
+              side door      hoops, cover       climb       work boots           too high
+```
+
+- Entrance: a new side door from the Mess Hall into the Yard (creaky).
+- Basketball court: bleachers you can hide UNDER and climb ON TOP of. Hoops and poles to
+  jump from. Mostly open ground, so you must time the searchlights.
+- Throwable: a BASKETBALL on the court. Thrown, it bounces and is LOUDER than a cup, so it
+  is a big lure.
+- Chain-link fences (see climbing below).
+- Two guard towers, each with a ladder, a guard on top, and a searchlight.
+- One ground guard patrolling the court.
+- Roof ledge: a new route along the roof to the GUARD OFFICE WINDOW. Getting from the tower
+  platform to the roof needs a jump; crossing the gap to the window needs the DASH. The
+  window works both ways (in from the roof, out to the roof).
+- Equipment shed: the WORK BOOTS (dash unlock) are inside, reached through a roof hatch.
+  Getting to the hatch is a JUMP CHALLENGE using crates, the fence top, and the bleachers.
+  Doable with jump only.
+- Outer wall at the far end: too high to climb. Message: "Too high. You'll need something to
+  get over this." (Teaser for the grapple hook later. Like the welded vent.)
+
+### What the Yard is for in a run (both)
+
+- A new route to the Guard Office: Mess Hall, Yard, tower, roof, dash across, window.
+  Fast but exposed.
+- Where you get the dash (work boots), plus optional items (the basketball).
+
+### Fence climbing (both ways)
+
+- Jump over the LOW parts of fences fast.
+- Or climb any part of the chain-link by holding Up: slow, and you are exposed while
+  climbing (no hiding, easy to see).
+
+### Searchlights (timed pools of light)
+
+- Each searchlight is a pool of light on the ground that sweeps on a fixed path and fixed
+  timing (same every run), so players can learn when to cross.
+- Stepping into a pool works like being seen by a camera: the tower guard calls it in,
+  nearby guards go Suspicious and walk over, and it counts as spotted.
+- Solid cover blocks the light (use the Step 10 line-of-sight rules): the bleachers and the
+  shed cast safe shadows.
+- Show the pool clearly on the ground, with a little warning glow just before it arrives.
+- Knocking out a tower guard (climb the ladder, sneak up behind him) stops his searchlight
+  for the rest of the run. He is on the radio check-in schedule like everyone else.
+
+### Connections and map
+
+- Add the Yard, the towers, the roof ledge, and the Guard Office window to the map screen.
+  The window and the roof route only show once discovered.
+- Keep the 7:00 timer for now.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

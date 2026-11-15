@@ -29,7 +29,8 @@ function reachable(start, types) {
 
 test('the prison has the six areas from the spec on three floors', () => {
   const byFloor = (floor) => rooms.filter((room) => room.floor === floor).map((room) => room.name).sort();
-  assert.deepEqual(byFloor(1), ['Cell Block', 'Mess Hall', 'Stairwell Checkpoint']);
+  // The Yard and its shed were added in Step 11, outside on the ground floor.
+  assert.deepEqual(byFloor(1), ['Cell Block', 'Equipment Shed', 'Mess Hall', 'Stairwell Checkpoint', 'Yard']);
   assert.deepEqual(byFloor(0), ['Laundry', 'Maintenance Hall']);
   assert.ok(byFloor(2).includes('Guard Office'));
 });
@@ -164,7 +165,9 @@ test('the map fills in as you explore', () => {
 test('the map places rooms on three floors', () => {
   const model = mapModel(createWorld());
   assert.deepEqual([...new Set(model.rooms.map((room) => room.floor))].sort(), [0, 1, 2]);
-  assert.equal(model.links.filter((link) => link.type !== 'vent').length, 5);
+  // Five inside the prison. Step 11 added five for the Yard: the side door, the office window,
+  // the shed hatch, the shed door, and the tower ladders up to the roof.
+  assert.equal(model.links.filter((link) => link.type !== 'vent').length, 10);
   assert.equal(model.links.filter((link) => link.type === 'vent').length, 3);
   assert.ok(CONFIG.headcountSeconds > 0);
 });

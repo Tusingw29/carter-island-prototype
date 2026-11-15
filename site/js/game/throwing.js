@@ -13,6 +13,8 @@ export const THROWABLES = Object.freeze({
   mug: { name: 'mug' },
   soap: { name: 'bar of soap', noise: 5 },
   can: { name: 'oil can' },
+  // Bounces twice and is heard from much further away than a cup: a big lure.
+  basketball: { name: 'basketball', noise: 11, bounces: 2 },
 });
 
 export const isThrowable = (item) => Boolean(THROWABLES[item.type]);

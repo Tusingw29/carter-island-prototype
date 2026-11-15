@@ -127,7 +127,8 @@ test('sight: a body behind a crate is not found', () => {
 });
 
 test('sight: every room checked. The prison has nothing solid in the lane; the gym crates all block', () => {
-  for (const room of Object.values(PRISON.rooms)) {
+  // The Yard (Step 11) is the one place in the prison with cover in the lane. It has its own tests.
+  for (const room of Object.values(PRISON.rooms).filter((entry) => !entry.outdoor)) {
     assert.deepEqual(sightBlockers(room), [], `${room.name}: furniture is on the back wall or in front of the lane`);
   }
   const gym = GYM.rooms.gym;

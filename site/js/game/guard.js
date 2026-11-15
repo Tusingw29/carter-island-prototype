@@ -3,19 +3,25 @@ import { CONFIG } from './config.js';
 
 export function createGuard(def) {
   const {
-    id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false, checksBed = false, bounds = null,
+    id, patrol, startX, facing = 1, turnEvery = 0, sleeper = false, checksBed = false, bounds = null, y = 0,
   } = def;
   const [from, to] = patrol;
   return {
     id,
+    // What the radio calls him, if the room's name and a number will not do.
+    name: def.name ?? null,
     x: startX ?? from,
+    // Height of his feet: 0 on the floor, more for a guard up a tower.
+    y,
     facing,
     // calm, suspicious, alert, searching, asleep, or out (knocked out).
     state: sleeper ? 'asleep' : 'calm',
     sleeper,
     checksBed,
-    // Gym only: the stretch of floor he never leaves, as [from, to].
+    // The stretch of floor he never leaves, as [from, to]: a tower platform, or his side of a
+    // fence. homeBounds remembers it while he is away in another room.
     bounds,
+    homeBounds: bounds,
     // Alert: the pause before he gives chase, the wind-up of a lunge, and how long since he
     // last saw the player.
     react: 0,
@@ -70,7 +76,9 @@ export function disturb(guard, cfg = CONFIG.guard) {
 }
 
 // Walks toward targetX. Returns true once he is standing on it.
-export function moveToward(guard, targetX, speed, dt) {
+// A target outside his bounds counts as reached at the edge of them.
+export function moveToward(guard, wantedX, speed, dt) {
+  const targetX = guard.bounds ? Math.max(guard.bounds[0], Math.min(guard.bounds[1], wantedX)) : wantedX;
   const gap = targetX - guard.x;
   if (Math.abs(gap) <= speed * dt) {
     guard.x = targetX;

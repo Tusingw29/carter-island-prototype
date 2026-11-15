@@ -130,9 +130,12 @@ test('radio: every patrolling guard checks in on a fixed beat, the same every ru
   assert.deepEqual(calls, callsAgain);
   const first = calls.filter((call) => call.startsWith('cb-guard@'));
   assert.deepEqual(first, ['cb-guard@20', 'cb-guard@80', 'cb-guard@140']);
-  const last = calls.filter((call) => call.startsWith('sw-guard@'));
+  // The last guard on the list (a Yard tower guard since Step 11) calls in last.
+  const lastId = onRadio.at(-1).id;
+  const last = calls.filter((call) => call.startsWith(`${lastId}@`));
   const lastFirst = R.firstSeconds + (onRadio.length - 1) * R.staggerSeconds;
-  assert.deepEqual(last, [`sw-guard@${lastFirst}`, `sw-guard@${lastFirst + R.intervalSeconds}`]);
+  assert.deepEqual(last, [`${lastId}@${lastFirst}`, `${lastId}@${lastFirst + R.intervalSeconds}`]);
+  assert.ok(calls.includes('sw-guard@52'), 'guards inside the prison call in when they always did');
 });
 
 test('radio: a guard who checks in shows the radio icon for a moment', () => {

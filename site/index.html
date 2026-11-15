@@ -23,6 +23,7 @@
       <div id="screwdriver" class="badge tool" hidden>SCREWDRIVER</div>
       <div id="cigarettes" class="badge tool" hidden>CIGARETTES</div>
       <div id="bedsheets" class="badge tool" hidden>BEDSHEETS</div>
+      <div id="boots" class="badge tool" hidden>WORK BOOTS (dash: L / RB)</div>
       <div id="carrying" class="badge tool" hidden></div>
       <div id="shove" class="ready">SHOVE <div class="bar"><div id="shove-fill"></div></div></div>
     </div>
@@ -43,7 +44,7 @@
       <strong>GRABBED! Mash SPACE (or X) to break free</strong>
       <div class="bar"><div id="mash-fill"></div></div>
     </div>
-    <p id="help">Esc: pause and controls &nbsp; M: map &nbsp; Z: zoom</p>
+    <p id="help">Esc: pause and controls &nbsp; M: map &nbsp; Z: zoom &nbsp; K: jump &nbsp; F: throw</p>
   </div>
   <pre id="debug-panel" class="debug-only"></pre>
   <div id="gym-tuning" hidden></div>
@@ -53,7 +54,8 @@
     <svg id="map-svg" xmlns="http://www.w3.org/2000/svg"></svg>
     <ul id="map-notes"></ul>
     <p class="legend">
-      Thick: hallway &nbsp; Thin: door (rust = creaky) &nbsp; Dashed: stairs &nbsp; Blue dots: vent &nbsp; M to close
+      Thick: hallway &nbsp; Thin: door (rust = creaky) &nbsp; Dashed: stairs or ladder &nbsp; Blue dots: vent
+      &nbsp; Green: window &nbsp; M to close
     </p>
   </div>
 
@@ -87,7 +89,11 @@
       <tr><td>Break free when grabbed</td><td>mash Space</td><td>mash X</td></tr>
       <tr><td>Map</td><td>M</td><td>View / Select</td></tr>
       <tr><td>Zoom the camera in or out</td><td>Z</td><td>Click the left stick</td></tr>
-      <tr><td>Gym only: jump / dash / slide</td><td>K / L / S + K</td><td>B / Right Bumper / Down + B</td></tr>
+      <tr><td>Jump (tap for a hop, hold to go higher)</td><td>K</td><td>B (right button)</td></tr>
+      <tr><td>Slide (while moving)</td><td>S + K</td><td>Down + B</td></tr>
+      <tr><td>Drop down through a ledge (standing still)</td><td>S + K</td><td>Down + B</td></tr>
+      <tr><td>Climb a ladder or a chain-link fence</td><td>hold W / S</td><td>hold Up / Down</td></tr>
+      <tr><td>Dash (needs the work boots from the Yard)</td><td>L</td><td>Right Bumper</td></tr>
       <tr><td>Pause</td><td>Esc</td><td>Start</td></tr>
       <tr><td>This screen</td><td>C</td><td>Y (top button)</td></tr>
     </table>

@@ -48,7 +48,8 @@ test('game logic never touches rendering or the browser', () => {
   ];
   const problems = [];
   for (const name of gameModules) {
-    const code = readFileSync(join(root, name), 'utf8').replace(/\/\/.*$/gm, '');
+    // Comments and plain text in quotes do not count: a portal can be of type 'window'.
+    const code = readFileSync(join(root, name), 'utf8').replace(/\/\/.*$/gm, '').replace(/'[^'\n]*'/g, "''");
     for (const [pattern, why] of banned) if (pattern.test(code)) problems.push(`${name} ${why}`);
   }
   assert.deepEqual(problems, []);

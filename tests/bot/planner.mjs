@@ -71,7 +71,7 @@ function seenCells(frame, room, crouching) {
     mark(Math.min(guard.x, guard.x + guard.facing * reach), Math.max(guard.x, guard.x + guard.facing * reach), sees);
   }
   for (const camera of frame.cameras) {
-    if (camera.roomId !== room.id || camera.off) continue;
+    if (camera.roomId !== room.id || camera.off || camera.away) continue;
     const sees = (x) => cameraSeesPlayer(camera, standIn(x), blockers);
     mark(camera.x - camera.halfWidth, camera.x + camera.halfWidth, sees);
   }

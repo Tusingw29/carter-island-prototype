@@ -29,6 +29,10 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Knock out from behind (unseen), drag body | Space | X (left face button) |
 | Shove a guard who can see you | Space | X (left face button) |
 | Throw what you are carrying (hold to aim) | F | Left Bumper |
+| Jump (tap for a hop, hold to go higher) | K | B (right face button) |
+| Slide (while moving) | S + K | Down + B |
+| Climb a ladder or a chain-link fence | hold W / S | hold Up / Down |
+| Dash (needs the work boots from the Yard) | L | Right Bumper |
 | Break free when grabbed | mash Space | mash X |
 | Map | M | View / Select |
 | Zoom the camera in or out | Z | Click the left stick |
@@ -72,6 +76,8 @@ Add these to the end of the play link.
 | `?room=stairwell&px=2` | Starts in that room at that spot |
 | `?timer=30` | Starts with 30 seconds on the timer |
 | `?room=gym` | The obstacle course: jump (K), dash (L), slide (S + K while moving). F1 shows tuning sliders |
+| `?room=yard` | Starts at the Yard door. Add `&px=37&py=5.8` to start on Tower 1 behind its guard, or `&px=20&py=5.4` on the roof ledge |
+| `?boots` | Starts with the work boots on, so the dash works from the start |
 | `?cam=close` | The close follow camera |
 | `?cam=wide` | The same camera pulled back, showing twice as much floor |
 | `?cam=room` | Shows the whole room if it fits; if not, follows you and stops at the walls |

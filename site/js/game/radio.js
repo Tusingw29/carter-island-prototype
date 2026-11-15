@@ -14,7 +14,8 @@ export function setUpRadio(world, cfg = CONFIG.radio) {
     const room = world.layout.rooms[guard.roomId];
     const mates = world.allGuards.filter((other) => other.roomId === guard.roomId);
     guard.homeRoomId = guard.roomId;
-    guard.label = mates.length > 1 ? `${room.name} guard ${mates.indexOf(guard) + 1}` : `${room.name} guard`;
+    const numbered = mates.length > 1 ? `${room.name} guard ${mates.indexOf(guard) + 1}` : `${room.name} guard`;
+    guard.label = guard.name ?? numbered;
     guard.radioAt = guard.sleeper ? null : cfg.firstSeconds + onRadio * cfg.staggerSeconds;
     guard.radioUntil = 0;
     if (!guard.sleeper) onRadio += 1;
@@ -32,7 +33,11 @@ function free(guard) {
 // The door, hall, or stairs between two rooms, as { exitX, entryX }. Guards do not use vents.
 function wayBetween(layout, fromId, toId) {
   const from = layout.rooms[fromId];
-  const portal = (from.portals ?? []).find((entry) => entry.to === toId && entry.type !== 'vent');
+  // Guards use doors, halls, and stairs at floor level. Not vents, windows, hatches, or doors
+  // that only open from the other side.
+  const walkable = (entry) => ['door', 'hall', 'stairs'].includes(entry.type) && !entry.exitOnly && !entry.oneWay
+    && !(entry.y > 0);
+  const portal = (from.portals ?? []).find((entry) => entry.to === toId && walkable(entry));
   if (!portal) return null;
   const there = findPortal(layout, portal.toPortal);
   return { exitX: portalX(from, portal), entryX: portalX(there.room, there.portal) };
@@ -47,7 +52,10 @@ export function sendResponder(world, missing) {
   );
 
   // First choice: the nearest guard in the same room.
-  const sameRoom = candidates.filter((guard) => guard.roomId === missing.homeRoomId);
+  // Tower guards stay on their towers, so a guard on the ground goes if there is one.
+  const inRoom = candidates.filter((guard) => guard.roomId === missing.homeRoomId);
+  const onGround = inRoom.filter((guard) => (guard.y ?? 0) === 0);
+  const sameRoom = onGround.length > 0 ? onGround : inRoom;
   if (sameRoom.length > 0) {
     const guard = nearest(sameRoom, (entry) => Math.abs(entry.x - postX));
     makeSuspicious(world, guard, postX);
@@ -60,6 +68,7 @@ export function sendResponder(world, missing) {
     const way = wayBetween(world.layout, guard.roomId, missing.homeRoomId);
     if (way) routes.set(guard, way);
   }
+  for (const guard of [...routes.keys()]) if ((guard.y ?? 0) !== 0) routes.delete(guard);
   const walk = (guard) => Math.abs(guard.x - routes.get(guard).exitX) + Math.abs(routes.get(guard).entryX - postX);
   const guard = nearest([...routes.keys()], walk);
   if (!guard) return null;
@@ -94,6 +103,8 @@ export const onRadioNow = (guard, world) => world.time < (guard.radioUntil ?? 0)
 function moveToRoom(world, guard, roomId, x) {
   guard.roomId = roomId;
   guard.x = x;
+  // His bounds belong to his own room.
+  guard.bounds = roomId === guard.homeRoomId ? guard.homeBounds : null;
   guard.seesPlayer = false;
   guard.detection = 0;
   world.guards = world.allGuards.filter((entry) => entry.roomId === world.room.id);

@@ -8,6 +8,7 @@ const GAP_Y = 44;
 const TOP_FLOOR = 2;
 const FLOOR_NAMES = ['BASEMENT', 'FLOOR 1', 'FLOOR 2'];
 const LABEL_W = 96;
+const LINK_SHIFT = { hatch: -16, door: 12 };
 
 function box(room) {
   const x = LABEL_W + room.col * (CELL_W + GAP_X);
@@ -22,6 +23,8 @@ function roomSvg(room) {
   const here = room.current ? ' here' : '';
   return `<rect class="room${here}" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="4"/>`
     + `<text class="name" x="${b.cx}" y="${b.cy + 4}">${room.name}</text>`
+    // Landmarks inside the room, such as the Yard's two towers.
+    + (room.marks.length > 0 ? `<text class="note" x="${b.cx}" y="${b.y + 14}">${room.marks.join(' | ')}</text>` : '')
     + (room.current ? `<text class="you" x="${b.cx}" y="${b.y + b.h - 8}">YOU ARE HERE</text>` : '');
 }
 
@@ -33,7 +36,18 @@ function linkSvg(link, rooms) {
   const style = `link ${link.type}${link.creaky ? ' creaky' : ''}`;
   if (rooms.get(link.from).floor === rooms.get(link.to).floor) {
     const [left, right] = a.x < b.x ? [a, b] : [b, a];
-    return `<line class="${style}" x1="${left.x + left.w}" y1="${left.cy}" x2="${right.x}" y2="${right.cy}"/>`;
+    if (right.x - (left.x + left.w) > GAP_X + 1) {
+      // Another room stands between them (the Stairwell, between the Mess Hall and the Yard):
+      // down from one, along under the row, and up into the other.
+      const fromX = left.x + left.w * 0.88;
+      const toX = right.x + right.w * 0.12;
+      const y = left.y + left.h;
+      const low = y + GAP_Y / 2;
+      return `<polyline class="${style}" points="${fromX},${y} ${fromX},${low} ${toX},${low} ${toX},${y}"/>`;
+    }
+    // Two ways between the same pair of rooms are drawn one above the other.
+    const y = left.cy + (LINK_SHIFT[link.type] ?? 0);
+    return `<line class="${style}" x1="${left.x + left.w}" y1="${y}" x2="${right.x}" y2="${y}"/>`;
   }
   const [upper, lower] = a.y < b.y ? [a, b] : [b, a];
   const overlap = Math.min(upper.x + upper.w, lower.x + lower.w) - Math.max(upper.x, lower.x);

@@ -6,6 +6,10 @@
 //   dark   a pitch-dark patch: stand still in it and you cannot be seen.
 //          Every hall archway is dark, so you arrive in a room unseen and can watch before moving.
 // Portal types
+//   window   on the back wall; press Up. The Guard Office window opens onto the Yard's roof ledge.
+//   hatch    press Up. The way into the equipment shed, on its roof.
+//   A portal with y is up on a ledge or a roof: you have to be standing up there to use it.
+//   A door with exitOnly is latched on the other side: you can come out of it but not go in.
 //   hall     an open archway at the left or right end of the room; walk into it
 //   stairs   on the back wall; press Up
 //   door     on the back wall; press Up. Creaky doors: tap = fast and loud, hold = slow and quiet
@@ -22,6 +26,8 @@
 //   patrol [a, b] walks back and forth. patrol [a, a] stands at a.
 //   turnEvery makes a standing guard face the other way every so many seconds.
 //   sleeper is asleep until something wakes him.
+// Guards can have y (the height they stand at, for a tower), bounds (the stretch of floor they
+// never leave), and a name for the radio.
 // Map: floor 0 is the basement. col and span place the room on the map screen.
 
 const cellBlock = {
@@ -120,11 +126,15 @@ const messHall = {
     { id: 'mh-table-1', type: 'table', x: 8, halfWidth: 2.5 },
     { id: 'mh-table-2', type: 'table', x: 19, halfWidth: 2.5 },
     { id: 'mh-table-3', type: 'table', x: 30, halfWidth: 2.5 },
+    // The side door to the Yard stands in shadow, like the archways, so you never arrive in view.
+    { id: 'mh-dark-yard', type: 'dark', x: 33.2, halfWidth: 0.9 },
     { id: 'mh-dark-east', type: 'dark', x: 37, halfWidth: 1.1 },
   ],
   portals: [
     { id: 'mh-west', type: 'hall', side: 'left', to: 'cell-block', toPortal: 'cb-east' },
     { id: 'mh-east', type: 'hall', side: 'right', to: 'stairwell', toPortal: 'sw-west' },
+    // The side door out to the Yard.
+    { id: 'mh-yard', type: 'door', creaky: true, x: 33.2, to: 'yard', toPortal: 'yd-door' },
   ],
   guards: [
     { id: 'mh-guard-1', patrol: [7, 18], startX: 11, facing: 1 },
@@ -172,6 +182,8 @@ const guardOffice = {
   hideSpots: [{ id: 'go-desk', type: 'desk', x: 10.5, halfWidth: 1.3 }],
   portals: [
     { id: 'go-door', type: 'door', creaky: true, x: 1.5, to: 'stairwell', toPortal: 'sw-door' },
+    // Out onto the sill at the end of the Yard's roof ledge, and back in the same way.
+    { id: 'go-window', type: 'window', hidden: true, x: 5.5, to: 'yard', toPortal: 'yd-window' },
     // Where the duct comes out, in the ceiling. Too high to climb back into.
     { id: 'go-ceiling', type: 'vent', exitOnly: true, high: true, hidden: true, x: 17.5, to: 'vent-duct',
       toPortal: 'vd-east' },
@@ -207,6 +219,131 @@ const ventDuct = {
   guards: [],
 };
 
+
+// The Yard: outside, at night. The first area built for jumping and climbing.
+// Left to right: the Mess Hall side door, a low fence, the basketball court under the roof
+// ledge, Tower 1, the bleachers, the tall fence, a stack of crates, the equipment shed,
+// Tower 2, and the outer wall.
+//   ladders: { x, bottom, top }. Hold Up or Down to climb.
+//   solids with through: true are ledges: jump up through them, stand on them, and drop back
+//   down with crouch + jump. climb: true makes a chain-link fence, which you can climb on
+//   either side and see through. seeThrough ones cast no shadow.
+//   cameras with kind: 'searchlight' are the tower lights (see camera.js).
+//   towers and sheds only say what to draw.
+const ROOF = 5.4;
+const TOWER = 5.8;
+const slab = (id, kind, from, to, top, extra = {}) => ({
+  id, kind, x: (from + to) / 2, halfWidth: (to - from) / 2, bottom: top - 0.25, top, through: true, ...extra,
+});
+const box = (id, kind, from, to, top, bottom = 0) => ({
+  id, kind, x: (from + to) / 2, halfWidth: (to - from) / 2, bottom, top,
+});
+const fence = (id, x, top) => ({
+  id, kind: 'fence', x, halfWidth: 0.12, bottom: 0, top, climb: true, seeThrough: true,
+});
+
+const yard = {
+  id: 'yard',
+  name: 'Yard',
+  floor: 1,
+  col: 3,
+  width: 82,
+  wallColor: 0x2e343c,
+  outdoor: true,
+  wallHeight: 5.15,
+  // The camera sits this much higher out here, to show the towers.
+  viewLift: 1.4,
+  hideSpots: [
+    { id: 'yd-dark', type: 'dark', x: 1.6, halfWidth: 1.4 },
+    // Under the bleachers: crawl along, like under a table.
+    { id: 'yd-bleachers', type: 'bleachers', x: 43.5, halfWidth: 3.5 },
+  ],
+  portals: [
+    { id: 'yd-door', type: 'door', creaky: true, x: 1.5, to: 'mess-hall', toPortal: 'mh-yard' },
+    // Up on the sill at the end of the roof ledge. Works both ways.
+    { id: 'yd-window', type: 'window', hidden: true, x: 3, y: ROOF, to: 'guard-office', toPortal: 'go-window',
+      mapPart: 'yard-roof' },
+    // On the shed roof. The boots are inside.
+    { id: 'yd-hatch', type: 'hatch', x: 61, y: 4.2, to: 'shed', toPortal: 'sh-hatch' },
+    // Under the west end of the shed roof, in its shadow from Tower 2's light.
+    { id: 'yd-shed-door', type: 'door', exitOnly: true, x: 58.6, to: 'shed', toPortal: 'sh-door' },
+  ],
+  solids: [
+    // The window sill and the roof ledge, with a gap between them that needs the dash.
+    slab('sill', 'ledge', 1, 5, ROOF, { seeThrough: true }),
+    slab('roof-ledge', 'ledge', 11, 31.5, ROOF, { seeThrough: true }),
+    fence('low-fence', 8, 1.2),
+    // The west hoop: bench, rim, backboard, and the light pole. A climb to the roof with jumps only.
+    box('bench', 'bench', 12.6, 14, 1.1),
+    slab('rim', 'hoop', 14.6, 15.6, 2.3, { seeThrough: true }),
+    slab('backboard', 'hoop', 15.9, 16.5, 3.3, { seeThrough: true }),
+    slab('pole-top', 'hoop', 18.1, 18.9, 4.3, { seeThrough: true }),
+    // The scorer's table at the east end of the court: low cover from the guard and from the light.
+    box('table', 'bench', 28.6, 29.8, 1.3),
+    // Tower 1's platform. A jump from its west edge reaches the roof ledge.
+    slab('tower-1', 'platform', 33.5, 37.5, TOWER),
+    // The bleachers: three rows, rising toward the tall fence.
+    slab('row-1', 'bleacher', 40, 47, 0.9),
+    slab('row-2', 'bleacher', 42.4, 47, 1.8),
+    slab('row-3', 'bleacher', 44.8, 47, 2.7),
+    fence('tall-fence', 49.5, 3),
+    // The crate stack, with a step on each side so it can be climbed from the ground.
+    box('crate-1', 'crate', 51.5, 52.7, 1.2),
+    box('crate-2', 'crate', 52.7, 55.3, 2.4),
+    box('crate-3', 'crate', 53.4, 54.6, 3.3, 2.4),
+    box('crate-4', 'crate', 55.3, 56.5, 1.2),
+    // The shed roof. You can walk under it: the shed itself stands against the back wall.
+    box('shed-roof', 'roof', 57.8, 64.3, 4.2, 3.9),
+    slab('tower-2', 'platform', 69, 73, TOWER),
+  ],
+  ladders: [
+    { id: 'ladder-1', x: 37, bottom: 0, top: TOWER },
+    { id: 'ladder-2', x: 72.5, bottom: 0, top: TOWER },
+  ],
+  towers: [{ x: 35.5, top: TOWER, lampX: 33.2, lampY: 7.8 }, { x: 71, top: TOWER, lampX: 68.7, lampY: 7.8 }],
+  sheds: [{ from: 57.8, to: 64.3, height: 3.9 }],
+  hoops: [{ x: 16.4, facing: -1 }],
+  items: [{ id: 'basketball', type: 'basketball', x: 22 }],
+  // Like the welded vent: a teaser for later.
+  props: [{ id: 'outer-wall', type: 'outer-wall', x: 81.5, reach: 1.6 }],
+  guards: [
+    // He walks between the east end of the court and the bleachers. The open court belongs to
+    // Tower 1's searchlight.
+    { id: 'yd-guard', name: 'Yard guard', patrol: [31.5, 39.5], startX: 34, facing: 1, bounds: [8.8, 48.5] },
+    { id: 'yd-tower-1', name: 'Tower 1 guard', patrol: [34.6, 34.6], facing: -1, y: TOWER, bounds: [33.8, 37.2] },
+    { id: 'yd-tower-2', name: 'Tower 2 guard', patrol: [70.1, 70.1], facing: -1, y: TOWER, bounds: [69.3, 72.7] },
+  ],
+  cameras: [
+    { id: 'yd-light-1', kind: 'searchlight', min: 13, max: 25, halfWidth: 2.2, speed: 2.2, awaySeconds: 3,
+      mountX: 33.2, mountY: 7.8, guardId: 'yd-tower-1', maxY: 3 },
+    { id: 'yd-light-2', kind: 'searchlight', min: 52, max: 66, halfWidth: 2.2, speed: 1.8, awaySeconds: 3,
+      mountX: 68.7, mountY: 7.8, guardId: 'yd-tower-2', maxY: 3 },
+  ],
+  // On the map the roof is its own box, next to the Guard Office, and shows once you get up there.
+  mapParts: [
+    { id: 'yard-roof', name: 'Roof ledge', floor: 2, col: 3, zone: { from: 0, to: 38, minY: 5 }, link: 'ladder' },
+  ],
+  mapMarks: ['Tower 1', 'Tower 2'],
+};
+
+// Inside the equipment shed. You get in through the roof hatch and out through the door, which
+// is latched on the inside.
+const shed = {
+  id: 'shed',
+  name: 'Equipment Shed',
+  floor: 1,
+  col: 4,
+  width: 9,
+  wallColor: 0x4a4436,
+  hideSpots: [],
+  portals: [
+    { id: 'sh-hatch', type: 'hatch', x: 2, to: 'yard', toPortal: 'yd-hatch' },
+    { id: 'sh-door', type: 'door', oneWay: true, x: 7, to: 'yard', toPortal: 'yd-shed-door' },
+  ],
+  items: [{ id: 'boots', type: 'boots', x: 4.5 }],
+  guards: [],
+};
+
 export const ROOMS = Object.freeze({
   'vent-duct': ventDuct,
   'cell-block': cellBlock,
@@ -215,6 +352,8 @@ export const ROOMS = Object.freeze({
   'mess-hall': messHall,
   stairwell,
   'guard-office': guardOffice,
+  yard,
+  shed,
 });
 
 export const PRISON = Object.freeze({ startRoom: 'cell-block', rooms: ROOMS });
@@ -233,7 +372,6 @@ const gym = {
   width: 84,
   wallColor: 0x3f4a44,
   playerStart: 3,
-  moves: true,
   signs: [
     { x: 8, text: '1. JUMP (K / B)', hint: 'tap for a short hop' },
     { x: 17, text: '2. HOLD JUMP TO GO HIGHER', hint: 'let go early to cut it short' },

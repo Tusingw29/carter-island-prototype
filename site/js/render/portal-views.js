@@ -38,7 +38,34 @@ function door(room, portal) {
   return group;
 }
 
-const BUILDERS = { hall, stairs, door, vent: ventView };
+// The Guard Office window. From the Yard it is up on the sill at the end of the roof ledge.
+function windowView(room, portal) {
+  const group = new Group();
+  const base = portal.y ?? 0;
+  group.add(placed(block(1.5, 1.7, 0.08, 0x6b7480), portal.x, base + 1.25, WALL_Z + 0.05));
+  group.add(placed(block(1.3, 1.5, 0.1, 0x101c2c, 0x0c1a30), portal.x, base + 1.25, WALL_Z + 0.08));
+  group.add(placed(block(0.06, 1.5, 0.12, 0x6b7480), portal.x, base + 1.25, WALL_Z + 0.1));
+  group.add(placed(block(1.7, 0.1, 0.3, 0x8a94a0), portal.x, base + 0.42, WALL_Z + 0.15));
+  return group;
+}
+
+// The shed's hatch. On the roof it is a lid at your feet. Inside it is a ladder up to the ceiling.
+function hatchView(room, portal) {
+  const group = new Group();
+  if (portal.y > 0) {
+    group.add(placed(block(1.2, 0.08, 1, 0x8a7a4a, 0x2a240c), portal.x, portal.y + 0.04, -0.2));
+    group.add(placed(block(0.3, 0.06, 0.1, 0xd0c8a0), portal.x, portal.y + 0.11, 0.2));
+    return group;
+  }
+  for (const side of [-0.28, 0.28]) {
+    group.add(placed(block(0.07, 4.4, 0.07, 0xb8a060), portal.x + side, 2.2, WALL_Z + 0.3));
+  }
+  for (let y = 0.3; y < 4.4; y += 0.4) group.add(placed(block(0.6, 0.05, 0.05, 0xb8a060), portal.x, y, WALL_Z + 0.3));
+  group.add(placed(block(1.2, 0.1, 1, 0x8a7a4a, 0x2a240c), portal.x, 4.45, WALL_Z + 0.6));
+  return group;
+}
+
+const BUILDERS = { hall, stairs, door, vent: ventView, window: windowView, hatch: hatchView };
 
 export function createPortalView(room, portal) {
   return BUILDERS[portal.type](room, portal);

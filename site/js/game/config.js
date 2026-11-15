@@ -27,6 +27,10 @@ export const CONFIG = Object.freeze({
     // Twice as far back shows twice as much floor.
     wideDistance: 30,
     followSharpness: 10,
+    // Up a tower or on a roof the camera lifts: by liftShare of your height above liftAbove.
+    liftAbove: 1.6,
+    liftShare: 0.75,
+    liftSharpness: 4,
     zoomSharpness: 3.5,
     // Close, wide, and smart show this far past the room's ends. Room mode stops at the walls.
     followPastWall: 1,
@@ -62,7 +66,8 @@ export const CONFIG = Object.freeze({
     runRadius: 8,
     crouchRadius: 0,
     dragRadius: 1.5,
-    // Gym moves. Landing is a small noise, a slide is quiet, a dash is the loudest thing you can do.
+    // Jumping and landing are small noises, a slide is quiet, a dash is the loudest thing you can do.
+    jumpRadius: 1.5,
     landRadius: 1.5,
     slideRadius: 1,
     dashRadius: 11,
@@ -248,7 +253,8 @@ export const CONFIG = Object.freeze({
     lightShakeMetres: 0.06,
   }),
 
-  // Jump, slide, and dash. Only in the gym (?room=gym) for now.
+  // Jump, slide, dash, and climbing. Jump and slide work everywhere from the start of a run.
+  // Dash needs the work boots from the Yard's equipment shed (the gym has it for practice).
   // The peak of a jump is jumpSpeed squared over twice gravity.
   moves: Object.freeze({
     // Adam's values from the gym sliders (playtest 4). Jump height 1.5 m, dash distance 4.5 m.
@@ -274,6 +280,11 @@ export const CONFIG = Object.freeze({
     slideSeconds: 0.45,
     slideHeight: 0.6,
     bodyHalfWidth: 0.3,
+    // Ladders are quick. A chain-link fence is slow, and you are in plain view the whole way up.
+    ladderClimbSpeed: 2.4,
+    fenceClimbSpeed: 1.1,
+    // How close you must be to a ladder, or to the side of a fence, to grab it.
+    climbReach: 0.45,
     // Fall this far down a gap and you are put back on the edge.
     pitDepth: 3,
   }),
