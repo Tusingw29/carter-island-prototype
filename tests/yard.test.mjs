@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  cameraLit, cameraSeesPlayer, cameraSweep, createCamera, poolSlices,
+  cameraSeesPlayer, cameraSweep, createCamera, searchlightShape,
 } from '../site/js/game/camera.js';
 import { CONFIG } from '../site/js/game/config.js';
 import { createFraming, goalLift, updateFraming } from '../site/js/game/framing.js';
@@ -230,10 +230,11 @@ test('dash: the gym keeps every move, boots or not', () => {
 
 test('noise: jumping and landing are small, a slide is quiet, a dash is loud', () => {
   const N = CONFIG.noise;
-  assert.ok(N.jumpRadius < N.walkRadius && N.landRadius < N.walkRadius);
-  assert.ok(N.slideRadius < N.walkRadius);
+  assert.ok(N.jumpRadius < N.runRadius / 4 && N.landRadius < N.runRadius / 4);
+  assert.ok(N.slideRadius <= N.walkRadius);
   assert.ok(N.dashRadius > N.runRadius);
-  // A guard 2 m away with his back turned does not hear a standing jump. One 1 m away does.
+  // A guard 2 m away with his back turned does not hear a standing jump. One 1 m away half
+  // hears it: he glances round, but does not come over (the hearing meter, Step 12).
   const sentry = (x) => ({ id: 'g', patrol: [x, x], startX: x, facing: 1 });
   const far = testWorld({ playerX: 20, guards: [sentry(22)] });
   step(far, { jump: true });
@@ -242,8 +243,10 @@ test('noise: jumping and landing are small, a slide is quiet, a dash is loud', (
   assert.equal(far.guards[0].state, 'calm');
   const near = testWorld({ playerX: 20, guards: [sentry(21.3)] });
   step(near, { jump: true });
-  run(near, { jump: true }, 0.1);
-  assert.equal(near.guards[0].state, 'suspicious');
+  step(near, { jump: true });
+  assert.equal(near.guards[0].state, 'calm');
+  assert.ok(near.guards[0].glance > 0, 'a glance over his shoulder');
+  assert.ok(happened(near, 'glance'));
   // A dash is heard from 10 m.
   const dashing = testWorld({ width: 60, playerX: 20, guards: [sentry(30)] });
   dashing.player.hasBoots = true;
@@ -499,9 +502,13 @@ test('searchlight: stepping into the pool is called in. Guards go Suspicious and
 });
 
 test('searchlight: outside the pool, on a roof, or while it is swung away, you are not seen', () => {
-  const outside = underLight(20, 23);
-  run(outside, {}, 2);
-  assert.equal(outside.stats.timesSpotted, 0);
+  // The beam leans in from the tower to the east, so its east edge passes over the ground
+  // beyond the pool. Clear of the whole beam on either side, you are not seen.
+  for (const x of [16.5, 25.5]) {
+    const outside = underLight(20, x);
+    run(outside, {}, 2);
+    assert.equal(outside.stats.timesSpotted, 0, `standing at ${x}`);
+  }
   const roof = underLight(20, 20);
   roof.player.y = 5.4;
   run(roof, {}, 2);
@@ -516,22 +523,26 @@ test('searchlight: solid cover blocks the light. The bench, the bleachers, and t
   const blockers = sightBlockers(yard);
   const [one, two] = yard.cameras.map((def) => createCamera(def, 'yard'));
   const person = (x, crouching) => ({ x, y: 0, crouching, hiddenIn: null, inDark: null });
-  // Crouched behind the bench at the west end of the court, with the pool right on top of you.
+  // Behind the bench at the west end of the court, with the pool right on top of you. The
+  // beam comes in low there, so the bench shades all of you, crouched or standing.
   const bench = solid('bench');
   const spot = bench.x - bench.halfWidth - 0.4;
   assert.equal(cameraSeesPlayer({ ...one, x: 13 }, person(spot, true), blockers), false);
-  assert.equal(cameraSeesPlayer({ ...one, x: 13 }, person(spot, false), blockers), true, 'standing, you are lit');
+  assert.equal(cameraSeesPlayer({ ...one, x: 13 }, person(spot, false), blockers), false);
   assert.equal(cameraSeesPlayer({ ...one, x: 13 }, person(spot, true), []), true, 'it is the bench that hides you');
+  assert.equal(cameraSeesPlayer({ ...one, x: 13 }, person(15, true), blockers), true, 'east of it you are lit');
   // Under the shed roof, in the path of Tower 2's light.
   const shedDoor = yard.portals.find((portal) => portal.id === 'yd-shed-door');
   assert.equal(cameraSeesPlayer({ ...two, x: shedDoor.x }, person(shedDoor.x, false), blockers), false);
   assert.equal(cameraSeesPlayer({ ...two, x: 66 }, person(66, false), blockers), true, 'past the shed you are lit');
-  // The pool is drawn with the shadow missing, and the beam stops at the roof.
-  const slices = poolSlices({ ...two, x: 57.5 }, blockers, 16);
-  assert.ok(slices.includes(false) && slices.some((lit, i) => !lit && i > 4), 'part of the pool is dark');
-  assert.ok(poolSlices({ ...two, x: 57.5 }, [], 16).every(Boolean), 'with no cover it is all lit');
-  const beam = cameraLit({ ...two, x: 60 }, blockers);
-  assert.ok(beam.some((point) => Math.abs(point.y - solid('shed-roof').top) < 0.01), 'the beam ends on the shed roof');
+  // The pool is drawn with the shadow missing, and the light lands on the shed roof instead.
+  const shaded = searchlightShape({ ...two, x: 57.5 }, blockers);
+  const roofTop = solid('shed-roof').top;
+  assert.ok(shaded.pools.some((pool) => pool.y === roofTop), 'a pool of light on the shed roof');
+  const atDoor = (pool) => pool.y === 0 && pool.from < shedDoor.x && pool.to > shedDoor.x;
+  assert.ok(!shaded.pools.some(atDoor), 'and none on the ground at the shed door under it');
+  const open = searchlightShape({ ...two, x: 57.5 }, []);
+  assert.ok(open.pools.some(atDoor), 'with no cover the door would be lit');
   // The bleachers: a light swung over them cannot reach the ground under the top row.
   const rows = { ...two, mountX: 55, x: 45.5, min: 40, max: 47 };
   assert.equal(cameraSeesPlayer(rows, person(45.6, true), blockers), false);
@@ -546,7 +557,8 @@ test('searchlight: in the game, crouching in the bench shadow keeps you safe as 
   light(world, 'yd-light-2').off = true;
   run(world, { crouch: true }, 45);
   assert.equal(world.stats.timesSpotted, 0);
-  // Stand up and the next pass catches you.
+  // Step out onto the open court and the next pass catches you.
+  world.player.x = 18;
   runUntil(world, () => world.stats.timesSpotted === 1, {}, 30);
 });
 
@@ -558,7 +570,8 @@ test('tower guard: knocked out from behind at the top of the ladder, and his sea
   runUntil(world, () => world.player.climbing === null && world.player.y === 5.8, { up: true }, 6);
   assert.equal(tower.state, 'calm', 'he did not notice you come up behind him');
   walk(world, tower.x + 0.9, { crouch: true });
-  assert.equal(currentPrompt(world).text, 'SPACE: knock out');
+  assert.equal(currentPrompt(world).text, 'SPACE: grab');
+  tap(world, 'action');
   tap(world, 'action');
   assert.equal(tower.state, 'out');
   assert.equal(lamp.off, true);

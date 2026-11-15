@@ -2,7 +2,7 @@
 // If one does not answer because he is knocked out, another guard goes to his post to look.
 import { CONFIG } from './config.js';
 import { makeSuspicious } from './alert.js';
-import { isAwake, moveToward } from './guard.js';
+import { isAwake, moveToward, obstaclesFor } from './guard.js';
 import { say } from './messages.js';
 import { findPortal, portalX } from './portals.js';
 
@@ -88,7 +88,15 @@ export function updateRadio(world, cfg = CONFIG.radio) {
   for (const guard of world.allGuards) {
     if (guard.radioAt == null || world.time < guard.radioAt) continue;
     guard.radioAt += cfg.intervalSeconds;
-    if (guard.state === 'out') {
+    if (guard.state === 'held') {
+      // He cannot call out while you hold him. Control tries him again in a few seconds.
+      guard.radioAt += cfg.retrySeconds - cfg.intervalSeconds;
+    } else if (guard.state === 'out' && guard.codeKnown) {
+      // You have his radio code, so you answer for him until he wakes up.
+      world.stats.checkInsFaked += 1;
+      world.events.push({ type: 'checkInFaked', guardId: guard.id });
+      say(world, `Check-in faked. You answer for the ${guard.label}.`);
+    } else if (guard.state === 'out') {
       missedCheckIn(world, guard);
     } else {
       guard.radioUntil = world.time + cfg.showSeconds;
@@ -105,6 +113,8 @@ function moveToRoom(world, guard, roomId, x) {
   guard.x = x;
   // His bounds belong to his own room.
   guard.bounds = roomId === guard.homeRoomId ? guard.homeBounds : null;
+  guard.obstacles = obstaclesFor(world.layout.rooms[roomId], guard.y ?? 0);
+  guard.vault = null;
   guard.seesPlayer = false;
   guard.detection = 0;
   world.guards = world.allGuards.filter((entry) => entry.roomId === world.room.id);

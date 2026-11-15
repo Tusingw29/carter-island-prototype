@@ -125,7 +125,10 @@ export const tapKey = (button, keys = {}) => (world) => {
 
 // ---------- Legs ----------
 
-const NOTICED = new Set(['suspicious', 'alert', 'searching', 'searchlight', 'camera', 'yell', 'bodyFound', 'grab']);
+// A glance is a guard half hearing something. A clean leg does not even cause that.
+const NOTICED = new Set([
+  'suspicious', 'alert', 'searching', 'searchlight', 'camera', 'yell', 'bodyFound', 'grab', 'glance',
+]);
 
 function play(world, moves) {
   for (const move of moves) move(world);

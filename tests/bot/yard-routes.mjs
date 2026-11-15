@@ -124,7 +124,8 @@ export function bootsThenRoofByTowerRun() {
   const { world, log } = bootsTrip();
   shedToBleachers(world, log);
   bleachersToLadder(world, log, true);
-  leg(world, log, 'knock out the tower guard', [walkTo(35.5, CROUCH), tapKey('action')]);
+  // One press grabs him from behind, the next knocks him out.
+  leg(world, log, 'knock out the tower guard', [walkTo(35.5, CROUCH), tapKey('action'), tapKey('action')]);
   leg(world, log, 'tower to roof, dash, window', [
     walkTo(33.7), leapTo(31), walkTo(11.4, RUN), dashLeapTo(4.5), walkTo(3), tapKey('up'),
   ]);

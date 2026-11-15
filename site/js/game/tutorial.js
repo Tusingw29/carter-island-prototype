@@ -48,8 +48,8 @@ export const TUTORIAL = Object.freeze([
   {
     id: 'knockout',
     when: (world) => Boolean(knockoutTarget(world)),
-    text: 'You are behind him and he has not seen you. Press Space (or X) to knock him out. '
-      + 'He wakes up after a while, and the other guards notice when he misses his radio check-in.',
+    text: 'You are behind him and he has not seen you. Press Space (or X) to grab him. Then choose: '
+      + 'Space knocks him out, holding E makes him talk, F throws him down. Choose within six seconds.',
   },
   {
     id: 'shove',

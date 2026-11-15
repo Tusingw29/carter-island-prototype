@@ -12,6 +12,8 @@ export function createPlayer(x) {
     inDark: null,
     // Id of the knocked-out guard being dragged, or null.
     dragging: null,
+    // Id of the guard being held in a takedown, or null.
+    holding: null,
     hasKeycard: false,
     hasScrewdriver: false,
     hasCigarettes: false,

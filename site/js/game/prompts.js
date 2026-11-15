@@ -4,6 +4,7 @@ import { keycardInReach } from './keycard.js';
 import { dragTarget, knockoutTarget, stuffTarget, tooRiskyNow } from './knockout.js';
 import { canSleep, inBed } from './run.js';
 import { shoveReady, shoveTarget } from './shove.js';
+import { dropTarget, grabTarget, pullInTarget } from './takedown.js';
 import { throwableName } from './throwing.js';
 import { snitchInReach } from './snitch.js';
 import { upTarget } from './targets.js';
@@ -36,7 +37,11 @@ export function currentPrompt(world) {
     const risky = world.allGuards.find((guard) => guard.id === world.risky.guardId);
     return { text: 'SHOVE NOT READY', x: risky.x, y: (risky.y ?? 0) + 2.75, shake: true };
   }
+  // Holding a guard: the choices are shown in their own panel.
+  if (world.hold) return null;
   if (player.hiddenIn) {
+    const passing = pullInTarget(world);
+    if (passing) return { text: 'SPACE: pull in', x: passing.x, y: (passing.y ?? 0) + 2.75 };
     if (canSleep(world)) return { text: 'E: sleep (end the run)   UP: get up', x: player.x, y: 1.6 };
     return { text: inBed(world) ? 'UP: get up' : 'UP: come out', x: player.x, y: inBed(world) ? 1.6 : 2.75 };
   }
@@ -62,7 +67,9 @@ export function currentPrompt(world) {
   const snitch = snitchInReach(world);
   if (snitch?.cellOpen) return { text: 'SPACE: knock out', x: snitch.x, y: 3 };
   const guard = knockoutTarget(world);
-  if (guard) return { text: 'SPACE: knock out', x: guard.x, y: (guard.y ?? 0) + 2.75 };
+  if (guard && grabTarget(world)) return { text: 'SPACE: grab', x: guard.x, y: (guard.y ?? 0) + 2.75 };
+  const below = dropTarget(world);
+  if (below) return { text: 'SPACE: drop on him', x: below.x, y: (below.y ?? 0) + 2.75 };
   const facing = shoveTarget(world);
   if (facing && shoveReady(world)) return { text: 'SPACE: shove', x: facing.x, y: (facing.y ?? 0) + 2.75 };
   const body = dragTarget(world);

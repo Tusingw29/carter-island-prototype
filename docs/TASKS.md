@@ -27,6 +27,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 9 | Playtest 3: chase instead of instant capture, instant knockouts, gym feel | review, awaiting Adam's verdict | `step-9-playtest-3` |
 | 10 | Playtest 4: cover blocks sight, picture quality, gym values, shove, throwables | review, awaiting Adam's verdict | `step-10-playtest-4` |
 | 11 | The Yard: jump and slide everywhere, dash unlock, towers, searchlights, roof route | review, awaiting Adam's verdict | `step-11-yard` |
+| 12 | Playtest 5: searchlight and crate bugs, quieter sneaking, takedown system | review, awaiting Adam's verdict | `step-12-takedowns` |
 
 ---
 
@@ -975,6 +976,186 @@ it will count cover the moment a room has some (the Yard will).
     a fence with Up.
 11. Open the map (M) before and after finding the roof and the window.
 12. Does the movement work inside the stealth game? Does the Yard make you want to explore?
+13. All four playtest questions.
+
+---
+
+## Step 12: Playtest 5 (searchlight and crate bugs, quieter sneaking, takedown system)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-12-takedowns` (built on Step 11)
+- **Playtest 5 results (Adam):** caught in the Cell Block with 5:42 left. Grabbed 1.0 s
+  after the "!" (Cell Block guard, up close). Spotted 7, knockouts 2, keycard grabbed
+  fast, no silent alarm. Three bugs with screenshots from the Yard. Wants a Metal Gear
+  Solid V / Hitman style takedown system with options. Guards hear him too easily when he
+  walks up behind them.
+- **Not changed:** vision cones, patrols, the chase numbers, the shove, throwables, the
+  security cameras inside the prison, the 7:00 timer, and the map layout.
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Yard, on the crates where the searchlight bug was, with the debug outlines on:
+    https://tusingw29.github.io/carter-island-prototype/?room=yard&px=55&py=2.4&debug
+  - Yard door: https://tusingw29.github.io/carter-island-prototype/?room=yard
+  - Gym: https://tusingw29.github.io/carter-island-prototype/?room=gym
+
+### Part 1: the three bugs
+
+1. **Searchlight detected you where there was no light.**
+   - **Cause:** the game asked "is the player on the stretch of floor the light is aimed
+     at, with a clear line to the lamp?" The picture drew the beam going to that floor.
+     On the crates you were over that stretch of floor, with a clear line to the lamp,
+     while the beam itself passed under your feet and ended against the crates or on the
+     shed roof. Two different shapes.
+   - **Fix:** one function, `searchlightShape`, makes the shape of the light. The renderer
+     draws it and the game asks "is any part of the body inside it?". A test compares the
+     two at about 20,000 positions around the Yard.
+   - **Height:** it now lights whatever it reaches. On the shed roof, in the part of the
+     roof the light lands on, you are lit. On top of the crate stack you are not, at any
+     point of either sweep.
+   - **Pools:** drawn on the ground and on top of whatever the beam hits (the shed roof).
+   - **Warning glow:** now amber and pulsing. It runs just ahead of the pool while it
+     sweeps, and grows on the spot where the light will come back down.
+   - **Debug (F1):** each searchlight's detection area is outlined in red. It sits exactly
+     on the edge of the drawn light.
+   - **One side effect:** the beam comes in at a slant from the tower, so on the tower's
+     side of a pool it passes over ground the pool has not reached. Stand there and it
+     catches your head. This is drawn, so what you see is still what you get.
+2. **A guard walked through a crate.** Guards now stop at solid props. Anything up to
+   1.4 m high he vaults, which takes 0.8 s (he leans and climbs over, "hup" over his
+   head). Anything taller stops him: he looks from his side and gives up. A lunge and a
+   shove cannot carry him through one either. Every patrol was checked: none passes
+   through anything, and a test now fails if one ever does.
+3. **"Grabbed 1.0 s after the !" in the Cell Block.** The pause and the wind-up both
+   applied. Replayed in the Cell Block with the guard 1 m away:
+
+   | What the player does | "!" to grab |
+   | --- | --- |
+   | Stands still | 0.95 s (0.6 pause + 0.35 wind-up) |
+   | Crouch-walks away | 1.37 s |
+   | Walks away | 1.97 s |
+   | Runs away | no grab, out of the room |
+   | Walks, then runs when he crouches | no grab, the lunge misses |
+   | Jumps when he crouches | no grab, the lunge misses |
+
+   0.95 s is the fastest a grab can come, and the score screen shows it as 1.0 s. So you
+   were still within 1.2 m of him when his pause ended. Nothing was skipped. Not changed.
+
+### Part 2: quieter sneaking
+
+- **Walking** is heard from 1 m (was 2.5 m). Grab reach is 1.1 m, so you can walk up
+  behind a guard and grab him unheard. **Running** is still heard from 8 m.
+- **Hearing meter:** an arc over the guard's head. Footsteps in earshot fill it in about
+  a second at the edge of earshot and twice as fast up close. At 40% he stops and glances
+  back for 0.8 s (a real look: he can see you), then carries on. Full, he goes Suspicious
+  and walks to the sound. It drains at half a meter per second when you are quiet.
+- **One-off noises:** a loud one (a thrown cup landing, a slammed door, a dash, a guard
+  thrown down) fills the meter at once. A small one (a jump, a landing) half fills it.
+- **Crouch-walking** is silent and now 2.24 m/s, 70% of walking (was 1.5).
+- **Noise ring:** a faint green ring round you, always shown, the size of your footsteps'
+  reach. One-off noises flash a ring where they happen.
+
+### Part 3: takedowns
+
+- **Grab:** "SPACE: grab" behind an unaware or sleeping guard. A panel shows the choices
+  with keyboard and controller buttons, and a bar for the 6 seconds before he breaks free.
+- **Knock out** (Space / X): as before. Counts as a knockout.
+- **Interrogate** (hold E / A, 3 s): you cannot move. The 6 second clock stops while he
+  talks and starts fresh afterwards. Then Space knocks him out, or E lets him go.
+- **Let go:** he is dazed for 2 s, then raises the alarm. No knockout on your record.
+- **Throw** (F / Left Bumper): stunned 2 s, heard 10 m away, then he is up and Alert.
+- **Drag** (A / D or the stick): 1.2 m/s, facing him the whole time.
+- **Radio code:** from every interrogation. Knocked out, his check-ins show "Check-in
+  faked" and nobody is sent, until he wakes.
+- **One extra per guard:**
+
+  | Guard | Gives up |
+  | --- | --- |
+  | Cell Block | story |
+  | Laundry | story |
+  | Mess Hall 1 | patrol reveal (Mess Hall, 60 s on the map) |
+  | Mess Hall 2 | story |
+  | Stairwell | secret: the camera panel is in the Maintenance Hall |
+  | Guard Office (the sleeper) | secret: the work boots, and the hatch goes on your map |
+  | Yard, ground | patrol reveal (Yard, 60 s on the map) |
+  | Tower 1 | story |
+  | Tower 2 | story |
+  | Gym | story |
+
+- **Story lines (6):** your three examples, used as written, and three new ones: "They
+  sealed Shaft Nine in a day. Nobody brought the crew up first.", "The dogs will not cross
+  the Yard after dark. They never used to mind.", "My badge logs a door on sub-level four.
+  There is no sub-level four."
+- **From above:** "SPACE: drop on him" when you stand 1 to 8 m above an unaware guard and
+  within 1 m sideways. Works from the gym ledge and from Tower 1's platform.
+- **From a hiding spot:** "SPACE: pull in" when an unaware guard is within 1.2 m of the
+  locker, cart, table, desk, counter, shelf, or bleachers you are in.
+- **Score screen and playtest text:** takedowns by type, guards thrown down,
+  interrogations, check-ins faked.
+- What guards told you is listed under the map (M).
+
+### Planning bot, new hearing and guard collision rules
+
+| Route | Result | Time | Before |
+| --- | --- | --- | --- |
+| Front door in, front door back | Ghost | 2:14 | 2:14 |
+| Front door in, one-way drop home | Ghost | 1:36 | 1:36 |
+| Vent route | Ghost | 1:23 | 1:23 |
+| Bed to work boots in hand | not noticed | 1:08 | 1:09 |
+| Boots, hoop climb to the roof, dash, window, drop home | Ghost | 2:14 | 2:59 |
+| Boots, Tower 1 (its guard grabbed and knocked out), roof, window, drop home | Shadow | 2:14 | 2:14 |
+
+- The faster crouch saves time inside rooms (the duct crawl went from 17.8 s to 12.0 s),
+  but most routes end by waiting for the same gap in the Cell Block guard's patrol, so the
+  totals barely move. The hoop route caught an earlier gap and is 45 s faster.
+- The bot counts a glance as being noticed, so its runs never fill a hearing meter at all.
+- No bot route makes a guard meet a crate, so the collision rule changes none of them.
+- **A bot bug fixed:** with the new timing the planner tried to hide beside the new Yard
+  door in the Mess Hall and opened the door instead. It now never presses Up for a hiding
+  spot when a door is as near.
+
+### Choices I made that Adam should check
+
+- **Security cameras inside the prison are unchanged.** They still use "on the watched
+  floor, with a clear line". Only searchlights got the shared-shape rule. The cameras have
+  no platforms under them, so the two rules cannot disagree there by much, and changing
+  them would move the bot's routes. Say if you want them on the same rule.
+- **"Let him go" means he raises the alarm** after 2 s. The spec did not say what a
+  released guard does.
+- **Six story lines, not eight.** Each guard gives one extra, there are ten guards, and two
+  patrol reveals and two secrets took four of them. No guard gives a vent or a throwable
+  as a secret.
+- **A glance is a real look.** If you are in the open behind him when the arc reaches 40%,
+  he sees you. Running up behind a guard is now worse than before at close range.
+- **A vault costs him about half a second net**, not 0.8, because the vault also carries
+  him 1.7 m. Say if you want it slower.
+- **Guards still walk under the bleachers and tables.** Those are not solid props.
+- **A stunned guard no longer counts as "lost you".** Before, the 2 seconds on the floor
+  after a throw would have used up the 2 seconds it takes to lose him. This also makes a
+  shoved guard a little more persistent.
+- **Jumping still dodges a lunge** (see the table above). Not tuned.
+- **Not verified:** not played by a person. I do not know if the takedown choices feel
+  good under pressure or if 6 seconds is right. Sounds unheard, a controller and the 2015
+  MacBook Air untested. Checked by 393 tests, the two bots, and headless Chrome.
+
+### How Adam tests it
+
+1. Open the Yard crates link. Stand on the crates through a few sweeps: no call-in. The
+   red outline is the detection area and should sit on the edge of the light.
+2. Jump down and watch a pool arrive: amber glow first, then the light.
+3. Get chased by the Yard guard and run west over the scorer's table. He should climb over
+   it. Then put the tall fence between you: he should stop.
+4. Main game. Walk up behind a guard (no crouch). Watch the arc over his head: it should
+   stay empty. Then try running up behind one.
+5. Grab a guard (Space). Read the panel. Knock him out with Space.
+6. Grab another and hold E. After he talks, knock him out, wait for his next check-in, and
+   look for "Check-in faked".
+7. Grab one and press F, then run.
+8. Grab one and do nothing for six seconds.
+9. Hide in a locker and pull a passing guard in. In the gym, drop on the guard from the
+   ledge.
+10. Interrogate Mess Hall guard 1 and open the map (M).
+11. Read the new lines on the score screen.
+12. Do the options change how you plan a room? Which ones did you never use?
 13. All four playtest questions.
 
 ---

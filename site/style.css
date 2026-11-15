@@ -777,3 +777,77 @@ body.in-menu #gym-tuning {
 #shove.ready .bar > div {
   background: #7fd0a0;
 }
+
+/* Step 12: the takedown choices, the hearing arc, and patrols on the map. */
+#takedown {
+  top: 96px;
+  color: #e8ecf2;
+}
+
+#takedown-options {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  font-size: 13px;
+}
+
+#takedown-options li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 2px 0;
+}
+
+#takedown-options b {
+  min-width: 62px;
+  color: var(--beam);
+}
+
+#takedown-options i {
+  min-width: 56px;
+  color: var(--dim);
+  font-style: normal;
+}
+
+#takedown-options .bar {
+  display: inline-block;
+  width: 90px;
+  margin: 0;
+}
+
+#takedown-options .bar > span {
+  display: block;
+  height: 100%;
+  background: currentColor;
+}
+
+.hear-arc {
+  --fill: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 17px;
+  pointer-events: none;
+  border-radius: 34px 34px 0 0;
+  background:
+    conic-gradient(
+      from 270deg at 50% 100%,
+      #ffd24a calc(var(--fill) * 180deg),
+      rgb(255 255 255 / 22%) 0 180deg,
+      transparent 0
+    );
+  -webkit-mask: radial-gradient(circle at 50% 100%, transparent 10px, #000 11px);
+  mask: radial-gradient(circle at 50% 100%, transparent 10px, #000 11px);
+}
+
+body.in-menu .hear-arc {
+  display: none;
+}
+
+#map-svg .patrol {
+  stroke: #ffb03a;
+  stroke-width: 2;
+  fill: #ffb03a;
+}

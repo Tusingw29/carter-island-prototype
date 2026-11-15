@@ -8,7 +8,7 @@ import { onRadioNow } from '../game/radio.js';
 import { currentPrompt } from '../game/prompts.js';
 import { moveTo, setHidden, setText, setWidth } from './dom.js';
 
-const ICONS = { calm: '', suspicious: '?', searching: '?', alert: '!', out: 'Zz', asleep: 'Zz' };
+const ICONS = { calm: '', suspicious: '?', searching: '?', alert: '!', out: 'Zz', asleep: 'Zz', held: '' };
 const RADIO = '((\u2022))';
 const DUTIES = { bedCheck: 'BED CHECK', radio: 'RADIO CHECK' };
 const LABELS = { calm: 'CALM', suspicious: 'SUSPICIOUS', searching: 'SEARCHING', alert: 'ALERT', asleep: 'ASLEEP' };
@@ -35,6 +35,8 @@ function iconText(guard, debug, world) {
   }
   if (guard.state === 'alert' && guard.lunge > 0) return '!!';
   if (guard.stun > 0) return '~';
+  if (guard.vault) return 'hup';
+  if (guard.glance > 0) return '...?';
   if (onRadioNow(guard, world)) return `${RADIO} check-in`;
   if (guard.duty && guard.state === 'calm') return DUTIES[guard.duty.type] ?? '';
   if (guard.state === 'asleep' && guard.stirTimer > 0) return `Zz? ${Math.ceil(guard.stirTimer)}`;
@@ -47,6 +49,17 @@ export function createOverlay() {
   const promptText = document.getElementById('prompt-text');
   const holdFill = document.getElementById('hold-fill');
   const icons = [];
+  const ears = [];
+
+  // The hearing meter: a small arc over a guard that fills as he hears you.
+  function earFor(index) {
+    if (!ears[index]) {
+      ears[index] = document.createElement('div');
+      ears[index].className = 'hear-arc';
+      document.body.append(ears[index]);
+    }
+    return ears[index];
+  }
 
   function iconFor(index) {
     if (!icons[index]) {
@@ -78,6 +91,18 @@ export function createOverlay() {
       pin(icon, camera, guard.x, (guard.y ?? 0) + (guard.state === 'out' && !guard.hiddenIn ? 1.1 : 2.5));
     });
     icons.slice(world.guards.length).forEach((icon) => setText(icon, ''));
+    world.guards.forEach((guard, index) => {
+      const ear = earFor(index);
+      const fill = guard.state === 'out' || guard.state === 'held' ? 0 : Math.round((guard.hearing ?? 0) * 20) / 20;
+      setHidden(ear, fill <= 0);
+      if (fill <= 0) return;
+      if (ear.dataset.fill !== String(fill)) {
+        ear.dataset.fill = String(fill);
+        ear.style.setProperty('--fill', fill);
+      }
+      pin(ear, camera, guard.x, (guard.y ?? 0) + 2.25);
+    });
+    ears.slice(world.guards.length).forEach((ear) => setHidden(ear, true));
   }
   return { update };
 }

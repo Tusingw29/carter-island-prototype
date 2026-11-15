@@ -6,7 +6,8 @@ import { isAwake } from './guard.js';
 import { concealedIn } from './hiding.js';
 import { say } from './messages.js';
 import { playerHeight } from './player.js';
-import { litFan, sightBlocked, sightBlockers } from './sight.js';
+import { bodyPoints } from './vision.js';
+import { fanPools, inFan, litFan, sightBlocked, sightBlockers } from './sight.js';
 
 export function createCamera(def, roomId) {
   return { ...def, roomId, x: def.min, exposure: 0, cooldown: 0, sees: false, off: false, away: false };
@@ -14,7 +15,7 @@ export function createCamera(def, roomId) {
 
 // A searchlight is a camera on a guard tower: a pool of light on the ground that sweeps on a
 // fixed path and a fixed beat. It is marked kind: 'searchlight' and has a mountX and mountY (the
-// lamp), a guardId (the tower guard who works it), and a maxY (it only lights the ground).
+// lamp), and a guardId (the tower guard who works it).
 // At each end of its sweep a searchlight swings away off the ground for awaySeconds, which is
 // the gap you cross in. A glow on the ground shows where it will come back down.
 
@@ -43,19 +44,6 @@ export function cameraMount(camera, cfg = CONFIG.camera) {
   return { x: camera.mountX ?? (camera.min + camera.max) / 2, y: camera.mountY ?? cfg.mountHeight };
 }
 
-// You are seen if you are on the watched stretch of floor and the camera has a clear line to
-// your head or your chest. Solid cover between you and the camera hides you.
-export function cameraSeesPlayer(camera, player, blockers = []) {
-  if (camera.off || camera.away || concealedIn(player)) return false;
-  if (Math.abs(player.x - camera.x) > camera.halfWidth) return false;
-  if ((player.y ?? 0) > (camera.maxY ?? Infinity)) return false;
-  if (blockers.length === 0) return true;
-  const mount = cameraMount(camera);
-  const height = playerHeight(player);
-  const feetY = player.y ?? 0;
-  return [0.9, 0.55].some((share) => !sightBlocked(mount, { x: player.x, y: feetY + height * share }, blockers));
-}
-
 // The camera's beam as drawn: from the mount down to the watched stretch, cut off by cover.
 export function cameraLit(camera, blockers = []) {
   const mount = cameraMount(camera);
@@ -63,14 +51,34 @@ export function cameraLit(camera, blockers = []) {
   return litFan(mount, Math.min(...angles), Math.max(...angles), 80, blockers);
 }
 
-// Which parts of the watched stretch of floor are lit, as `count` true-or-false slices from left
-// to right. Cover between the lamp and the floor leaves its slices dark: the safe shadow.
-export function poolSlices(camera, blockers = [], count = 16) {
+// The ONE shape of a searchlight's light, used both to draw it and to decide who it catches:
+// the beam from the lamp down to the stretch it is aimed at, stopped by the floor and by
+// anything solid. Returns null when the light is off or swung away. See sight.js for the parts.
+export function searchlightShape(light, blockers = []) {
+  if (light.off || light.away) return null;
+  const fan = cameraLit(light, blockers);
+  return { fan, pools: fanPools(fan, blockers) };
+}
+
+// Is this body in the light? Any point up it, feet to head, inside the drawn shape.
+function inSearchlight(light, player, blockers) {
+  const shape = searchlightShape(light, blockers);
+  if (!shape) return false;
+  return bodyPoints(player.x, playerHeight(player), 6, player.y ?? 0).some((point) => inFan(shape.fan, point));
+}
+
+// A security camera sees you if you are on the watched stretch of floor and it has a clear
+// line to your head or your chest. A searchlight catches you where its light actually falls:
+// on the ground, on a crate, or half way up a ladder, and nowhere else.
+export function cameraSeesPlayer(camera, player, blockers = []) {
+  if (camera.off || camera.away || concealedIn(player)) return false;
+  if (camera.kind === 'searchlight') return inSearchlight(camera, player, blockers);
+  if (Math.abs(player.x - camera.x) > camera.halfWidth) return false;
+  if (blockers.length === 0) return true;
   const mount = cameraMount(camera);
-  return Array.from({ length: count }, (_, i) => {
-    const x = camera.x - camera.halfWidth + ((i + 0.5) * camera.halfWidth * 2) / count;
-    return !sightBlocked(mount, { x, y: 0.05 }, blockers);
-  });
+  const height = playerHeight(player);
+  const feetY = player.y ?? 0;
+  return [0.9, 0.55].some((share) => !sightBlocked(mount, { x: player.x, y: feetY + height * share }, blockers));
 }
 
 // Stepping into a searchlight: the tower guard calls it in, and every guard in the yard goes

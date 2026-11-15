@@ -29,7 +29,8 @@ export function makeSuspicious(world, guard, x) {
 export function raiseAlarm(world, x, reason, cfg = CONFIG.guard, roomId = world.room.id, cause = null) {
   const here = world.allGuards.filter((guard) => guard.roomId === roomId);
   const alreadyAlert = here.some((guard) => guard.state === 'alert');
-  for (const guard of here.filter(isConscious)) {
+  // A guard the player is holding stays held, whatever the others do.
+  for (const guard of here.filter((entry) => isConscious(entry) && entry.state !== 'held')) {
     // Seen is not caught: a guard who was not already chasing freezes for a moment first.
     if (guard.state !== 'alert') guard.react = cfg.reactSeconds;
     guard.lastKnownX = x;

@@ -5,6 +5,7 @@ import {
 import { shownState } from '../game/alert.js';
 import { CONFIG } from '../game/config.js';
 import { FAN_POINTS } from '../game/sight.js';
+import { vaultPose } from '../game/guard.js';
 import { coneLit, coneShape } from '../game/vision.js';
 import { block, placed } from './blocks.js';
 
@@ -60,7 +61,9 @@ export function createGuardView(parent) {
   function update(guard, far = 0, now = 0, blockers = []) {
     const feetY = guard.y ?? 0;
     const out = guard.state === 'out';
-    const asleep = guard.state === 'asleep';
+    // Held by the player he is drawn like a sleeper: no flashlight, no cone.
+    const held = guard.state === 'held';
+    const asleep = guard.state === 'asleep' || held;
     body.visible = !guard.hiddenIn;
     cone.visible = !out && !asleep;
     light.visible = !out && !asleep;
@@ -77,9 +80,19 @@ export function createGuardView(parent) {
     const windingUp = guard.state === 'alert' && guard.lunge > 0;
     body.scale.y = windingUp ? 0.72 : 1;
     if (!out && !asleep && guard.stun > 0) body.rotation.z = Math.sin(now * 14) * 0.22;
-    if (asleep) {
+    if (held) {
+      // Struggling in your grip.
+      body.rotation.z = -guard.facing * 0.2 + Math.sin(now * 18) * 0.05;
+      body.position.set(guard.x, feetY, 0.05);
+    } else if (asleep) {
       body.rotation.z = guard.stirTimer > 0 ? -0.15 : -0.45;
       body.position.set(guard.x, feetY - 0.25, -0.6);
+    }
+    // Vaulting low cover: he goes up and over it, leaning into it, slowly.
+    const vault = vaultPose(guard);
+    if (vault) {
+      body.position.y = feetY + Math.sin(vault.progress * Math.PI) * (vault.height + 0.15);
+      body.rotation.z = -guard.facing * 0.9 * Math.sin(vault.progress * Math.PI);
     }
     if (out || asleep) return;
     const state = shownState(guard);

@@ -1,7 +1,7 @@
 // Things only the Yard has: chain-link fences, ladders, guard towers, the shed, basketball
 // hoops, the searchlights, and the outer wall.
 import { Group, Mesh, MeshBasicMaterial, PlaneGeometry } from '../../vendor/three.module.js';
-import { cameraLit, cameraMount, cameraSweep, poolSlices } from '../game/camera.js';
+import { cameraMount, cameraSweep, searchlightShape } from '../game/camera.js';
 import { block, placed } from './blocks.js';
 import { fanMesh, setFan } from './guard-view.js';
 
@@ -94,8 +94,9 @@ export function outerWallView(room, height = 11) {
 }
 
 const LIGHT = 0xfff0b0;
+const GLOW = 0xffb03a;
 const SEEN = 0xff4a3c;
-const SLICES = 16;
+const POOLS = 10;
 
 function floorPatch(color, opacity) {
   const material = new MeshBasicMaterial({ color, transparent: true, opacity, depthWrite: false });
@@ -105,51 +106,51 @@ function floorPatch(color, opacity) {
   return mesh;
 }
 
-// A searchlight: the lamp on the tower, its beam, the pool of light on the ground (dark where
-// cover shades it), and a faint glow just ahead of the pool to warn that it is coming.
+// A searchlight: the lamp on the tower, its beam, and the pools of light where the beam lands,
+// on the ground and on top of anything it hits. The beam and the pools come from
+// searchlightShape, the same shape the game uses to decide whether you are lit.
+// An amber glow on the ground warns where the pool is about to be.
 export function createSearchlightView(light) {
   const group = new Group();
   const mount = cameraMount(light);
   const lamp = placed(block(0.5, 0.4, 0.5, 0x2a2e36, LIGHT), mount.x, mount.y + 0.1, -0.2);
-  const beam = fanMesh(LIGHT, 0.07);
-  const slices = Array.from({ length: SLICES }, () => floorPatch(LIGHT, 0.42));
-  const warning = floorPatch(LIGHT, 0.1);
-  group.add(lamp, beam, warning, ...slices);
+  const beam = fanMesh(LIGHT, 0.1);
+  const pools = Array.from({ length: POOLS }, () => floorPatch(LIGHT, 0.5));
+  const warning = floorPatch(GLOW, 0.3);
+  group.add(lamp, beam, warning, ...pools);
 
   function update(state, far = 0, blockers = [], time = 0) {
-    const on = !state.off;
     const sweep = cameraSweep(state, time);
-    beam.visible = on && !sweep.away;
-    warning.visible = on;
-    lamp.material.emissive.setHex(on ? (state.sees ? SEEN : LIGHT) : 0x000000);
-    if (on && sweep.away) {
+    const shape = searchlightShape({ ...state, away: sweep.away }, blockers);
+    const color = state.sees ? SEEN : LIGHT;
+    lamp.material.emissive.setHex(state.off ? 0x000000 : color);
+    beam.visible = Boolean(shape);
+    warning.visible = !state.off;
+    pools.forEach((pool, i) => {
+      const patch = shape?.pools[i];
+      pool.visible = Boolean(patch);
+      if (!patch) return;
+      pool.scale.x = patch.to - patch.from;
+      pool.position.set((patch.from + patch.to) / 2, patch.y + 0.03, -0.1);
+      pool.material.color.setHex(color);
+    });
+    if (state.off) return;
+    // The warning pulses so it reads as "about to be lit", not as light.
+    const pulse = 0.75 + 0.25 * Math.sin(time * 10);
+    if (sweep.away) {
       // Swung away off the ground. The glow where it will land grows as it comes back.
-      for (const slice of slices) slice.visible = false;
       warning.scale.x = state.halfWidth * 2;
       warning.position.set(sweep.x, 0.025, -0.1);
-      warning.material.opacity = 0.05 + 0.25 * Math.max(0, 1 - sweep.backIn / 1.5);
+      warning.material.opacity = (0.12 + 0.4 * Math.max(0, 1 - sweep.backIn / 1.5)) * pulse;
       return;
     }
-    if (!on) {
-      for (const slice of slices) slice.visible = false;
-      return;
-    }
-    const color = state.sees ? SEEN : LIGHT;
-    setFan(beam, cameraLit(state, blockers), 0.25);
+    setFan(beam, shape.fan, 0.25);
     beam.material.color.setHex(color);
-    beam.material.opacity = 0.07 * (1 + 0.6 * far);
-    const width = (state.halfWidth * 2) / SLICES;
-    poolSlices(state, blockers, SLICES).forEach((lit, i) => {
-      const slice = slices[i];
-      slice.visible = lit;
-      slice.scale.x = width;
-      slice.position.set(state.x - state.halfWidth + (i + 0.5) * width, 0.03, -0.1);
-      slice.material.color.setHex(color);
-    });
-    // The warning glow: on the ground the pool is about to cross.
-    warning.scale.x = 2.6;
-    warning.material.opacity = 0.1;
-    warning.position.set(state.x + sweep.heading * (state.halfWidth + 1.3), 0.025, -0.1);
+    beam.material.opacity = 0.1 * (1 + 0.6 * far);
+    // While it sweeps, the glow runs just ahead of the pool.
+    warning.scale.x = 2.2;
+    warning.material.opacity = 0.3 * pulse;
+    warning.position.set(state.x + sweep.heading * (state.halfWidth + 1.1), 0.025, -0.1);
   }
   return { group, update };
 }

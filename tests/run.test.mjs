@@ -116,12 +116,13 @@ test('ranks: Ghost, Shadow, Inmate, Caught', () => {
 test('the score screen numbers: time left, times spotted, knockouts, bodies found', () => {
   const world = createWorld();
   world.player.hasKeycard = true;
-  world.stats = { timesSpotted: 2, knockouts: 1, bodiesFound: 1 };
+  Object.assign(world.stats, { timesSpotted: 2, knockouts: 1, bodiesFound: 1 });
   world.timeLeft = 123.4;
   world.over = 'win';
   assert.deepEqual(scoreRun(world), {
     outcome: 'win', won: true, rank: 'inmate', timeLeft: 123.4, timesSpotted: 2, knockouts: 1, bodiesFound: 1,
     silentAlarm: false, silentAlarmReason: null, keycardGrab: null, endedIn: 'Cell Block', caughtIn: null,
     caughtHow: null,
+    takedowns: { choke: 0, above: 0, pullIn: 0 }, slams: 0, interrogations: 0, checkInsFaked: 0,
   });
 });

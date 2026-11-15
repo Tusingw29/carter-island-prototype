@@ -324,10 +324,11 @@ test('shove: you turn to face a guard who is behind you, and it works from eithe
   assert.ok(guard.x < world.player.x - 1.9, 'pushed away from you');
 });
 
-test('shove: knockouts from behind, unseen, are unchanged and need no cooldown', () => {
+test('shove: takedowns from behind, unseen, need no cooldown', () => {
   const world = testWorld({ playerX: 19.2, guards: [sentry('g', 20), sentry('h', 30)] });
   world.shoveReadyAt = Infinity;
-  assert.equal(currentPrompt(world).text, 'SPACE: knock out');
+  assert.equal(currentPrompt(world).text, 'SPACE: grab');
+  tap(world, 'action');
   tap(world, 'action');
   assert.equal(world.guards[0].state, 'out');
   assert.equal(world.stats.timesSpotted, 0);
@@ -343,7 +344,7 @@ test('shove: not from inside a hiding spot, and not on a sleeping guard', () => 
   const office = prisonWorld('guard-office', 14.2);
   tap(office, 'action');
   assert.ok(!happened(office, 'shove'));
-  assert.ok(happened(office, 'knockout'), 'a sleeping guard is knocked out, from either side');
+  assert.ok(happened(office, 'grabGuard'), 'a sleeping guard is grabbed, from either side');
 });
 
 // ---------- 5. Throwables ----------

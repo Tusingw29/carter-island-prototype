@@ -40,6 +40,11 @@
       <span id="prompt-text"></span>
       <div class="bar" hidden><div id="hold-fill"></div></div>
     </div>
+    <div id="takedown" class="banner" hidden>
+      <strong>YOU HAVE HIM. Choose before he breaks free</strong>
+      <div class="bar"><div id="takedown-fill"></div></div>
+      <ul id="takedown-options"></ul>
+    </div>
     <div id="mash" class="banner" hidden>
       <strong>GRABBED! Mash SPACE (or X) to break free</strong>
       <div class="bar"><div id="mash-fill"></div></div>
@@ -82,7 +87,12 @@
       <tr><td>Creaky door: fast and loud / slow and quiet</td><td>tap W / hold W</td><td>tap Up / hold Up</td></tr>
       <tr><td>Interact, pick up, sleep in bed</td><td>E</td><td>A (bottom button)</td></tr>
       <tr><td>Keycard: grab fast / lift quietly</td><td>tap E / hold E</td><td>tap A / hold A</td></tr>
-      <tr><td>Knock out from behind (unseen), drag body</td><td>Space</td><td>X (left button)</td></tr>
+      <tr><td>Grab a guard from behind (unseen), drag a body</td><td>Space</td><td>X (left button)</td></tr>
+      <tr><td>Holding a guard: knock him out</td><td>Space</td><td>X (left button)</td></tr>
+      <tr><td>Holding a guard: interrogate</td><td>hold E</td><td>hold A</td></tr>
+      <tr><td>Holding a guard: throw him down (loud)</td><td>F</td><td>Left Bumper</td></tr>
+      <tr><td>Holding a guard: drag him</td><td>A / D</td><td>Left stick or D-pad</td></tr>
+      <tr><td>Drop on a guard from above, or pull one into hiding</td><td>Space</td><td>X (left button)</td></tr>
       <tr><td>Shove a guard who can see you (loud)</td><td>Space</td><td>X (left button)</td></tr>
       <tr><td>Pick up a cup, soap, or the like</td><td>E</td><td>A (bottom button)</td></tr>
       <tr><td>Throw it: hold to aim, let go to throw</td><td>F</td><td>Left Bumper</td></tr>
@@ -98,7 +108,9 @@
       <tr><td>This screen</td><td>C</td><td>Y (top button)</td></tr>
     </table>
     <p class="fine">
-      Walking is quiet, running is loud, crouching is silent. A guard's flashlight is what he can see.
+      Walking is quiet, running is loud, crouching is silent. The faint ring round you is how far
+      your noise carries, and the arc over a guard's head is how much he has heard. A guard's
+      flashlight is what he can see.
       Stand still in a pitch-dark patch and nobody can see you. Seen is not caught: a guard who
       spots you freezes for a moment, then chases, and he is slower than your run. He has to wind
       up a lunge to grab you, so run when he crouches. Out of his sight for two seconds and he
@@ -128,6 +140,10 @@
       <tr><td>Times spotted</td><td id="score-spotted"></td></tr>
       <tr><td>Knockouts</td><td id="score-knockouts"></td></tr>
       <tr><td>Bodies found by guards</td><td id="score-bodies"></td></tr>
+      <tr><td>Takedowns</td><td id="score-takedowns"></td></tr>
+      <tr><td>Guards thrown down</td><td id="score-slams"></td></tr>
+      <tr><td>Interrogations</td><td id="score-interrogations"></td></tr>
+      <tr><td>Check-ins faked</td><td id="score-faked"></td></tr>
       <tr><td>Keycard</td><td id="score-keycard"></td></tr>
       <tr><td>Silent alarm</td><td id="score-alarm"></td></tr>
       <tr id="score-where-row"><td id="score-where-label"></td><td id="score-where"></td></tr>

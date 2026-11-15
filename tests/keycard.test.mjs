@@ -6,7 +6,7 @@ import { alertSummary, shownState } from '../site/js/game/alert.js';
 import { cameraCentre } from '../site/js/game/camera.js';
 import { holdProgress } from '../site/js/game/holds.js';
 import { currentPrompt } from '../site/js/game/prompts.js';
-import { eventTypes, guardById, prisonWorld, run, runUntil, tap } from './helpers.mjs';
+import { eventTypes, guardById, prisonWorld, run, runUntil, tap, knock } from './helpers.mjs';
 
 const atDesk = () => prisonWorld('guard-office', 10.5);
 const sleeper = (world) => guardById(world, 'go-guard');
@@ -59,7 +59,7 @@ test('letting go of Interact part way does not take the keycard', () => {
 
 test('silent alarm: the office guard was knocked out', () => {
   const world = prisonWorld('guard-office', 13);
-  tap(world, 'action');
+  knock(world);
   assert.equal(sleeper(world).state, 'out');
   world.player.x = 10.5;
   run(world, { interact: true }, CONFIG.hold.slowSeconds + 0.1);

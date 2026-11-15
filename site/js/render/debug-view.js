@@ -2,6 +2,7 @@
 import {
   BufferGeometry, Group, Line, LineBasicMaterial, LineLoop, Vector3,
 } from '../../vendor/three.module.js';
+import { searchlightShape } from '../game/camera.js';
 import { FAN_POINTS, sightBlockers } from '../game/sight.js';
 import { coneLit, coneShape } from '../game/vision.js';
 
@@ -43,13 +44,31 @@ export function createDebugView(world) {
     return cone;
   });
 
+  // Each searchlight's detection area, outlined in red. It is the same shape as the drawn light.
+  const lights = world.cameras.filter((camera) => camera.roomId === world.room.id && camera.kind === 'searchlight');
+  const lightLines = lights.map(() => {
+    const line = outline(0xff5a4a, FAN_POINTS + 1);
+    group.add(line);
+    return line;
+  });
+
   function update(currentWorld, enabled) {
     group.visible = enabled;
     if (!enabled) return;
+    lights.forEach((light, i) => {
+      const shape = searchlightShape(light, sightBlockers(currentWorld.room));
+      lightLines[i].visible = Boolean(shape);
+      if (!shape) return;
+      const positions = lightLines[i].geometry.attributes.position;
+      for (let n = 0; n <= FAN_POINTS; n += 1) {
+        const corner = shape.fan[Math.min(n, shape.fan.length - 1)];
+        positions.setXYZ(n, corner.x, corner.y, Z);
+      }
+      positions.needsUpdate = true;
+    });
     const radius = currentWorld.noiseRadius;
-    ring.visible = radius > 0;
-    ring.position.set(currentWorld.player.x, (currentWorld.player.y ?? 0) + 0.2, Z);
-    ring.scale.setScalar(radius || 1);
+    // The noise ring itself is always drawn, by the game view.
+    ring.visible = false;
     currentWorld.guards.forEach((guard, i) => {
       cones[i].visible = guard.state !== 'out' && guard.state !== 'asleep';
       const positions = cones[i].geometry.attributes.position;

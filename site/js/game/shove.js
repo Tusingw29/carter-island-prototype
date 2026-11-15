@@ -2,7 +2,7 @@
 // It is loud, it counts as being spotted, and it needs a few seconds to be ready again.
 import { CONFIG } from './config.js';
 import { raiseAlarm } from './alert.js';
-import { isAwake } from './guard.js';
+import { isAwake, reachable } from './guard.js';
 
 // The guard a press of the button would shove: awake and within reach. The one you are facing
 // comes first. Failing that, the nearest, and you turn to face him.
@@ -43,7 +43,8 @@ export function shove(world, guard, cfg = CONFIG) {
     raiseAlarm(world, player.x, 'sight', cfg.guard, guard.roomId, { kind: 'shove', guard });
   }
   const [min, max] = guard.bounds ?? [0.3, room.width - 0.3];
-  guard.x = Math.max(min, Math.min(max, guard.x + side * cfg.shove.pushMetres));
+  guard.x = reachable(guard, guard.x, Math.max(min, Math.min(max, guard.x + side * cfg.shove.pushMetres)));
+  guard.vault = null;
   guard.facing = -side;
   guard.stun = cfg.shove.stunSeconds;
   // No pause and no lunge: he is staggering.

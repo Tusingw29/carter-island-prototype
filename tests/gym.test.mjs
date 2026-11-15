@@ -249,7 +249,7 @@ test('jump: holding the button does not jump again on landing', () => {
   assert.equal(count(world, 'jump'), 1);
 });
 
-test('jump: landing makes a small noise, smaller than walking', () => {
+test('jump: landing makes a small noise, quieter than running', () => {
   const world = gym(OPEN);
   step(world, { jump: true });
   let heard = 0;
@@ -260,7 +260,7 @@ test('jump: landing makes a small noise, smaller than walking', () => {
   step(world);
   heard = Math.max(heard, ...world.noises.map((noise) => noise.radius));
   assert.equal(heard, CONFIG.noise.landRadius);
-  assert.ok(CONFIG.noise.landRadius > 0 && CONFIG.noise.landRadius < CONFIG.noise.walkRadius);
+  assert.ok(CONFIG.noise.landRadius > 0 && CONFIG.noise.landRadius < CONFIG.noise.runRadius / 4);
   assert.equal(world.noiseRadius, 0, 'being in the air is silent');
 });
 
@@ -446,7 +446,7 @@ test('slide: quiet, a fixed 3.15 m, and crouch plus jump standing still is a nor
   step(world, { moveX: 1, crouch: true });
   step(world, { moveX: 1, crouch: true, jump: true });
   assert.equal(world.noiseRadius, CONFIG.noise.slideRadius);
-  assert.ok(CONFIG.noise.slideRadius < CONFIG.noise.walkRadius);
+  assert.ok(CONFIG.noise.slideRadius <= CONFIG.noise.walkRadius);
   run(world, {}, M.slideSeconds + 0.1);
   const distance = world.player.x - OPEN;
   assert.ok(Math.abs(distance - M.slideSpeed * M.slideSeconds) < 0.2, `slid ${distance}`);

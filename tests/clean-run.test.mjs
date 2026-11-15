@@ -57,7 +57,7 @@ test('yard: the work boots can be fetched without being noticed, with jumps only
   const { world } = result;
   assert.equal(world.player.hasBoots, true);
   assert.equal(world.room.id, 'yard');
-  assert.deepEqual(world.stats, { timesSpotted: 0, knockouts: 0, bodiesFound: 0 });
+  assert.deepEqual([world.stats.timesSpotted, world.stats.knockouts, world.stats.bodiesFound], [0, 0, 0]);
   assert.ok(world.allGuards.every((guard) => guard.state === 'calm' || guard.state === 'asleep'));
   assert.ok(!world.events.some((event) => event.type === 'dash'), 'no dash on the way there');
 });
@@ -80,7 +80,8 @@ test('yard roof route: boots, then Tower 1 with its guard knocked out, fits insi
   const { world } = result;
   assert.equal(world.over, 'win');
   assert.equal(world.result.rank, 'shadow', 'never spotted, one knockout');
-  assert.deepEqual(world.stats, { timesSpotted: 0, knockouts: 1, bodiesFound: 0 });
+  assert.deepEqual([world.stats.timesSpotted, world.stats.knockouts, world.stats.bodiesFound], [0, 1, 0]);
+  assert.equal(world.stats.takedowns.choke, 1, 'grabbed from behind and choked out');
   assert.equal(world.cameras.find((camera) => camera.id === 'yd-light-1').off, true, 'his searchlight is out');
   assert.equal(world.silentAlarm, false);
   assert.ok(result.seconds < CONFIG.headcountSeconds);

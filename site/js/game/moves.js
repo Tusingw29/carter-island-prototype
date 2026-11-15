@@ -128,7 +128,8 @@ function climbStep(world, intent, pressed, dt, cfg) {
 // A jump at running speed is as loud as running, at take-off and at landing. Otherwise hopping
 // along with Run held would be a silent sprint.
 function hopNoise(player, fast, cfg) {
-  return { x: player.x, y: player.y, radius: fast ? cfg.noise.runRadius : cfg.noise.jumpRadius };
+  if (fast) return { x: player.x, y: player.y, radius: cfg.noise.runRadius };
+  return { x: player.x, y: player.y, radius: cfg.noise.jumpRadius, amount: cfg.noise.smallAmount };
 }
 
 function land(world, cfg) {
@@ -143,7 +144,7 @@ function land(world, cfg) {
   player.dropping = null;
   world.events.push({ type: 'land' });
   // Landing makes a small noise.
-  const quiet = { x: player.x, y: player.y, radius: cfg.noise.landRadius };
+  const quiet = { x: player.x, y: player.y, radius: cfg.noise.landRadius, amount: cfg.noise.smallAmount };
   world.pendingNoises.push(fast ? hopNoise(player, true, cfg) : quiet);
 }
 
@@ -157,6 +158,8 @@ function startDash(world, intent, cfg) {
   player.vy = 0;
   player.dashedAt = world.time;
   player.dashFromX = player.x;
+  // The kick-off is one loud noise: anyone in earshot comes to look.
+  world.pendingNoises.push({ x: player.x, y: player.y, radius: cfg.noise.dashRadius });
   world.events.push({ type: 'dash' });
 }
 
@@ -232,6 +235,7 @@ function sidewaysSpeed(player, intent, cfg) {
   const m = cfg.moves;
   if (player.dashTime > 0) return player.dashDir * m.dashSpeed;
   if (player.sliding) return player.slideDir * m.slideSpeed;
+  if (player.holding) return intent.moveX * cfg.takedown.dragSpeed;
   if (player.dragging) return intent.moveX * cfg.player.dragSpeed;
   if (!player.onGround) {
     if (player.boosted && intent.moveX !== player.dashDir) player.boosted = false;
@@ -298,7 +302,8 @@ export function updateMover(world, intent, pressed, dt, cfg = CONFIG, mayClimb =
   const { player, room } = world;
   const m = cfg.moves;
   player.dashCooldown = Math.max(0, player.dashCooldown - dt);
-  if (!player.climbing && mayClimb && !player.dragging && !player.sliding && player.dashTime <= 0) {
+  const handsFree = !player.dragging && !player.holding;
+  if (!player.climbing && mayClimb && handsFree && !player.sliding && player.dashTime <= 0) {
     // Up at a ladder or against a fence starts a climb. Down at the top of one climbs down.
     const up = intent.up ? climbableAt(room, player, m) : null;
     const down = !up && intent.crouch && intent.moveX === 0 && player.onGround ? climbDownFrom(room, player, m) : null;
@@ -313,8 +318,9 @@ export function updateMover(world, intent, pressed, dt, cfg = CONFIG, mayClimb =
     return;
   }
   player.sinceGround = player.onGround ? 0 : player.sinceGround + dt;
-  if (!player.dragging) startMoves(world, intent, pressed, dt, cfg);
-  if (intent.moveX !== 0 && player.dashTime <= 0 && !player.sliding) player.facing = intent.moveX;
+  if (!player.dragging && !player.holding) startMoves(world, intent, pressed, dt, cfg);
+  // Holding a guard you keep facing him: you walk him forwards or drag him backwards.
+  if (intent.moveX !== 0 && player.dashTime <= 0 && !player.sliding && !player.holding) player.facing = intent.moveX;
   // Letting go of jump early cuts the jump short.
   if (!intent.jump && player.vy > m.jumpCutSpeed) player.vy = m.jumpCutSpeed;
 
@@ -352,7 +358,7 @@ export function updateMover(world, intent, pressed, dt, cfg = CONFIG, mayClimb =
   else if (player.sliding) player.mode = 'slide';
   else if (!player.onGround) player.mode = 'jump';
   else if (vx === 0) player.mode = 'idle';
-  else if (player.dragging) player.mode = 'drag';
+  else if (player.dragging || player.holding) player.mode = 'drag';
   else if (player.crouching) player.mode = 'crouch';
   else player.mode = intent.run ? 'run' : 'walk';
 }

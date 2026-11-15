@@ -26,7 +26,9 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Creaky door: fast and loud / slow and quiet | tap W / hold W | tap Up / hold Up |
 | Interact, pick up, sleep in bed | E | A (bottom face button) |
 | Keycard: grab fast / lift quietly | tap E / hold E | tap A / hold A |
-| Knock out from behind (unseen), drag body | Space | X (left face button) |
+| Grab a guard from behind (unseen), drag a body | Space | X (left face button) |
+| Holding a guard: knock out / interrogate / throw down | Space / hold E / F | X / hold A / Left Bumper |
+| Drop on a guard from above, or pull one into your hiding spot | Space | X (left face button) |
 | Shove a guard who can see you | Space | X (left face button) |
 | Throw what you are carrying (hold to aim) | F | Left Bumper |
 | Jump (tap for a hop, hold to go higher) | K | B (right face button) |

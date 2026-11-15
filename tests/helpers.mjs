@@ -45,7 +45,8 @@ export function prisonWorld(roomId, x) {
 
 export const guardById = (world, id) => world.allGuards.find((guard) => guard.id === id);
 
-// Knocks out the guard the player is standing behind: one press of the button.
+// Knocks out the guard the player is standing behind: one press grabs him, the next chokes him.
 export function knock(world) {
   tap(world, 'action');
+  if (world.hold) tap(world, 'action');
 }

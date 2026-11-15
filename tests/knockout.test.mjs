@@ -15,7 +15,7 @@ function behindGuard(extra = {}) {
 
 test('knockout from behind works', () => {
   const world = behindGuard();
-  assert.equal(currentPrompt(world).text, 'SPACE: knock out');
+  assert.equal(currentPrompt(world).text, 'SPACE: grab');
   knock(world);
   assert.equal(world.guards[0].state, 'out');
   assert.equal(world.stats.knockouts, 1);
@@ -44,10 +44,10 @@ test('a knocked-out guard sees and hears nothing while he is down', () => {
   assert.equal(world.guards[0].seesPlayer, false);
 });
 
-test('holding the button knocks out once and does not also start dragging', () => {
+test('holding the button grabs once: it does not also knock him out or start dragging', () => {
   const world = behindGuard();
   run(world, { action: true }, 1);
-  assert.equal(world.guards[0].state, 'out');
+  assert.equal(world.guards[0].state, 'held');
   assert.equal(world.player.dragging, null);
 });
 

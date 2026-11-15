@@ -1,8 +1,10 @@
 // Getting grabbed. One chance per run to mash free. The second grab ends the run.
 import { CONFIG } from './config.js';
+import { reachable as furthestReach } from './guard.js';
 import { concealedIn } from './hiding.js';
 import { clampToRoom } from './player.js';
 import { endRun } from './run.js';
+import { dropHeldGuard } from './takedown.js';
 
 // A guard cannot grab someone well above or below him.
 const sameLevel = (guard, player, cfg) => Math.abs((player.y ?? 0) - (guard.y ?? 0)) <= cfg.grabReachUp;
@@ -20,6 +22,8 @@ function grab(guard, world, cfg) {
   player.inDark = null;
   player.dragging = null;
   player.climbing = null;
+  // Whoever you were holding is loose.
+  dropHeldGuard(world, cfg);
   // For the score screen: how long after the "!" this grab came, and what the "!" was for.
   const alarm = world.lastAlarm;
   world.lastGrab = {
@@ -66,7 +70,9 @@ export function finishLunge(guard, world, cfg = CONFIG) {
   const ahead = (player.x - guard.x) * guard.facing;
   // He stops short of running through you, and goes the whole way if you are not there.
   const travel = ahead >= 0 ? Math.min(cfg.guard.lungeDistance, Math.max(0, ahead - 0.3)) : cfg.guard.lungeDistance;
-  guard.x = Math.max(0.3, Math.min(room.width - 0.3, guard.x + guard.facing * travel));
+  const landing = Math.max(0.3, Math.min(room.width - 0.3, guard.x + guard.facing * travel));
+  // He cannot lunge through a crate.
+  guard.x = furthestReach(guard, guard.x, landing);
   const hidingIn = concealedIn(player);
   const reachable = hidingIn ? guard.knownSpotId === hidingIn : true;
   if (reachable && inReach(guard, world, cfg.guard)) {

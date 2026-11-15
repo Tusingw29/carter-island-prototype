@@ -11,11 +11,19 @@ export const QUESTIONS = Object.freeze([
 
 const KEYCARD = { slow: 'taken slowly', fast: 'grabbed fast' };
 
+// "2 from behind, 1 from above, 0 pulled into hiding".
+export function takedownText(takedowns = {}) {
+  return `${takedowns.choke ?? 0} from behind, ${takedowns.above ?? 0} from above, `
+    + `${takedowns.pullIn ?? 0} pulled into hiding`;
+}
+
 function runLine(result) {
   if (!result) return 'Run: not finished';
   return `Run: ${result.won ? 'made it back' : 'did not make it back'}, rank ${RANKS[result.rank].name}, `
     + `${formatClock(result.timeLeft)} left, spotted ${result.timesSpotted}, `
     + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`
+    + `\nTakedowns: ${takedownText(result.takedowns)}. Thrown down: ${result.slams ?? 0}. `
+    + `Interrogations: ${result.interrogations ?? 0}. Check-ins faked: ${result.checkInsFaked ?? 0}.`
     + `\nKeycard: ${KEYCARD[result.keycardGrab] ?? 'not taken'}. `
     + `Silent alarm: ${result.silentAlarm ? `yes, ${result.silentAlarmReason}` : 'no'}.`
     + (result.caughtIn ? ` Caught in: ${result.caughtIn}.` : '')

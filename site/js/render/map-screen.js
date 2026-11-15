@@ -24,8 +24,20 @@ function roomSvg(room) {
   return `<rect class="room${here}" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="4"/>`
     + `<text class="name" x="${b.cx}" y="${b.cy + 4}">${room.name}</text>`
     // Landmarks inside the room, such as the Yard's two towers.
+    + patrolSvg(room, b)
     + (room.marks.length > 0 ? `<text class="note" x="${b.cx}" y="${b.y + 14}">${room.marks.join(' | ')}</text>` : '')
     + (room.current ? `<text class="you" x="${b.cx}" y="${b.y + b.h - 8}">YOU ARE HERE</text>` : '');
+}
+
+// Patrols a guard gave up under interrogation: each beat as a line across the room's box, with
+// a dot where that guard is right now.
+function patrolSvg(room, b) {
+  return room.patrols.map((patrol, i) => {
+    const y = b.y + b.h - 8 - i * 7 - (patrol.high ? 30 : 0);
+    const at = (share) => b.x + 6 + share * (b.w - 12);
+    return `<line class="patrol" x1="${at(patrol.from)}" y1="${y}" x2="${at(patrol.to)}" y2="${y}"/>`
+      + `<circle class="patrol" cx="${at(patrol.at)}" cy="${y}" r="3"/>`;
+  }).join('');
 }
 
 // A line between two rooms. Rooms on the same floor join side to side, others join up and down.
@@ -83,13 +95,18 @@ export function createMapScreen() {
     screen.hidden = !open;
     if (!open) return;
     const model = mapModel(world);
-    const key = JSON.stringify([model, world.notes]);
+    const key = JSON.stringify([model, world.notes, world.intel.length]);
     if (key === lastKey) return;
     lastKey = key;
     // What the trader has told you.
-    notes.replaceChildren(...world.notes.map((text) => {
+    const lines = [
+      ...world.notes.map((text) => `Trader: ${text}`),
+      // What interrogated guards have said.
+      ...world.intel.map((entry) => `${entry.from}: "${entry.text}"`),
+    ];
+    notes.replaceChildren(...lines.map((text) => {
       const item = document.createElement('li');
-      item.textContent = `Trader: ${text}`;
+      item.textContent = text;
       return item;
     }));
     const rooms = new Map(model.rooms.map((room) => [room.id, room]));

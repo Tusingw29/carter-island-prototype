@@ -14,15 +14,17 @@ const state = (world, index = 0) => world.guards[index].state;
 const loseHim = (guard) => Object.assign(guard, { stun: 3, trackTimer: 0, seesPlayer: false });
 
 test('Calm to Suspicious: a guard hears running and walks to the noise', () => {
-  const world = testWorld({ playerX: 14, guards: [sentry('g', 20)] });
-  run(world, { moveX: -1, run: true }, 0.1);
-  assert.equal(state(world), 'suspicious');
+  // Since Step 12 noise fills a hearing meter: about a second of running in earshot. Here the
+  // player runs on the spot against the end wall, 6 m behind him.
+  const world = testWorld({ playerX: 0.5, guards: [sentry('g', 6.5)] });
+  runUntil(world, () => state(world) === 'suspicious', { moveX: -1, run: true }, 1.2);
   assert.ok(eventTypes(world).includes('suspicious'));
   const heardAt = world.guards[0].targetX;
-  run(world, { moveX: -1, crouch: true }, 1);
+  world.player.hiddenIn = 'elsewhere';
+  run(world, {}, 1);
   assert.equal(world.guards[0].facing, -1, 'he turned toward the noise');
-  assert.ok(world.guards[0].x < 20, 'he is walking toward it');
-  assert.ok(Math.abs(heardAt - 14) < 1);
+  assert.ok(world.guards[0].x < 6.5, 'he is walking toward it');
+  assert.ok(Math.abs(heardAt - 0.5) < 0.1);
 });
 
 test('walking is only heard close up, and crouching is never heard', () => {
@@ -30,12 +32,14 @@ test('walking is only heard close up, and crouching is never heard', () => {
   run(far, { moveX: -1 }, 1);
   assert.equal(state(far), 'calm', 'walking 6 m behind him is too quiet');
 
+  // Step 12: walking carries 1 m, not 2.5 m.
   const near = testWorld({ playerX: 18, guards: [sentry('g', 20)] });
-  run(near, { moveX: -1 }, 0.1);
-  assert.equal(state(near), 'suspicious', 'walking 2 m behind him is heard');
+  run(near, { moveX: -1 }, 0.3);
+  assert.equal(state(near), 'calm', 'walking 2 m behind him is not heard any more');
+  assert.equal(near.guards[0].hearing, 0);
 
   const sneaky = testWorld({ playerX: 16, guards: [sentry('g', 20)] });
-  run(sneaky, { moveX: 1, crouch: true }, 2);
+  run(sneaky, { moveX: 1, crouch: true }, 1.6);
   assert.equal(state(sneaky), 'calm', 'crouch-walking right up behind him is silent');
 });
 
@@ -49,8 +53,9 @@ test('Calm to Suspicious: a glimpse at the edge of the flashlight', () => {
 
 test('Suspicious to Calm: he checks the spot, finds nothing, and goes back to his patrol', () => {
   const world = testWorld({ playerX: 14, guards: [{ id: 'g', patrol: [20, 24], startX: 20, facing: 1 }] });
-  run(world, { moveX: -1, run: true }, 0.1);
-  run(world, { moveX: -1, crouch: true }, 0.5);
+  world.pendingNoises.push({ x: 14, radius: 8 });
+  world.player.hiddenIn = 'elsewhere';
+  run(world, {}, 0.5);
   assert.equal(state(world), 'suspicious');
   world.player.x = 2;
   world.events.length = 0;
