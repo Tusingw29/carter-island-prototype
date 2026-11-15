@@ -5,7 +5,9 @@
 // the fastest series of moves that is never inside a flashlight, a camera, or earshot.
 // The plan is then played for real through stepWorld, so times it reports are true game times.
 import { CONFIG } from '../../site/js/game/config.js';
+import { cameraSeesPlayer } from '../../site/js/game/camera.js';
 import { isContainer } from '../../site/js/game/hiding.js';
+import { sightBlockers } from '../../site/js/game/sight.js';
 import { snitchWindow } from '../../site/js/game/snitch.js';
 import { guardSeesPlayer } from '../../site/js/game/vision.js';
 import { stepWorld } from '../../site/js/game/world.js';
@@ -36,7 +38,7 @@ export function forecast(world, seconds) {
   for (let i = 0; i <= Math.ceil(seconds / STEP); i += 1) {
     frames.push({
       guards: ghost.allGuards.map((g) => ({ x: g.x, facing: g.facing, state: g.state, roomId: g.roomId })),
-      cameras: ghost.cameras.map((c) => ({ x: c.x, halfWidth: c.halfWidth, off: c.off, roomId: c.roomId })),
+      cameras: ghost.cameras.map((c) => ({ ...c })),
       snitches: ghost.snitches.filter((s) => s.state === 'awake')
         .map((s) => ({ roomId: s.roomId, window: snitchWindow(s) })),
     });
@@ -59,15 +61,19 @@ function seenCells(frame, room, crouching) {
     const last = Math.min(cells.length - 1, Math.ceil(to / CELL));
     for (let i = first; i <= last; i += 1) if (!cells[i] && test(i * CELL)) cells[i] = 1;
   };
+  // Solid cover blocks sight, for guards and cameras alike.
+  const blockers = sightBlockers(room);
+  const standIn = (x) => ({ x, crouching, hiddenIn: null, inDark: null });
   for (const guard of frame.guards) {
     if (guard.roomId !== room.id || guard.state === 'out' || guard.state === 'asleep') continue;
     const reach = CONFIG.guard.coneRange + 0.5;
-    const sees = (x) => guardSeesPlayer(guard, { x, crouching, hiddenIn: null, inDark: null });
+    const sees = (x) => guardSeesPlayer(guard, standIn(x), undefined, undefined, blockers);
     mark(Math.min(guard.x, guard.x + guard.facing * reach), Math.max(guard.x, guard.x + guard.facing * reach), sees);
   }
   for (const camera of frame.cameras) {
     if (camera.roomId !== room.id || camera.off) continue;
-    mark(camera.x - camera.halfWidth, camera.x + camera.halfWidth, () => true);
+    const sees = (x) => cameraSeesPlayer(camera, standIn(x), blockers);
+    mark(camera.x - camera.halfWidth, camera.x + camera.halfWidth, sees);
   }
   for (const snitch of frame.snitches) {
     if (snitch.roomId === room.id) mark(snitch.window[0], snitch.window[1], () => true);

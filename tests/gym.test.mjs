@@ -75,11 +75,13 @@ test('gym: a separate practice room, not connected to the prison, with no headco
 });
 
 test('gym: an obstacle course, left to right, with a sign over each part and a finish line', () => {
-  assert.deepEqual(gymRoom.signs.map((sign) => sign.text), [
+  // Signs marked extra are notes along the way (where the cup is), not parts of the course.
+  const signs = gymRoom.signs.filter((sign) => !sign.extra);
+  assert.deepEqual(signs.map((sign) => sign.text), [
     '1. JUMP (K / B)', '2. HOLD JUMP TO GO HIGHER', '3. SLIDE (crouch + jump)', '4. DASH (L / RB)',
     '5. AIR DASH', '6. SNEAK PAST THE GUARD', 'FINISH',
   ]);
-  const xs = gymRoom.signs.map((sign) => sign.x);
+  const xs = signs.map((sign) => sign.x);
   assert.deepEqual(xs, [...xs].sort((a, b) => a - b), 'in order');
   const parts = [solid('hop').x, solid('high').x, solid('low-gap').x, pit('dash-gap').from, pit('air-gap').from,
     gymRoom.guards[0].patrol[0], gymRoom.finish.x];
@@ -143,15 +145,15 @@ test('ground: instant start and stop, no sliding', () => {
 
 // ---------- Jump ----------
 
-test('jump: hold for the full 1.29 m, with a fast rise and a faster fall', () => {
+test('jump: hold for the full 1.5 m, with a fast rise and a faster fall', () => {
   const world = gym(OPEN);
   step(world, { jump: true });
   assert.equal(world.player.onGround, false);
   const { peak, seconds } = untilLanded(world, { jump: true });
   const expected = (M.jumpSpeed ** 2) / (2 * M.gravity);
   assert.ok(Math.abs(peak - expected) < 0.05, `peak ${peak}`);
-  assert.ok(Math.abs(expected - 1.29) < 0.01);
-  assert.ok(seconds < 0.6, `in the air ${seconds} s`);
+  assert.ok(Math.abs(expected - 1.5) < 0.01);
+  assert.ok(seconds < 0.7, `in the air ${seconds} s`);
   assert.ok(M.fallGravity > M.gravity, 'falling is faster than rising');
 });
 
@@ -295,7 +297,7 @@ test('dash: a fixed distance at a fixed speed, with no slowdown at the end', () 
   run(world, {}, 0.5);
   const distance = world.player.x - OPEN;
   assert.ok(Math.abs(distance - M.dashSpeed * M.dashSeconds) < 0.15, `dashed ${distance}`);
-  assert.ok(Math.abs(M.dashSpeed * M.dashSeconds - 3.5) < 1e-9);
+  assert.ok(Math.abs(M.dashSpeed * M.dashSeconds - 4.5) < 1e-9);
   assert.equal(world.player.speed, 0, 'and a dead stop after');
 });
 
@@ -355,7 +357,7 @@ test('dash jump: holding dash while jumping off the ground does the same, with n
   const plain = flat(OPEN);
   step(plain, { jump: true, moveX: 1, run: true });
   untilLanded(plain, { jump: true, moveX: 1, run: true });
-  assert.ok(plain.player.x - OPEN < 4, 'a plain running jump goes half as far');
+  assert.ok(plain.player.x - OPEN < 4.6, 'a plain running jump goes about half as far');
 });
 
 test('dash jump: letting go of the direction drops back to normal air speed', () => {
@@ -501,7 +503,7 @@ test('tuning: the five sliders are jump height, gravity, fall speed, dash speed,
     'jumpHeight', 'gravity', 'fallGravity', 'dashSpeed', 'dashDistance',
   ]);
   const start = slidersFromMoves(CONFIG.moves);
-  assert.deepEqual(start, { jumpHeight: 1.29, gravity: 28, fallGravity: 40, dashSpeed: 14, dashDistance: 3.5 });
+  assert.deepEqual(start, { jumpHeight: 1.5, gravity: 19, fallGravity: 40, dashSpeed: 12.5, dashDistance: 4.5 });
   for (const slider of SLIDERS) {
     assert.ok(start[slider.id] > slider.min && start[slider.id] < slider.max, `${slider.id} has room both ways`);
   }
@@ -531,5 +533,5 @@ test('tuning: the values come out as text ready to paste into config.js', () => 
   assert.match(text, /dashSpeed: 16,/);
   assert.match(text, /dashSeconds: 0\.25,/);
   assert.match(text, /jumpSpeed: \d/);
-  assert.match(text, /Jump height 1\.29 m, dash distance 4 m/);
+  assert.match(text, /Jump height 1\.5 m, dash distance 4 m/);
 });

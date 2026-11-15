@@ -2,6 +2,8 @@
 import { isAwake } from './guard.js';
 import { knockoutTarget } from './knockout.js';
 import { inBed } from './run.js';
+import { shoveReady, shoveTarget } from './shove.js';
+import { throwableInReach } from './throwing.js';
 import { upTarget } from './targets.js';
 
 function nearGuard(world, metres) {
@@ -48,6 +50,18 @@ export const TUTORIAL = Object.freeze([
     when: (world) => Boolean(knockoutTarget(world)),
     text: 'You are behind him and he has not seen you. Press Space (or X) to knock him out. '
       + 'He wakes up after a while, and the other guards notice when he misses his radio check-in.',
+  },
+  {
+    id: 'shove',
+    when: (world) => !knockoutTarget(world) && Boolean(shoveTarget(world)) && shoveReady(world),
+    text: 'He can see you, so no knockout. Press Space (or X) to shove him: he is stunned for a moment, '
+      + 'so run. It is loud, and it takes a few seconds before you can do it again.',
+  },
+  {
+    id: 'throw',
+    when: (world) => Boolean(throwableInReach(world)),
+    text: 'Press E (or A) to pick this up. Hold F (or Left Bumper) to aim, let go to throw. Hit a guard on the '
+      + 'head to stun him, or land it somewhere to make him walk over and look.',
   },
   {
     id: 'door',

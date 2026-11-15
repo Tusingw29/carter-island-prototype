@@ -735,3 +735,33 @@ textarea {
 body.in-menu #gym-tuning {
   display: none;
 }
+
+/* Step 10: what you are carrying, and the shove meter. */
+#carrying {
+  background: #cfd8e8;
+}
+
+#shove {
+  width: 120px;
+  margin: 8px 0 0 auto;
+  color: var(--dim);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+#shove .bar {
+  margin-top: 2px;
+}
+
+#shove .bar > div {
+  background: #ff8a3a;
+}
+
+#shove.ready {
+  opacity: 0.55;
+}
+
+#shove.ready .bar > div {
+  background: #7fd0a0;
+}

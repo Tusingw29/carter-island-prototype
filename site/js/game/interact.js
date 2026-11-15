@@ -4,6 +4,7 @@ import { canPlaceDummy, placeDummy } from './bedcheck.js';
 import { pickUp, pickupInReach } from './items.js';
 import { say } from './messages.js';
 import { canSleep, endRun } from './run.js';
+import { pickUpThrowable, throwableInReach } from './throwing.js';
 import { talkToTrader, traderInReach } from './trader.js';
 
 export function panelInReach(world, cfg = CONFIG.item) {
@@ -29,6 +30,8 @@ export function interactTarget(world) {
   if (canSleep(world)) return { kind: 'sleep' };
   const item = pickupInReach(world);
   if (item) return { kind: 'pickup', item };
+  const thing = throwableInReach(world);
+  if (thing) return { kind: 'throwable', item: thing };
   const panel = panelInReach(world);
   if (panel) return { kind: 'panel', panel };
   if (canPlaceDummy(world)) return { kind: 'dummy' };
@@ -42,6 +45,7 @@ export function pressInteract(world) {
   if (!target) return null;
   if (target.kind === 'sleep') endRun(world, 'win');
   else if (target.kind === 'pickup') pickUp(world, target.item);
+  else if (target.kind === 'throwable') pickUpThrowable(world, target.item);
   else if (target.kind === 'panel') usePanel(world, target.panel);
   else if (target.kind === 'dummy') placeDummy(world);
   else if (target.kind === 'trader') talkToTrader(world);

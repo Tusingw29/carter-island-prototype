@@ -173,14 +173,14 @@ test('camera: the zoom key switches between close and wide in every mode', () =>
   assert.ok(Math.abs(framing.distance - VIEW.wideDistance) < 0.01);
 });
 
-test('camera: Z and the left bumper are the zoom buttons, and the pause menu names the mode', () => {
+test('camera: Z and a click of the left stick are the zoom buttons, and the pause menu names the mode', () => {
   assert.equal(intentFromKeys(new Set(['KeyZ'])).zoom, true);
   assert.equal(intentFromKeys(new Set(['KeyM'])).zoom, false);
-  const buttons = Array.from({ length: 17 }, (_, index) => ({ pressed: index === 4, value: index === 4 ? 1 : 0 }));
+  const buttons = Array.from({ length: 17 }, (_, index) => ({ pressed: index === 10, value: index === 10 ? 1 : 0 }));
   const pad = intentFromGamepad({ buttons, axes: [0, 0] });
   assert.equal(pad.zoom, true);
   const others = Object.entries(pad).filter(([name, value]) => name !== 'zoom' && value);
-  assert.deepEqual(others, [], 'the left bumper does nothing else');
+  assert.deepEqual(others, [], 'the stick click does nothing else');
 
   assert.equal(framingLabel(createFraming('close')), 'close');
   assert.equal(framingLabel(createFraming('room')), 'room');

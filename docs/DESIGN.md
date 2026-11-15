@@ -94,6 +94,38 @@ questions and decisions go in [TASKS.md](TASKS.md).
 - Cameras sweep back and forth. Being seen by one sends nearby guards to Suspicious.
 - Guard patrols are the SAME every run, so players can learn and master them.
 
+## Shove (added in Step 10)
+
+- Press Space/X while facing a guard who can see you (front, or during a chase): a quick
+  shove that stuns him for about 1.5 s (config value). He staggers back.
+- It is LOUD (about the same as running) and counts as being spotted if you were not
+  already. It also sets off the Alert if he was not already Alert.
+- Cooldown of about 8 s (config value), shown as a small meter.
+- Same hit feedback as knockouts, but lighter (smaller shake, no "Zz").
+- Knockout from behind, unseen, stays the same (instant).
+
+## Throwables (added in Step 10)
+
+- Small items lying around: cups in the Mess Hall, soap in the Laundry, a few elsewhere.
+  Pick up with E. Carry one at a time. Show it in the corner of the screen.
+- Throw with F (keyboard) and Left Bumper (controller). It flies in a short arc in the
+  direction you face. Hold to see the arc before letting go.
+- Hit a guard's head: he is stunned for about 1.5 s and goes Suspicious, looking
+  toward where it came from.
+- Miss: it lands and makes a noise at the landing spot. Calm guards in earshot go
+  Suspicious and walk to THAT spot. This is a lure for sneaking past (Metal Gear style).
+- Items respawn in their spot when a new run starts, not during a run.
+
+## Line of sight (added in Step 10)
+
+- Solid props (crates, walls, shelves, counters, lockers, doors, tables if tall
+  enough) block line of sight. Check sight from the guard's flashlight to at least two
+  points on the player (head and chest). If both are blocked, he cannot see you.
+- Low cover only hides you when crouching behind it. Tall cover hides you standing.
+- Draw the vision cone CLIPPED by obstacles, so the player can see the safe shadow
+  behind each crate.
+- Cameras follow the same rule.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

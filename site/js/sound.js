@@ -14,6 +14,12 @@ const CUES = {
   lunge: [[220, 0, 0.3, 'sawtooth', 0.8, 660]],
   lungeMiss: [[180, 0, 0.18, 'sawtooth', 0.7, 70]],
   tooRisky: [[150, 0, 0.07, 'square', 0.8], [150, 0.1, 0.07, 'square', 0.8]],
+  // A shove: a lighter thud than a knockout. A throw: a short whoosh. Then it lands with a
+  // clatter, or hits a head with a hollow knock.
+  shove: [[190, 0, 0.14, 'sine', 2, 70], [380, 0, 0.03, 'square', 0.6]],
+  throw: [[500, 0, 0.14, 'sine', 0.5, 900]],
+  clatter: [[1400, 0, 0.04, 'square', 0.7], [900, 0.06, 0.05, 'square', 0.6], [1200, 0.14, 0.04, 'square', 0.4]],
+  bonk: [[520, 0, 0.09, 'sine', 1.6, 260], [1100, 0, 0.02, 'square', 0.5]],
   finish: [
     [523, 0, 0.1, 'triangle'], [659, 0.1, 0.1, 'triangle'], [784, 0.2, 0.1, 'triangle'], [1047, 0.3, 0.3, 'triangle'],
   ],

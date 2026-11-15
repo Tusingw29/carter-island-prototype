@@ -13,6 +13,7 @@
 //            oneWay vents only go in the direction listed. exitOnly marks the far end of one:
 //            you can come out of it but never go in. drop means you fall and land with a thud.
 //            hidden keeps a vent off the map until you have walked up to it.
+// Items are things to pick up with Interact. Cups, mugs, soap, and cans are throwables (throwing.js).
 // Props are things on the back wall that are not ways out, like the welded vent and the camera panel.
 // Snitches are inmates who yell if they see you. firstLook is the side they watch first.
 // The trader swaps cigarettes for a hint.
@@ -52,6 +53,7 @@ const cellBlock = {
     { id: 'cb-drop', type: 'vent', exitOnly: true, high: true, hidden: true, x: 28.6, to: 'guard-office',
       toPortal: 'go-drop' },
   ],
+  items: [{ id: 'cb-cup', type: 'cup', x: 21 }],
   guards: [{ id: 'cb-guard', patrol: [9, 21.5], startX: 16, facing: 1, checksBed: true }],
 };
 
@@ -74,6 +76,8 @@ const laundry = {
   items: [
     { id: 'bedsheets', type: 'bedsheets', x: 5.2 },
     { id: 'screwdriver', type: 'screwdriver', x: 23.8 },
+    { id: 'la-soap-1', type: 'soap', x: 11.6 },
+    { id: 'la-soap-2', type: 'soap', x: 18.4 },
   ],
   guards: [{ id: 'la-guard', patrol: [10.5, 19], startX: 12, facing: 1 }],
 };
@@ -98,6 +102,7 @@ const maintenance = {
     { id: 'ma-welded', type: 'welded-vent', x: 19.2 },
     { id: 'ma-panel', type: 'camera-panel', x: 21.1, controls: 'sw-camera' },
   ],
+  items: [{ id: 'ma-can', type: 'can', x: 9 }],
   guards: [],
   // No guards here, so this camera calls the Laundry guard to the connecting door.
   cameras: [{ id: 'ma-camera', min: 9.5, max: 16, halfWidth: 1.6, speed: 1.4, callsGuard: 'la-guard', callsTo: 26.5 }],
@@ -126,7 +131,12 @@ const messHall = {
     { id: 'mh-guard-2', patrol: [20, 31], startX: 24, facing: -1 },
   ],
   // Hidden in the kitchen corner.
-  items: [{ id: 'cigarettes', type: 'cigarettes', x: 34.6 }],
+  items: [
+    { id: 'cigarettes', type: 'cigarettes', x: 34.6 },
+    { id: 'mh-cup-1', type: 'cup', x: 4.2 },
+    { id: 'mh-cup-2', type: 'cup', x: 13.5 },
+    { id: 'mh-cup-3', type: 'cup', x: 24.5 },
+  ],
 };
 
 const stairwell = {
@@ -147,6 +157,7 @@ const stairwell = {
     { id: 'sw-west', type: 'hall', side: 'left', to: 'mess-hall', toPortal: 'mh-east' },
     { id: 'sw-door', type: 'door', creaky: true, x: 24, to: 'guard-office', toPortal: 'go-door' },
   ],
+  items: [{ id: 'sw-mug', type: 'mug', x: 4.5 }],
   guards: [{ id: 'sw-guard', patrol: [9, 9], facing: -1, turnEvery: 5 }],
   cameras: [{ id: 'sw-camera', min: 16.5, max: 21, halfWidth: 1.2, speed: 1.2 }],
 };
@@ -210,7 +221,7 @@ export const PRISON = Object.freeze({ startRoom: 'cell-block', rooms: ROOMS });
 
 // The gym: an obstacle course for jump, slide, and dash, left to right, with a sign over each
 // part and a finish line. It is not part of the prison and has no headcount. Reached with ?room=gym.
-//   solids are boxes to stand on or slide under: { x, halfWidth, bottom, top }.
+//   solids are boxes to stand on or slide under: { x, halfWidth, bottom, top }. They block sight.
 //   pits are stretches with no floor: { from, to }.
 //   signs hang on the back wall: { x, text, hint }.
 //   bounds keep a guard on his own stretch of floor, so he never walks through a crate.
@@ -229,7 +240,8 @@ const gym = {
     { x: 27, text: '3. SLIDE (crouch + jump)', hint: 'S + K while moving' },
     { x: 37.5, text: '4. DASH (L / RB)', hint: 'hold dash and jump: a dash jump' },
     { x: 51, text: '5. AIR DASH', hint: 'jump, then dash in the air' },
-    { x: 66, text: '6. SNEAK PAST THE GUARD', hint: 'over the ledge, or the dark patch' },
+    { x: 59.6, text: 'CUP ON THE TALL CRATE (E)', hint: 'hold F to aim, let go to throw', extra: true },
+    { x: 66, text: '6. SNEAK PAST THE GUARD', hint: 'crates block his sight. Or lure him with the cup' },
     { x: 80, text: 'FINISH', hint: 'E to run it again' },
   ],
   solids: [
@@ -243,16 +255,20 @@ const gym = {
     { id: 'step-1', kind: 'crate', x: 60.5, halfWidth: 0.7, bottom: 0, top: 1 },
     { id: 'step-2', kind: 'crate', x: 62.3, halfWidth: 1, bottom: 0, top: 2 },
     { id: 'ledge', kind: 'ledge', x: 68.5, halfWidth: 4, bottom: 2.7, top: 3 },
+    // Low cover past the end of his patrol: it only hides you if you crouch behind it.
+    { id: 'low-cover', kind: 'crate', x: 77.4, halfWidth: 0.5, bottom: 0, top: 1 },
   ],
   pits: [
-    // 4. Too wide for a running jump. A dash jump clears it.
-    { id: 'dash-gap', from: 39, to: 43.5 },
+    // 4. Too wide for a running jump, even a late one. A dash jump clears it.
+    { id: 'dash-gap', from: 39, to: 44.5 },
     // 5. Wider still. Jump, then dash in the air.
     { id: 'air-gap', from: 52, to: 58.5 },
   ],
   hideSpots: [{ id: 'gym-dark', type: 'dark', x: 70, halfWidth: 1.1 }],
   portals: [],
-  guards: [{ id: 'gym-guard', patrol: [64.5, 76], startX: 68, facing: 1, bounds: [63.7, 78.5] }],
+  // On top of the tall crate, where the course takes you anyway.
+  items: [{ id: 'gym-cup', type: 'cup', x: 62.6, y: 2 }],
+  guards: [{ id: 'gym-guard', patrol: [64.5, 75.5], startX: 68, facing: 1, bounds: [63.7, 76.6] }],
   finish: { x: 80 },
 };
 

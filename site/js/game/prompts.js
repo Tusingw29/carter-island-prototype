@@ -3,6 +3,8 @@ import { interactTarget } from './interact.js';
 import { keycardInReach } from './keycard.js';
 import { dragTarget, knockoutTarget, stuffTarget, tooRiskyNow } from './knockout.js';
 import { canSleep, inBed } from './run.js';
+import { shoveReady, shoveTarget } from './shove.js';
+import { throwableName } from './throwing.js';
 import { snitchInReach } from './snitch.js';
 import { upTarget } from './targets.js';
 import { ventState } from './vents.js';
@@ -29,7 +31,7 @@ export function currentPrompt(world) {
   if (world.grab || world.over) return null;
   if (tooRiskyNow(world)) {
     const risky = world.allGuards.find((guard) => guard.id === world.risky.guardId);
-    return { text: 'TOO RISKY', x: risky.x, y: 2.75, shake: true };
+    return { text: 'SHOVE NOT READY', x: risky.x, y: (risky.y ?? 0) + 2.75, shake: true };
   }
   if (player.hiddenIn) {
     if (canSleep(world)) return { text: 'E: sleep (end the run)   UP: get up', x: player.x, y: 1.6 };
@@ -44,12 +46,19 @@ export function currentPrompt(world) {
   if (card) return { text: 'E: tap = grab fast, hold = lift quietly', x: card.x, y: 1.9 };
   const action = interactTarget(world);
   if (action?.kind === 'pickup') return { text: `E: take the ${action.item.type}`, x: action.item.x, y: 1.6 };
+  if (action?.kind === 'throwable') {
+    const name = throwableName(action.item);
+    const text = player.carrying ? `Hands full (the ${name} stays)` : `E: pick up the ${name}`;
+    return { text, x: action.item.x, y: (action.item.y ?? 0) + 1.6 };
+  }
   if (action?.kind === 'panel') return { text: 'E: camera control panel', x: action.panel.x, y: 2.4 };
   if (action?.kind === 'dummy') return { text: 'E: make a dummy in your bed', x: player.x, y: 2.3 };
   const snitch = snitchInReach(world);
   if (snitch?.cellOpen) return { text: 'SPACE: knock out', x: snitch.x, y: 3 };
   const guard = knockoutTarget(world);
-  if (guard) return { text: 'SPACE: knock out', x: guard.x, y: 2.75 };
+  if (guard) return { text: 'SPACE: knock out', x: guard.x, y: (guard.y ?? 0) + 2.75 };
+  const facing = shoveTarget(world);
+  if (facing && shoveReady(world)) return { text: 'SPACE: shove', x: facing.x, y: (facing.y ?? 0) + 2.75 };
   const body = dragTarget(world);
   if (body) return { text: 'SPACE: drag body', x: body.x, y: 1.2 };
   const target = upTarget(world);

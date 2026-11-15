@@ -2,7 +2,8 @@
 import {
   BufferGeometry, Group, Line, LineBasicMaterial, LineLoop, Vector3,
 } from '../../vendor/three.module.js';
-import { coneOutline, coneShape } from '../game/vision.js';
+import { FAN_POINTS, sightBlockers } from '../game/sight.js';
+import { coneLit, coneShape } from '../game/vision.js';
 
 const Z = 0.6;
 
@@ -23,10 +24,11 @@ function outline(color, count) {
 }
 
 function patrolPath(guard, index) {
-  const y = 0.05 + index * 0.06;
+  const feetY = guard.y ?? 0;
+  const y = feetY + 0.05 + index * 0.06;
   const points = [
-    new Vector3(guard.patrolMin, 0.4, Z), new Vector3(guard.patrolMin, y, Z),
-    new Vector3(guard.patrolMax, y, Z), new Vector3(guard.patrolMax, 0.4, Z),
+    new Vector3(guard.patrolMin, feetY + 0.4, Z), new Vector3(guard.patrolMin, y, Z),
+    new Vector3(guard.patrolMax, y, Z), new Vector3(guard.patrolMax, feetY + 0.4, Z),
   ];
   return new Line(new BufferGeometry().setFromPoints(points), new LineBasicMaterial({ color: 0x4fd0ff }));
 }
@@ -36,7 +38,7 @@ export function createDebugView(world) {
   const ring = circle(0x7dff9a);
   group.add(ring);
   const cones = world.guards.map((guard, index) => {
-    const cone = outline(0xffffff, 4);
+    const cone = outline(0xffffff, FAN_POINTS + 1);
     group.add(cone, patrolPath(guard, index));
     return cone;
   });
@@ -46,12 +48,17 @@ export function createDebugView(world) {
     if (!enabled) return;
     const radius = currentWorld.noiseRadius;
     ring.visible = radius > 0;
-    ring.position.set(currentWorld.player.x, 0.2, Z);
+    ring.position.set(currentWorld.player.x, (currentWorld.player.y ?? 0) + 0.2, Z);
     ring.scale.setScalar(radius || 1);
     currentWorld.guards.forEach((guard, i) => {
       cones[i].visible = guard.state !== 'out' && guard.state !== 'asleep';
       const positions = cones[i].geometry.attributes.position;
-      coneOutline(coneShape(guard)).forEach((corner, n) => positions.setXYZ(n, corner.x, corner.y, Z));
+      // The exact edge of what he can see, shadows and all. Spare points sit on the last one.
+      const lit = coneLit(coneShape(guard), sightBlockers(currentWorld.room));
+      for (let n = 0; n <= FAN_POINTS; n += 1) {
+        const corner = lit[Math.min(n, lit.length - 1)];
+        positions.setXYZ(n, corner.x, corner.y, Z);
+      }
       positions.needsUpdate = true;
     });
   }

@@ -80,6 +80,9 @@ export function travel(world, portal, loud = false, cfg = CONFIG) {
 
   world.holds.up = null;
   world.holds.interact = null;
+  // Anything still in the air stays behind.
+  world.thrown = [];
+  world.aiming = false;
   world.knownPortals.add(portal.id);
   world.knownPortals.add(there.portal.id);
   enterRoom(world, there.room.id, arriveX);

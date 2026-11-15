@@ -4,6 +4,8 @@ import { alertSummary } from '../game/alert.js';
 import { formatClock } from '../game/clock.js';
 import { currentAnnouncement } from '../game/cues.js';
 import { currentMessage } from '../game/messages.js';
+import { shoveCharge } from '../game/shove.js';
+import { throwableName } from '../game/throwing.js';
 import { peek } from '../game/vents.js';
 import { setHidden, setText, setWidth } from './dom.js';
 
@@ -71,6 +73,9 @@ export function createHud(build, cues = true) {
   const message = byId('message');
   const pa = byId('pa');
   const silentAlarm = byId('silent-alarm');
+  const carrying = byId('carrying');
+  const shoveMeter = byId('shove');
+  const shoveFill = byId('shove-fill');
   const peekPanel = byId('peek');
   const peekTitle = byId('peek-title');
   const peekStrip = byId('peek-strip');
@@ -111,6 +116,13 @@ export function createHud(build, cues = true) {
     setHidden(keycard, !world.player.hasKeycard);
     setHidden(silentAlarm, !world.silentAlarm);
     for (const [flag, badge] of badges) setHidden(badge, !world.player[flag]);
+    const held = world.player.carrying;
+    setHidden(carrying, !held);
+    if (held) setText(carrying, `${throwableName(held).toUpperCase()}  (hold F: aim, let go: throw)`);
+    // The shove meter: full means ready.
+    const charge = shoveCharge(world);
+    setWidth(shoveFill, charge * 100);
+    shoveMeter.classList.toggle('ready', charge >= 1);
     setText(bedCheck, world.layout.practice ? courseNote(world, best) : bedCheckText(world));
 
     const text = currentMessage(world);

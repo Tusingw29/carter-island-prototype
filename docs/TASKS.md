@@ -25,6 +25,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 7 | Playtest 1: camera options, timer cues, silent alarm made clear | review, awaiting Adam's verdict | `step-7-playtest-1` |
 | 8 | Playtest 2: smart camera, hit feedback, knockout rules, 7:00 timer, gym | review, awaiting Adam's verdict | `step-8-playtest-2` |
 | 9 | Playtest 3: chase instead of instant capture, instant knockouts, gym feel | review, awaiting Adam's verdict | `step-9-playtest-3` |
+| 10 | Playtest 4: cover blocks sight, picture quality, gym values, shove, throwables | review, awaiting Adam's verdict | `step-10-playtest-4` |
 
 ---
 
@@ -705,6 +706,121 @@ judge how the chase feels. That is the point of this playtest.
    numbers you like, press "Copy values" and send them to me.
 9. Is it a chase now? Is the head start too long, too short, or about right?
 10. All four playtest questions.
+
+---
+
+## Step 10: Playtest 4 (cover blocks sight, picture quality, gym values, shove, throwables)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-10-playtest-4`
+- **Playtest 4 results (Adam):** won. Rank Shadow, 5:03 left on 7:00, spotted 0, knockouts
+  6, bodies found 0. Keycard grabbed fast, silent alarm fired (office guard knocked out).
+  Finished after 8 to 10 tries, down from dozens: the chase changes made it fair. Running
+  helps a lot. The timer is more stressful now (good). Vents still feel like a reward.
+  Hiding is less tense, mostly because he has learned the guards. Radio check-ins: keep
+  them. Wants a way to stun guards and run, not just knock out from behind.
+- **Not changed:** patrols, vision cone sizes, the chase, knockouts from behind, the radio
+  check-ins, the 7:00 timer, and the main map (apart from the items lying in it).
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Gym: https://tusingw29.github.io/carter-island-prototype/?room=gym
+
+### What was built
+
+1. **Bug fixed: guards saw through solid objects.**
+   - **Cause:** sight only asked "is the player inside the cone?". Nothing checked what
+     stood in between. Only the gym has solid things in the walking lane, so only the gym
+     showed it.
+   - **Rule now:** a guard sees you if any of six points up your body, feet to head (head
+     and chest are two of them), is in his beam with a clear straight line from his
+     flashlight. If every line is cut by something solid, he cannot see you.
+   - **Tall and low cover:** behind a crate taller than you, you are hidden standing.
+     Behind a low one, only crouching. His close-up rule (within 1.2 m in front) now needs
+     a clear line too, and only works when you are on his level.
+   - **The drawn cone** is cut off by obstacles, so the shadow behind each crate shows.
+     The debug outline (F1) draws the same shape.
+   - **Cameras** follow the same rule: on the watched floor, with a clear line from the
+     camera to your head or chest. Their beams are drawn cut off the same way.
+   - **Bodies:** a knocked-out guard behind a crate is not found.
+   - **Every room checked:** in the six prison rooms and the duct nothing solid stands in
+     the walking lane. Lockers, carts, and beds are on the back wall, shelves and the
+     counter stand in front of the lane, and tables have the lane running under them. A
+     test now fails if that ever changes without sight being checked. In the gym all seven
+     crates, walls, and the ledge block sight, and there is one new low crate past the end
+     of the guard's patrol for trying low cover.
+2. **Bug fixed: picture stuck at 55%.** The automatic drop never came back up. Now three
+   seconds of fast frames step it up one level (55% to 75% to 100%). If the higher level
+   turns out too slow and it drops again, the next try waits twice as long, so it does
+   not flicker. The `?low` link still stays at 55% on purpose.
+3. **Adam's gym values are the defaults** in `config.js`: jump 1.5 m, dash 4.5 m. The
+   dash gap in the gym is 1 m wider (5.5 m), because with the higher jump a late running
+   jump could clear the old one without a dash.
+4. **Shove** (main game and gym). Space or X on an awake guard within 1.4 m who cannot be
+   knocked out: he is stunned for 1.5 s and staggers back 1 m. It is as loud as running,
+   sets off the Alert if he was not Alert, and counts as spotted if you were not already.
+   8 second cooldown, shown as the small SHOVE meter under the timer (green and full when
+   ready). It stops a lunge that is winding up. Lighter hit feedback than a knockout:
+   half the freeze, under half the shake, a white flash, no "Zz".
+5. **Throwables** (main game and gym). Pick up with E, one at a time, shown top right.
+   Hold F (Left Bumper) to see the arc as a dotted line, let go to throw: about 6 m.
+   - **Hit a head:** stunned 1.5 s, goes Suspicious, turns toward where it came from, then
+     walks there to look. A chasing guard is stunned and stays Alert.
+   - **Miss:** it lands with a clatter heard 6 m away (soap: 5 m). Calm guards in earshot
+     go Suspicious and walk to where it landed.
+   - **Where they are:** three cups in the Mess Hall, two bars of soap in the Laundry, a
+     cup in the Cell Block, an oil can in Maintenance, a mug in the Stairwell, and a cup
+     on top of the tall crate in the gym.
+   - Thrown items are used up. A new run puts them all back.
+
+### Planning bot after the vision fix
+
+| Route | Clean run | Time | Change |
+| --- | --- | --- | --- |
+| Front door in, front door back | yes, Ghost | 2:14 | none |
+| Front door in, one-way drop home | yes, Ghost | 1:36 | none |
+| Vent route | yes, Ghost | 1:23 | none |
+
+The times did not change, and the reason is the room check above: no prison room has a
+solid object in the lane, so seeing through objects was never making a main-game route
+harder. It was a gym-only bug. The bot now uses the cover rule for guards and cameras, so
+it will count cover the moment a room has some (the Yard will).
+
+### Choices I made that Adam should check
+
+- **Shove turns you round.** The spec says "while facing a guard". If the only guard in
+  reach is behind you, Space turns you to face him and shoves. Without that, a guard who
+  catches you from behind could not be shoved at all.
+- **"TOO RISKY" is gone.** Space on a guard who can see you now shoves. If the shove is
+  not ready, the red shake says "SHOVE NOT READY".
+- **Controller zoom moved** from Left Bumper to a click of the left stick, because the
+  spec gives Left Bumper to throwing.
+- **A throw is flat.** It never rises above head height, so a guard within about 4.5 m in
+  the direction you face is always hit. To lure, throw when he is further away, or throw
+  the other way.
+- **Throwing from a dark patch** does not give you away. Throwing from inside a locker,
+  cart, or under a table is not possible.
+- **A hit on the head does not count as spotted.** He goes Suspicious, not Alert.
+- **Tables do not block sight.** They are still hiding spots you get under with Up.
+- **Not fixed:** the soft glow a flashlight throws on the back wall still shows past a
+  crate. The cone, which is what he sees, is cut off correctly.
+- **Not verified:** not played by a person, sounds unheard, rumble, a controller, and the
+  2015 MacBook Air untested. Checked by tests, the planning bot, and headless Chrome.
+
+### How Adam tests it
+
+1. Gym. Go to the tall crate before the guard and stand behind it. His cone should stop
+   at the crate and he should not see you.
+2. Gym. Get to the low crate just before the finish line. Stand behind it, then crouch.
+3. Gym. Pick up the cup on the tall crate (E). Hold F to see the arc, let go. Try to hit
+   his head, then restart and land it past him.
+4. Main game, Mess Hall. Pick up a cup, throw it behind a guard, and walk past while he
+   looks.
+5. Walk up to a guard's front and press Space. Run while he staggers. Watch the SHOVE
+   meter fill.
+6. Get chased, let him get close, and shove him as he crouches to lunge.
+7. Press F1 and read "picture at ...%" on the second line. If it drops, it should climb
+   back within a few seconds of the game running smoothly.
+8. All four playtest questions.
 
 ---
 
