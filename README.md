@@ -76,7 +76,7 @@ Add these to the end of the play link.
 | `?room=stairwell&px=2` | Starts in that room at that spot |
 | `?timer=30` | Starts with 30 seconds on the timer |
 | `?room=gym` | The obstacle course: jump (K), dash (L), slide (S + K while moving). F1 shows tuning sliders |
-| `?room=yard` | Starts at the Yard door. Add `&px=37` to start at Tower 1's ladder, or `&px=20&py=5.4` on the roof ledge |
+| `?room=yard` | Starts at the Yard door. Add `&px=37&py=5.8` to start on Tower 1 behind its guard, or `&px=20&py=5.4` on the roof ledge |
 | `?boots` | Starts with the work boots on, so the dash works from the start |
 | `?cam=close` | The close follow camera |
 | `?cam=wide` | The same camera pulled back, showing twice as much floor |

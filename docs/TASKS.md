@@ -839,7 +839,7 @@ it will count cover the moment a room has some (the Yard will).
   - Starts at the Yard door: https://tusingw29.github.io/carter-island-prototype/?room=yard
   - Yard with the boots already on: https://tusingw29.github.io/carter-island-prototype/?room=yard&boots
   - On the roof ledge with the boots: https://tusingw29.github.io/carter-island-prototype/?room=yard&px=20&py=5.4&boots
-  - At the foot of Tower 1's ladder: https://tusingw29.github.io/carter-island-prototype/?room=yard&px=37
+  - On Tower 1, behind its guard: https://tusingw29.github.io/carter-island-prototype/?room=yard&px=37&py=5.8
 
 ### The Yard, left to right
 
