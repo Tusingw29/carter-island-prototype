@@ -25,10 +25,13 @@ export function makeSuspicious(world, guard, x) {
 // What a spotting is put down to on the score screen.
 const SPOTTED_BY = {
   closeSight: 'guard', beam: 'guard', watchedHiding: 'guard', foundHiding: 'guard', sight: 'guard',
+  // Things that are not a guard's eyes: each has its own name on the score screen.
+  shove: 'shove', brokeFree: 'brokeFree', wokeSleeper: 'sleeperWoke',
 };
 
-// Counts one spotting. by is 'guard', 'camera', 'searchlight', 'snitch', or 'other' (things you
-// did to give yourself away, a sleeper waking, the empty bed).
+// Counts one spotting. by is 'guard', 'camera', 'searchlight', 'snitch', 'shove', 'brokeFree'
+// (a guard got loose from your hold), 'sleeperWoke', 'emptyBed', or 'other' (a guard you threw
+// down or let go).
 export function countSpotted(world, by) {
   world.stats.timesSpotted += 1;
   world.stats.spottedBy[by] = (world.stats.spottedBy[by] ?? 0) + 1;
@@ -92,7 +95,7 @@ export function alarmEverywhere(world) {
     setState(world, guard, 'alert');
   }
   world.searchClaims = new Set();
-  countSpotted(world, 'other');
+  countSpotted(world, 'emptyBed');
   world.lastAlarm = { at: world.time, kind: 'emptyBed', by: null, roomId: world.room.id };
   world.events.push({ type: 'lockdown' });
 }

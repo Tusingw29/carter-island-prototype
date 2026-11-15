@@ -13,19 +13,23 @@ const KEYCARD = { slow: 'taken slowly', fast: 'grabbed fast' };
 
 const SOURCES = [
   ['guard', 'guards'], ['camera', 'cameras'], ['searchlight', 'searchlights'], ['snitch', 'snitches'],
-  ['other', 'other'],
+  ['shove', 'your shoves'], ['brokeFree', 'a guard broke free'], ['sleeperWoke', 'sleeper woke'],
+  ['emptyBed', 'empty bed'], ['other', 'other'],
 ];
 
-// "guards 3, cameras 1, searchlights 0, snitches 2, other 0". "other" is anything you did to
-// give yourself away (a shove, a guard thrown down or let go), a sleeper waking, or the empty bed.
+// "guards 3, cameras 1, searchlights 0, snitches 2", then every other cause that happened, by
+// name: "your shoves 1, empty bed 1". "other" is a guard you threw down or let go.
 export function spottedByText(spottedBy = {}) {
-  return SOURCES.map(([key, name]) => `${name} ${spottedBy[key] ?? 0}`).join(', ');
+  const always = SOURCES.slice(0, 4);
+  const named = SOURCES.slice(4).filter(([key]) => (spottedBy[key] ?? 0) > 0);
+  return [...always, ...named].map(([key, name]) => `${name} ${spottedBy[key] ?? 0}`).join(', ');
 }
 
 // "2 from behind, 1 from above, 0 pulled into hiding".
 export function takedownText(takedowns = {}) {
+  const fell = (takedowns.ledge ?? 0) > 0 ? `, ${takedowns.ledge} knocked out by a fall` : '';
   return `${takedowns.choke ?? 0} from behind, ${takedowns.above ?? 0} from above, `
-    + `${takedowns.pullIn ?? 0} pulled into hiding`;
+    + `${takedowns.pullIn ?? 0} pulled into hiding${fell}`;
 }
 
 function runLine(result) {
@@ -35,6 +39,8 @@ function runLine(result) {
     + `knockouts ${result.knockouts}, bodies found ${result.bodiesFound}`
     + `\nSpotted by: ${spottedByText(result.spottedBy)}.`
     + `\nTakedowns: ${takedownText(result.takedowns)}. Thrown down: ${result.slams ?? 0}. `
+    + `Shoves: ${result.shoves ?? 0}. `
+    + `Shoved off ledges: ${result.shovedOff ?? 0}. `
     + `Interrogations: ${result.interrogations ?? 0}. Check-ins faked: ${result.checkInsFaked ?? 0}.`
     + `\nSolitary: ${result.solitary ? `yes, ${result.solitaryPenalty} s lost` : 'no'}.`
     + `\nKeycard: ${KEYCARD[result.keycardGrab] ?? 'not taken'}. `

@@ -214,8 +214,10 @@ export const CONFIG = Object.freeze({
     reach: 1.1,
     // You cannot start a knockout from higher than this above the floor.
     reachUp: 0.3,
-    // How long "SHOVE NOT READY" shows when you press the button on a guard too soon.
-    riskySeconds: 0.6,
+    // How long "SHOVE NOT READY" and the like show when a button is refused.
+    riskySeconds: 0.9,
+    // Behind an unaware guard but this far out, you are told to move closer to grab.
+    closerCueReach: 1.8,
     // A knocked-out guard wakes up after this long.
     wakeSeconds: 75,
     // A guard lying in the open starts to stir this long before he wakes, and you are told.
@@ -236,6 +238,16 @@ export const CONFIG = Object.freeze({
     cooldownSeconds: 8,
     // About as loud as running.
     noiseRadius: 8,
+    // Ledges. A guard on a platform, within a push plus this much of its edge, goes off it.
+    edgeSlack: 0.3,
+    // He reels to the edge at this speed, and comes down this far clear of it.
+    reelSpeed: 4,
+    fallClear: 0.5,
+    // A fall this high or higher knocks him out. A shorter one winds him for a while.
+    fallKnockoutMetres: 2,
+    shortFallStunSeconds: 3,
+    // A body hitting the ground is heard from further than any footstep.
+    fallNoiseRadius: 12,
   }),
 
   // Throwing things: cups, soap, and other small items lying around.

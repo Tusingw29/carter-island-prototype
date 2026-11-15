@@ -26,6 +26,7 @@ import { createPlayer, updatePlayer } from './player.js';
 import { enterRoom, hallBeingEntered, travel } from './portals.js';
 import { setUpRadio, updateRadio } from './radio.js';
 import { updateTimer } from './run.js';
+import { pressShove } from './shove.js';
 import { solitaryStep } from './solitary.js';
 import * as take from './takedown.js';
 import { updateThrowing } from './throwing.js';
@@ -111,10 +112,16 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     stats: {
       timesSpotted: 0, knockouts: 0, bodiesFound: 0,
       // What each spotting was put down to.
-      spottedBy: { guard: 0, camera: 0, searchlight: 0, snitch: 0, other: 0 },
+      spottedBy: {
+        guard: 0, camera: 0, searchlight: 0, snitch: 0, shove: 0, brokeFree: 0, sleeperWoke: 0, emptyBed: 0,
+        other: 0,
+      },
       // Knockouts by how they were done, guards thrown down, guards who talked, and radio
       // check-ins answered for a guard whose code you had.
-      takedowns: { choke: 0, above: 0, pullIn: 0 },
+      takedowns: { choke: 0, above: 0, pullIn: 0, ledge: 0 },
+      // Shoves are actions, counted whether or not they got you spotted.
+      shoves: 0,
+      shovedOff: 0,
       slams: 0,
       interrogations: 0,
       checkInsFaked: 0,
@@ -136,6 +143,7 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     pings: [],
     throwWasHeld: false,
     askWasHeld: false,
+    shoveWasHeld: false,
     // Messages waiting their turn, a guard's words in a speech bubble ({ guardId, text, until }),
     // how far the rising "about to be spotted" sound has got, and how many "last seen" ghosts
     // have appeared so far (the first few carry a label).
@@ -256,7 +264,8 @@ function updateEveryoneElse(world, dt, cfg) {
   updatePursuits(world, cfg);
   // Gym guards stay on their own stretch of floor, even when chasing.
   for (const guard of world.allGuards) {
-    if (guard.bounds) guard.x = Math.max(guard.bounds[0], Math.min(guard.bounds[1], guard.x));
+    // (Not while he is going off a ledge: that is how he leaves it.)
+    if (guard.bounds && !guard.falling) guard.x = Math.max(guard.bounds[0], Math.min(guard.bounds[1], guard.x));
   }
 }
 
@@ -296,6 +305,8 @@ export function stepWorld(world, input, dt, cfg = CONFIG) {
   world.throwWasHeld = intent.throw;
   const askPressed = intent.ask && !world.askWasHeld;
   world.askWasHeld = intent.ask;
+  const shovePressed = intent.shove && !world.shoveWasHeld;
+  world.shoveWasHeld = intent.shove;
   const wasConcealed = concealedIn(player);
   // With a guard in your hands the buttons mean the takedown choices and nothing else.
   const holding = Boolean(world.hold);
@@ -304,6 +315,7 @@ export function stepWorld(world, input, dt, cfg = CONFIG) {
     take.updateTakedown(world, intent, pressed, dt, cfg);
   } else {
     if (actionPressed) pressAction(world, take);
+    else if (shovePressed) pressShove(world, cfg);
     // The press that grabbed him must not also count as the first choice.
     if (!world.hold) {
       handleUp(world, intent, upPressed, dt);

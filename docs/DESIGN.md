@@ -421,6 +421,55 @@ the "heat" one level for the rest of the run:
   missed call brings. The office sleeper is not on the radio: he gives a different reward
   when interrogated, and that is said clearly.
 
+## The shove, reworked (Step 17)
+
+From [reviews/codex-review-1-shove.md](reviews/codex-review-1-shove.md), with Adam's decisions.
+
+### Dedicated shove button, and a smart Space
+
+- Shove has its own button: R on keyboard, Left Trigger on controller.
+- Space NEVER shoves.
+- Behind an unaware guard, Space only grabs. If you are just out of grab reach, show
+  "Move closer to grab" over him instead of doing anything loud.
+- The shove button only works when the guard is facing you or is Alert/Searching.
+  Pressing it behind an unaware guard does nothing (show "He hasn't seen you: grab
+  instead").
+
+### Stun, then grab
+
+- Keep the 1.5 s stun. While a guard staggers, show a small stun bar over him and the
+  hint "RUN / JUMP AWAY, or SPACE: grab".
+- While he is stunned, you CAN grab him from any side within grab reach. This opens the
+  normal grab menu (knock out, interrogate, throw, drag). Other guards in the room stay
+  Alert, so it is still risky. No automatic knockout.
+- Show the shove cooldown separately from the stun, so the player can tell when he can
+  act again versus when they can shove again.
+- Escape hints should point in a useful direction when possible (for example toward the
+  roof ledge on Tower 1), not a generic "run".
+
+### Shove off ledges
+
+- When a guard stands near a platform edge and you shove him toward it, he FALLS.
+- Show an edge tell before you press: a small arrow over his head pointing off the edge and
+  the prompt "R: shove off".
+- A visible stagger and fall, and a defined landing:
+  - Fall of about 2 m or more: knocked out (same wake-up timer and radio rules as other
+    knockouts). His body lands in the open and can be found.
+  - Shorter fall: long stun (about 3 s) on the ground below, then he gets up Alert.
+- A tower guard knocked off his tower: his searchlight goes dark for the run, like the
+  quiet tower takedown, but the fall is LOUD (alerts nearby guards). The quiet takedown
+  stays the better choice for stealth.
+- No clipping or teleporting: he falls along a real path and lands on real ground.
+
+### Clear targets, and actions counted apart from sightings
+
+- When more than one action is possible, the prompt must name the actual target (for
+  example "SPACE: drop on the ground guard"). The drop marker shows on that guard.
+- Score screen: a "Shoves" counter (actions, not sightings) and "Shoved off ledges".
+- "Other" sightings are broken into named causes (sleeper woke, empty bed, broke free,
+  shove). One spotting per hunt is kept.
+- Stamina and tackles are ON HOLD until Adam has seen Step 15's rusher numbers.
+
 ## Getting grabbed
 
 - If a guard catches you during Alert, you get ONE chance per run to break free by mashing

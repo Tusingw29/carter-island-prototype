@@ -44,6 +44,10 @@ export function createGuard(def) {
     // Reaching into a hiding spot he saw you get into: counts down, then he pulls you out.
     reach: 0,
     reachSpotId: null,
+    // Reeling from a shove: how long the stagger was when it began (for the stun bar), and a
+    // fall off a ledge in progress: { side, landX, landY, height, vy }.
+    staggerFull: 0,
+    falling: null,
     // His own latest Alert: { at, kind, by, roomId }. For "how you got caught".
     alertRecord: null,
     // Following the player through a door (heat.js), and whether he has done so this hunt.

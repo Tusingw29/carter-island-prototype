@@ -31,6 +31,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 13 | Readable stealth: lit or hidden look, last-seen markers, solitary | review, awaiting Adam's verdict | `step-13-readable-stealth` |
 | 14 | Heat-up detection, spotted counts, clearer takedown menu, places to drop from | review, awaiting Adam's verdict | `step-14-heat-up` |
 | 15 | Review fixes: door escalation (heat), drawings match checks, hiding tell, slides, and more | review, awaiting Adam's verdict | `step-15-review-fixes` |
+| 17 | Shove rework: its own button, grab during the stagger, shove off ledges | review, awaiting Adam's verdict | `step-17-shove` |
 
 **Later** (cards from [the outside review](reviews/codex-review-1.md) that Adam saved for later):
 
@@ -1546,6 +1547,154 @@ The reviewer's result files are left as they were. The rerun is summed up in
 9. Grab a guard and read the bottom lines of the pop-up. Then grab the office sleeper.
 10. Win as Shadow and as Inmate and read the line under the headline.
 11. All four playtest questions.
+
+---
+
+## Step 17: Shove rework (its own button, grab during the stagger, shove off ledges)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-17-shove` (built on Step 15, the latest `main`)
+- **Source:** the Codex shove report, [reviews/codex-review-1-shove.md](reviews/codex-review-1-shove.md),
+  and Adam's four decisions: a dedicated button plus a smart Space, a grab during the
+  stagger, shoving off ledges, and stamina and tackles on hold.
+- **Three things that were not as the prompt said:**
+  - PR #17 (the shove report) was still open, not merged. This branch includes its commit.
+  - There is no `docs/VISION.md` on `main`, so it was not read.
+  - There is no Task 16 on the board. This is Task 17 because the prompt says so.
+- **Not changed:** the 1.5 s stun, the 8 s cooldown, the 1 m push, grab reach 1.1 m, shove
+  reach 1.4 m, pull-ins, drops, and everything in the heat ladder.
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - On Tower 1, behind its guard: https://tusingw29.github.io/carter-island-prototype/?room=yard&px=37&py=5.8
+  - Gym: https://tusingw29.github.io/carter-island-prototype/?room=gym
+
+### Rusher numbers, for the stamina and tackles decision
+
+The Codex rusher (30 departures), from `tools/review/` and its copy in `tests/bot/rusher.mjs`.
+
+| | Before Step 15 | Step 15 | Now (Step 17) |
+| --- | --- | --- | --- |
+| Wins | 30 of 30 | 27 of 30 | 27 of 30 |
+| Mean time left | 393 s | 383 s | 383 s |
+| Grabbed at least once | 0 of 30 | 27 of 30 | 27 of 30 |
+| Sent to solitary | 0 | 3 | 3 |
+| Caught for good | 0 | 3, all in the Stairwell | 3, all in the Stairwell |
+| Wins with no grab at all | 30 | 3 | 3 |
+
+- Step 17 does not move these: the rusher never shoves.
+- The rusher still wins nine runs in ten. What Step 15 changed is that 24 of the 27 wins
+  are grabbed once at the locked Stairwell door and spend their one break-free there.
+- Still open from Step 15: a 9 second lockdown, tried without changing `config.js`, gave
+  4 wins of 30. It is 6 seconds, as you asked.
+
+### Before and after
+
+From `tools/review/shove-playtest.mjs` rerun on this build, and the new tests. The reviewer's
+`shove-results.json` is left as it was. The rerun is summed up in
+`tools/review/after-step-17.json`.
+
+| Check | Before | After |
+| --- | --- | --- |
+| Tower 1, 0.8 m behind the guard, Space twice | grab, quiet knockout | the same |
+| Tower 1, 1.2 m behind, Space twice | shove, Alert, grabbed 2 s later | "Move closer to grab", nothing happens |
+| Tower 1, 1.4 m behind, Space twice | shove, Alert | "Move closer to grab", nothing happens |
+| Flat floor, 1.09 / 1.11 / 1.39 m behind, Space | grab / shove / shove | grab / nothing / nothing |
+| R behind a guard who has not seen you | (no such button) | "He hasn't seen you: grab instead" |
+| Space in front of a guard | shoves | does nothing. R shoves |
+| Space beside a stunned Alert guard | refused | grab, with the normal menu |
+| Space after the stun ends | refused | refused |
+| Guard at the east limit of Tower 1, shoved east | pushed 0.0 m | goes off the edge, knocked out |
+| Guard 1.1 m from the west edge, shoved west | pushed 0.8 m | goes off the edge, knocked out |
+| Guard in the middle of the platform | pushed 1.0 m | pushed 1.0 m |
+| Space 1.4 m behind the tower guard, ground guard below | drops on the ground guard | nothing, as the prompt says |
+| Two shoves in one hunt on the score screen | 1 "other" sighting | 2 shoves, 1 sighting "your shoves" |
+| Clean bot runs (six routes) | 2:14, 1:36, 1:23, 1:08, 2:14, 2:14 | the same |
+
+- **One more bug, found in the browser while checking this step:** 1.4 m behind the Tower 1
+  guard with the ground guard passing below, the prompt said "Move closer to grab" but
+  Space dropped on the ground guard. Space now follows the same order as the prompts. This
+  is the "switches to a drop on a different guard" finding from the report.
+- **About the reviewer's script:** it shoves by pressing Space. Space no longer shoves, so
+  its "front shove" rows now show a player who stands in front of a guard and does nothing.
+  The new tests press R for those cases.
+
+### What was built
+
+1. **Its own button.** R on the keyboard, Left Trigger on the controller. Neither was in
+   use. Space never shoves.
+   - **Behind an unaware guard:** inside 1.1 m, "SPACE: grab". From 1.1 to 1.8 m, "Move
+     closer to grab", and Space does nothing.
+   - **R only works** on a guard who is facing you, can see you, or is Alert or Searching.
+     On one who has not noticed you it shows "He hasn't seen you: grab instead".
+   - Prompts read "R: shove". The SHOVE meter is labelled "SHOVE (R)".
+2. **Stun, then grab.** While a shoved guard reels (1.5 s) there is a pale bar over his
+   head that empties, and the hint "RUN / JUMP AWAY, or SPACE: grab". Within 1.1 m, from
+   either side, Space grabs him and the usual menu opens. Nothing is knocked out for you,
+   and every other guard in the room is still Alert.
+   - **Two clocks:** the bar over him is when he can act again. The SHOVE meter is when you
+     can shove again.
+   - **Where to go:** on Tower 1 the hint is "JUMP LEFT to the roof ledge". On Tower 2 it
+     is "CLIMB DOWN the ladder on the right". Rooms can name more.
+3. **Shove off ledges.** A guard on a platform, within 1.3 m of its edge on the side you
+   push him toward, goes off it. Before you press, an orange arrow by his head points off
+   the edge and the prompt is "R: shove off".
+   - He reels to the edge at 4 m/s, tips backwards, and falls under gravity to whatever is
+     below. His position never jumps.
+   - **2 m or more:** knocked out, with the usual 75 s wake-up and radio check-ins. The
+     body lies in the open and can be found. It counts as a knockout.
+   - **Less than 2 m:** winded for 3 s where he landed, then up and Alert.
+   - **Loud:** the landing is heard 12 m away.
+   - **Tower guards:** the fall is about 5.8 m, so he is knocked out and his searchlight
+     goes dark for the run. He stays on the ground afterwards.
+4. **Clear targets.** When more than one guard is within 2.5 m, prompts name the target:
+   "SPACE: drop on the Yard guard", "SPACE: grab the Tower 1 guard". The prompt and the
+   drop marker sit on that guard.
+5. **Counts.** The score screen and playtest text have "Shoves" and "Shoved off ledges".
+   "Spotted by" now names "your shoves", "a guard broke free", "sleeper woke", and "empty
+   bed" when they happened. "Other" is only a guard you threw down or let go.
+
+### Controls audit
+
+| Button | Was | Is |
+| --- | --- | --- |
+| Space / X | grab, knock out, drop, pull in, drag body, shove, mash | the same, without shove |
+| R / Left Trigger | nothing | shove |
+| F / Left Bumper | throw an item, or throw a held guard | unchanged |
+| Q / Y | interrogate or let go while holding (Y is Controls otherwise) | unchanged |
+| Right Trigger, Right Bumper, B | run, dash, jump | unchanged |
+
+### Choices I made that Adam should check
+
+- **Only a shove's stagger can be grabbed.** A guard stunned by a thrown cup, a missed
+  lunge, or your break-free cannot. Say if you want any stun to open a grab.
+- **A tower guard can only be shoved off once he is Alert or facing you.** Coming up the
+  ladder behind him he has not seen you, so R is refused and Space grabs. To shove him off
+  you have to be seen first. That keeps the quiet takedown the stealthy way.
+- **A guard who falls is off his platform for good.** When he wakes he stands where he
+  landed.
+- **A fall knockout counts as a knockout** for rank, and shows as "knocked out by a fall".
+- **"Move closer to grab" shows out to 1.8 m.** Beyond that there is no prompt.
+- **Standing still after a shove still gets you grabbed at about 2 s.** The stun and the
+  missing reaction pause were left alone, as decided.
+- **Slam and let go are still "other"** in "Spotted by".
+- **Not verified:** not played by a person. The browser check covered Tower 1's prompts
+  and found the bug above. It did not show a guard falling. Sounds unheard, a controller
+  (Left Trigger) and the 2015 MacBook Air untested. Checked by 480 tests, the review's
+  shove script, the bots, and headless Chrome.
+
+### How Adam tests it
+
+1. Open the Tower 1 link. Walk toward the guard and press Space early. It should say "Move
+   closer to grab" and nothing else should happen.
+2. Go right up behind him and press Space, then Space again: the quiet knockout.
+3. Restart on Tower 1. Jump or make noise so he turns on you, then press R when the orange
+   arrow shows. Watch him go off the edge and listen for the ground guard.
+4. Main game. Stand in front of a guard and press Space: nothing. Press R: a shove.
+5. Shove a guard and press Space while the bar over his head is still showing.
+6. Shove a guard and wait until the bar is gone, then press Space.
+7. Finish a run and read "Shoves", "Shoved off ledges", and "Spotted by".
+8. Does the shove feel deliberate now? Is shove-then-grab too strong?
+9. All four playtest questions.
 
 ---
 

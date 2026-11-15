@@ -7,7 +7,7 @@ import { beginSearch, makeSuspicious } from './alert.js';
 import { isAwake, isConscious } from './guard.js';
 import { nearestHideSpot, spotById } from './hiding.js';
 import { say } from './messages.js';
-import { shove, shoveReady, shoveTarget } from './shove.js';
+import { isStaggering } from './shove.js';
 import { knockOutSnitch } from './snitch.js';
 
 // Ids of hiding spots that already hold a body. A full spot cannot hide the player.
@@ -24,9 +24,27 @@ export function knockoutTarget(world, cfg = CONFIG.knockout) {
     const offset = player.x - guard.x;
     // You have to be standing on his level.
     if (Math.abs((player.y ?? 0) - (guard.y ?? 0)) > cfg.reachUp) return false;
+    if (!isConscious(guard) || guard.state === 'held' || Math.abs(offset) > cfg.reach) return false;
+    // A guard reeling from a shove can be grabbed from any side, Alert or not.
+    if (isStaggering(guard)) return true;
     const behind = offset * guard.facing < 0 || guard.state === 'asleep';
     const unaware = !guard.seesPlayer && guard.state !== 'alert';
-    return isConscious(guard) && guard.state !== 'held' && behind && unaware && Math.abs(offset) <= cfg.reach;
+    return behind && unaware;
+  }) ?? null;
+}
+
+// Behind a guard who has not noticed you, but just too far away to grab him. Space does
+// nothing here but say "Move closer to grab". It never turns into something loud.
+export function almostGrabTarget(world, cfg = CONFIG.knockout) {
+  const { player } = world;
+  if (player.hiddenIn || player.dragging || knockoutTarget(world, cfg)) return null;
+  return world.guards.find((guard) => {
+    const offset = player.x - guard.x;
+    if (Math.abs((player.y ?? 0) - (guard.y ?? 0)) > cfg.reachUp) return false;
+    if (!isConscious(guard) || guard.state === 'held' || guard.state === 'asleep') return false;
+    const behind = offset * guard.facing < 0;
+    const unaware = !guard.seesPlayer && guard.state !== 'alert';
+    return behind && unaware && Math.abs(offset) > cfg.reach && Math.abs(offset) <= cfg.closerCueReach;
   }) ?? null;
 }
 
@@ -46,11 +64,14 @@ export function stuffTarget(world) {
   return nearestHideSpot(world.player, world.room.hideSpots, fullSpotIds(world));
 }
 
-// how is 'choke' (grabbed from behind), 'above' (dropped on), or 'pullIn' (from a hiding spot).
+// how is 'choke' (grabbed), 'above' (dropped on), 'pullIn' (from a hiding spot), or 'ledge'
+// (shoved off a platform and knocked out by the fall).
 export function knockOut(world, guard, how = 'choke') {
   world.stats.takedowns[how] += 1;
   guard.state = 'out';
   guard.vault = null;
+  guard.falling = null;
+  guard.staggerFull = 0;
   guard.detection = 0;
   guard.seesPlayer = false;
   guard.stun = 0;
@@ -92,23 +113,20 @@ export function pressAction(world, take) {
     take.startHold(world, guard);
     return 'grab';
   }
+  // Space never shoves (the shove has its own button). Just out of reach behind an unaware
+  // guard, it says so and does nothing. This comes before the drop, in the same order as the
+  // prompts, so the button always does what the prompt on screen says.
+  const almost = almostGrabTarget(world);
+  if (almost) {
+    world.risky = { guardId: almost.id, why: 'closer', until: world.time + CONFIG.knockout.riskySeconds };
+    return 'closer';
+  }
   const below = take.dropTarget(world);
   if (below) {
     take.dropOn(world, below);
     return 'above';
   }
   if (knockOutSnitch(world)) return 'knockout';
-  // He can see you, or is in front of you: no knockout. A shove instead, if it is ready.
-  const awake = shoveTarget(world);
-  if (awake && shoveReady(world)) {
-    shove(world, awake);
-    return 'shove';
-  }
-  if (awake) {
-    world.risky = { guardId: awake.id, until: world.time + CONFIG.knockout.riskySeconds };
-    world.events.push({ type: 'tooRisky', guardId: awake.id });
-    return 'notReady';
-  }
   const body = dragTarget(world);
   if (body) {
     player.dragging = body.id;

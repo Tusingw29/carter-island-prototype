@@ -4,6 +4,8 @@ import { beginSearch, calmDown, raiseAlarm } from './alert.js';
 import { doBedCheck } from './bedcheck.js';
 import { canLunge, finishLunge, finishReach, startLunge, tryPullOut } from './grab.js';
 import { disturb, lookAround, moveToward, patrol, updateVault } from './guard.js';
+import { knockOut } from './knockout.js';
+import { updateFall } from './shove.js';
 import { concealedIn, spotById } from './hiding.js';
 import { canHear } from './noise.js';
 import { doRadioVisit } from './radio.js';
@@ -113,8 +115,9 @@ function search(guard, world, dt, cfg) {
 
 // A guard in the same room as the player.
 export function updateGuardAI(guard, world, dt, cfg = CONFIG.guard) {
-  // Half way over a crate he can do nothing else.
+  // Half way over a crate, or going off a ledge, he can do nothing else.
   if (updateVault(guard, dt)) return;
+  if (updateFall(guard, world, dt, knockOut)) return;
   // Stunned (a cup to the head): he does nothing until it wears off. A chasing guard's stun is
   // handled in chase(), where what he knows keeps ticking.
   if (guard.state !== 'alert' && guard.stun > 0) {

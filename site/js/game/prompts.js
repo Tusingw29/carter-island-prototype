@@ -1,9 +1,9 @@
 // Works out the one hint to show over the world right now, such as "UP: hide".
 import { interactTarget } from './interact.js';
 import { keycardInReach } from './keycard.js';
-import { dragTarget, knockoutTarget, stuffTarget, tooRiskyNow } from './knockout.js';
+import { almostGrabTarget, dragTarget, knockoutTarget, stuffTarget, tooRiskyNow } from './knockout.js';
 import { canSleep, inBed } from './run.js';
-import { shoveReady, shoveTarget } from './shove.js';
+import { isStaggering, ledgeFor, shoveReady, shoveTarget } from './shove.js';
 import { dropTarget, grabTarget, pullInTarget } from './takedown.js';
 import { throwableName } from './throwing.js';
 import { snitchInReach } from './snitch.js';
@@ -30,6 +30,33 @@ function portalText(world, portal) {
   return 'UP: open door';
 }
 
+const REFUSED = {
+  notReady: 'SHOVE NOT READY',
+  unaware: "He hasn't seen you: grab instead",
+  closer: 'Move closer to grab',
+};
+const over = (guard) => ({ x: guard.x, y: (guard.y ?? 0) + 2.75 });
+
+// "him", or "the Tower 1 guard" when more than one guard is close enough to be the target, so
+// the prompt always says who it means.
+export function targetName(world, guard) {
+  const { player } = world;
+  const close = world.guards.filter((other) => (
+    other.state !== 'out' && Math.abs(other.x - player.x) <= 2.5 && Math.abs((other.y ?? 0) - (player.y ?? 0)) <= 8
+  ));
+  return close.length > 1 ? `the ${guard.label ?? 'guard'}` : 'him';
+}
+
+// Where to go while a guard staggers. A room can name a good way out of a spot, such as the
+// jump from Tower 1 to the roof ledge. Otherwise it is just "run".
+export function escapeHint(world) {
+  const { player, room } = world;
+  const here = (room.escapeHints ?? []).find((hint) => (
+    player.x >= hint.from && player.x <= hint.to && (player.y ?? 0) >= (hint.minY ?? 0)
+  ));
+  return here ? here.text : 'RUN / JUMP AWAY';
+}
+
 // Returns { text, x, y } in world metres, or null when there is nothing to do here.
 export function currentPrompt(world) {
   const { player } = world;
@@ -37,7 +64,7 @@ export function currentPrompt(world) {
   if (world.grab || world.over || world.solitary.phase) return null;
   if (tooRiskyNow(world)) {
     const risky = world.allGuards.find((guard) => guard.id === world.risky.guardId);
-    return { text: 'SHOVE NOT READY', x: risky.x, y: (risky.y ?? 0) + 2.75, shake: true };
+    return { text: REFUSED[world.risky.why] ?? REFUSED.notReady, ...over(risky), shake: true };
   }
   // Holding a guard: the choices are shown in their own panel.
   if (world.hold) return null;
@@ -75,11 +102,23 @@ export function currentPrompt(world) {
   const snitch = snitchInReach(world);
   if (snitch?.cellOpen) return { text: 'SPACE: knock out', x: snitch.x, y: 3 };
   const guard = knockoutTarget(world);
-  if (guard && grabTarget(world)) return { text: 'SPACE: grab', x: guard.x, y: (guard.y ?? 0) + 2.75 };
+  const named = (target) => (targetName(world, target) === 'him' ? '' : ` ${targetName(world, target)}`);
+  // A guard reeling from a shove: get away, or grab him while it lasts.
+  const reeling = world.guards.find((other) => isStaggering(other) && other.state !== 'held');
+  if (reeling && guard === reeling) return { text: `SPACE: grab${named(reeling)}`, ...over(reeling) };
+  if (reeling && !guard) return { text: `${escapeHint(world)}, or SPACE: grab`, ...over(reeling) };
+  if (guard && grabTarget(world)) return { text: `SPACE: grab${named(guard)}`, ...over(guard) };
+  // Behind him but just out of reach: say so, so Space is never a surprise.
+  const almost = almostGrabTarget(world);
+  if (almost) return { text: 'Move closer to grab', ...over(almost) };
   const below = dropTarget(world);
-  if (below) return { text: 'SPACE: drop on him', x: below.x, y: (below.y ?? 0) + 2.75 };
+  if (below) return { text: `SPACE: drop on ${targetName(world, below)}`, ...over(below) };
   const facing = shoveTarget(world);
-  if (facing && shoveReady(world)) return { text: 'SPACE: shove', x: facing.x, y: (facing.y ?? 0) + 2.75 };
+  if (facing && shoveReady(world)) {
+    // Near the edge of his platform, a shove sends him off it.
+    const text = ledgeFor(world, facing) ? 'R: shove off' : 'R: shove';
+    return { text: `${text}${named(facing)}`, ...over(facing) };
+  }
   const body = dragTarget(world);
   if (body) return { text: 'SPACE: drag body', x: body.x, y: 1.2 };
   const target = upTarget(world);

@@ -29,7 +29,8 @@ Runs in any current desktop browser. Keyboard or controller. No install.
 | Grab a guard from behind (unseen), drag a body | Space | X (left face button) |
 | Holding a guard: knock out / interrogate / throw down | Space / Q / F | X / Y / Left Bumper |
 | Drop on a guard from above, or pull one into your hiding spot | Space | X (left face button) |
-| Shove a guard who can see you | Space | X (left face button) |
+| Shove a guard who is facing you or hunting you | R | Left Trigger |
+| Grab a guard while he staggers from a shove | Space | X (left face button) |
 | Throw what you are carrying (hold to aim) | F | Left Bumper |
 | Jump (tap for a hop, hold to go higher) | K | B (right face button) |
 | Slide (while moving) | S + K | Down + B |

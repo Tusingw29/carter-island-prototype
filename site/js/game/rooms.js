@@ -367,6 +367,11 @@ const yard = {
     { id: 'yd-light-2', kind: 'searchlight', min: 52, max: 66, halfWidth: 2.2, speed: 1.8, awaySeconds: 3,
       mountX: 68.7, mountY: 7.8, guardId: 'yd-tower-2' },
   ],
+  // Where to go when a guard staggers, for the hint over his head (see prompts.js).
+  escapeHints: [
+    { from: 33.5, to: 37.5, minY: 5, text: 'JUMP LEFT to the roof ledge' },
+    { from: 69, to: 73, minY: 5, text: 'CLIMB DOWN the ladder on the right' },
+  ],
   // On the map the roof is its own box, next to the Guard Office, and shows once you get up there.
   mapParts: [
     { id: 'yard-roof', name: 'Roof ledge', floor: 2, col: 3, zone: { from: 0, to: 38, minY: 5 }, link: 'ladder' },
