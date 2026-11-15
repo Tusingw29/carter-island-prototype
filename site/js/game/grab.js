@@ -4,11 +4,14 @@ import { concealedIn } from './hiding.js';
 import { clampToRoom } from './player.js';
 import { endRun } from './run.js';
 
-// Close enough, low enough, and not just broken free.
+// A guard cannot grab someone well above or below him.
+const sameLevel = (guard, player, cfg) => Math.abs((player.y ?? 0) - (guard.y ?? 0)) <= cfg.grabReachUp;
+
+// Close enough, on his level, and not just broken free.
 function inReach(guard, world, cfg) {
   const { player } = world;
   if (world.grab || world.over || world.grabImmunity > 0) return false;
-  return Math.abs(player.x - guard.x) <= cfg.grabReach && (player.y ?? 0) <= cfg.grabReachUp;
+  return Math.abs(player.x - guard.x) <= cfg.grabReach && sameLevel(guard, player, cfg);
 }
 
 function grab(guard, world, cfg) {
@@ -16,6 +19,7 @@ function grab(guard, world, cfg) {
   player.hiddenIn = null;
   player.inDark = null;
   player.dragging = null;
+  player.climbing = null;
   // For the score screen: how long after the "!" this grab came, and what the "!" was for.
   const alarm = world.lastAlarm;
   world.lastGrab = {
@@ -43,7 +47,7 @@ export function tryPullOut(guard, world, cfg = CONFIG) {
 export function canLunge(guard, world, cfg = CONFIG.guard) {
   const { player } = world;
   if (world.grab || world.over || world.grabImmunity > 0 || concealedIn(player)) return false;
-  if ((player.y ?? 0) > cfg.grabReachUp) return false;
+  if (!sameLevel(guard, player, cfg)) return false;
   if (Math.abs(player.x - guard.x) > cfg.lungeTriggerRange) return false;
   return guard.seesPlayer || guard.trackTimer > 0;
 }

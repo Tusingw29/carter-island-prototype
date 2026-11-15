@@ -63,6 +63,9 @@ const CUES = {
   // Played over and over while a creaky door is being eased open.
   creak: [[410, 0, 0.09, 'sawtooth', 0.25], [370, 0.08, 0.12, 'sawtooth', 0.2]],
   camera: [[1300, 0, 0.06, 'square'], [1300, 0.12, 0.06, 'square']],
+  // Caught in a searchlight: a rising two-note horn. Its lamp going out: a falling hum.
+  searchlight: [[440, 0, 0.18, 'sawtooth', 1.1, 660], [660, 0.2, 0.3, 'sawtooth', 1.1]],
+  lightOut: [[300, 0, 0.5, 'sine', 1, 60]],
   keycard: [[660, 0, 0.08, 'triangle'], [990, 0.09, 0.2, 'triangle']],
   // Three low pulses and a long drone: unlike anything else, so you know something changed.
   silentAlarm: [

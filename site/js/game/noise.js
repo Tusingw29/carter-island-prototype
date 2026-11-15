@@ -11,7 +11,9 @@ export function noiseRadius(mode, cfg = CONFIG.noise) {
   return 0;
 }
 
-// True if someone standing at listenerX can hear the noise.
-export function canHear(listenerX, noise) {
-  return noise.radius > 0 && Math.abs(listenerX - noise.x) <= noise.radius;
+// True if someone standing at listenerX can hear the noise. Height counts too: a noise on the
+// ground is further from a guard up a tower than its distance along the floor says.
+export function canHear(listenerX, noise, listenerY = 0) {
+  if (noise.radius <= 0) return false;
+  return Math.hypot(listenerX - noise.x, listenerY - (noise.y ?? 0)) <= noise.radius;
 }

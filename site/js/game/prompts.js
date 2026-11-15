@@ -9,7 +9,7 @@ import { snitchInReach } from './snitch.js';
 import { upTarget } from './targets.js';
 import { ventState } from './vents.js';
 
-const SPOT_HEIGHT = { cart: 1.9, bed: 1.6, table: 1.9, counter: 2, desk: 1.9 };
+const SPOT_HEIGHT = { cart: 1.9, bed: 1.6, table: 1.9, counter: 2, desk: 1.9, bleachers: 1.5 };
 
 function ventText(world, portal) {
   const state = ventState(world, portal);
@@ -22,6 +22,9 @@ function portalText(world, portal) {
   if (portal.type === 'vent') return ventText(world, portal);
   if (portal.creaky) return 'UP: tap = fast and loud, hold = slow and quiet';
   if (portal.type === 'stairs') return `UP: stairs ${portal.dir}`;
+  if (portal.type === 'window') return 'UP: climb through the window';
+  if (portal.type === 'hatch') return portal.y > 0 ? 'UP: open the hatch and climb down' : 'UP: climb up to the hatch';
+  if (portal.exitOnly) return 'Door, latched from the inside';
   return 'UP: open door';
 }
 
@@ -45,7 +48,10 @@ export function currentPrompt(world) {
   const card = keycardInReach(world);
   if (card) return { text: 'E: tap = grab fast, hold = lift quietly', x: card.x, y: 1.9 };
   const action = interactTarget(world);
-  if (action?.kind === 'pickup') return { text: `E: take the ${action.item.type}`, x: action.item.x, y: 1.6 };
+  if (action?.kind === 'pickup') {
+    const name = action.item.type === 'boots' ? 'work boots' : action.item.type;
+    return { text: `E: take the ${name}`, x: action.item.x, y: 1.6 };
+  }
   if (action?.kind === 'throwable') {
     const name = throwableName(action.item);
     const text = player.carrying ? `Hands full (the ${name} stays)` : `E: pick up the ${name}`;
@@ -74,10 +80,13 @@ export function currentPrompt(world) {
   if (target.kind === 'portal') {
     const { portal } = target;
     const y = portal.floor || world.room.crawl ? 1.5 : (portal.type === 'vent' && !portal.high ? 1.9 : 3);
-    return { text: portalText(world, portal), x: portal.x, y };
+    return { text: portalText(world, portal), x: portal.x, y: y + (portal.y ?? 0) };
   }
-  if (target.kind === 'prop') return { text: 'Vent cover, welded', x: target.prop.x, y: 1.9 };
+  if (target.kind === 'prop') {
+    const text = target.prop.type === 'outer-wall' ? 'The outer wall' : 'Vent cover, welded';
+    return { text, x: Math.min(target.prop.x, player.x), y: 2.4 };
+  }
   const { spot } = target;
-  const text = spot.type === 'bed' ? 'UP: get in bed' : 'UP: hide';
+  const text = spot.type === 'bed' ? 'UP: get in bed' : (spot.type === 'bleachers' ? 'UP: hide under' : 'UP: hide');
   return { text, x: Math.max(spot.x - 2, Math.min(spot.x + 2, player.x)), y: SPOT_HEIGHT[spot.type] ?? 2.75 };
 }

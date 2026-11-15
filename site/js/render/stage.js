@@ -46,7 +46,9 @@ export function createStage(canvas, startLow = false) {
   // Puts the camera where the framing says: framing.x along the room, framing.distance back.
   // shake moves the whole picture by { x, y } metres, for a hit landing.
   function frame(framing, shake = { x: 0, y: 0 }) {
-    const lookHeight = LOOK_HEIGHT + (LOOK_HEIGHT_FAR - LOOK_HEIGHT) * farness(framing) + shake.y;
+    // framing.y lifts the whole view when the player is up a tower or on a roof.
+    const lift = framing.y ?? 0;
+    const lookHeight = LOOK_HEIGHT + (LOOK_HEIGHT_FAR - LOOK_HEIGHT) * farness(framing) + shake.y + lift;
     const rise = (CAMERA_RISE * framing.distance) / CONFIG.view.closeDistance;
     camera.position.set(framing.x + shake.x, lookHeight + rise, framing.distance);
     camera.lookAt(framing.x + shake.x, lookHeight, 0);

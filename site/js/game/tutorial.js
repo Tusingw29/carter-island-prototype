@@ -64,6 +64,13 @@ export const TUTORIAL = Object.freeze([
       + 'head to stun him, or land it somewhere to make him walk over and look.',
   },
   {
+    id: 'yard',
+    when: (world) => Boolean(world.room.outdoor),
+    text: 'The Yard. K (or B) jumps: tap for a hop, hold to go higher. Hold W (or Up) at a ladder or a '
+      + 'chain-link fence to climb. Keep out of the searchlights: they swing away at each end of their sweep, '
+      + 'and solid cover casts a safe shadow.',
+  },
+  {
     id: 'door',
     when: (world) => target(world, 'portal', (found) => Boolean(found.portal.creaky)),
     text: 'This door creaks. Tap W (or Up) to open it fast and loud, or hold it for 2 seconds to open it quietly.',

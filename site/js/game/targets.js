@@ -7,8 +7,9 @@ import { snitchInReach } from './snitch.js';
 
 function nearestProp(world, cfg = CONFIG.door) {
   const { player, room } = world;
+  const types = ['welded-vent', 'outer-wall'];
   return (room.props ?? []).find((prop) => (
-    prop.type === 'welded-vent' && Math.abs(prop.x - player.x) <= cfg.reach
+    types.includes(prop.type) && Math.abs(prop.x - player.x) <= (prop.reach ?? cfg.reach) && (player.y ?? 0) < 0.3
   )) ?? null;
 }
 

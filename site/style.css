@@ -397,8 +397,20 @@ body {
 }
 
 #map-svg .link {
+  fill: none;
   stroke: #8a94a0;
   stroke-width: 2;
+}
+
+#map-svg .link.ladder,
+#map-svg .link.hatch {
+  stroke-dasharray: 5 4;
+  stroke-width: 4;
+}
+
+#map-svg .link.window {
+  stroke: #7fd0a0;
+  stroke-width: 4;
 }
 
 #map-svg .link.hall {

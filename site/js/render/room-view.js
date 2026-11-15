@@ -10,6 +10,9 @@ import { createSignViews } from './sign-view.js';
 import { createSpotView } from './spot-views.js';
 import { ductCeiling, grateView, weldedVentView } from './vent-views.js';
 import { createWallClock } from './wall-clock.js';
+import {
+  createSearchlightView, fenceView, hoopView, ladderView, outerWallView, poleView, shedView, towerView,
+} from './yard-views.js';
 
 const WALL_Z = -2;
 const WALL_HEIGHT = 4.6;
@@ -31,15 +34,18 @@ function shell(room) {
   const centre = room.width / 2;
   const span = room.width + 2;
   const wall = room.wallColor ?? 0x3b4452;
+  // Outside, the back wall is the side of the building, with open sky above it.
+  const height = room.wallHeight ?? WALL_HEIGHT;
   // The floor, in pieces if the room has gaps in it.
   let from = -1;
   for (const pit of [...(room.pits ?? []), { from: room.width + 1, to: room.width + 1 }]) {
     group.add(placed(block(pit.from - from, 0.5, 4.2, 0x2b313b), (from + pit.from) / 2, -0.25, -0.2));
     from = pit.to;
   }
-  group.add(placed(block(span, WALL_HEIGHT, 0.4, wall), centre, WALL_HEIGHT / 2, WALL_Z - 0.2));
-  group.add(placed(block(0.5, WALL_HEIGHT, 4.2, 0x323a46), -0.25, WALL_HEIGHT / 2, -0.2));
-  group.add(placed(block(0.5, WALL_HEIGHT, 4.2, 0x323a46), room.width + 0.25, WALL_HEIGHT / 2, -0.2));
+  group.add(placed(block(span, height, 0.4, wall), centre, height / 2, WALL_Z - 0.2));
+  group.add(placed(block(0.5, height, 4.2, 0x323a46), -0.25, height / 2, -0.2));
+  if (room.outdoor) group.add(outerWallView(room));
+  else group.add(placed(block(0.5, height, 4.2, 0x323a46), room.width + 0.25, height / 2, -0.2));
   // A stripe along the wall gives the eye something to judge speed against.
   group.add(placed(block(span, 0.12, 0.05, 0x56606e), centre, 3.4, WALL_Z + 0.03));
   return group;
@@ -106,8 +112,12 @@ function panelView(prop) {
 }
 
 // Gym furniture: crates to climb, a ledge, and a wall with a low gap under it.
-const SOLID_COLORS = { crate: 0x6a5436, ledge: 0x56606e, wall: 0x39424e };
+const SOLID_COLORS = {
+  crate: 0x6a5436, ledge: 0x56606e, wall: 0x39424e, bench: 0x5a4a34, hoop: 0xd8dde4, platform: 0x4a5058,
+  bleacher: 0x7a6a4a, roof: 0x5a4c3a,
+};
 function solidView(solid) {
+  if (solid.kind === 'fence') return fenceView(solid);
   const height = solid.top - solid.bottom;
   const view = block(solid.halfWidth * 2, height, 1.7, SOLID_COLORS[solid.kind] ?? 0x56606e, 0x0c0e12);
   return placed(view, solid.x, solid.bottom + height / 2, -0.15);
@@ -117,6 +127,7 @@ const ITEM_VIEWS = {
   keycard: keycardView,
   screwdriver: toolView,
   cigarettes: (item) => crateView(item, 0xe8e0d0, 0.22),
+  boots: (item) => crateView(item, 0x8a5a2a, 0.36),
   bedsheets: (item) => crateView(item, 0xd8d8e0, 0.6),
 };
 
@@ -137,6 +148,12 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     group.add(view);
   }
   for (const solid of room.solids ?? []) group.add(solidView(solid));
+  for (const ladder of room.ladders ?? []) group.add(ladderView(ladder));
+  for (const tower of room.towers ?? []) group.add(towerView(tower));
+  for (const shed of room.sheds ?? []) group.add(shedView(shed));
+  for (const hoop of room.hoops ?? []) group.add(hoop.plain ? poleView(hoop.x, 3.3) : hoopView(hoop));
+  const poleTop = (room.solids ?? []).find((solid) => solid.id === 'pole-top');
+  if (poleTop) group.add(poleView(poleTop.x, poleTop.top));
   const signs = createSignViews(room);
   group.add(signs.group);
   if (room.trader) group.add(createTraderView(room.trader));
@@ -154,7 +171,10 @@ export function createRoomView(room, cameras, snitches, options = {}) {
   const viewFor = (item) => (isThrowable(item) ? throwableView(item) : ITEM_VIEWS[item.type](item));
   const itemViews = (room.items ?? []).map((item) => ({ item, view: viewFor(item) }));
   for (const { view } of itemViews) group.add(view);
-  const cameraViews = cameras.map((camera) => ({ camera, view: createCameraView(camera) }));
+  const cameraViewFor = (camera) => (
+    camera.kind === 'searchlight' ? createSearchlightView(camera) : createCameraView(camera)
+  );
+  const cameraViews = cameras.map((camera) => ({ camera, view: cameraViewFor(camera) }));
   for (const { view } of cameraViews) group.add(view.group);
   const snitchViews = snitches.map((snitch) => ({ snitch, view: createSnitchView(snitch) }));
   for (const { view } of snitchViews) group.add(view.group);
@@ -175,7 +195,7 @@ export function createRoomView(room, cameras, snitches, options = {}) {
     }
     for (const view of liveViews) view.userData.update(world);
     const blockers = sightBlockers(room);
-    for (const { camera, view } of cameraViews) view.update(camera, far, blockers);
+    for (const { camera, view } of cameraViews) view.update(camera, far, blockers, world.time);
     for (const { snitch, view } of snitchViews) view.update(snitch);
   }
   const dispose = () => {

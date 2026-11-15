@@ -43,7 +43,7 @@ function senseSight(guard, world, dt, cfg) {
 
 function senseNoise(guard, world, cfg) {
   for (const noise of world.noises) {
-    if (!canHear(guard.x, noise)) continue;
+    if (!canHear(guard.x, noise, guard.y ?? 0)) continue;
     if (guard.state === 'alert') guard.lastKnownX = noise.x;
     else if (guard.state !== 'suspicious' || guard.targetX !== noise.x) makeSuspicious(world, guard, noise.x);
   }

@@ -94,10 +94,13 @@ function newWorld() {
   if (inGym) {
     if (params.has('px')) world.player.x = Number(params.get('px'));
   } else if (params.has('room')) {
+    // &py= sets the height too, for starting up on a roof or a tower.
     world.player.hiddenIn = null;
-    enterRoom(world, params.get('room'), Number(params.get('px') ?? 1));
+    enterRoom(world, params.get('room'), Number(params.get('px') ?? 1), Number(params.get('py') ?? 0));
   }
   if (params.has('timer')) world.timeLeft = Number(params.get('timer'));
+  // ?boots starts with the work boots on, so the dash can be tried without the trip to the shed.
+  if (params.has('boots')) world.player.hasBoots = true;
   // ?alarm acts as if a camera saw you earlier, so the next keycard grab sets off the silent alarm.
   if (params.has('alarm')) world.seenByCamera = true;
   mapOpen = params.has('map');
@@ -240,7 +243,7 @@ function frame(now) {
 }
 
 // Debug links skip the title screen, as does ?play.
-if (['play', 'room', 'timer', 'alarm'].some((name) => params.has(name))) startRun();
+if (['play', 'room', 'timer', 'alarm', 'boots'].some((name) => params.has(name))) startRun();
 else showTitle();
 // ?show=controls (or pause, or playtest) opens that screen straight away, for checking layouts.
 if (params.has('show')) screens.openOver(params.get('show'));

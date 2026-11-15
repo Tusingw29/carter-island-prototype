@@ -26,6 +26,8 @@ export function nearestPortal(world, cfg = CONFIG.door) {
   for (const portal of room.portals ?? []) {
     if (portal.type === 'hall') continue;
     const distance = Math.abs(portal.x - player.x);
+    // A portal up on a ledge or a roof can only be used from up there.
+    if (Math.abs((portal.y ?? 0) - (player.y ?? 0)) > 0.3) continue;
     if (distance <= cfg.reach && (!best || distance < Math.abs(best.x - player.x))) best = portal;
   }
   return best;
@@ -46,11 +48,16 @@ function roomGuards(world, roomId) {
   return world.allGuards.filter((guard) => guard.roomId === roomId);
 }
 
-// Puts the player in a room and makes that room the one being played.
-export function enterRoom(world, roomId, x) {
+// Puts the player in a room and makes that room the one being played. y is the height of the
+// spot they arrive at: 0 unless the way in is up on a ledge.
+export function enterRoom(world, roomId, x, y = 0) {
   world.room = world.layout.rooms[roomId];
   world.guards = roomGuards(world, roomId);
   world.player.x = x;
+  Object.assign(world.player, {
+    y, vy: 0, onGround: true, sliding: false, dashTime: 0, boosted: false, jumping: false, climbing: null,
+    dropping: null,
+  });
   world.visited.add(roomId);
   world.events.push({ type: 'room', roomId });
 }
@@ -85,9 +92,10 @@ export function travel(world, portal, loud = false, cfg = CONFIG) {
   world.aiming = false;
   world.knownPortals.add(portal.id);
   world.knownPortals.add(there.portal.id);
-  enterRoom(world, there.room.id, arriveX);
+  enterRoom(world, there.room.id, arriveX, there.portal.y ?? 0);
   world.events.push({ type: loud ? 'doorLoud' : portal.type });
   if (portal.drop) world.pendingNoises.push({ x: arriveX, radius: cfg.vent.landRadius });
+  // The far side of a hidden way (a vent, the office window) is on the map once you have used it.
 
   // The noise of the door, and of a chase, carries into the room you arrive in.
   if (loud) world.pendingNoises.push({ x: arriveX, radius: cfg.door.slamRadius });

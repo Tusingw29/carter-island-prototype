@@ -80,8 +80,21 @@ function dark(spot) {
   return group;
 }
 
+// The space under the bleachers. The rows themselves are solids, drawn by the room. This adds
+// the legs, and a strip of deep shadow on the ground to show where you can crawl.
+function bleachers(spot) {
+  const group = new Group();
+  for (let x = spot.x - spot.halfWidth + 0.1; x <= spot.x + spot.halfWidth; x += 1.7) {
+    group.add(placed(block(0.1, 0.66, 0.1, 0x3a2c1e), x, 0.33, -0.9));
+    group.add(placed(block(0.1, 0.66, 0.1, 0x3a2c1e), x, 0.33, 0.6));
+  }
+  group.add(placed(block(spot.halfWidth * 2, 0.04, 1.7, 0x05070b), spot.x, 0.02, -0.15));
+  group.userData.setOccupied = noGlow;
+  return group;
+}
+
 const BUILDERS = {
-  locker, cart, bed, table, counter, shelf, dark, desk: (spot) => table(spot, 0x5c4a3a),
+  locker, cart, bed, table, counter, shelf, dark, bleachers, desk: (spot) => table(spot, 0x5c4a3a),
 };
 
 export function createSpotView(spot) {
@@ -89,4 +102,4 @@ export function createSpotView(spot) {
 }
 
 // In these the player stays visible, crouched, because you can crawl along inside.
-export const SEE_THROUGH_SPOTS = ['table', 'desk', 'counter'];
+export const SEE_THROUGH_SPOTS = ['table', 'desk', 'counter', 'bleachers'];

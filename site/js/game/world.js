@@ -14,6 +14,8 @@ import { keycardInReach, takeKeycard } from './keycard.js';
 import {
   fullSpotIds, pressAction, stuffBody, updateDrag, updateKnockedOut,
 } from './knockout.js';
+import { notePlaces } from './map.js';
+import { say } from './messages.js';
 import { updateCourse, updateMover } from './moves.js';
 import { noiseRadius } from './noise.js';
 import { createPlayer, updatePlayer } from './player.js';
@@ -53,6 +55,8 @@ export function createWorld(source = PRISON, cfg = CONFIG) {
     // Rooms entered and ways between rooms found so far, for the map screen.
     visited: new Set(),
     knownPortals: new Set(),
+    // Parts of a room that are their own box on the map, such as the Yard's roof, once reached.
+    visitedParts: new Set(),
     // Tap-or-hold in progress for Up (creaky doors) and Interact (the keycard).
     holds: { up: null, interact: null },
     // Ids of items picked up, and the message on screen right now ({ text, until }).
@@ -113,6 +117,11 @@ function handleUp(world, intent, pressed, dt) {
     if (pressed) stuffBody(world);
     return;
   }
+  // Doors, stairs, and hiding spots are for someone with their feet on the ground.
+  if (!player.onGround) {
+    updateHold(world, 'up', noTarget, dt);
+    return;
+  }
   const target = upTarget(world);
   const portal = target?.kind === 'portal' ? target.portal : null;
 
@@ -123,9 +132,14 @@ function handleUp(world, intent, pressed, dt) {
     return;
   }
   updateHold(world, 'up', noTarget, dt);
-  // Walking up to a vent is enough to find it, so it goes on the map.
-  if (portal?.type === 'vent') world.knownPortals.add(portal.id);
+  // Walking up to a vent, or any other hidden way, is enough to find it, so it goes on the map.
+  if (portal?.type === 'vent' || portal?.hidden) world.knownPortals.add(portal.id);
   if (!pressed) return;
+  if (portal?.exitOnly && portal.type !== 'vent') {
+    say(world, 'Latched from the inside. It only opens from the other side.');
+    world.events.push({ type: 'locked' });
+    return;
+  }
   if (portal?.type === 'vent') {
     useVent(world, portal);
     return;
@@ -235,8 +249,10 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   let moving = intent;
   // In the duct there is no room to stand: you crawl, which is slow but silent.
   if (world.room.crawl) moving = { ...intent, crouch: true, run: false };
-  if (world.room.moves && !player.hiddenIn) {
-    updateMover(world, moving, pressedMoves, dt, cfg);
+  if (!world.room.crawl && !player.hiddenIn) {
+    // Up climbs a ladder or a fence only when it has nothing else to do here.
+    const mayClimb = !upTarget(world);
+    updateMover(world, moving, pressedMoves, dt, cfg, mayClimb);
     updateCourse(world);
   } else {
     updatePlayer(player, moving, dt, world.room.width, cfg.player, hideSpot);
@@ -249,7 +265,8 @@ export function stepWorld(world, intent, dt, cfg = CONFIG) {
   world.noiseRadius = noiseRadius(player.mode);
   world.noises = world.pendingNoises;
   world.pendingNoises = [];
-  if (world.noiseRadius > 0) world.noises.push({ x: player.x, radius: world.noiseRadius });
+  if (world.noiseRadius > 0) world.noises.push({ x: player.x, y: player.y, radius: world.noiseRadius });
+  notePlaces(world);
 
   updateEveryoneElse(world, dt, cfg);
   world.time += dt;

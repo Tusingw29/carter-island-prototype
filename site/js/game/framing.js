@@ -22,6 +22,8 @@ export function createFraming(mode = DEFAULT_CAMERA, cfg = CONFIG.view) {
     // 'close' or 'wide'. Smart mode also has 'auto', where the game picks.
     zoom: START_ZOOM[mode],
     x: 0,
+    // How far the camera is lifted to follow a player who is up high: 0 on the floor.
+    y: 0,
     distance: cfg.closeDistance,
     // Smart mode: true while the camera should be close in, and how long it stays after.
     tight: false,
@@ -67,6 +69,7 @@ export function wantsTight(world, wasTight = false, cfg = CONFIG.view) {
   const reach = wasTight ? cfg.guardFarMetres : cfg.guardNearMetres;
   return world.guards.some((guard) => (
     guard.state !== 'out' && !guard.hiddenIn && Math.abs(guard.x - player.x) <= reach
+      && Math.abs((guard.y ?? 0) - (player.y ?? 0)) <= reach
   ));
 }
 
@@ -83,6 +86,11 @@ function goalDistance(framing, room, aspect, cfg) {
   // A room that fits, or very nearly fits, is shown whole.
   const fit = fitDistance(room, aspect, cfg);
   return fit <= distance * cfg.roomFitSlack ? fit : distance;
+}
+
+// How far the camera should be lifted for a player this high above the floor.
+export function goalLift(world, cfg = CONFIG.view) {
+  return (world.room.viewLift ?? 0) + Math.max(0, (world.player.y ?? 0) - cfg.liftAbove) * cfg.liftShare;
 }
 
 // Where the camera should be along the room, for a camera this far back.
@@ -123,6 +131,9 @@ export function updateFraming(framing, world, aspect, dt, cfg = CONFIG.view) {
   const followBlend = snap ? 1 : 1 - Math.exp(-cfg.followSharpness * dt);
   framing.distance += (distance - framing.distance) * zoomBlend;
   framing.x += (goalX(framing, world, framing.distance, aspect, cfg) - framing.x) * followBlend;
+  // A jump does not move the camera. Climbing well above the floor lifts it, slowly.
+  const liftBlend = snap ? 1 : 1 - Math.exp(-cfg.liftSharpness * dt);
+  framing.y += (goalLift(world, cfg) - framing.y) * liftBlend;
 
   if (framing.mode === 'room') {
     // The hard rule, applied after the easing: never further back than the room is wide, and

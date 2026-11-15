@@ -17,7 +17,7 @@ function debugText(world, build, speed) {
     `DEBUG  build ${build}   [ and ] change the timer by 30 s`,
     `speed    ${speed}`,
     `room     ${world.room.name}`,
-    `player   ${player.mode}  ${player.speed.toFixed(1)} m/s  x ${player.x.toFixed(1)}`,
+    `player   ${player.mode}  ${player.speed.toFixed(1)} m/s  x ${player.x.toFixed(1)}  y ${player.y.toFixed(1)}`,
     `noise    ${world.noiseRadius.toFixed(1)} m`,
     `hidden   ${player.hiddenIn ?? player.inDark ?? 'no'}`,
     `break free used ${world.breakFreeUsed ? 'yes' : 'no'}   seen by camera ${world.seenByCamera ? 'yes' : 'no'}`,
@@ -68,6 +68,7 @@ export function createHud(build, cues = true) {
     ['hasScrewdriver', byId('screwdriver')],
     ['hasCigarettes', byId('cigarettes')],
     ['hasBedsheets', byId('bedsheets')],
+    ['hasBoots', byId('boots')],
   ];
   const bedCheck = byId('bed-check');
   const message = byId('message');

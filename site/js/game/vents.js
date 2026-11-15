@@ -10,6 +10,10 @@ export const VENT_MESSAGES = Object.freeze({
   welded: "Welded shut. You'll need something stronger.",
 });
 
+export const PROP_MESSAGES = Object.freeze({
+  'outer-wall': "Too high. You'll need something to get over this.",
+});
+
 // 'open', 'locked' (needs the screwdriver), or 'exitOnly' (cannot be entered from this side).
 export function ventState(world, portal) {
   if (portal.exitOnly) return 'exitOnly';
@@ -32,12 +36,12 @@ export function useVent(world, portal) {
   return false;
 }
 
-// Up at a prop on the back wall. Only the welded vent so far.
+// Up at a prop that cannot be used yet: the welded vent, and the Yard's outer wall.
 export function useProp(world, prop) {
-  if (prop.type === 'welded-vent') {
-    say(world, VENT_MESSAGES.welded);
-    world.events.push({ type: 'locked' });
-  }
+  const message = prop.type === 'welded-vent' ? VENT_MESSAGES.welded : PROP_MESSAGES[prop.type];
+  if (!message) return;
+  say(world, message);
+  world.events.push({ type: 'locked' });
 }
 
 // The grate the player is on top of, if any.

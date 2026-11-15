@@ -26,6 +26,7 @@ Live link: https://tusingw29.github.io/carter-island-prototype/
 | 8 | Playtest 2: smart camera, hit feedback, knockout rules, 7:00 timer, gym | review, awaiting Adam's verdict | `step-8-playtest-2` |
 | 9 | Playtest 3: chase instead of instant capture, instant knockouts, gym feel | review, awaiting Adam's verdict | `step-9-playtest-3` |
 | 10 | Playtest 4: cover blocks sight, picture quality, gym values, shove, throwables | review, awaiting Adam's verdict | `step-10-playtest-4` |
+| 11 | The Yard: jump and slide everywhere, dash unlock, towers, searchlights, roof route | review, awaiting Adam's verdict | `step-11-yard` |
 
 ---
 
@@ -821,6 +822,160 @@ it will count cover the moment a room has some (the Yard will).
 7. Press F1 and read "picture at ...%" on the second line. If it drops, it should climb
    back within a few seconds of the game running smoothly.
 8. All four playtest questions.
+
+---
+
+## Step 11: The Yard (jump and slide everywhere, dash unlock, towers, searchlights, roof route)
+
+- **Status:** review, awaiting Adam's verdict
+- **Branch:** `step-11-yard` (built on Step 10, which was merged first)
+- **Goal:** the first area built for the platforming movement. It tests whether Mega Man X
+  style movement works inside the stealth game, and whether the loop holds up when the
+  world grows. Adam's spec is in [DESIGN.md](DESIGN.md) under "The Yard".
+- **Not changed:** walking and running speeds, the 7:00 timer, guards and patrols inside
+  the prison, and the three old routes (the bot's times for them are the same).
+- **Links:**
+  - Main game: https://tusingw29.github.io/carter-island-prototype/
+  - Starts at the Yard door: https://tusingw29.github.io/carter-island-prototype/?room=yard
+  - Yard with the boots already on: https://tusingw29.github.io/carter-island-prototype/?room=yard&boots
+  - On the roof ledge with the boots: https://tusingw29.github.io/carter-island-prototype/?room=yard&px=20&py=5.4&boots
+  - At the foot of Tower 1's ladder: https://tusingw29.github.io/carter-island-prototype/?room=yard&px=37
+
+### The Yard, left to right
+
+```
+ x (m)   0        8     11............31.5  33.5..37.5   40....47  49.5  51.5..56.5  57.8..64.3   69..73    82
+ ROOF    [window sill]   [=== roof ledge ===]  [TOWER 1]                                          [TOWER 2]
+              gap: needs the dash        gap: a jump
+ GROUND  door  low   bench, hoop,   scorer's  ladder   bleachers  tall   crates    shed (hatch   ladder   OUTER
+         (dark) fence  light pole     table                       fence            on the roof)           WALL
+                |<-- searchlight 1 -->|                             |<------ searchlight 2 ------>|
+                                        |<- ground guard ->|
+```
+
+### What was built
+
+1. **Jump and slide in the main game**, from the start of every run, with the gym values
+   (1.5 m jump). K or B jumps. S + K while moving slides. Walking, running, and crouching
+   use the same speeds as before, with instant start and stop.
+2. **Dash is locked** until you pick up the work boots in the equipment shed. The gym still
+   has every move. Holding dash while you jump does nothing without the boots.
+3. **Noise:** jumping and landing are heard 1.5 m away (less than walking), a slide 1 m, a
+   dash 11 m. A jump at running speed is as loud as running, at take-off and landing.
+4. **Engine:** ledges you can jump up through and stand on (S + K standing still drops you
+   back through), ladders (hold Up or Down, Jump lets go), and chain-link fences you climb
+   by holding Up against either side. Guards, hiding spots, doors, items, and noise all
+   take height into account now.
+5. **Mess Hall side door** to the Yard, creaky, at the kitchen end. Both sides of it are in
+   shadow, so you never arrive in a flashlight.
+6. **Court:** open ground swept by Tower 1's searchlight. A bench at the west end and the
+   scorer's table at the east end are low cover: crouch behind one and neither the light
+   nor the ground guard can see you. The basketball lies in the middle.
+7. **Searchlights:** a pool of light 4.4 m wide that sweeps on a fixed beat, the same every
+   run. At each end of its sweep it swings away off the ground for 3 seconds: that is the
+   gap to cross in. A glow on the ground shows where it will come back down, and a fainter
+   glow runs ahead of the pool while it moves. Stand in the pool for a third of a second
+   and the tower guard calls it in: every guard in the Yard goes Suspicious, the ground
+   guard walks over, and it counts as spotted. Solid cover casts real shadows: the pool is
+   drawn with the shadow missing.
+8. **Towers:** each has a ladder that comes up behind its guard. Knock him out and his
+   light goes dark for the rest of the run, even after he wakes. He is on the radio: a
+   missed check-in sends the ground guard to the foot of the tower.
+9. **Ground guard:** walks between the scorer's table and the bleachers, past the foot of
+   Tower 1. He cannot cross the tall fence.
+10. **Bleachers:** three rows you can climb, and Up hides you underneath (you can crawl
+    along, as under a table).
+11. **Fences:** the low one (1.2 m) west of the court can be jumped. The tall one (3 m)
+    cannot. Either can be climbed at 1.1 m per second, in plain view: chain-link does not
+    block sight.
+12. **Jump challenge to the boots:** bleachers, top of the tall fence, top of the crate
+    stack, shed roof, hatch. No dash needed. The crates can also be climbed from the
+    ground on either side.
+13. **Equipment shed:** in by the roof hatch, out by the door, which only opens from
+    inside. The work boots are on a crate in the middle.
+14. **Roof route:** from Tower 1's platform a jump reaches the roof ledge. At its west end
+    a 6 m gap to the window sill needs the dash (a dash jump, or jump then air dash). The
+    window works both ways. There is a second way up with jumps only: bench, hoop rim,
+    backboard, light pole, roof.
+15. **Basketball:** bounces twice, and each bounce is heard 11 m away (a cup: 6 m).
+16. **Outer wall:** Up at it says "Too high. You'll need something to get over this."
+17. **Map:** the Yard (with Tower 1 and Tower 2 marked), the shed, and the roof ledge as its
+    own box beside the Guard Office. The roof box shows once you get up there. The window
+    shows once you walk up to it from either side.
+18. **Camera:** lifts to follow you up a tower or along the roof. A jump does not move it.
+
+### Planning bot
+
+| Route | Result | Time | Left on 7:00 |
+| --- | --- | --- | --- |
+| Front door in, front door back | Ghost | 2:14 | 4:46 |
+| Front door in, one-way drop home | Ghost | 1:36 | 5:24 |
+| Vent route | Ghost | 1:23 | 5:37 |
+| Bed to work boots in hand | not noticed | 1:09 | |
+| Boots, hoop climb to the roof, dash, window, drop home | Ghost | 2:59 | 4:01 |
+| Boots, Tower 1 (its guard knocked out), roof, dash, window, drop home | Shadow, 1 knockout | 2:14 | 4:46 |
+
+- **Does boots-then-roof fit in 7:00?** Yes, both ways, with four minutes or more left.
+- The three old routes are unchanged to the tenth of a second.
+- The tower way is as fast as the front door and never goes near the Stairwell.
+- **How the Yard bot works:** the old planner only knows flat floors, so the Yard legs are
+  fixed series of moves (walk here, jump there, climb). For each leg the bot tries later
+  and later start times on a copy of the game until one goes unnoticed, then plays it for
+  real. It has perfect timing. A person will be slower, and the bot cannot say how the
+  jumps feel.
+- The hardest leg for the bot is getting back west past the ground guard (it waited 17
+  seconds on the ladder for the moment).
+
+### Choices I made that Adam should check
+
+- **The searchlight swings away at each end.** The spec says a fixed path and timing. In a
+  side view a light that never leaves the lane cannot be crossed without cover, so each
+  light is off the ground for 3 seconds at each end of its sweep.
+- **The ground guard does not walk the whole court.** He patrols its east end and the foot
+  of Tower 1. With him and the light both on the open court, no clean crossing existed.
+- **Two fences, not one with low parts.** In a side view a fence is one height where you
+  meet it, so there is a low fence and a tall fence.
+- **Getting past a tower guard unseen is not possible.** He faces along the roof. The tower
+  way to the roof needs him knocked out. The hoop climb is the way that needs no knockout.
+- **A searchlight is not a security camera.** Being lit does not count toward the silent
+  alarm when you take the keycard.
+- **Tower guards never leave their towers.** Alerted, they stay up there. The ground guard
+  does the chasing, and a guard from the Mess Hall can be sent in by radio.
+- **The ground guard cannot find a body on a tower.** He walks to the foot of it, looks
+  around, and goes back.
+- **The roof ledge and chain-link cast no shadow** and do not block sight. Crates, the
+  bench, the table, the bleacher rows, the tower platforms, and the shed roof do.
+- **The shed is a small room of its own**, not a hollow box in the Yard.
+- **You can now jump in every room.** A jump takes you above a lunge for a moment, which
+  may make chases easier than in Step 9. Not tuned.
+- **The repo rule test** that stops game logic touching the browser now ignores text in
+  quotes, because a portal of type 'window' set it off.
+- **Not verified:** not played by a person. I do not know if the jumps feel fair, if the
+  searchlight timing is readable, or if the Yard is too hard or too easy. Sounds unheard,
+  a controller and the 2015 MacBook Air untested. Checked by 348 tests, the two bots, and
+  headless Chrome screenshots.
+
+### How Adam tests it
+
+1. Open the Yard link. Stand in the dark at the door and watch one whole sweep of the
+   searchlight: across, away, back, away.
+2. Jump the low fence (K) and crouch behind the bench. Let the light pass over you.
+3. Follow the light east and cross to the scorer's table while it is swung away.
+4. Watch the ground guard. When he walks away, go over the table and follow him to the
+   ladder. Climb above his head before he turns.
+5. Wait for him to pass under you, then go for the boots: up the bleachers, onto the fence
+   top, the crates, the shed roof, the hatch.
+6. With the boots, press L to dash. Leave by the shed door.
+7. Get back to Tower 1, climb it, crouch-walk up behind the guard, and knock him out. His
+   light should go dark.
+8. Jump from the tower to the roof ledge, run to its west end, and dash jump (hold L, press
+   K) to the window sill. Up at the window.
+9. Take the keycard and go home your own way. Try the window again from inside.
+10. On another run, try the hoop climb to the roof, the basketball as a lure, and climbing
+    a fence with Up.
+11. Open the map (M) before and after finding the roof and the window.
+12. Does the movement work inside the stealth game? Does the Yard make you want to explore?
+13. All four playtest questions.
 
 ---
 

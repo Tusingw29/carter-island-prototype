@@ -56,6 +56,14 @@ export function knockOut(world, guard) {
   guard.wakeWarned = false;
   world.stats.knockouts += 1;
   world.events.push({ type: 'knockout', guardId: guard.id });
+  // A tower guard works a searchlight. With him down it goes dark, for the rest of the run.
+  for (const light of world.cameras) {
+    if (light.guardId !== guard.id || light.off) continue;
+    light.off = true;
+    light.sees = false;
+    world.events.push({ type: 'lightOut', cameraId: light.id });
+    say(world, 'His searchlight goes dark.');
+  }
 }
 
 // True while the "shove not ready" shake should show over a guard.
@@ -111,6 +119,7 @@ export function updateDrag(world) {
   if (!player.dragging) return;
   const body = world.allGuards.find((guard) => guard.id === player.dragging);
   body.x = player.x - player.facing * 0.7;
+  body.y = player.y ?? 0;
 }
 
 // ---------- Waking up ----------
