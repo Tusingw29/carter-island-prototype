@@ -1,0 +1,117 @@
+{
+  "rear": [
+    {
+      "x": 35.4,
+      "before": "SPACE: grab the Tower 1 guard",
+      "shoves": 0,
+      "knockouts": 1,
+      "spots": 0,
+      "tower": "out"
+    },
+    {
+      "x": 35.8,
+      "before": "Move closer to grab",
+      "shoves": 0,
+      "knockouts": 0,
+      "spots": 0,
+      "tower": "calm"
+    },
+    {
+      "x": 36,
+      "before": "Move closer to grab",
+      "shoves": 0,
+      "knockouts": 0,
+      "spots": 0,
+      "tower": "calm"
+    }
+  ],
+  "followUp": [
+    {
+      "response": "wait",
+      "opening": {
+        "gap": 1.6999999999999993,
+        "prompt": "RUN / JUMP AWAY, or SPACE: grab",
+        "stun": 1.4833333333333334
+      },
+      "grabbedAt": 1.9666666666666621,
+      "held": false,
+      "state": "alert"
+    },
+    {
+      "response": "obey grab cue",
+      "opening": {
+        "gap": 1.6999999999999993,
+        "prompt": "RUN / JUMP AWAY, or SPACE: grab",
+        "stun": 1.4833333333333334
+      },
+      "grabbedAt": 1.9666666666666621,
+      "held": false,
+      "state": "alert"
+    },
+    {
+      "response": "close then grab",
+      "opening": {
+        "gap": 1.6999999999999993,
+        "prompt": "RUN / JUMP AWAY, or SPACE: grab",
+        "stun": 1.4833333333333334
+      },
+      "grabbedAt": null,
+      "held": true,
+      "state": "held"
+    }
+  ],
+  "ledge": [
+    {
+      "before": "SPACE: drop on the Yard guard",
+      "landing": 0.7416666666666596,
+      "x": 37.99999999999996,
+      "y": 0,
+      "state": "out",
+      "shoves": 1,
+      "shovedOff": 1,
+      "takedowns": {
+        "choke": 0,
+        "above": 0,
+        "pullIn": 0,
+        "ledge": 1
+      },
+      "lightOff": true
+    }
+  ],
+  "lifecycle": [
+    {
+      "priorShove": false,
+      "before": {
+        "stun": 0.9,
+        "staggerFull": 0,
+        "qualifies": false
+      },
+      "held": false
+    },
+    {
+      "priorShove": true,
+      "before": {
+        "stun": 0.9,
+        "staggerFull": 1.5,
+        "qualifies": true
+      },
+      "held": true
+    }
+  ],
+  "office": [
+    {
+      "order": "KO then card",
+      "guard": "out",
+      "alarm": true
+    },
+    {
+      "order": "card then KO",
+      "guard": "out",
+      "alarm": false
+    }
+  ],
+  "vertical": {
+    "feetY": 5,
+    "cardInReach": true
+  }
+}

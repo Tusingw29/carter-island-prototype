@@ -1,0 +1,1729 @@
+{
+  "samples": [
+    {
+      "ms": 567,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    29 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 34.3",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 800,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    26 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 34.6",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 884,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    30 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 34.8",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 968,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    33 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 34.9",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1050,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    37 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.0",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1134,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    41 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.2",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1218,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    44 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.3",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1301,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    47 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.4",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1384,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    49 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.5",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1467,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    51 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.7",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1634,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    44 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 35.9",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1718,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    47 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 36.0",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1800,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    49 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 36.2",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1884,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    51 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 36.3",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 1967,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    53 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 36.4",
+        "yd-tower-1  calm       sees n   0%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 2233,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    39 fps, picture at 100%",
+        "room     Yard",
+        "player   jump  0.0 m/s  x 35.7  y 6.9",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 36.7",
+        "yd-tower-1  calm       sees Y  12%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 2351,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    39 fps, picture at 100%",
+        "room     Yard",
+        "player   jump  0.0 m/s  x 35.7  y 7.2",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 36.9",
+        "yd-tower-1  calm       sees Y  20%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 2650,
+      "prompt": "Move closer to grab",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    30 fps, picture at 100%",
+        "room     Yard",
+        "player   jump  0.0 m/s  x 35.7  y 7.0",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 0  knockouts 0  bodies found 0",
+        "yd-guard    calm       sees n   0%  x 37.2",
+        "yd-tower-1  calm       sees Y  32%  x 34.6",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 2917,
+      "prompt": "R: shove off the Tower 1 guard",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    26 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 0  bodies found 0",
+        "yd-guard    alert      sees n 100%  x 37.4",
+        "yd-tower-1  alert      sees n 100%  x 34.4",
+        "yd-tower-2  alert      sees n 100%  x 70.1"
+      ]
+    },
+    {
+      "ms": 3017,
+      "prompt": "R: shove off the Tower 1 guard",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    29 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 0  bodies found 0",
+        "yd-guard    alert      sees n 100%  x 37.4",
+        "yd-tower-1  alert      sees n 100%  x 34.0",
+        "yd-tower-2  alert      sees n 100%  x 70.1"
+      ]
+    },
+    {
+      "ms": 3118,
+      "prompt": "R: shove off the Tower 1 guard",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    33 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 0  bodies found 0",
+        "yd-guard    alert      sees n 100%  x 37.4",
+        "yd-tower-1  alert      sees n 100%  x 33.6",
+        "yd-tower-2  alert      sees n 100%  x 70.1"
+      ]
+    },
+    {
+      "ms": 3217,
+      "prompt": "R: shove off the Tower 1 guard",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    35 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 0  bodies found 0",
+        "yd-guard    alert      sees n 100%  x 37.4",
+        "yd-tower-1  alert      sees n 100%  x 33.2",
+        "yd-tower-2  alert      sees n 100%  x 70.1"
+      ]
+    },
+    {
+      "ms": 3717,
+      "prompt": "R: shove off the Tower 1 guard",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    27 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 0  bodies found 0",
+        "yd-guard    alert      sees n 100%  x 37.2",
+        "yd-tower-1  alert      sees n 100%  x 33.0",
+        "yd-tower-2  alert      sees n 100%  x 70.0"
+      ]
+    },
+    {
+      "ms": 3851,
+      "prompt": "R: shove off the Tower 1 guard",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    24 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 0  bodies found 0",
+        "yd-guard    alert      sees n 100%  x 36.1",
+        "yd-tower-1  alert      sees n 100%  x 33.0",
+        "yd-tower-2  alert      sees n 100%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4218,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    21 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  97%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  97%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4334,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    23 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  92%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  92%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4417,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    27 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  89%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  89%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4551,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    31 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  86%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  86%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4667,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    31 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  80%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  80%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4801,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    32 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  76%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  76%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4884,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    36 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  73%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  73%  x 69.3"
+      ]
+    },
+    {
+      "ms": 4967,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    39 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  70%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  70%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5050,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    43 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  67%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  67%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5134,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    46 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  64%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  64%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5217,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    48 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  61%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  61%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5300,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    50 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  58%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  58%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5384,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    52 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  55%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  55%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5468,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    54 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  52%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  52%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5784,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    35 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  46%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  46%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5868,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    38 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  43%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  43%  x 69.3"
+      ]
+    },
+    {
+      "ms": 5951,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  40%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  40%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6117,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    38 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  34%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  34%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6200,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  31%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  31%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6284,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    45 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  29%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  29%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6384,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    48 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  26%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  26%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6468,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    48 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  22%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  22%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6617,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    49 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  18%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  18%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6717,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    45 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  13%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  13%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6834,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    47 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n  10%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n  10%  x 69.3"
+      ]
+    },
+    {
+      "ms": 6968,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n   5%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n   5%  x 69.3"
+      ]
+    },
+    {
+      "ms": 7067,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    45 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n   1%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n   1%  x 69.3"
+      ]
+    },
+    {
+      "ms": 7201,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    43 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    searching  sees n   0%  x 35.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  searching  sees n   0%  x 69.3"
+      ]
+    },
+    {
+      "ms": 7400,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    37 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 35.9",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 69.5"
+      ]
+    },
+    {
+      "ms": 7501,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    38 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 36.1",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 69.7"
+      ]
+    },
+    {
+      "ms": 7584,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 36.2",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 69.8"
+      ]
+    },
+    {
+      "ms": 7667,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    45 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 36.3",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 69.9"
+      ]
+    },
+    {
+      "ms": 7751,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    47 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 36.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 7835,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    50 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 36.6",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8051,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 36.9",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8134,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 37.0",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8217,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    45 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 37.2",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8301,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    48 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 37.3",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8384,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    50 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 37.4",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8618,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    52 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 37.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8701,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    40 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 37.8",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8884,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    36 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.0",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 8968,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    40 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.2",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9151,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    36 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.4",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9234,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    40 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9335,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    42 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9417,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    45 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.8",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9501,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    47 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.9",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9584,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    50 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.1",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9667,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    52 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.2",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9751,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    53 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.3",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9834,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    55 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.4",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 9918,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    56 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10001,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    57 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10085,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    57 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10168,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    58 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10251,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    58 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10352,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    56 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10451,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    54 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10551,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    53 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10651,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    55 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10784,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    48 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10867,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    50 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 10951,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    52 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11034,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    54 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.5",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11118,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    55 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.4",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11201,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    56 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.3",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11285,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    57 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.2",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11368,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    58 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 39.1",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11451,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    58 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.9",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11535,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    59 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.8",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11618,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    59 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.7",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11702,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    59 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.6",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11785,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    59 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.4",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11867,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    60 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.3",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    },
+    {
+      "ms": 11951,
+      "prompt": "SPACE: drop on him",
+      "panel": [
+        "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+        "speed    60 fps, picture at 100%",
+        "room     Yard",
+        "player   idle  0.0 m/s  x 35.7  y 5.8",
+        "noise    0.0 m",
+        "hidden   no",
+        "break free used no   seen by camera no",
+        "spotted 1  knockouts 1  bodies found 1",
+        "yd-guard    calm       sees n   0%  x 38.2",
+        "yd-tower-1  out        sees n   0%  x 33.0",
+        "yd-tower-2  calm       sees n   0%  x 70.1"
+      ]
+    }
+  ],
+  "pressed": "R: shove off the Tower 1 guard",
+  "final": [
+    "CALM",
+    "6:50",
+    "bed check at 3:30",
+    "SHOVE (R)",
+    "YARD",
+    "",
+    "Esc: pause and controls \u00a0 M: map \u00a0 Z: zoom \u00a0 K: jump \u00a0 F: throw",
+    "",
+    "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+    "speed    60 fps, picture at 100%",
+    "room     Yard",
+    "player   idle  0.0 m/s  x 35.7  y 5.8",
+    "noise    0.0 m",
+    "hidden   no",
+    "break free used no   seen by camera no",
+    "spotted 1  knockouts 1  bodies found 1",
+    "yd-guard    calm       sees n   0%  x 38.1",
+    "yd-tower-1  out        sees n   0%  x 33.0",
+    "yd-tower-2  calm       sees n   0%  x 70.1",
+    "CALM",
+    "Zz wakes [#---------] 68s",
+    "CALM"
+  ]
+}

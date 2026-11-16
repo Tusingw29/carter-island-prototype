@@ -1,0 +1,165 @@
+{
+  "mode": "force",
+  "transitions": [
+    {
+      "room": "Cell Block",
+      "x": 4.5,
+      "ms": 643
+    },
+    {
+      "room": "Solitary",
+      "x": 3,
+      "ms": 10330
+    },
+    {
+      "room": "Cell Block",
+      "x": 4.5,
+      "ms": 10457
+    }
+  ],
+  "stopped": true,
+  "snapshots": [
+    {
+      "ms": 2112,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 12.5  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 3513,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 15.8  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 4860,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 18.7  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 5994,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 18.7  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 6994,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 22.0  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 7995,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 22.0  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 9013,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 22.0  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 10193,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 22.0  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 11515,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 10.6  y 0.0",
+      "prompt": "E: talk to the trader"
+    },
+    {
+      "ms": 12579,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 18.2  y 0.0",
+      "prompt": "Snitch. His cell is locked"
+    },
+    {
+      "ms": 13697,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 18.5  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 14696,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 18.5  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 15696,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 16.5  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 16696,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 16.5  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 17787,
+      "room": "Cell Block",
+      "player": "player   idle  0.0 m/s  x 16.5  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    }
+  ],
+  "reason": "game ended",
+  "final": [
+    "ALERT",
+    "5:43",
+    "-1:00 SOLITARY",
+    "bed check at 3:30",
+    "SHOVE (R)",
+    "CELL BLOCK",
+    "Back in your bed. Every guard is on edge now. Get caught again and it is over.",
+    "",
+    "Esc: pause and controls \u00a0 M: map \u00a0 Z: zoom \u00a0 K: jump \u00a0 F: throw",
+    "",
+    "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+    "speed    50 fps, picture at 100%",
+    "room     Cell Block",
+    "player   idle  0.0 m/s  x 16.5  y 0.0",
+    "noise    0.0 m",
+    "hidden   no",
+    "break free used yes   seen by camera no",
+    "spotted 3  knockouts 0  bodies found 0",
+    "cb-guard    alert      sees n 100%  x 17.3",
+    "CAUGHT",
+    "",
+    "Grabbed a second time.",
+    "",
+    "Time left\t5:43",
+    "Times spotted\t3",
+    "Spotted by\tguards 0, cameras 0, searchlights 0, snitches 1, your shoves 2",
+    "Knockouts\t0",
+    "Bodies found by guards\t0",
+    "Takedowns\t0 from behind, 0 from above, 0 pulled into hiding",
+    "Guards thrown down\t0",
+    "Shoves\t2",
+    "Shoved off ledges\t0",
+    "Interrogations\t0",
+    "Check-ins faked\t0",
+    "Solitary\tYes: 1:00 lost",
+    "Keycard\tNot taken",
+    "Silent alarm\tNo",
+    "Caught in\tCell Block",
+    [
+      "How you got caught\tGrabbed by the Cell Block guard 5.6 s after his \"!\". You shoved th",
+      "e Cell Block guard."
+    ],
+    "",
+    "Rank: Caught",
+    "did not make it back",
+    "",
+    "Play again (Enter) Tell Adam what you thought",
+    "! ALERT"
+  ],
+  "build": "7e5dd71b7626"
+}

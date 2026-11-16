@@ -1,0 +1,205 @@
+{
+  "mode": "rush",
+  "transitions": [
+    {
+      "room": "Cell Block",
+      "x": 4.5,
+      "ms": 712
+    },
+    {
+      "room": "Mess Hall",
+      "x": 1,
+      "ms": 5429
+    },
+    {
+      "room": "Stairwell Checkpoint",
+      "x": 1,
+      "ms": 12010
+    },
+    {
+      "room": "Guard Office",
+      "x": 1.5,
+      "ms": 19002
+    },
+    {
+      "room": "Cell Block",
+      "x": 28.6,
+      "ms": 21776
+    }
+  ],
+  "stopped": true,
+  "snapshots": [
+    {
+      "ms": 1956,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 12.0  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 3312,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 20.9  y 0.0",
+      "prompt": "E: pick up the cup"
+    },
+    {
+      "ms": 4877,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 29.5  y 0.0",
+      "prompt": "Vent cover"
+    },
+    {
+      "ms": 6672,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 8.3  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 8258,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 18.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 9272,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 24.7  y 0.0",
+      "prompt": "E: pick up the cup"
+    },
+    {
+      "ms": 10272,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 31.2  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 11272,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.5  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 12408,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 4.2  y 0.0",
+      "prompt": "E: pick up the mug"
+    },
+    {
+      "ms": 13507,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 11.3  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 14506,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 17.8  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 15506,
+      "room": "Stairwell Checkpoint",
+      "player": "player   idle  0.0 m/s  x 23.7  y 0.0",
+      "prompt": "UP: tap = fast and loud, hold = slow and quiet"
+    },
+    {
+      "ms": 16505,
+      "room": "Stairwell Checkpoint",
+      "player": "player   idle  0.0 m/s  x 23.7  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 17561,
+      "room": "Stairwell Checkpoint",
+      "player": "player   idle  0.0 m/s  x 24.4  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 18573,
+      "room": "Stairwell Checkpoint",
+      "player": "player   idle  0.0 m/s  x 24.4  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 19623,
+      "room": "Guard Office",
+      "player": "player   run  6.5 m/s  x 5.9  y 0.0",
+      "prompt": "UP: climb through the window"
+    },
+    {
+      "ms": 20623,
+      "room": "Guard Office",
+      "player": "player   run  6.5 m/s  x 12.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 21622,
+      "room": "Guard Office",
+      "player": "player   run  6.5 m/s  x 18.6  y 0.0",
+      "prompt": "UP: open the vent and drop down (one way)"
+    },
+    {
+      "ms": 22708,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 22.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 23707,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 15.6  y 0.0",
+      "prompt": "UP: open his cell with the keycard"
+    },
+    {
+      "ms": 24724,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 9.0  y 0.0",
+      "prompt": "E: talk to the trader"
+    }
+  ],
+  "reason": "game ended",
+  "final": [
+    "CALM",
+    "HEAT 3: RADIO AHEAD",
+    "6:36",
+    "bed check at 3:30",
+    "KEYCARD",
+    "SHOVE (R)",
+    "CELL BLOCK",
+    "HEAT 3: RADIO AHEAD. From now on the next room is warned and waiting for you.",
+    "",
+    "Esc: pause and controls \u00a0 M: map \u00a0 Z: zoom \u00a0 K: jump \u00a0 F: throw",
+    "",
+    "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+    "speed    60 fps, picture at 100%",
+    "room     Cell Block",
+    "player   hidden  0.0 m/s  x 4.5  y 0.0",
+    "noise    0.0 m",
+    "hidden   bed",
+    "break free used yes   seen by camera no",
+    "spotted 2  knockouts 0  bodies found 0",
+    "BACK IN BED",
+    "",
+    "You have the keycard, but they know somebody was out tonight.",
+    "",
+    "Time left\t6:36",
+    "Times spotted\t2",
+    "Spotted by\tguards 2, cameras 0, searchlights 0, snitches 0",
+    "Knockouts\t0",
+    "Bodies found by guards\t0",
+    "Takedowns\t0 from behind, 0 from above, 0 pulled into hiding",
+    "Guards thrown down\t0",
+    "Shoves\t0",
+    "Shoved off ledges\t0",
+    "Interrogations\t0",
+    "Check-ins faked\t0",
+    "Solitary\tNo",
+    "Keycard\tGrabbed fast",
+    "Silent alarm\tNo",
+    "",
+    "Rank: Inmate",
+    "made it back",
+    "",
+    "Play again (Enter) Tell Adam what you thought"
+  ],
+  "build": "7e5dd71b7626"
+}
