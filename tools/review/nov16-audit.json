@@ -1,0 +1,136 @@
+{
+  "timing": [
+    {
+      "distance": 1,
+      "stance": "still",
+      "question": 0.5333333333333339,
+      "alert": 1.249999999999998,
+      "lunge": 1.8499999999999959,
+      "grab": 2.199999999999995
+    },
+    {
+      "distance": 1,
+      "stance": "crouched still",
+      "question": 1.058333333333332,
+      "alert": 2.4916666666666605,
+      "lunge": 3.0916666666666583,
+      "grab": 3.441666666666657
+    },
+    {
+      "distance": 1,
+      "stance": "wary still",
+      "question": 0.3583333333333336,
+      "alert": 1.0666666666666653,
+      "lunge": 1.6666666666666632,
+      "grab": 2.016666666666662
+    },
+    {
+      "distance": 1,
+      "stance": "searching still",
+      "question": null,
+      "alert": 0.5333333333333339,
+      "lunge": 1.1333333333333317,
+      "grab": 1.4833333333333305
+    },
+    {
+      "distance": 3,
+      "stance": "still",
+      "question": 0.6916666666666667,
+      "alert": 1.466666666666664,
+      "lunge": 2.091666666666662,
+      "grab": 2.4416666666666607
+    },
+    {
+      "distance": 3,
+      "stance": "crouched still",
+      "question": 1.3749999999999976,
+      "alert": 2.8749999999999925,
+      "lunge": 3.4749999999999903,
+      "grab": 3.824999999999989
+    },
+    {
+      "distance": 3,
+      "stance": "wary still",
+      "question": 0.4583333333333339,
+      "alert": 1.2333333333333314,
+      "lunge": 1.8583333333333292,
+      "grab": 2.208333333333328
+    },
+    {
+      "distance": 3,
+      "stance": "searching still",
+      "question": null,
+      "alert": 0.7,
+      "lunge": 1.6499999999999966,
+      "grab": 1.9999999999999953
+    },
+    {
+      "distance": 6.5,
+      "stance": "still",
+      "question": 1.2416666666666647,
+      "alert": 2.583333333333327,
+      "lunge": 3.6416666666666564,
+      "grab": 3.991666666666655
+    },
+    {
+      "distance": 6.5,
+      "stance": "crouched still",
+      "question": 2.483333333333327,
+      "alert": 4.666666666666688,
+      "lunge": 5.366666666666723,
+      "grab": 5.7166666666667405
+    },
+    {
+      "distance": 6.5,
+      "stance": "wary still",
+      "question": 0.8333333333333328,
+      "alert": 2.174999999999995,
+      "lunge": 3.2333333333333245,
+      "grab": 3.5833333333333233
+    },
+    {
+      "distance": 6.5,
+      "stance": "searching still",
+      "question": null,
+      "alert": 1.2583333333333313,
+      "lunge": 2.8833333333333258,
+      "grab": 3.2333333333333245
+    }
+  ],
+  "geometry": [
+    {
+      "source": "guard",
+      "samples": 400,
+      "mismatches": 0
+    },
+    {
+      "source": "camera",
+      "samples": 400,
+      "mismatches": 0
+    }
+  ],
+  "refuges": [
+    {
+      "room": "cell-block",
+      "seconds": 90.00000000001769,
+      "grabbed": false,
+      "outcome": null
+    },
+    {
+      "room": "laundry",
+      "seconds": 90.00000000001769,
+      "grabbed": false,
+      "outcome": null
+    },
+    {
+      "room": "mess-hall",
+      "seconds": 90.00000000001769,
+      "grabbed": false,
+      "outcome": null
+    }
+  ],
+  "config": {
+    "reaction": 0.6,
+    "windup": 0.35
+  }
+}

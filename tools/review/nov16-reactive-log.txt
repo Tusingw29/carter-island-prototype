@@ -1,0 +1,150 @@
+Rusher 60Hz 0 caught 327.47
+Rush 5Hz 0 caught 327.12
+Rush 3Hz 0 caught 325.25
+Careless 0 caught 329.75
+Shove-grab 0 win 400.47
+Rusher 60Hz 0.5 caught 326.97
+Rush 5Hz 0.5 caught 326.61
+Rush 3Hz 0.5 caught 324.74
+Careless 0.5 caught 329.43
+Shove-grab 0.5 win 399.99
+Rusher 60Hz 1 caught 326.47
+Rush 5Hz 1 caught 326.11
+Rush 3Hz 1 caught 324.24
+Careless 1 caught 331.30
+Shove-grab 1 win 399.49
+Rusher 60Hz 1.5 win 395.56
+Rush 5Hz 1.5 win 395.57
+Rush 3Hz 1.5 win 394.98
+Careless 1.5 caught 330.80
+Shove-grab 1.5 win 398.99
+Rusher 60Hz 2 win 395.06
+Rush 5Hz 2 win 395.07
+Rush 3Hz 2 win 394.48
+Careless 2 caught 330.28
+Shove-grab 2 win 398.49
+Rusher 60Hz 2.5 win 394.56
+Rush 5Hz 2.5 win 394.57
+Rush 3Hz 2.5 win 393.98
+Careless 2.5 caught 329.77
+Shove-grab 2.5 win 397.99
+Rusher 60Hz 3 win 394.06
+Rush 5Hz 3 win 394.07
+Rush 3Hz 3 win 393.48
+Careless 3 caught 329.26
+Shove-grab 3 win 397.49
+Rusher 60Hz 3.5 win 393.56
+Rush 5Hz 3.5 win 393.57
+Rush 3Hz 3.5 win 392.98
+Careless 3.5 caught 328.17
+Shove-grab 3.5 win 396.99
+Rusher 60Hz 4 win 393.06
+Rush 5Hz 4 win 393.07
+Rush 3Hz 4 win 392.48
+Careless 4 caught 327.63
+Shove-grab 4 win 396.49
+Rusher 60Hz 4.5 win 392.56
+Rush 5Hz 4.5 win 392.57
+Rush 3Hz 4.5 win 391.98
+Careless 4.5 caught 326.99
+Shove-grab 4.5 win 395.99
+Rusher 60Hz 5 win 392.06
+Rush 5Hz 5 win 392.07
+Rush 3Hz 5 win 391.48
+Careless 5 caught 326.35
+Shove-grab 5 win 395.49
+Rusher 60Hz 5.5 win 391.56
+Rush 5Hz 5.5 win 391.57
+Rush 3Hz 5.5 win 390.98
+Careless 5.5 caught 326.04
+Shove-grab 5.5 win 394.99
+Rusher 60Hz 6 win 391.06
+Rush 5Hz 6 win 391.07
+Rush 3Hz 6 win 390.48
+Careless 6 caught 325.72
+Shove-grab 6 win 394.49
+Rusher 60Hz 6.5 win 390.56
+Rush 5Hz 6.5 win 390.57
+Rush 3Hz 6.5 win 389.98
+Careless 6.5 caught 328.57
+Shove-grab 6.5 win 393.99
+Rusher 60Hz 7 win 390.06
+Rush 5Hz 7 win 390.07
+Rush 3Hz 7 win 389.48
+Careless 7 caught 327.39
+Shove-grab 7 win 393.49
+Rusher 60Hz 7.5 win 389.56
+Rush 5Hz 7.5 win 389.57
+Rush 3Hz 7.5 win 388.98
+Careless 7.5 caught 326.78
+Shove-grab 7.5 win 392.99
+Rusher 60Hz 8 win 389.06
+Rush 5Hz 8 win 389.07
+Rush 3Hz 8 win 388.48
+Careless 8 caught 326.19
+Shove-grab 8 win 392.49
+Rusher 60Hz 8.5 win 388.56
+Rush 5Hz 8.5 win 388.57
+Rush 3Hz 8.5 win 387.98
+Careless 8.5 caught 324.79
+Shove-grab 8.5 win 391.99
+Rusher 60Hz 9 win 388.06
+Rush 5Hz 9 win 388.07
+Rush 3Hz 9 win 387.48
+Careless 9 caught 324.96
+Shove-grab 9 win 391.18
+Rusher 60Hz 9.5 win 387.56
+Rush 5Hz 9.5 win 387.57
+Rush 3Hz 9.5 win 386.98
+Careless 9.5 caught 321.29
+Shove-grab 9.5 win 390.88
+Rusher 60Hz 10 win 387.06
+Rush 5Hz 10 win 387.07
+Rush 3Hz 10 win 386.48
+Careless 10 caught 320.79
+Shove-grab 10 win 390.44
+Rusher 60Hz 10.5 win 386.56
+Rush 5Hz 10.5 win 386.57
+Rush 3Hz 10.5 win 385.98
+Careless 10.5 caught 318.70
+Shove-grab 10.5 win 389.94
+Rusher 60Hz 11 win 386.06
+Rush 5Hz 11 win 386.07
+Rush 3Hz 11 win 385.48
+Careless 11 caught 319.18
+Shove-grab 11 win 389.44
+Rusher 60Hz 11.5 win 385.56
+Rush 5Hz 11.5 win 385.57
+Rush 3Hz 11.5 win 384.98
+Careless 11.5 caught 320.97
+Shove-grab 11.5 win 388.94
+Rusher 60Hz 12 win 385.06
+Rush 5Hz 12 win 385.07
+Rush 3Hz 12 win 384.48
+Careless 12 caught 318.30
+Shove-grab 12 win 388.44
+Rusher 60Hz 12.5 win 384.56
+Rush 5Hz 12.5 win 384.57
+Rush 3Hz 12.5 win 383.98
+Careless 12.5 caught 320.51
+Shove-grab 12.5 win 387.94
+Rusher 60Hz 13 win 387.57
+Rush 5Hz 13 win 387.57
+Rush 3Hz 13 win 387.57
+Careless 13 caught 320.22
+Shove-grab 13 win 387.44
+Rusher 60Hz 13.5 win 387.07
+Rush 5Hz 13.5 win 387.07
+Rush 3Hz 13.5 win 387.07
+Careless 13.5 caught 319.90
+Shove-grab 13.5 win 386.94
+Rusher 60Hz 14 win 386.57
+Rush 5Hz 14 win 386.57
+Rush 3Hz 14 win 386.57
+Careless 14 caught 319.58
+Shove-grab 14 win 386.44
+Rusher 60Hz 14.5 win 382.56
+Rush 5Hz 14.5 win 382.57
+Rush 3Hz 14.5 win 381.98
+Careless 14.5 caught 317.13
+Shove-grab 14.5 win 385.97

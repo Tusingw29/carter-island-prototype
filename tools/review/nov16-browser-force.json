@@ -1,0 +1,181 @@
+{
+  "mode": "force",
+  "transitions": [
+    {
+      "room": "Cell Block",
+      "x": 4.5,
+      "ms": 836
+    },
+    {
+      "room": "Mess Hall",
+      "x": 1.3,
+      "ms": 5569
+    },
+    {
+      "room": "Stairwell Checkpoint",
+      "x": 1.4,
+      "ms": 11994
+    },
+    {
+      "room": "Guard Office",
+      "x": 1.5,
+      "ms": 15782
+    },
+    {
+      "room": "Cell Block",
+      "x": 28.6,
+      "ms": 18659
+    }
+  ],
+  "stopped": true,
+  "snapshots": [
+    {
+      "ms": 2112,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 12.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 3863,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 20.8  y 0.0",
+      "prompt": "E: pick up the cup"
+    },
+    {
+      "ms": 5140,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 28.8  y 0.0",
+      "prompt": "Vent cover"
+    },
+    {
+      "ms": 7184,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 11.6  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 8826,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 20.0  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 10083,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 28.3  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 11166,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 35.3  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 12714,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 6.6  y 0.0",
+      "prompt": "RUN / JUMP AWAY, or SPACE: grab"
+    },
+    {
+      "ms": 14145,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 13.9  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 15179,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 20.7  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 16295,
+      "room": "Guard Office",
+      "player": "player   run  6.5 m/s  x 5.4  y 0.0",
+      "prompt": "UP: climb through the window"
+    },
+    {
+      "ms": 17328,
+      "room": "Guard Office",
+      "player": "player   run  6.5 m/s  x 11.9  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 18329,
+      "room": "Guard Office",
+      "player": "player   run  6.5 m/s  x 17.5  y 0.0",
+      "prompt": "Vent cover"
+    },
+    {
+      "ms": 19395,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 23.3  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 20395,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 16.8  y 0.0",
+      "prompt": "SPACE: drag body"
+    },
+    {
+      "ms": 21432,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 10.1  y 0.0",
+      "prompt": "UP: hide"
+    }
+  ],
+  "reason": "game ended",
+  "final": [
+    "CALM",
+    "HEAT 2: LOCKDOWN",
+    "6:40",
+    "bed check at 3:30",
+    "KEYCARD",
+    "SHOVE (R)",
+    "CELL BLOCK",
+    "Radio: \"No answer from the Cell Block guard... Laundry guard, go and check.\"",
+    [
+      "This door creaks. Tap W (or Up) to open it fast and loud, or hold it for 2 seconds to",
+      " open it quietly."
+    ],
+    "",
+    "Esc: pause and controls \u00a0 M: map \u00a0 Z: zoom \u00a0 K: jump \u00a0 F: throw",
+    "",
+    "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+    "speed    57 fps, picture at 100%",
+    "room     Cell Block",
+    "player   hidden  0.0 m/s  x 4.5  y 0.0",
+    "noise    0.0 m",
+    "hidden   bed",
+    "break free used no   seen by camera no",
+    "spotted 2  knockouts 4  bodies found 2",
+    "cb-guard    out        sees n   0%  x 17.8",
+    "BACK IN BED",
+    "",
+    "You have the keycard, but they know somebody was out tonight.",
+    "",
+    "Time left\t6:40",
+    "Times spotted\t2",
+    "Spotted by\tguards 0, cameras 0, searchlights 0, snitches 0, your shoves 2",
+    "Knockouts\t4",
+    "Bodies found by guards\t2",
+    "Takedowns\t4 from behind, 0 from above, 0 pulled into hiding",
+    "Guards thrown down\t0",
+    "Shoves\t2",
+    "Shoved off ledges\t0",
+    "Interrogations\t0",
+    "Check-ins faked\t0",
+    "Solitary\tNo",
+    "Keycard\tGrabbed fast",
+    "Silent alarm\tNo",
+    "",
+    "Rank: Inmate",
+    "made it back",
+    "",
+    "Play again (Enter) Tell Adam what you thought",
+    "Zz wakes [##--------] 57s"
+  ],
+  "build": "7e5dd71b7626"
+}

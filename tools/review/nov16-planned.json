@@ -1,0 +1,3405 @@
+[
+  {
+    "type": "Ghost drop",
+    "delay": 0,
+    "error": null,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 40.07499999999837,
+        "mess-hall": 17.724999999999635,
+        "stairwell": 29.77499999999895,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Ghost return",
+    "delay": 0,
+    "error": null,
+    "seconds": 133.65000000004278,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.35000000012155,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 44.8249999999981,
+        "mess-hall": 33.57499999999874,
+        "stairwell": 46.708333333331325,
+        "guard-office": 8.550000000000155
+      }
+    }
+  },
+  {
+    "type": "Vent-first",
+    "delay": 0,
+    "error": null,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": true
+    },
+    "visited": [
+      "cell-block",
+      "laundry",
+      "maintenance",
+      "vent-duct",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 33.78333333333206,
+        "laundry": 13.291666666666552,
+        "maintenance": 15.26666666666644,
+        "vent-duct": 12.016666666666625,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Roof hoop",
+    "delay": 0,
+    "error": null,
+    "seconds": 133.54166666670955,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.4583333334548,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 41.07499999999831,
+        "mess-hall": 17.724999999999635,
+        "yard": 66.09999999999867,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Roof quiet tower",
+    "delay": 0,
+    "error": null,
+    "seconds": 133.4583333333763,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.54166666678805,
+    "timesSpotted": 0,
+    "knockouts": 1,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 77.84166666667468,
+          "type": "knockout",
+          "guardId": "yd-tower-1"
+        },
+        {
+          "at": 128.00833333338124,
+          "type": "missedCheckIn",
+          "guardId": "yd-tower-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 57.574999999997374,
+        "mess-hall": 17.724999999999635,
+        "yard": 49.5166666666645,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Pull-heavy",
+    "delay": 0,
+    "error": null,
+    "seconds": 110.80000000003425,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 309.2000000001008,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 10.766666666666696,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 20.016666666666172,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 22.933333333332673,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 28.949999999998997,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 36.016666666665266,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 44.01666666666481,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 75.93333333333983,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 87.74166666668256,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 104.00833333336217,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-2"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 33.98333333333205,
+        "mess-hall": 25.674999999999184,
+        "stairwell": 44.32499999999813,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Intel + pulls",
+    "delay": 0,
+    "error": "holding {\"interact\":true} never worked",
+    "seconds": 98.08333333335746,
+    "outcome": null,
+    "won": false,
+    "rank": "caught",
+    "solitary": true,
+    "solitaryPenalty": 60,
+    "timeLeft": 261.9166666667559,
+    "timesSpotted": 1,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 1,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 2,
+      "above": 0,
+      "pullIn": 3,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 1,
+    "checkInsFaked": 2,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": null,
+    "endedIn": "Solitary",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office",
+      "solitary"
+    ],
+    "observation": {
+      "grabs": [
+        {
+          "room": "cell-block",
+          "at": 94.22500000002105,
+          "guard": "cb-guard"
+        }
+      ],
+      "captures": [
+        {
+          "room": "cell-block",
+          "at": 97.23333333335678,
+          "kind": "solitary"
+        }
+      ],
+      "events": [
+        {
+          "at": 13.699999999999863,
+          "type": "talk",
+          "guardId": "cb-guard",
+          "talk": "story"
+        },
+        {
+          "at": 13.708333333333195,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 20.016666666666172,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 28.774999999999007,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 36.016666666665266,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 55.191666666664176,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 59.46666666666393,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 72.52500000000379,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 94.22500000002105,
+          "type": "grab",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 97.23333333335678,
+          "type": "solitary",
+          "penalty": 60
+        },
+        {
+          "at": 97.24166666669012,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 43.56666666666484,
+        "mess-hall": 33.941666666665384,
+        "stairwell": 12.899999999999908,
+        "guard-office": 6.825000000000129,
+        "solitary": 0.8499999999999994
+      }
+    }
+  },
+  {
+    "type": "Ghost drop",
+    "delay": 2,
+    "error": null,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.64166666666455,
+        "mess-hall": 18.40833333333293,
+        "stairwell": 20.524999999999476,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Ghost return",
+    "delay": 2,
+    "error": null,
+    "seconds": 133.65000000004278,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.35000000012155,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 44.89166666666476,
+        "mess-hall": 39.00833333333176,
+        "stairwell": 41.20833333333164,
+        "guard-office": 8.550000000000155
+      }
+    }
+  },
+  {
+    "type": "Vent-first",
+    "delay": 2,
+    "error": null,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": true
+    },
+    "visited": [
+      "cell-block",
+      "laundry",
+      "maintenance",
+      "vent-duct",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 35.783333333331946,
+        "laundry": 11.291666666666666,
+        "maintenance": 15.26666666666644,
+        "vent-duct": 12.016666666666625,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Roof hoop",
+    "delay": 2,
+    "error": null,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.39166666666456,
+        "mess-hall": 18.40833333333293,
+        "yard": 58.19999999999734,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Roof quiet tower",
+    "delay": 2,
+    "error": null,
+    "seconds": 133.54166666670955,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.4583333334548,
+    "timesSpotted": 0,
+    "knockouts": 1,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 90.92500000001843,
+          "type": "knockout",
+          "guardId": "yd-tower-1"
+        },
+        {
+          "at": 128.00833333338124,
+          "type": "missedCheckIn",
+          "guardId": "yd-tower-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 60.89166666666385,
+        "mess-hall": 18.40833333333293,
+        "yard": 45.599999999998055,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Pull-heavy",
+    "delay": 2,
+    "error": null,
+    "seconds": 110.80000000003425,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 309.2000000001008,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 10.766666666666696,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 20.016666666666172,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 22.933333333332673,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 28.949999999998997,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 36.016666666665266,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 44.01666666666481,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 75.93333333333983,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 87.74166666668256,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 104.00833333336217,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-2"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 33.98333333333205,
+        "mess-hall": 25.674999999999184,
+        "stairwell": 44.32499999999813,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Intel + pulls",
+    "delay": 2,
+    "error": "holding {\"interact\":true} never worked",
+    "seconds": 98.08333333335746,
+    "outcome": null,
+    "won": false,
+    "rank": "caught",
+    "solitary": true,
+    "solitaryPenalty": 60,
+    "timeLeft": 261.9166666667559,
+    "timesSpotted": 1,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 1,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 2,
+      "above": 0,
+      "pullIn": 3,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 1,
+    "checkInsFaked": 2,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": null,
+    "endedIn": "Solitary",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office",
+      "solitary"
+    ],
+    "observation": {
+      "grabs": [
+        {
+          "room": "cell-block",
+          "at": 94.22500000002105,
+          "guard": "cb-guard"
+        }
+      ],
+      "captures": [
+        {
+          "room": "cell-block",
+          "at": 97.23333333335678,
+          "kind": "solitary"
+        }
+      ],
+      "events": [
+        {
+          "at": 13.699999999999863,
+          "type": "talk",
+          "guardId": "cb-guard",
+          "talk": "story"
+        },
+        {
+          "at": 13.708333333333195,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 20.016666666666172,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 28.774999999999007,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 36.016666666665266,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 55.191666666664176,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 59.46666666666393,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 72.52500000000379,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 94.22500000002105,
+          "type": "grab",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 97.23333333335678,
+          "type": "solitary",
+          "penalty": 60
+        },
+        {
+          "at": 97.24166666669012,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 43.56666666666484,
+        "mess-hall": 33.941666666665384,
+        "stairwell": 12.899999999999908,
+        "guard-office": 6.825000000000129,
+        "solitary": 0.8499999999999994
+      }
+    }
+  },
+  {
+    "type": "Ghost drop",
+    "delay": 6,
+    "error": null,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.64166666666455,
+        "mess-hall": 18.40833333333293,
+        "stairwell": 20.524999999999476,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Ghost return",
+    "delay": 6,
+    "error": null,
+    "seconds": 133.65000000004278,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.35000000012155,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 44.89166666666476,
+        "mess-hall": 39.00833333333176,
+        "stairwell": 41.20833333333164,
+        "guard-office": 8.550000000000155
+      }
+    }
+  },
+  {
+    "type": "Vent-first",
+    "delay": 6,
+    "error": null,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": true
+    },
+    "visited": [
+      "cell-block",
+      "laundry",
+      "maintenance",
+      "vent-duct",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 30.283333333332255,
+        "laundry": 21.041666666666114,
+        "maintenance": 11.016666666666682,
+        "vent-duct": 12.016666666666625,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Roof hoop",
+    "delay": 6,
+    "error": null,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.39166666666456,
+        "mess-hall": 18.40833333333293,
+        "yard": 58.19999999999734,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Roof quiet tower",
+    "delay": 6,
+    "error": null,
+    "seconds": 133.54166666670955,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.4583333334548,
+    "timesSpotted": 0,
+    "knockouts": 1,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 90.92500000001843,
+          "type": "knockout",
+          "guardId": "yd-tower-1"
+        },
+        {
+          "at": 128.00833333338124,
+          "type": "missedCheckIn",
+          "guardId": "yd-tower-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 60.89166666666385,
+        "mess-hall": 18.40833333333293,
+        "yard": 45.599999999998055,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Pull-heavy",
+    "delay": 6,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 29.866666666665612,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 55.58333333333082,
+        "mess-hall": 24.05833333333261,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Intel + pulls",
+    "delay": 6,
+    "error": null,
+    "seconds": 97.78333333335722,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 322.2166666667556,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 2,
+      "above": 0,
+      "pullIn": 3,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 1,
+    "checkInsFaked": 1,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 32.79999999999878,
+          "type": "talk",
+          "guardId": "cb-guard",
+          "talk": "story"
+        },
+        {
+          "at": 32.808333333332115,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 52.52499999999766,
+        "mess-hall": 24.11666666666594,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Ghost drop",
+    "delay": 10,
+    "error": null,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.64166666666455,
+        "mess-hall": 18.40833333333293,
+        "stairwell": 20.524999999999476,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Ghost return",
+    "delay": 10,
+    "error": null,
+    "seconds": 133.65000000004278,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.35000000012155,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 44.89166666666476,
+        "mess-hall": 39.00833333333176,
+        "stairwell": 41.20833333333164,
+        "guard-office": 8.550000000000155
+      }
+    }
+  },
+  {
+    "type": "Vent-first",
+    "delay": 10,
+    "error": null,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": true
+    },
+    "visited": [
+      "cell-block",
+      "laundry",
+      "maintenance",
+      "vent-duct",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 34.28333333333203,
+        "laundry": 17.04166666666634,
+        "maintenance": 11.016666666666682,
+        "vent-duct": 12.016666666666625,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Roof hoop",
+    "delay": 10,
+    "error": null,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.39166666666456,
+        "mess-hall": 18.40833333333293,
+        "yard": 58.19999999999734,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Roof quiet tower",
+    "delay": 10,
+    "error": null,
+    "seconds": 133.54166666670955,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.4583333334548,
+    "timesSpotted": 0,
+    "knockouts": 1,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 90.92500000001843,
+          "type": "knockout",
+          "guardId": "yd-tower-1"
+        },
+        {
+          "at": 128.00833333338124,
+          "type": "missedCheckIn",
+          "guardId": "yd-tower-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 60.89166666666385,
+        "mess-hall": 18.40833333333293,
+        "yard": 45.599999999998055,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Pull-heavy",
+    "delay": 10,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 29.866666666665612,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 55.58333333333082,
+        "mess-hall": 24.05833333333261,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Intel + pulls",
+    "delay": 10,
+    "error": null,
+    "seconds": 97.78333333335722,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 322.2166666667556,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 2,
+      "above": 0,
+      "pullIn": 3,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 1,
+    "checkInsFaked": 1,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 32.79999999999878,
+          "type": "talk",
+          "guardId": "cb-guard",
+          "talk": "story"
+        },
+        {
+          "at": 32.808333333332115,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 52.52499999999766,
+        "mess-hall": 24.11666666666594,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Ghost drop",
+    "delay": 14,
+    "error": null,
+    "seconds": 95.35833333335529,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6416666667534,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.64166666666455,
+        "mess-hall": 18.40833333333293,
+        "stairwell": 20.524999999999476,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Ghost return",
+    "delay": 14,
+    "error": null,
+    "seconds": 133.65000000004278,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.35000000012155,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 44.89166666666476,
+        "mess-hall": 39.00833333333176,
+        "stairwell": 41.20833333333164,
+        "guard-office": 8.550000000000155
+      }
+    }
+  },
+  {
+    "type": "Vent-first",
+    "delay": 14,
+    "error": null,
+    "seconds": 82.1416666666781,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 337.85833333340804,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": true
+    },
+    "visited": [
+      "cell-block",
+      "laundry",
+      "maintenance",
+      "vent-duct",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 39.28333333333175,
+        "laundry": 12.041666666666623,
+        "maintenance": 11.016666666666682,
+        "vent-duct": 12.016666666666625,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Roof hoop",
+    "delay": 14,
+    "error": null,
+    "seconds": 133.64166666670945,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.3583333334549,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 48.39166666666456,
+        "mess-hall": 18.40833333333293,
+        "yard": 58.19999999999734,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Roof quiet tower",
+    "delay": 14,
+    "error": null,
+    "seconds": 133.54166666670955,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 286.4583333334548,
+    "timesSpotted": 0,
+    "knockouts": 1,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 90.92500000001843,
+          "type": "knockout",
+          "guardId": "yd-tower-1"
+        },
+        {
+          "at": 128.00833333338124,
+          "type": "missedCheckIn",
+          "guardId": "yd-tower-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 60.89166666666385,
+        "mess-hall": 18.40833333333293,
+        "yard": 45.599999999998055,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Pull-heavy",
+    "delay": 14,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 29.866666666665612,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 55.58333333333082,
+        "mess-hall": 24.05833333333261,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Intel + pulls",
+    "delay": 14,
+    "error": null,
+    "seconds": 97.78333333335722,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 322.2166666667556,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 2,
+      "above": 0,
+      "pullIn": 3,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 1,
+    "checkInsFaked": 1,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 32.79999999999878,
+          "type": "talk",
+          "guardId": "cb-guard",
+          "talk": "story"
+        },
+        {
+          "at": 32.808333333332115,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 52.52499999999766,
+        "mess-hall": 24.11666666666594,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Ghost drop",
+    "delay": 18,
+    "error": null,
+    "seconds": 178.10833333333568,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 241.89166666682866,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 118.85833333337399,
+        "mess-hall": 29.941666666665608,
+        "stairwell": 21.52499999999942,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Ghost return",
+    "delay": 18,
+    "error": null,
+    "seconds": 190.8999999999907,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 229.10000000017362,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 90.35833333335131,
+        "mess-hall": 53.54166666666427,
+        "stairwell": 38.458333333331794,
+        "guard-office": 8.550000000000155
+      }
+    }
+  },
+  {
+    "type": "Vent-first",
+    "delay": 18,
+    "error": null,
+    "seconds": 95.39166666668865,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 324.6083333334201,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": true
+    },
+    "visited": [
+      "cell-block",
+      "laundry",
+      "maintenance",
+      "vent-duct",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 46.28333333333135,
+        "laundry": 22.791666666666014,
+        "maintenance": 6.51666666666678,
+        "vent-duct": 12.016666666666625,
+        "guard-office": 7.791666666666844
+      }
+    }
+  },
+  {
+    "type": "Roof hoop",
+    "delay": 18,
+    "error": null,
+    "seconds": 190.71666666665755,
+    "outcome": "win",
+    "won": true,
+    "rank": "ghost",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 229.2833333335068,
+    "timesSpotted": 0,
+    "knockouts": 0,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 0,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [],
+      "secondsByRoom": {
+        "cell-block": 87.35833333334892,
+        "mess-hall": 29.941666666665608,
+        "yard": 64.77499999999762,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Roof quiet tower",
+    "delay": 18,
+    "error": null,
+    "seconds": 178.12500000000233,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 241.875000000162,
+    "timesSpotted": 0,
+    "knockouts": 1,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 0,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": false,
+    "silentAlarmReason": null,
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": true,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "yard",
+      "shed",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 143.25833333336737,
+          "type": "knockout",
+          "guardId": "yd-tower-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 92.8583333333533,
+        "mess-hall": 29.941666666665608,
+        "yard": 46.683333333331326,
+        "shed": 1.60833333333333,
+        "guard-office": 7.041666666666806
+      }
+    }
+  },
+  {
+    "type": "Pull-heavy",
+    "delay": 18,
+    "error": null,
+    "seconds": 100.78333333335961,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 319.21666666675833,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 1,
+      "above": 0,
+      "pullIn": 4,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 0,
+    "checkInsFaked": 0,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 29.866666666665612,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "missedCheckIn",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 55.58333333333082,
+        "mess-hall": 24.05833333333261,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  },
+  {
+    "type": "Intel + pulls",
+    "delay": 18,
+    "error": null,
+    "seconds": 97.78333333335722,
+    "outcome": "win",
+    "won": true,
+    "rank": "shadow",
+    "solitary": false,
+    "solitaryPenalty": 0,
+    "timeLeft": 322.2166666667556,
+    "timesSpotted": 0,
+    "knockouts": 5,
+    "bodiesFound": 0,
+    "spottedBy": {
+      "guard": 0,
+      "camera": 0,
+      "searchlight": 0,
+      "snitch": 0,
+      "shove": 0,
+      "brokeFree": 0,
+      "sleeperWoke": 0,
+      "emptyBed": 0,
+      "other": 0
+    },
+    "takedowns": {
+      "choke": 2,
+      "above": 0,
+      "pullIn": 3,
+      "ledge": 0
+    },
+    "slams": 0,
+    "shoves": 0,
+    "shovedOff": 0,
+    "interrogations": 1,
+    "checkInsFaked": 1,
+    "silentAlarm": true,
+    "silentAlarmReason": "the office guard was knocked out",
+    "keycardGrab": "slow",
+    "endedIn": "Cell Block",
+    "caughtIn": null,
+    "caughtHow": null,
+    "heat": 0,
+    "inventory": {
+      "boots": false,
+      "screwdriver": false
+    },
+    "visited": [
+      "cell-block",
+      "mess-hall",
+      "stairwell",
+      "guard-office"
+    ],
+    "observation": {
+      "grabs": [],
+      "captures": [],
+      "events": [
+        {
+          "at": 32.79999999999878,
+          "type": "talk",
+          "guardId": "cb-guard",
+          "talk": "story"
+        },
+        {
+          "at": 32.808333333332115,
+          "type": "knockout",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 45.87499999999804,
+          "type": "knockout",
+          "guardId": "mh-guard-1"
+        },
+        {
+          "at": 61.39166666666382,
+          "type": "knockout",
+          "guardId": "mh-guard-2"
+        },
+        {
+          "at": 67.66666666666659,
+          "type": "knockout",
+          "guardId": "sw-guard"
+        },
+        {
+          "at": 80.00833333334307,
+          "type": "checkInFaked",
+          "guardId": "cb-guard"
+        },
+        {
+          "at": 80.22500000000991,
+          "type": "knockout",
+          "guardId": "go-guard"
+        },
+        {
+          "at": 96.00833333335581,
+          "type": "missedCheckIn",
+          "guardId": "mh-guard-1"
+        }
+      ],
+      "secondsByRoom": {
+        "cell-block": 52.52499999999766,
+        "mess-hall": 24.11666666666594,
+        "stairwell": 14.324999999999827,
+        "guard-office": 6.825000000000129
+      }
+    }
+  }
+]

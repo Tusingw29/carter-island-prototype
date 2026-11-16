@@ -1,0 +1,524 @@
+{
+  "mode": "rush",
+  "transitions": [
+    {
+      "room": "Cell Block",
+      "x": 4.5,
+      "ms": 1346
+    },
+    {
+      "room": "Mess Hall",
+      "x": 1,
+      "ms": 6528
+    },
+    {
+      "room": "Stairwell Checkpoint",
+      "x": 1,
+      "ms": 13016
+    },
+    {
+      "room": "Solitary",
+      "x": 3,
+      "ms": 18267
+    },
+    {
+      "room": "Cell Block",
+      "x": 4.5,
+      "ms": 18559
+    },
+    {
+      "room": "Mess Hall",
+      "x": 1,
+      "ms": 73593
+    }
+  ],
+  "stopped": true,
+  "snapshots": [
+    {
+      "ms": 3983,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 16.0  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 5642,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 26.3  y 0.0",
+      "prompt": "Snitch. His cell is locked"
+    },
+    {
+      "ms": 8376,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 8.9  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 10022,
+      "room": "Mess Hall",
+      "player": "player   grabbed  0.0 m/s  x 18.7  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 11022,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 26.5  y 0.0",
+      "prompt": "E: pick up the cup"
+    },
+    {
+      "ms": 12362,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 35.0  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 13823,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 6.9  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 15188,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 14.6  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 16189,
+      "room": "Stairwell Checkpoint",
+      "player": "player   run  6.5 m/s  x 21.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 17305,
+      "room": "Stairwell Checkpoint",
+      "player": "player   idle  0.0 m/s  x 23.7  y 0.0",
+      "prompt": "UP: tap = fast and loud, hold = slow and quiet"
+    },
+    {
+      "ms": 19277,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 20638,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 21705,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 22905,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 23905,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 24938,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 25938,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 26938,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 27945,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 28938,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 29938,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 31435,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 32672,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 34116,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 35491,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 36713,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 37706,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 38707,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 39823,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 40823,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 41822,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 42824,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 43824,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 44823,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 45823,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 46823,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 47824,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 48823,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 49893,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 50890,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 51892,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 53040,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 54191,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 55224,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 56223,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 57224,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 58241,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 59269,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 60450,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 61631,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 62641,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 63642,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 64688,
+      "room": "Cell Block",
+      "player": "player   hidden  0.0 m/s  x 4.5  y 0.0",
+      "prompt": "UP: get up"
+    },
+    {
+      "ms": 66229,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 8.0  y 0.0",
+      "prompt": "E: talk to the trader"
+    },
+    {
+      "ms": 68458,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 19.9  y 0.0",
+      "prompt": "The door to solitary. Locked"
+    },
+    {
+      "ms": 69674,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 27.7  y 0.0",
+      "prompt": "Vent cover"
+    },
+    {
+      "ms": 70795,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 29.5  y 0.0",
+      "prompt": "Vent cover"
+    },
+    {
+      "ms": 71807,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 29.3  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 72808,
+      "room": "Cell Block",
+      "player": "player   run  6.5 m/s  x 29.3  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 73909,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 3.6  y 0.0",
+      "prompt": "E: pick up the cup"
+    },
+    {
+      "ms": 74910,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 10.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 75908,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 16.6  y 0.0",
+      "prompt": "R: shove"
+    },
+    {
+      "ms": 76908,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 23.1  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 77909,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 29.6  y 0.0",
+      "prompt": "UP: hide"
+    },
+    {
+      "ms": 78907,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 36.1  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 79910,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.4  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 80908,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.4  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 81908,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.4  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 82908,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.4  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 83911,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.4  y 0.0",
+      "prompt": "E: take the cigarettes"
+    },
+    {
+      "ms": 84910,
+      "room": "Mess Hall",
+      "player": "player   run  6.5 m/s  x 37.4  y 0.0",
+      "prompt": "R: shove"
+    }
+  ],
+  "reason": "game ended",
+  "final": [
+    "ALERT",
+    "HEAT 3: RADIO AHEAD",
+    "4:40",
+    "bed check at 3:30",
+    "SHOVE (R)",
+    "MESS HALL",
+    "",
+    "Esc: pause and controls \u00a0 M: map \u00a0 Z: zoom \u00a0 K: jump \u00a0 F: throw",
+    "",
+    "DEBUG  build 7e5dd71b7626   [ and ] change the timer by 30 s",
+    "speed    60 fps, picture at 100%",
+    "room     Mess Hall",
+    "player   run  6.5 m/s  x 37.5  y 0.0",
+    "noise    8.0 m",
+    "hidden   no",
+    "break free used yes   seen by camera no",
+    "spotted 3  knockouts 0  bodies found 0",
+    "mh-guard-1  alert      sees n 100%  x 22.5",
+    "mh-guard-2  alert      sees Y 100%  x 37.2",
+    "CAUGHT",
+    "",
+    "Grabbed a second time.",
+    "",
+    "Time left\t4:40",
+    "Times spotted\t3",
+    "Spotted by\tguards 3, cameras 0, searchlights 0, snitches 0",
+    "Knockouts\t0",
+    "Bodies found by guards\t0",
+    "Takedowns\t0 from behind, 0 from above, 0 pulled into hiding",
+    "Guards thrown down\t0",
+    "Shoves\t0",
+    "Shoved off ledges\t0",
+    "Interrogations\t0",
+    "Check-ins faked\t0",
+    "Solitary\tYes: 1:00 lost",
+    "Keycard\tNot taken",
+    "Silent alarm\tNo",
+    "Caught in\tMess Hall",
+    [
+      "How you got caught\tGrabbed by the Mess Hall guard 2 1.6 s after his \"!\". The Mess Hal",
+      "l guard 2 saw you in his flashlight."
+    ],
+    "",
+    "Rank: Caught",
+    "did not make it back",
+    "",
+    "Play again (Enter) Tell Adam what you thought",
+    "! ALERT",
+    "! ALERT",
+    "LOCKED 5",
+    "LOCKED 5",
+    "LOCKED 5"
+  ],
+  "build": "7e5dd71b7626",
+  "note": [
+    "Review controller needed one manual Up after solitary due to its own HUD parser bug; ",
+    "excluded from cohort statistics."
+  ]
+}

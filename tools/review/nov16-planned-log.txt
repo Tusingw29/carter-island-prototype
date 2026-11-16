@@ -1,0 +1,42 @@
+Ghost drop 0 win 324.64
+Ghost return 0 win 286.35
+Vent-first 0 win 337.86
+Roof hoop 0 win 286.46
+Roof quiet tower 0 win 286.54
+Pull-heavy 0 win 309.20
+Intel + pulls 0 null 261.92 holding {"interact":true} never worked
+Ghost drop 2 win 324.64
+Ghost return 2 win 286.35
+Vent-first 2 win 337.86
+Roof hoop 2 win 286.36
+Roof quiet tower 2 win 286.46
+Pull-heavy 2 win 309.20
+Intel + pulls 2 null 261.92 holding {"interact":true} never worked
+Ghost drop 6 win 324.64
+Ghost return 6 win 286.35
+Vent-first 6 win 337.86
+Roof hoop 6 win 286.36
+Roof quiet tower 6 win 286.46
+Pull-heavy 6 win 319.22
+Intel + pulls 6 win 322.22
+Ghost drop 10 win 324.64
+Ghost return 10 win 286.35
+Vent-first 10 win 337.86
+Roof hoop 10 win 286.36
+Roof quiet tower 10 win 286.46
+Pull-heavy 10 win 319.22
+Intel + pulls 10 win 322.22
+Ghost drop 14 win 324.64
+Ghost return 14 win 286.35
+Vent-first 14 win 337.86
+Roof hoop 14 win 286.36
+Roof quiet tower 14 win 286.46
+Pull-heavy 14 win 319.22
+Intel + pulls 14 win 322.22
+Ghost drop 18 win 241.89
+Ghost return 18 win 229.10
+Vent-first 18 win 324.61
+Roof hoop 18 win 229.28
+Roof quiet tower 18 win 241.88
+Pull-heavy 18 win 319.22
+Intel + pulls 18 win 322.22
